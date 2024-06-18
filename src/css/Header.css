@@ -1,0 +1,16 @@
+.App-header {
+  background: #fff;
+  padding: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.App-header nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  gap: 2rem;
+}
+
+.App-header nav ul li {
+  cursor: pointer;
+}

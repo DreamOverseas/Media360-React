@@ -1,0 +1,11 @@
+footer {
+  background: #333;
+  color: #fff;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+.footer-column {
+  width: 20%;
+}

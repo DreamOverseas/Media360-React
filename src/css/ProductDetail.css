@@ -1,0 +1,29 @@
+.product-detail {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin: 2rem;
+}
+
+.product-detail h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.product-detail p {
+  margin: 0.5rem 0;
+}
+
+.product-detail .description {
+  margin-top: 1rem;
+}
+
+.product-detail .description h3 {
+  margin-bottom: 0.5rem;
+}
+
+.product-detail .description p {
+  margin: 0.25rem 0;
+}
