@@ -11,7 +11,7 @@ const Header = () => {
           360 Media
         </Navbar.Brand>
         <div className='navbar-content'>
-            <Nav.Link href='/Events'>HOME</Nav.Link>
+            <Nav.Link href='/home'>HOME</Nav.Link>
             <Nav.Link href='/Sponsors'>PRODUCTS</Nav.Link>
             <Nav.Link href='/About-Us'>EVENTS</Nav.Link>
             <Nav.Link href='/About-Us'>GET IN TOUCH</Nav.Link>

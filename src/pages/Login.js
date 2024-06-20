@@ -1,18 +1,20 @@
-// src/pages/Login.js
-// Login page provides a bridge fror members to login or lead new comers to register page
-import "../css/Forms.css";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Container, Form, Button, Card, Row, Col } from 'react-bootstrap';
+import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Tab, Container, Card, Row, Col, Form, Button, Image, Nav} from 'react-bootstrap';
+import "../css/Login.css";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmed, setConfirmed] = useState("");
     const [submitted, setSubmitted] = useState(false);
+    const [k, setK] = useState(true);
 
-    const navigate = useNavigate();
+    const loginPicture = () => {
+        setK((prev) => (prev === true ? false : true));
+    };
 
-    const handleLogin = (event) => {
+    const handleSignin = (event) => {
         event.preventDefault();
         setSubmitted(true);
         if (email && password) {
@@ -22,55 +24,131 @@ const Login = () => {
     };
 
     return (
-        <Container className="mt-5 align-items-center justify-content-center" style={{ minHeight: "100vh" }}>
+        <Container>
             <Row>
-                <Col md={6} className="mx-auto">
-                    <Card>
-                        <Card.Body>
-                            <Card.Title className="text-center"><h2>Login to Ur Account</h2></Card.Title>
-                            <Form onSubmit={handleLogin}>
-                                <Form.Group controlId="userEmail">
-                                    <Form.Label>Email address</Form.Label>
-                                    <Form.Control
-                                        type="email"
-                                        placeholder="Enter email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        isInvalid={submitted && !email}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        Please provide a valid email.
-                                    </Form.Control.Feedback>
-                                </Form.Group>
+            <Col md={6}>
+                <Tab.Container defaultActiveKey="sign-in" onSelect={() => loginPicture()}>
+                    <Row>
+                        <Col>
+                            <Nav.Link eventKey="sign-in">Sign in</Nav.Link>
+                        </Col>
+                        <Col>
+                            <Nav.Link eventKey="sign-up">Sign up</Nav.Link>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Tab.Content>
+                            <Tab.Pane eventKey="sign-in">
+                                <Container>
+                                    <Row className="sign-in-table">
+                                        <Card>
+                                            <Card.Body>
+                                                <Form onSubmit={handleSignin}>
+                                                    <Form.Group controlId="userEmail">
+                                                        <Form.Label>Email</Form.Label>
+                                                        <Form.Control
+                                                            type="email"
+                                                            placeholder="Enter email"
+                                                            value={email}
+                                                            onChange={(e) => setEmail(e.target.value)}
+                                                            isInvalid={submitted && !email}
+                                                        />
+                                                        <Form.Control.Feedback type="invalid">
+                                                            Please provide a valid email.
+                                                        </Form.Control.Feedback>
+                                                    </Form.Group>
 
-                                <Form.Group controlId="userPassword">
-                                    <Form.Label>Password</Form.Label>
-                                    <Form.Control
-                                        type="password"
-                                        placeholder="Password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        isInvalid={submitted && !password}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        Password is required.
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                                <Button variant="link" type="register" block onClick={() => navigate("/Register")}>
-                                    I'm new here!
-                                </Button><br />
-                                <div className="form-button-container">
-                                    <Button variant="primary" type="submit">
-                                        Login
-                                    </Button>
-                                </div>
-                            </Form>
-                        </Card.Body>
-                    </Card>
-                </Col>
+                                                    <Form.Group controlId="userPassword">
+                                                        <Form.Label>Password</Form.Label>
+                                                        <Form.Control
+                                                            type="password"
+                                                            placeholder="Password"
+                                                            value={password}
+                                                            onChange={(e) => setPassword(e.target.value)}
+                                                            isInvalid={submitted && !password}
+                                                        />
+                                                        <Form.Control.Feedback type="invalid">
+                                                            Password is required.
+                                                        </Form.Control.Feedback>
+                                                    </Form.Group>
+                                                    <div className="form-button-container">
+                                                        <Button variant="primary" type="submit">
+                                                            Sign in
+                                                        </Button>
+                                                    </div>
+                                                </Form>
+                                            </Card.Body>
+                                        </Card>
+                                    </Row>
+                                </Container>
+                            </Tab.Pane>
+                            <Tab.Pane eventKey="sign-up">
+                                <Container>
+                                    <Row className="sign-in-table">
+                                        <Card>
+                                            <Card.Body>
+                                                <Form onSubmit={handleSignin}>
+                                                    <Form.Group controlId="userEmail">
+                                                        <Form.Label>Email</Form.Label>
+                                                        <Form.Control
+                                                            type="email"
+                                                            placeholder="Enter email"
+                                                            value={email}
+                                                            onChange={(e) => setEmail(e.target.value)}
+                                                            isInvalid={submitted && !email}
+                                                        />
+                                                        <Form.Control.Feedback type="invalid">
+                                                            Please provide a valid email.
+                                                        </Form.Control.Feedback>
+                                                    </Form.Group>
+
+                                                    <Form.Group controlId="userPassword">
+                                                        <Form.Label>Password</Form.Label>
+                                                        <Form.Control
+                                                            type="password"
+                                                            placeholder="Password"
+                                                            value={password}
+                                                            onChange={(e) => setPassword(e.target.value)}
+                                                            isInvalid={submitted && !password}
+                                                        />
+                                                        <Form.Control.Feedback type="invalid">
+                                                            Password is required.
+                                                        </Form.Control.Feedback>
+                                                    </Form.Group>
+                                                    <Form.Group controlId="confirmedPassword">
+                                                        <Form.Label>Confirmed Password</Form.Label>
+                                                        <Form.Control
+                                                            type="password"
+                                                            placeholder="Password"
+                                                            value={confirmed}
+                                                            onChange={(e) => setConfirmed(e.target.value)}
+                                                            isInvalid={password == confirmed}
+                                                        />
+                                                        <Form.Control.Feedback type="invalid">
+                                                            Two passwords are not the same, please check again.
+                                                        </Form.Control.Feedback>
+                                                    </Form.Group>
+                                                    <div className="form-button-container">
+                                                        <Button variant="primary" type="submit">
+                                                            Sign up
+                                                        </Button>
+                                                    </div>
+                                                </Form>
+                                            </Card.Body>
+                                        </Card>
+                                    </Row>
+                                </Container>
+                            </Tab.Pane>
+                        </Tab.Content>
+                    </Row>
+                </Tab.Container>
+            </Col>
+            <Col md={6}>
+                <Image src={ k ? "https://placehold.co/650x650" : "https://placehold.co/750x750"} fluid/>
+            </Col>
             </Row>
         </Container>
     );
-};
+}
 
 export default Login;
