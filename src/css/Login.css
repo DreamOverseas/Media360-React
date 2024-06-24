@@ -1,16 +1,16 @@
-.nav-tabs .nav-link {
+/* .nav-tabs .nav-link {
   background-color: transparent !important;
   border: none !important;
   /* border-bottom: none !important; */
-}
+ */
 
-.nav-tabs .nav-link.active,
+/* .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
   background-color: transparent !important;
   border: none !important;
-}
+} */
 
-.nav-tabs .nav-link:hover {
+/* .nav-tabs .nav-link:hover {
   background-color: transparent !important;
 }
 
@@ -20,7 +20,7 @@
 
 .nav-link {
   font-size: 20px;
-}
+} */
 
 .login-in-table {
   padding-top: 2.5%
