@@ -22,8 +22,8 @@
   align-items:center;
 }
 
-.nav-link {
-  color: #000 !important;
+.navbar-content .nav-link{
+  color: #000;
   margin: 0 15px;
   font-size: 16px;
   font-weight: bold;

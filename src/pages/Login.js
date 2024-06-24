@@ -9,6 +9,7 @@ const Login = () => {
     const [confirmed, setConfirmed] = useState("");
     const [submitted, setSubmitted] = useState(false);
     const [k, setK] = useState(true);
+    const [activeKey, setActiveKey] = useState('sign-in');
 
     const loginPicture = () => {
         setK((prev) => (prev === true ? false : true));
@@ -30,10 +31,18 @@ const Login = () => {
                 <Tab.Container defaultActiveKey="sign-in" onSelect={() => loginPicture()}>
                     <Row>
                         <Col>
-                            <Nav.Link eventKey="sign-in">Sign in</Nav.Link>
+                            <Nav.Link eventKey="sign-in" 
+                            className={`nav-link-Login ${activeKey === 'sign-in' ? 'active' : ''}`}
+                            onClick={() => setActiveKey('sign-in')}>
+                                Sign in
+                            </Nav.Link>
                         </Col>
                         <Col>
-                            <Nav.Link eventKey="sign-up">Sign up</Nav.Link>
+                            <Nav.Link eventKey="sign-up" 
+                            className={`nav-link-Login ${activeKey === 'sign-up' ? 'active' : ''}`}
+                            onClick={() => setActiveKey('sign-up')}>
+                                Sign up
+                            </Nav.Link>
                         </Col>
                     </Row>
                     <Row>
