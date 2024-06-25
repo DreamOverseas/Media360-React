@@ -12,7 +12,7 @@ const Header = () => {
         </Navbar.Brand>
         <div className='navbar-content'>
             <Nav.Link href='/home'>HOME</Nav.Link>
-            <Nav.Link href='/Sponsors'>PRODUCTS</Nav.Link>
+            <Nav.Link href='/kolpage'>KOL</Nav.Link>
             <Nav.Link href='/About-Us'>EVENTS</Nav.Link>
             <Nav.Link href='/About-Us'>GET IN TOUCH</Nav.Link>
             <Nav.Link href='/login'>LOGIN</Nav.Link>
