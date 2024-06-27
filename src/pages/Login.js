@@ -131,7 +131,7 @@ const Login = () => {
                                                             placeholder="Password"
                                                             value={confirmed}
                                                             onChange={(e) => setConfirmed(e.target.value)}
-                                                            isInvalid={password == confirmed}
+                                                            isInvalid={password === confirmed}
                                                         />
                                                         <Form.Control.Feedback type="invalid">
                                                             Two passwords are not the same, please check again.
