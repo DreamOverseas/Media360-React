@@ -1,11 +1,28 @@
 footer {
-  background: #333;
-  color: #fff;
-  padding: 2rem;
   display: flex;
   justify-content: space-around;
+  padding: 2rem;
+  background-color: #000000;
+  border-top: 1px solid #ddd;
 }
 
 .footer-column {
-  width: 20%;
+  flex: 1;
+  padding: 1rem;
+}
+
+.footer-column h2 {
+  margin-top: 0;
+}
+
+.footer-column input[type="email"] {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.footer-column button {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
 }

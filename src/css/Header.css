@@ -1,16 +1,50 @@
-.App-header {
-  background: #fff;
-  padding: 1rem;
-  border-bottom: 1px solid #ccc;
+.navbar-custom {
+  background-color: #fff;
 }
 
-.App-header nav ul {
-  list-style: none;
+.navbar-content {
+  margin-right:10%;
   display: flex;
-  justify-content: flex-end;
-  gap: 2rem;
+  justify-content:flex-end;
+  align-items: center;
+  width: 95%;
 }
 
-.App-header nav ul li {
-  cursor: pointer;
+.navbar-brand {
+  color: #000;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items:center;
+}
+
+.navbar-content .nav-link{
+  color: #000;
+  margin: 0 15px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+  .nav-link:hover {
+      color: #555 !important;
+  }
+
+button {
+  margin: 10px;
+}
+
+  button:focus {
+      outline: none;
+      box-shadow: none;
+  }
+
+.nav-logo {
+  height: 3rem;
+  width: auto;
+  margin: 10px;
 }

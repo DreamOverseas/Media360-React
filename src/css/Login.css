@@ -1,0 +1,21 @@
+.nav-link-Login.active{
+  text-decoration: underline;
+  font-weight: 700;
+  text-underline-offset: 50%;
+}
+
+.nav-link-Login:hover {
+  color:black !important;
+}
+
+.nav-link-Login {
+  font-size: 30px;
+}
+
+.login-in-table {
+  padding-top: 2.5%
+}
+
+.sign-in-table {
+  padding-top: 5%
+}

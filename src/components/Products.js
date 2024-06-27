@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "../css/Products.css";
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(null); // Initial state set to null
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -27,6 +27,10 @@ const Products = () => {
     return <div>{error}</div>;
   }
 
+  if (products === null) {
+    return <div>Loading...</div>; // Check for null before rendering
+  }
+
   return (
     <div className='products-container'>
       {products.length > 0 ? (
@@ -47,7 +51,7 @@ const Products = () => {
           </div>
         ))
       ) : (
-        <div>Loading...</div>
+        <div>No products found</div>
       )}
     </div>
   );
