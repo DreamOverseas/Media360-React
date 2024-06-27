@@ -1,5 +1,5 @@
 import React from "react";
-import { Nav, Navbar, Image } from "react-bootstrap";
+import { Nav, Navbar } from "react-bootstrap";
 import "../css/Header.css";
 
 const Header = () => {
@@ -11,11 +11,11 @@ const Header = () => {
           360 Media
         </Navbar.Brand>
         <div className='navbar-content'>
-            <Nav.Link href='/home'>HOME</Nav.Link>
-            <Nav.Link href='/kolpage'>KOL</Nav.Link>
-            <Nav.Link href='/About-Us'>EVENTS</Nav.Link>
-            <Nav.Link href='/About-Us'>GET IN TOUCH</Nav.Link>
-            <Nav.Link href='/login'>LOGIN</Nav.Link>
+          <Nav.Link href='/home'>HOME</Nav.Link>
+          <Nav.Link href='/kolpage'>KOL</Nav.Link>
+          <Nav.Link href='/About-Us'>EVENTS</Nav.Link>
+          <Nav.Link href='/Contact'>GET IN TOUCH</Nav.Link>
+          <Nav.Link href='/login'>LOGIN</Nav.Link>
         </div>
       </Navbar>
     </header>

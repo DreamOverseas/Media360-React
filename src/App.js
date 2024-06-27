@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import KolPage from "./components/KolPage";
 import ProductDetail from "./components/ProductDetail";
 import Products from "./components/Products";
+import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 
@@ -16,12 +17,13 @@ function App() {
         <Header />
         <Routes>
           <Route exact path='/' element={<Home />} />
-            <Route exact path='/home' element={<Home />} />
-            <Route exact path='/products' element={<Products />} />
-            <Route exact path='/product/:id' element={<ProductDetail />} />
-            <Route exact path='/login' element={<Login />} />
-            <Route path='/kolpage' element={<KolPage />} />
-          </Routes>
+          <Route exact path='/home' element={<Home />} />
+          <Route exact path='/products' element={<Products />} />
+          <Route exact path='/product/:id' element={<ProductDetail />} />
+          <Route exact path='/login' element={<Login />} />
+          <Route exact path='/contact' element={<Contact />} />
+          <Route path='/kolpage' element={<KolPage />} />
+        </Routes>
         <Footer />
       </div>
     </Router>
