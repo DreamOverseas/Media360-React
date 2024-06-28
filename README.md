@@ -2,6 +2,12 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Packages in Use
+[React Bootstrap](https://react-bootstrap.netlify.app/docs/getting-started/introduction): For basic designed components and layout
+[React Slick](https://react-slick.neostack.com/docs/get-started): for different carosels
+[Bootstrap Icons](https://icons.getbootstrap.com/#usage): As our icon library
+[Strapi](https://strapi.io/): Open source Node.js Headless CMS
+
 ## Available Scripts
 
 In the project directory, you can run:
