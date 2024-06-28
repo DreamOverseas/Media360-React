@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import "./App.css";
@@ -13,8 +13,17 @@ import Login from "./pages/Login";
 import ShoppingCart from "./pages/ShoppingCart";
 
 function App() {
+  // if n only if homepage, the topmargin is 0
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname === '/') {
+      document.body.style.marginTop = '0';
+    } else {
+      document.body.style.marginTop = '67px'; // Reserved margin for fix-top Navbar
+    }
+  }, [location]);
+
   return (
-    <Router>
       <div className='App'>
         <Header />
         <Routes>
@@ -27,7 +36,6 @@ function App() {
           </Routes>
         <Footer />
       </div>
-    </Router>
   );
 }
 
