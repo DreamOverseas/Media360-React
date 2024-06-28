@@ -1,0 +1,20 @@
+.delete_cart_button {
+    margin-top: 0;
+}
+
+.cart-item {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.cart-item:hover {
+    transform: scale(1.05);
+    background-color: rgba(80, 80, 80, 0.5);
+}
+
+.cart-price {
+    text-align: end;
+    margin-right: 10px;
+    margin-top: 10px;
+}
