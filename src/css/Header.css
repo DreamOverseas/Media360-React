@@ -1,13 +1,10 @@
 .navbar-custom {
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  padding: 0 10px;
 }
 
-.navbar-content {
-  margin-right:10%;
-  display: flex;
-  justify-content:flex-end;
-  align-items: center;
-  width: 95%;
+.nav-icon {
+  font-size: 1.5rem;
 }
 
 .navbar-brand {
@@ -19,29 +16,29 @@
 
 .navbar-nav {
   display: flex;
-  align-items:center;
+  align-items: center;
 }
 
-.navbar-content .nav-link{
+.nav-link {
   color: #000;
-  margin: 0 15px;
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
+  margin-right: 30px;
 }
 
-  .nav-link:hover {
-      color: #555 !important;
-  }
+.nav-link:hover {
+  color: #555 !important;
+}
 
 button {
   margin: 10px;
 }
 
-  button:focus {
-      outline: none;
-      box-shadow: none;
-  }
+button:focus {
+  outline: none;
+  box-shadow: none;
+}
 
 .nav-logo {
   height: 3rem;
