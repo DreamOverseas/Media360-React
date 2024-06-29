@@ -13,7 +13,7 @@ const Header = () => {
         <div className='navbar-content'>
             <Nav.Link href='/home'>HOME</Nav.Link>
             <Nav.Link href='/kolpage'>KOL</Nav.Link>
-            <Nav.Link href='/About-Us'>EVENTS</Nav.Link>
+            <Nav.Link href='/event-page'>EVENTS</Nav.Link>
             <Nav.Link href='/About-Us'>GET IN TOUCH</Nav.Link>
             <Nav.Link href='/login'>LOGIN</Nav.Link>
         </div>

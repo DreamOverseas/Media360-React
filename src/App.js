@@ -8,6 +8,7 @@ import ProductDetail from "./components/ProductDetail";
 import Products from "./components/Products";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Events from "./pages/Events";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route exact path='/' element={<Home />} />
             <Route exact path='/home' element={<Home />} />
             <Route exact path='/products' element={<Products />} />
+            <Route path='/event-page' element={<Events />} />
             <Route exact path='/product/:id' element={<ProductDetail />} />
             <Route exact path='/login' element={<Login />} />
             <Route path='/kolpage' element={<KolPage />} />
