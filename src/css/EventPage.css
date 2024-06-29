@@ -1,1 +1,25 @@
+.event-page-banner-section {
+  position: relative;
+}
 
+.event-page-banner-h1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.split-events {
+  position: relative;
+}
+
+.text-block {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding-left: 1%;
+  padding-right: 1%;
+}
