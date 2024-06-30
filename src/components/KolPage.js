@@ -1,14 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Card, Col, Container, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "../css/KolPage.css";
 
 const KolPage = () => {
-  const [kols, setKols] = useState(null); // Initial state set to null
+  const [kols, setKols] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     axios
-      .get("http://localhost:1337/api/kols")
+      .get("http://localhost:1337/api/kols?populate=*")
       .then(response => {
         if (response.data && response.data.data) {
           setKols(response.data.data);
@@ -26,31 +28,30 @@ const KolPage = () => {
     return <div>{error}</div>;
   }
 
-  if (kols === null) {
-    return <div>Loading...</div>; // Check for null before rendering
-  }
-
-  console.log(kols); // Add this line to debug data structure
-
   return (
-    <div className='kol-page'>
-      <div className='kol-container'>
-        {kols.length > 0 ? (
-          kols.map(kol => (
-            <div key={kol.id} className='kol-card'>
-              <img
-                src='https://via.placeholder.com/150'
-                alt={kol.attributes.Name}
-              />
-              <h2>{kol.attributes.Name}</h2>
-              <p>{kol.attributes.Title}</p>
-            </div>
-          ))
-        ) : (
-          <div>No KOLs found</div>
-        )}
-      </div>
-    </div>
+    <Container className='kol-container'>
+      <Row>
+        {kols.map(kol => (
+          <Col
+            key={kol.id}
+            sm={12}
+            md={6}
+            lg={4}
+            className='kol-card-container'
+          >
+            <Link to={`/kol/${kol.id}`}>
+              <Card className='kol-card'>
+                <Card.Img variant='top' src='https://placehold.co/300x300' />
+                <Card.Body>
+                  <Card.Title>{kol.attributes.Name}</Card.Title>
+                  <Card.Text>{kol.attributes.Title}</Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
+          </Col>
+        ))}
+      </Row>
+    </Container>
   );
 };
 
