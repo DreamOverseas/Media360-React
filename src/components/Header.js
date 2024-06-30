@@ -5,20 +5,6 @@ import "../css/Header.css";
 const Header = () => {
   return (
     <div>
-      {/* ====== ! Commented for deprecated version ! =====
-        <header className='App-header'>
-          <Navbar expand='lg' className='navbar-custom'>
-          <Nav.Link href='/'><Image className="nav-logo" src="header_logo.png" alt="360 Media" /></Nav.Link>
-            <Nav className="ml-auto">
-                <Nav.Link href='/kolpage' className="text-nav-link">KOL</Nav.Link>
-                <Nav.Link href='/About-Us' className="text-nav-link">EVENTS</Nav.Link>
-                <Nav.Link href='/About-Us' className="text-nav-link">CONTACT</Nav.Link>
-                <Nav.Link href='/login'><i class="bi bi-person"></i></Nav.Link>
-                <Nav.Link href='/cart'><i class="bi bi-cart2"></i></Nav.Link>
-            </Nav>
-          </Navbar>
-        </header>
-      */}
       <Navbar bg="light" expand="lg" fixed="top" className='navbar-custom'>
         <Nav.Link href='/'><Image className="nav-logo" src="header_logo.png" alt="360 Media" /></Nav.Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
