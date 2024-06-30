@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Nav, Navbar } from "react-bootstrap";
+import { AuthContext } from "../context/AuthContext";
 import "../css/Header.css";
 
 const Header = () => {
+  const { user, logout } = useContext(AuthContext);
+
   return (
     <header className='App-header'>
       <Navbar expand='lg' className='navbar-custom'>
@@ -15,7 +18,15 @@ const Header = () => {
           <Nav.Link href='/kolpage'>KOL</Nav.Link>
           <Nav.Link href='/About-Us'>EVENTS</Nav.Link>
           <Nav.Link href='/Contact'>GET IN TOUCH</Nav.Link>
-          <Nav.Link href='/login'>LOGIN</Nav.Link>
+          {user ? (
+            <>
+              <Nav.Link href='/' onClick={logout}>
+                {user.username}
+              </Nav.Link>
+            </>
+          ) : (
+            <Nav.Link href='/login'>LOGIN</Nav.Link>
+          )}
         </div>
       </Navbar>
     </header>
