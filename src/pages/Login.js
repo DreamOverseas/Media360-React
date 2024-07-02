@@ -197,7 +197,6 @@ const Login = () => {
                                 Please provide a valid email.
                               </Form.Control.Feedback>
                             </Form.Group>
-
                             <Form.Group controlId='userPassword'>
                               <Form.Label>Password</Form.Label>
                               <Form.Control

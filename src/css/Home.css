@@ -1,0 +1,37 @@
+.homepage-container {
+    height: 100vh;
+    width: auto;
+    background-image: url('/public/homepage/bg.png');
+    background-size: cover;
+    background-position: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.card-container {
+    align-content: center;
+    justify-content: center;
+}
+
+.home-card {
+    width: 24vh;
+    height: auto;
+    background-size: cover;
+    background-position: center;
+    padding: 0;
+    margin-top: 10%;
+    margin-right: 5vh;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.home-card:hover {
+    transform: scale(1.20);
+    background-color: rgba(0, 2, 109, 0.5);
+}
+
+.home-card-text {
+    background: rgba(255, 255, 255, 0.5);
+}

@@ -1,64 +1,47 @@
 import React from "react";
-import "../App.css";
+import { Container, Row, Card } from 'react-bootstrap';
+import "../css/Home.css";
 
 const Home = () => {
     return (
-        <div>
-            <section className='hero'>
-                <div className='hero-text'>
-                    <h1>Lorem ipsum</h1>
-                    <p>
-                    Lorem ipsum dolor sit amet consectetur. Faucibus at
-                    parturient est tincidunt et platea volutpat at. Etiam id
-                    iaculis tincidunt sem scelerisque tincidunt elementum
-                    tellus. Risus vel fermentum faucibus tincidunt.
-                    </p>
-                </div>
-                <img
-                    src='path/to/your/image'
-                    alt='StudyFin'
-                    className='hero-image'
-                />
-            </section>
+        <div className="homepage-container">
+            <Container>
+                <Row md={12} className="card-container">
 
-            <section className='profiles'>
-                <div className='profile'>
-                    <img src='path/to/profile/image' alt='Profile' />
-                    <h2>Lorem ipsum</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur.</p>
-                </div>
-                <div className='profile'>
-                    <img src='path/to/profile/image' alt='Profile' />
-                    <h2>Lorem ipsum</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur.</p>
-                </div>
-                {/* Add more profiles as needed */}
-            </section>
-
-            <section className='feature'>
-                <img
-                    src='path/to/feature/image'
-                    alt='Feature'
-                    className='feature-image'
-                />
-                <div className='feature-text'>
-                    <h1>Lorem ipsum</h1>
-                    <p>
-                    Lorem ipsum dolor sit amet consectetur. Faucibus at
-                    parturient est tincidunt et platea volutpat at. Etiam id
-                    iaculis tincidunt sem scelerisque tincidunt elementum
-                    tellus. Risus vel fermentum faucibus tincidunt.
-                    </p>
-                </div>
-            </section>
-
-            <section className='logos'>
-                <div className='logo'>LOGO</div>
-                <div className='logo'>LOGO</div>
-                <div className='logo'>LOGO</div>
-                <div className='logo'>LOGO</div>
-                {/* Add more logos as needed */}
-            </section>
+                    <Card className="home-card"><Card.Img src="/homepage/sort_1.png" alt="Card image" />
+                    {/* <Card.ImgOverlay>
+                        <Card.Title className='home-card-text'>Study</Card.Title>
+                        <Card.Text className='home-card-text'>
+                            Perfect for you as you planning to study overseas and seeking for helping hands at the new place!
+                        </Card.Text>
+                    </Card.ImgOverlay></Card> */}
+                    </Card>
+                    <Card className="home-card"><Card.Img src="/homepage/sort_2.png" alt="Card image" />
+                    {/* <Card.ImgOverlay>
+                        <Card.Title className='home-card-text'>Finance</Card.Title>
+                        <Card.Text className='home-card-text'>
+                            We help you to manage your wealth and multiply your success!
+                        </Card.Text>
+                    </Card.ImgOverlay></Card> */}
+                    </Card>
+                    <Card className="home-card"><Card.Img src="/homepage/sort_3.png" alt="Card image" />
+                    {/* <Card.ImgOverlay>
+                        <Card.Title className='home-card-text'>Travel</Card.Title>
+                        <Card.Text className='home-card-text'>
+                            Let's go travel with your sudden idea and meet our KOL on the go!
+                        </Card.Text>
+                    </Card.ImgOverlay></Card> */}
+                    </Card>
+                    <Card className="home-card"><Card.Img src="/homepage/sort_4.png" alt="Card image" />
+                    {/* <Card.ImgOverlay>
+                        <Card.Title className='home-card-text'>Life</Card.Title>
+                        <Card.Text className='home-card-text'>
+                            We care about your life here and feel free to reach out to us!
+                        </Card.Text>
+                    </Card.ImgOverlay> */}
+                    </Card>
+                </Row>
+            </Container>
         </div>
     );
 
