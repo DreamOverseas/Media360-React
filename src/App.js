@@ -7,9 +7,12 @@ import "slick-carousel/slick/slick-theme.css";
 import "./App.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import KolDetail from "./components/KolDetail";
 import KolPage from "./components/KolPage";
 import ProductDetail from "./components/ProductDetail";
 import Products from "./components/Products";
+import { AuthProvider } from "./context/AuthContext";
+import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ShoppingCart from "./pages/ShoppingCart";
@@ -32,10 +35,13 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Home />} />
             <Route exact path='/products' element={<Products />} />
+            <Route path='/product/:id' element={<ProductDetail />} />
             <Route path='/eventpage' element={<Events />} />
             <Route exact path='/product/:id' element={<ProductDetail />} />
             <Route exact path='/login' element={<Login />} />
+            <Route path='/contact' element={<Contact />} />
             <Route path='/kolpage' element={<KolPage />} />
+            <Route path='/kol/:id' element={<KolDetail />} />
             <Route path='/cart' element={<ShoppingCart />} />
           </Routes>
         <Footer />

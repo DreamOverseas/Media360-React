@@ -1,27 +1,12 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import "../css/Products.css";
+import useFetchProducts from "../hooks/useFetchProducts";
 
 const Products = () => {
-  const [products, setProducts] = useState(null); // Initial state set to null
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:1337/api/products")
-      .then(response => {
-        if (response.data && response.data.data) {
-          setProducts(response.data.data);
-        } else {
-          setError("No data found");
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching data: ", error);
-        setError("Error fetching data");
-      });
-  }, []);
+  const { products, error } = useFetchProducts(
+    "http://localhost:1337/api/products"
+  );
 
   if (error) {
     return <div>{error}</div>;
@@ -42,7 +27,7 @@ const Products = () => {
             <p>Price: {product.attributes.Price}</p>
             <div className='description'>
               <h3>Description:</h3>
-              {product.attributes.Description.map((desc, index) => (
+              {product.attributes.Description?.map((desc, index) => (
                 <p key={index}>
                   {desc.children.map(child => child.text).join(" ")}
                 </p>

@@ -10,7 +10,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:1337/api/products/${id}`)
+      .get(`http://localhost:1338/api/products/${id}`)
       .then(response => {
         if (response.data && response.data.data) {
           setProduct(response.data.data);
