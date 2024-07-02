@@ -3,6 +3,8 @@
 }
 
 .event-page-banner-h1 {
+  font-size: 108px;
+  color: azure;
   position: absolute;
   top: 50%;
   left: 50%;

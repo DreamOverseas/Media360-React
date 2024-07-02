@@ -11,7 +11,6 @@ import KolDetail from "./components/KolDetail";
 import KolPage from "./components/KolPage";
 import ProductDetail from "./components/ProductDetail";
 import Products from "./components/Products";
-import { AuthProvider } from "./context/AuthContext";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import Login from "./pages/Login";

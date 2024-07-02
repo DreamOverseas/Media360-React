@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar, Image } from "react-bootstrap";
 import { AuthContext } from "../context/AuthContext";
 import "../css/Header.css";
 

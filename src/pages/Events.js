@@ -5,15 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import "../css/EventPage.css";
 
+const bannerImg = "events/banner.png";
+
+const showcaseImg = "events/showcase1.png";
+
 const initialImages = [
-    "https://placehold.co/350x250",
-    "https://placehold.co/350x250",
-    "https://placehold.co/350x250",
-    "https://placehold.co/350x250",
-    "https://placehold.co/350x250",
-    "https://placehold.co/350x250",
-    "https://placehold.co/350x250"
-    
+    "events/case1.png",
+    "events/case2.png",
+    "events/case3.png",
+    "events/case4.png",
 ];
 
 const Events = () => {
@@ -42,15 +42,15 @@ const Events = () => {
     return (
         <div>
             <section className="event-page-banner-section">
-                    <Image src="https://placehold.co/2560x300" fluid/>
-                    <h1 className = "event-page-banner-h1">Our Events</h1>
+                    <Image src={bannerImg} fluid/>
+                    <h1 className = "event-page-banner-h1"><b>Our Events</b></h1>
             </section>
             <br />
             <section>
                 <Container fluid>
                     <Row>
                         <Col className="d-flex justify-content-end">
-                            <Image src="https://placehold.co/750x450" fluid/>
+                            <Image src={showcaseImg} fluid/>
                         </Col>
                         <Col className="d-flex align-items-center">
                             <Container>
