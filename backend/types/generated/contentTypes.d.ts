@@ -836,6 +836,13 @@ export interface ApiKolKol extends Schema.CollectionType {
   attributes: {
     Name: Attribute.String;
     Title: Attribute.String;
+    Description: Attribute.Blocks;
+    Image: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
+    products: Attribute.Relation<
+      'api::kol.kol',
+      'oneToMany',
+      'api::product.product'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -852,6 +859,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
     singularName: 'product';
     pluralName: 'products';
     displayName: 'Product';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -859,7 +867,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
   attributes: {
     Name: Attribute.String;
     Price: Attribute.BigInteger;
-    Picture: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
+    Image: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
     Description: Attribute.Blocks;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

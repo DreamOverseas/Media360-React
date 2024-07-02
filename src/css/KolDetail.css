@@ -1,0 +1,64 @@
+.kol-detail-container {
+  padding: 2rem 0;
+}
+
+.kol-header {
+  text-align: center;
+}
+
+.kol-header img {
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.kol-header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.kol-header h2 {
+  font-size: 1.5rem;
+  color: #777;
+}
+
+.kol-header p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-icons i {
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.product-card {
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.product-card img {
+  border-radius: 8px;
+}
+
+.product-card .card-body {
+  text-align: center;
+}
+
+.product-card .card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.product-card .card-text {
+  font-size: 1rem;
+  color: #777;
+}
