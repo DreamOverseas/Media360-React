@@ -10,7 +10,7 @@ const KolPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:1337/api/kols?populate=*")
+      .get("http://192.168.20.91:1337/api/kols?populate=*")
       .then(response => {
         if (response.data && response.data.data) {
           setKols(response.data.data);
