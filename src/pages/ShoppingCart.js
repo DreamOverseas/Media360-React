@@ -57,6 +57,10 @@ const ShoppingCart = () => {
         return cartItems.every(item => item.selected);
     };
 
+    /**
+     * Function that changes an item's selected state
+     * @param {*} id 
+     */
     const handleSelectionChange = (id) => {
         setCartItems((prevItems) =>
             prevItems.map((item) =>
@@ -65,6 +69,9 @@ const ShoppingCart = () => {
         );
     };
 
+    /**
+     * Function that manage select-all / de-select-all
+     */
     const handleAllSelectionChange = () => {
         setCartItems((prevItems) =>
             prevItems.map((item) =>
@@ -73,10 +80,19 @@ const ShoppingCart = () => {
         );
     };
 
+    /**
+     * Function that deletes an item
+     * @param {*} id 
+     */
     const deleteItem = (id) => {
         setCartItems(prevItems => prevItems.filter(item => item.id !== id));
     };
 
+    /**
+     * Function that handles quantity chgange with the selection drop-down
+     * @param {*} id 
+     * @param {*} newQty 
+     */
     const handleQuantityChange = (id, newQty) => {
         setCartItems((prevItems) =>
             prevItems.map((item) =>
@@ -85,12 +101,20 @@ const ShoppingCart = () => {
         );
     };
 
+    /**
+     * Function that calculates the total price
+     * @returns num : Total price of all selected items
+     */
     const calculateTotalPrice = () => {
         return cartItems
             .filter(item => item.selected)
             .reduce((total, item) => total + (item.price * item.qty), 0);
     };
 
+    /**
+     * Functiuon that calculates number of items selected
+     * @returns Integer : The total quantity of all selected items in cartItems
+     */
     const calculateSelectedItemsCount = () => {
         return cartItems
             .filter(item => item.selected)
@@ -104,6 +128,7 @@ const ShoppingCart = () => {
     const [totalPrice, setTotalPrice] = useState(calculateTotalPrice());
     const [selectedItemsCount, setSelectedItemsCount] = useState(calculateSelectedItemsCount());
 
+    // Keep related elements dynamic changing
     useEffect(() => {
         setIsAllSelected(checkAllSelected());
         setTotalPrice(calculateTotalPrice());
@@ -201,6 +226,5 @@ const ShoppingCart = () => {
         </Container>
     );
 }
-
 
 export default ShoppingCart;
