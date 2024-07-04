@@ -1,15 +1,16 @@
 import React from "react";
 import "../css/Footer.css";
+import { Row, Col } from "react-bootstrap";
 
 const Footer = () => {
   return (
     <footer className='footer'>
       <div className='footer-column logo-contact'>
-        <img src='path/to/your/logo.png' alt='Logo' className='footer-logo' />
+        <img src='footer_logo.png' alt='Logo' className='footer-logo' />
         <div className='contact-info'>
-          <p>360 Media Street, Melbourne 3000</p>
-          <p>0404 123 456</p>
-          <p>abcd@gmail.com</p>
+          <p>171 La trobe Street, Melbourne VIC 3000</p>
+          <p>0413 168 533</p>
+          <p>john.du@do360.com</p>
         </div>
       </div>
       <div className='footer-column'>
@@ -31,13 +32,19 @@ const Footer = () => {
         <button>Subscribe</button>
       </div>
       <div className='footer-column qr-social'>
-        <img src='path/to/your/qr-code.png' alt='QR Code' className='qr-code' />
+        <img src='QR_placeholder.png' alt='QR Code' className='qr-code' />
         <p>Scan Me</p>
-        <div className='social-icons'>
-          <img src='path/to/your/facebook-icon.png' alt='Facebook' />
-          <img src='path/to/your/instagram-icon.png' alt='Instagram' />
-          <img src='path/to/your/share-icon.png' alt='Share' />
-        </div>
+        <Row>
+          <Col>
+            <i class="bi bi-facebook"></i>
+          </Col>
+          <Col>
+            <i class="bi bi-instagram"></i>
+          </Col>
+          <Col>
+            <i class="bi bi-share"></i>
+          </Col>
+        </Row>
       </div>
     </footer>
   );

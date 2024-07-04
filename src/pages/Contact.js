@@ -6,7 +6,7 @@ const Contact = () => {
     <div className='contact-page'>
       <div className='contact-content'>
         <div className='contact-image'>
-          <img src='path/to/your/image.png' alt='Contact' />
+          <img src='Contact.png' alt='Contact' />
         </div>
         <div className='contact-form'>
           <h2>Contact us</h2>

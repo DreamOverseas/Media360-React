@@ -19,3 +19,17 @@
 .sign-in-table {
   padding-top: 5%
 }
+
+.login-image-display {
+  width: 100%;
+  height: auto;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.login-image-display.fade-in {
+  opacity: 1;
+}
+
+.login-image-display.fade-out {
+  opacity: 0;
+}
