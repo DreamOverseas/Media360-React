@@ -50,7 +50,7 @@ const ShoppingCart = () => {
 
     /**
      * Function that check whether all Items in cart are selected
-     * @param {*} cartItems 
+     * @param {*} cartItems
      * @returns boolean : If all selected -> true, otherwise false
      */
     const checkAllSelected = () => {
@@ -71,6 +71,10 @@ const ShoppingCart = () => {
                 ({ ...item, selected: !isAllSelected })
             )
         );
+    };
+
+    const deleteItem = (id) => {
+        setCartItems(prevItems => prevItems.filter(item => item.id !== id));
     };
 
     const handleQuantityChange = (id, newQty) => {
@@ -162,7 +166,7 @@ const ShoppingCart = () => {
                                                         </Row>
                                                     </Col>
                                                     <Col md={2}>
-                                                        <Button variant='light' className="delete_cart_button">Delete</Button>
+                                                        <Button variant='light' className="delete_cart_button" onClick={() => deleteItem(item.id)}>Delete</Button>
                                                     </Col>
                                                     <Col>
                                                         <p className="cart-price">${item.price}</p>
