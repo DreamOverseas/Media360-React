@@ -10,6 +10,7 @@
 .footer-column {
   flex: 1;
   padding: 1rem;
+  align-items: center;
 }
 
 .logo-contact {
@@ -54,11 +55,6 @@
 .qr-code {
   width: 100px;
   margin-bottom: 1rem;
-}
-
-.social-icons {
-  display: flex;
-  gap: 0.5rem;
 }
 
 .social-icons img {

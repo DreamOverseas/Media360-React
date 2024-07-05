@@ -4,8 +4,7 @@
   "info": {
     "singularName": "product",
     "pluralName": "products",
-    "displayName": "Product",
-    "description": ""
+    "displayName": "Product"
   },
   "options": {
     "draftAndPublish": true
@@ -18,19 +17,18 @@
     "Price": {
       "type": "biginteger"
     },
+    "Description": {
+      "type": "blocks"
+    },
     "Image": {
-      "type": "media",
-      "multiple": true,
-      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ]
-    },
-    "Description": {
-      "type": "blocks"
+      ],
+      "type": "media",
+      "multiple": true
     }
   }
 }

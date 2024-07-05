@@ -240,11 +240,11 @@ const Login = () => {
           </Tab.Container>
         </Col>
         <Col md={6}>
-          <Image
+          <Image className="login-image-display"
             src={
               k
-                ? "https://placehold.co/650x650"
-                : "https://placehold.co/750x750"
+                ? "sign-in.jpeg"
+                : "sign-up.jpeg"
             }
             fluid
           />

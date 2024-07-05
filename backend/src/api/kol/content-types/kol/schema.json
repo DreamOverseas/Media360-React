@@ -18,9 +18,6 @@
     "Title": {
       "type": "string"
     },
-    "Description": {
-      "type": "blocks"
-    },
     "Image": {
       "type": "media",
       "multiple": true,
@@ -36,6 +33,9 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::product.product"
+    },
+    "Description": {
+      "type": "text"
     }
   }
 }
