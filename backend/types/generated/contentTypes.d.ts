@@ -695,7 +695,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     username: Attribute.String &
@@ -723,6 +722,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'plugin::users-permissions.user',
       'manyToOne',
       'plugin::users-permissions.role'
+    >;
+    carts: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::cart.cart'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -788,33 +792,61 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
-export interface ApiEventEvent extends Schema.CollectionType {
-  collectionName: 'events';
+export interface ApiCartCart extends Schema.CollectionType {
+  collectionName: 'carts';
   info: {
-    singularName: 'event';
-    pluralName: 'events';
-    displayName: 'Event';
+    singularName: 'cart';
+    pluralName: 'carts';
+    displayName: 'Cart';
     description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    Name: Attribute.String;
-    Place: Attribute.String;
-    Date: Attribute.DateTime;
-    Photo: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
+    cartitems: Attribute.Relation<
+      'api::cart.cart',
+      'oneToMany',
+      'api::cartitem.cartitem'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::cart.cart', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::cart.cart', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCartitemCartitem extends Schema.CollectionType {
+  collectionName: 'cartitems';
+  info: {
+    singularName: 'cartitem';
+    pluralName: 'cartitems';
+    displayName: 'Cartitem';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    product: Attribute.Relation<
+      'api::cartitem.cartitem',
+      'oneToOne',
+      'api::product.product'
+    >;
+    number: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::event.event',
+      'api::cartitem.cartitem',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::event.event',
+      'api::cartitem.cartitem',
       'oneToOne',
       'admin::user'
     > &
@@ -836,13 +868,13 @@ export interface ApiKolKol extends Schema.CollectionType {
   attributes: {
     Name: Attribute.String;
     Title: Attribute.String;
-    Description: Attribute.Blocks;
     Image: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
     products: Attribute.Relation<
       'api::kol.kol',
       'oneToMany',
       'api::product.product'
     >;
+    Description: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -859,7 +891,6 @@ export interface ApiProductProduct extends Schema.CollectionType {
     singularName: 'product';
     pluralName: 'products';
     displayName: 'Product';
-    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -867,8 +898,8 @@ export interface ApiProductProduct extends Schema.CollectionType {
   attributes: {
     Name: Attribute.String;
     Price: Attribute.BigInteger;
-    Image: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
     Description: Attribute.Blocks;
+    Image: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -905,7 +936,8 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
-      'api::event.event': ApiEventEvent;
+      'api::cart.cart': ApiCartCart;
+      'api::cartitem.cartitem': ApiCartitemCartitem;
       'api::kol.kol': ApiKolKol;
       'api::product.product': ApiProductProduct;
     }
