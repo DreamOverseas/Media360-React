@@ -34,17 +34,44 @@ const KolPage = () => {
         {kols.map(kol => (
           <Col
             key={kol.id}
-            sm={12}
-            md={6}
-            lg={4}
-            className='kol-card-container'
+            md={4}
+            className='mb-4'
           >
             <Link to={`/kol/${kol.id}`}>
               <Card className='kol-card'>
-                <Card.Img variant='top' src='https://placehold.co/300x300' />
-                <Card.Body>
-                  <Card.Title>{kol.attributes.Name}</Card.Title>
-                  <Card.Text>{kol.attributes.Title}</Card.Text>
+                <Card.Img variant='top' src='https://placehold.co/300x300' fluid />
+                  <Card.Body>
+                    <Card.Title 
+                        style={{
+                            whiteSpace: 'nowrap',
+                            height: '30px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            fontSize: '18px'
+                            }}
+                        title={kol.attributes.Name}>
+                        {kol.attributes.Name}
+                    </Card.Title>
+                    <Card.Text style={{
+                            whiteSpace: 'nowrap',
+                            height: '20px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            fontSize: '14px'
+                            }}
+                        title={kol.attributes.Title}>
+                        {kol.attributes.Title}
+                    </Card.Text>
+                    <Card.Text style={{
+                            whiteSpace: 'nowrap',
+                            height: '20px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            fontSize: '14px'
+                            }}
+                        title={kol.attributes.Description}>
+                        {kol.attributes.Title}
+                    </Card.Text>
                 </Card.Body>
               </Card>
             </Link>
