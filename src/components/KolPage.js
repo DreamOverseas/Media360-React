@@ -10,7 +10,7 @@ const KolPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://192.168.20.91:1337/api/kols?populate=*")
+      .get("http://192.168.20.14:1337/api/kols?populate=*")
       .then(response => {
         if (response.data && response.data.data) {
           setKols(response.data.data);
@@ -34,17 +34,17 @@ const KolPage = () => {
         {kols.map(kol => (
           <Col
             key={kol.id}
-            md={4}
+            md={3}
             className='mb-4'
           >
-            <Link to={`/kol/${kol.id}`}>
+            <Card.Link href={`/kol/${kol.id}`} className="card-link-KolPage">
               <Card className='kol-card'>
-                <Card.Img variant='top' src='https://placehold.co/300x300' fluid />
+                <Card.Img variant='top' src='https://placehold.co/80x70' fluid />
                   <Card.Body>
                     <Card.Title 
                         style={{
                             whiteSpace: 'nowrap',
-                            height: '30px',
+                            height: '20px',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             fontSize: '18px'
@@ -54,7 +54,7 @@ const KolPage = () => {
                     </Card.Title>
                     <Card.Text style={{
                             whiteSpace: 'nowrap',
-                            height: '20px',
+                            height: '15px',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             fontSize: '14px'
@@ -62,19 +62,9 @@ const KolPage = () => {
                         title={kol.attributes.Title}>
                         {kol.attributes.Title}
                     </Card.Text>
-                    <Card.Text style={{
-                            whiteSpace: 'nowrap',
-                            height: '20px',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            fontSize: '14px'
-                            }}
-                        title={kol.attributes.Description}>
-                        {kol.attributes.Title}
-                    </Card.Text>
                 </Card.Body>
               </Card>
-            </Link>
+            </Card.Link>
           </Col>
         ))}
       </Row>
