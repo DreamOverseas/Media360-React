@@ -64,7 +64,7 @@ const Events = () => {
 
     return (
         <div>
-            <section className="background-image-container">
+            <section className="event-page-background-image-container">
                 <h1 className = "event-page-banner-h1"><b>Our Events</b></h1>
             </section>
             <br />
