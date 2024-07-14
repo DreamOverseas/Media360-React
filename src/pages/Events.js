@@ -69,13 +69,13 @@ const Events = () => {
             </section>
             <br />
             <section>
-                <Container fluid>
-                    {eventsImg.map(event => (<Row className="event-item">
-                        <Col className="d-flex justify-content-end">
-                            <Image src={event.image} fluid/>
-                        </Col>
-                        <Col className="d-flex align-items-center">
-                            <Container>
+                <Container>
+                    {eventsImg.map(event => (
+                        <Row className="event-item">
+                            <Col className="d-flex justify-content-end">
+                                <Image src={event.image} fluid/>
+                            </Col>
+                            <Col className="event-page-section">
                                 <Row>
                                     <Col>
                                         <Row>
@@ -87,30 +87,38 @@ const Events = () => {
                                             </p>
                                         </Row> 
                                     </Col>
-                                    <Col>
-                                        <Button>
-                                            Reserve Now
-                                        </Button>
-                                    </Col>
                                 </Row>
-                                <Row>
+                                <Row className="event-page-description">
                                     <p>
                                         {event.description}
                                     </p>
                                 </Row>
-                            </Container>
-                        </Col>
-                    </Row>))}
+                                <Row className="event-page-reserve">
+                                    <Button>
+                                        Reserve Now
+                                    </Button>
+                                </Row>
+                            </Col>
+                        </Row>))}
                 </Container>
             </section>
-            <br />
-            <br />
-            <div className="split-events">
-                <hr></hr>
-                <div className="text-block">
-                    <h4>Other Events You Might Be Interested </h4>
-                </div>
-            </div>
+            <br/>
+            <b/>
+            <section>
+                <Container fluid>
+                    <Row>
+                        <Col md={5}>
+                            <hr></hr>
+                        </Col>
+                        <Col md={2} className="d-flex justify-content-center align-items-center">
+                            <h5>You Might Be Interested</h5>
+                        </Col>
+                        <Col md={5}>
+                            <hr></hr>
+                        </Col>
+                    </Row>
+                </Container>
+            </section>
             <br />
             <section>
                 <Container fluid>
