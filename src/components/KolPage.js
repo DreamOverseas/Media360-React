@@ -10,7 +10,7 @@ const KolPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://192.168.20.14:1337/api/kols?populate=*")
+      .get("http://api.meetu.life/api/kols?populate=*")
       .then(response => {
         if (response.data && response.data.data) {
           setKols(response.data.data);
@@ -37,14 +37,13 @@ const KolPage = () => {
             md={3}
             className='mb-4'
           >
-            <Card.Link href={`/kol/${kol.id}`} className="card-link-KolPage">
+            <Link to={`/kol/${kol.id}`} className="card-link-KolPage">
               <Card className='kol-card'>
                 <Card.Img variant='top' src='https://placehold.co/80x70' fluid />
                   <Card.Body>
                     <Card.Title 
                         style={{
                             whiteSpace: 'nowrap',
-                            height: '20px',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             fontSize: '18px'
@@ -54,7 +53,6 @@ const KolPage = () => {
                     </Card.Title>
                     <Card.Text style={{
                             whiteSpace: 'nowrap',
-                            height: '15px',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             fontSize: '14px'
@@ -64,7 +62,7 @@ const KolPage = () => {
                     </Card.Text>
                 </Card.Body>
               </Card>
-            </Card.Link>
+            </Link>
           </Col>
         ))}
       </Row>
