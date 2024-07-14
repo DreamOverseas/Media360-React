@@ -10,7 +10,7 @@ const KolPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://192.168.20.91:1337/api/kols?populate=*")
+      .get("http://api.meetu.life:1337/api/kols?populate=*")
       .then(response => {
         if (response.data && response.data.data) {
           setKols(response.data.data);
@@ -34,17 +34,34 @@ const KolPage = () => {
         {kols.map(kol => (
           <Col
             key={kol.id}
-            sm={12}
-            md={6}
-            lg={4}
-            className='kol-card-container'
+            md={3}
+            className='mb-4'
           >
-            <Link to={`/kol/${kol.id}`}>
+            <Link to={`/kol/${kol.id}`} className="card-link-KolPage">
               <Card className='kol-card'>
-                <Card.Img variant='top' src='https://placehold.co/300x300' />
-                <Card.Body>
-                  <Card.Title>{kol.attributes.Name}</Card.Title>
-                  <Card.Text>{kol.attributes.Title}</Card.Text>
+                <Card.Img variant='top' src='https://placehold.co/80x70' fluid />
+                  <Card.Body>
+                    <Card.Title 
+                        style={{
+                            whiteSpace: 'nowrap',
+                            height: '20px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            fontSize: '18px'
+                            }}
+                        title={kol.attributes.Name}>
+                        {kol.attributes.Name}
+                    </Card.Title>
+                    <Card.Text style={{
+                            whiteSpace: 'nowrap',
+                            height: '15px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            fontSize: '14px'
+                            }}
+                        title={kol.attributes.Title}>
+                        {kol.attributes.Title}
+                    </Card.Text>
                 </Card.Body>
               </Card>
             </Link>

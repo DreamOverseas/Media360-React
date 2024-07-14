@@ -15,6 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../css/Login.css";
+import Cookies from 'js-cookie'; 
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -39,15 +40,7 @@ const Login = () => {
 
     if (email && password) {
       try {
-        const response = await axios.post(
-          "http://localhost:1337/api/auth/local",
-          {
-            identifier: email,
-            password,
-          }
-        );
-        login(response.data.user);
-        localStorage.setItem("token", response.data.jwt);
+        await login(email, password);
         navigate("/");
       } catch (error) {
         const errorMessage =
@@ -65,7 +58,7 @@ const Login = () => {
     if (email && password && confirmed && password === confirmed) {
       try {
         const response = await axios.post(
-          "http://localhost:1337/api/auth/local/register",
+          "http://http://api.meetu.life:1337/api/auth/local/register",
           {
             username,
             email,
@@ -73,7 +66,7 @@ const Login = () => {
           }
         );
         login(response.data.user);
-        localStorage.setItem("token", response.data.jwt);
+        Cookies.set("token", response.data.jwt, { expires: 7 });
         navigate("/");
       } catch (error) {
         const errorMessage =
