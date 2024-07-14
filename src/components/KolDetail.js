@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Image, Row, Modal } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import "../css/KolDetail.css";
 
 const KolDetail = () => {
@@ -13,10 +14,12 @@ const KolDetail = () => {
 
   useEffect(() => {
     axios
-      .get(`http://192.168.20.14:1337/api/kols/${id}?populate=products`)
+      .get(`http://api.meetu.life/api/kols/${id}?populate=*`)
       .then(response => {
+        console.log(response)
         if (response.data && response.data.data) {
           setKol(response.data.data);
+          console.log(kol +"nothing")
         } else {
           setError("No data found");
         }
@@ -35,9 +38,10 @@ const KolDetail = () => {
     return <div>Loading...</div>;
   }
 
-  const { Name, Title, Description, Image: KolImage, products } = kol.attributes;
+  const { Name, Title, Description, Image: KolImage, Products} = kol.attributes;
 
-  if (!products || !products.data) {
+
+  if (!Products || !Products.data) {
     return <div>No products available</div>;
   }
 
@@ -71,38 +75,57 @@ const KolDetail = () => {
       </section>
       <br />
       <section>
-        <Container fluid>
+        <Container>
           <Row className="kol-detail-section">
               <Col>
-                <Container>
+                <Container className="kol-detail">
                   <Row>
                     <h1>{Name}</h1>
-                    <h2>{Title}</h2>
+                    <h5>{Title}</h5>
                   </Row>
-                  <Row>
-                      <p>
-                        {Description ? renderDescription(Description) : "No description available"}
-                      </p>
+                  <Row className="kol-description">
+                    <p>
+                      {Description ? renderDescription(Description) : "No description available"}
+                    </p>
                   </Row> 
-                  <Row>
-                    <Button variant='primary'>Contact Now</Button>
+                  <Row className="kol-contact">
+                    <Col>
+                      <Button>Contact Now</Button>
+                    </Col>
+                    <Col className="d-flex align-items-center">
+                      <i class="bi bi-wechat contact-icon"></i>
+                    </Col>
                   </Row>
                 </Container>
               </Col>
-              <Col md={5}>
+              <Col className="kol-image-col">
                 {KolImage && KolImage.data ? (<Image src={KolImage.data.attributes.url} alt={Name} fluid />) : 
-                (<Image src='https://placehold.co/500x600' alt='Placeholder' fluid />)}
+                (<Image src='https://placehold.co/650x550' alt='Placeholder' fluid />)}
               </Col>
+          </Row>
+        </Container>
+      </section>
+      <br></br>
+      <br></br>
+      <section>
+        <Container fluid>
+          <Row>
+            <Col md={5}>
+            <hr></hr>
+            </Col>
+            <Col md={2} className="d-flex justify-content-center align-items-center">
+              <h5>Product Recommendation</h5>
+            </Col>
+            <Col md={5}>
+            <hr></hr>
+            </Col>
           </Row>
         </Container>
       </section>
       <Container className='kol-detail-container'>
         <Row>
-          <Col md={12}>
-            <h3>Product Recommendation</h3>
-          </Col>
-          {products.data.length > 0 ? (
-            products.data.map(product => (
+          {Products.data.length > 0 ? (
+            Products.data.map(product => (
               <Col key={product.id} sm={12} md={6} lg={4}>
                 <Card className='product-card' onClick={() => handleProductClick(product)}>
                   {product.attributes.Image && product.attributes.Image.data ? (
@@ -116,11 +139,6 @@ const KolDetail = () => {
                   <Card.Body>
                     <Card.Title>{product.attributes.Name}</Card.Title>
                     <Card.Text>Price: ${product.attributes.Price}</Card.Text>
-                    <Card.Text>
-                      {product.attributes.Description
-                        ? renderDescription(product.attributes.Description)
-                        : "No description available"}
-                    </Card.Text>
                   </Card.Body>
                 </Card>
               </Col>
