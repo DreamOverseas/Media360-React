@@ -39,7 +39,8 @@ const KolPage = () => {
           >
             <Link to={`/kol/${kol.id}`} className="card-link-KolPage">
               <Card className='kol-card'>
-                <Card.Img variant='top' src='https://placehold.co/80x70' fluid />
+                {kol.attributes.KolImage && kol.attributes.KolImage.data ? (<Card.Img src={`http://api.meetu.life${kol.attributes.KolImage.data.attributes.url}`} alt={kol.attributes.Name} />) : 
+                  (<Card.Img variant='top' src='https://placehold.co/250x350' fluid alt='Placeholder'/>)}
                   <Card.Body>
                     <Card.Title 
                         style={{
