@@ -1,6 +1,10 @@
 import axios from "axios";
+<<<<<<< Updated upstream
 import Cookies from "js-cookie";
 import React, { useCallback, useContext, useEffect, useState } from "react";
+=======
+import React, { useContext, useEffect, useState } from "react";
+>>>>>>> Stashed changes
 import {
   Button,
   Card,
@@ -20,10 +24,71 @@ const ShoppingCart = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [error, setError] = useState(null);
 
+<<<<<<< Updated upstream
   const checkAllSelected = useCallback(
     () => cartItems.every(item => item.selected),
     [cartItems]
   );
+=======
+  useEffect(() => {
+    const fetchUserCart = async () => {
+      try {
+        // First, get the user data to find the cart ID
+        const userResponse = await axios.get(
+          `http://api.meetu.life/api/users/${user.id}?populate=cart`
+        );
+        const cartId = userResponse.data.cart.id;
+
+        // Then, get the cart data with cart items and product details
+        const cartResponse = await axios.get(
+          `http://api.meetu.life/api/carts/${cartId}?populate=cartItems.product`
+        );
+
+        setCartItems(
+          cartResponse.data.data.cartItems.map(item => ({
+            id: item.id,
+            selected: true,
+            product: item.product,
+            qty: item.Number,
+          }))
+        );
+      } catch (error) {
+        console.error("Error fetching cart data:", error);
+        setError(
+          error.response
+            ? error.response.data.error.message
+            : "Error fetching data"
+        );
+      }
+    };
+
+    if (user) {
+      fetchUserCart();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    axios
+      .get("http://api.meetu.life/api/products?populate=*")
+      .then(response => {
+        setRecommendations(
+          response.data.data.map(product => ({
+            id: product.id,
+            image: product.attributes.Image
+              ? product.attributes.Image.url
+              : "https://placehold.co/300x300",
+            title: product.attributes.Name,
+          }))
+        );
+      })
+      .catch(error => {
+        console.error("Error fetching recommendations:", error);
+        setError("Error fetching recommendations");
+      });
+  }, []);
+
+  const checkAllSelected = () => cartItems.every(item => item.selected);
+>>>>>>> Stashed changes
 
   const handleSelectionChange = id => {
     setCartItems(prevItems =>
@@ -49,6 +114,7 @@ const ShoppingCart = () => {
     );
   };
 
+<<<<<<< Updated upstream
   const calculateTotalPrice = useCallback(
     () =>
       cartItems
@@ -64,6 +130,17 @@ const ShoppingCart = () => {
         .reduce((total, item) => total + parseInt(item.qty), 0),
     [cartItems]
   );
+=======
+  const calculateTotalPrice = () =>
+    cartItems
+      .filter(item => item.selected)
+      .reduce((total, item) => total + item.product.Price * item.qty, 0);
+
+  const calculateSelectedItemsCount = () =>
+    cartItems
+      .filter(item => item.selected)
+      .reduce((total, item) => total + parseInt(item.qty), 0);
+>>>>>>> Stashed changes
 
   const [isAllSelected, setIsAllSelected] = useState(checkAllSelected());
   const [totalPrice, setTotalPrice] = useState(calculateTotalPrice());
@@ -72,6 +149,7 @@ const ShoppingCart = () => {
   );
 
   useEffect(() => {
+<<<<<<< Updated upstream
     const fetchUserCart = async () => {
       try {
         // First, get the user data to find the cart ID
@@ -175,6 +253,12 @@ const ShoppingCart = () => {
     calculateTotalPrice,
     calculateSelectedItemsCount,
   ]);
+=======
+    setIsAllSelected(checkAllSelected());
+    setTotalPrice(calculateTotalPrice());
+    setSelectedItemsCount(calculateSelectedItemsCount());
+  }, [cartItems]);
+>>>>>>> Stashed changes
 
   const settings = {
     className: "center",
@@ -187,7 +271,11 @@ const ShoppingCart = () => {
 
   return (
     <Container>
+<<<<<<< Updated upstream
       {error && <p className='error'>{error}</p>}
+=======
+      {error && <p className='error'>{JSON.stringify(error)}</p>}
+>>>>>>> Stashed changes
       <Form.Check
         className='cart-checkbox'
         label={<b>Select all</b>}
@@ -215,7 +303,11 @@ const ShoppingCart = () => {
                       <Card.Img
                         src={
                           item.product.Image
+<<<<<<< Updated upstream
                             ? `http://api.meetu.life${item.product.Image}`
+=======
+                            ? item.product.Image.url
+>>>>>>> Stashed changes
                             : "https://placehold.co/300x300"
                         }
                       />
@@ -223,7 +315,14 @@ const ShoppingCart = () => {
                     <Col md={8}>
                       <Card.Body>
                         <Card.Title>{item.product.Name}</Card.Title>
+<<<<<<< Updated upstream
 
+=======
+                        <Card.Text>
+                          {item.product.Description ||
+                            "No description available"}
+                        </Card.Text>
+>>>>>>> Stashed changes
                         <Row>
                           <Col md={4}>
                             <Row>
