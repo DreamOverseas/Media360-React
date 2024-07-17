@@ -1,5 +1,5 @@
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
+import Cookies from "js-cookie";
 import React, { useContext, useState } from "react";
 import {
   Button,
@@ -15,7 +15,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../css/Login.css";
-import Cookies from 'js-cookie'; 
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -58,14 +57,14 @@ const Login = () => {
     if (email && password && confirmed && password === confirmed) {
       try {
         const response = await axios.post(
-          "http://http://api.meetu.life:1337/api/auth/local/register",
+          "http://api.meetu.life/api/auth/local/register",
           {
             username,
             email,
             password,
           }
         );
-        login(response.data.user);
+        await login(email, password); // 自动登录
         Cookies.set("token", response.data.jwt, { expires: 7 });
         navigate("/");
       } catch (error) {
@@ -233,12 +232,9 @@ const Login = () => {
           </Tab.Container>
         </Col>
         <Col md={6}>
-          <Image className="login-image-display"
-            src={
-              k
-                ? "sign-in.jpeg"
-                : "sign-up.jpeg"
-            }
+          <Image
+            className='login-image-display'
+            src={k ? "sign-in.jpeg" : "sign-up.jpeg"}
             fluid
           />
         </Col>

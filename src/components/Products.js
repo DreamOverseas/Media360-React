@@ -5,7 +5,7 @@ import useFetchProducts from "../hooks/useFetchProducts";
 
 const Products = () => {
   const { products, error } = useFetchProducts(
-    "http://localhost:1337/api/products"
+    "http://api.meetu.life/api/products"
   );
 
   if (error) {
