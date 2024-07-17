@@ -1,4 +1,4 @@
-.background-image-container {
+.event-page-background-image-container {
   background-image: url('/public/events/banner.png');
   background-size: cover;
   background-position: center;
@@ -15,17 +15,37 @@
   color: white;
 }
 
+.event-page-reserve {
+  width:50%;
+}
+
+.event-item {
+  height:500px;
+  margin-bottom:30%;
+}
+
+.event-item img {
+  height: 500px;
+  width: 650px
+}
+
+.event-page-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.event-page-description {
+  flex:1
+}
+
+
+
 
 .split-events {
   position: relative;
 }
 
-.text-block {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding-left: 1%;
-  padding-right: 1%;
+.event-item {
+  margin-bottom: 1%
 }
