@@ -10,7 +10,7 @@ import Header from "./components/Header";
 import KolDetail from "./components/KolDetail";
 import KolPage from "./components/KolPage";
 import ProductDetail from "./components/ProductDetail";
-import Products from "./components/Products";
+import ProductPage from "./components/ProductPage";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -33,7 +33,10 @@ function App() {
         <Header />
         <Routes>
           <Route exact path='/' element={<Home />} />
-            <Route exact path='/products' element={<Products />} />
+            <Route exact path='/productStudy' element={<ProductPage />} />
+            <Route exact path='/productFinance' element={<ProductPage />} />
+            <Route exact path='/productTravel' element={<ProductPage />} />
+            <Route exact path='/productLife' element={<ProductPage />} />
             <Route path='/product/:id' element={<ProductDetail />} />
             <Route path='/eventpage' element={<Events />} />
             <Route exact path='/product/:id' element={<ProductDetail />} />
