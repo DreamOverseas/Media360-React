@@ -83,6 +83,11 @@
   transform: scale(1.04);
   background-color: rgba(120, 120, 123, 0.5);
 }
+
+
+.card-link-highlight {
+  text-decoration: none;
+}
 /* .product-card img {
   border-radius: 8px;
 }
