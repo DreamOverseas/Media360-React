@@ -6,7 +6,31 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 import "../css/EventPage.css";
 
 
-const showcaseImg = "events/showcase1.png";
+const eventsImg = [
+    {
+        image:"events/showcase1.png",
+        title: "lsadasdsad",
+        brief: "dsfsdfdsf dsasadsad da sda",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+    },
+    {
+        image:"events/showcase1.png",
+        title: "lsadasdsad",
+        brief: "dsfsdfdsf dsasadsad da sda",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+    },
+    {
+        image:"events/showcase1.png",
+        title: "lsadasdsad",
+        brief: "dsfsdfdsf dsasadsad da sda",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+    }
+
+
+
+
+
+];
 
 const initialImages = [
     "events/case1.png",
@@ -40,53 +64,61 @@ const Events = () => {
 
     return (
         <div>
-            <section className="background-image-container">
-                    <h1 className = "event-page-banner-h1"><b>Our Events</b></h1>
+            <section className="event-page-background-image-container">
+                <h1 className = "event-page-banner-h1"><b>Our Events</b></h1>
             </section>
             <br />
             <section>
-                <Container fluid>
-                    <Row>
-                        <Col className="d-flex justify-content-end">
-                            <Image src={showcaseImg} fluid/>
-                        </Col>
-                        <Col className="d-flex align-items-center">
-                            <Container>
+                <Container>
+                    {eventsImg.map(event => (
+                        <Row className="event-item">
+                            <Col className="d-flex justify-content-end">
+                                <Image src={event.image} fluid/>
+                            </Col>
+                            <Col className="event-page-section">
                                 <Row>
                                     <Col>
                                         <Row>
-                                            <h4>lsadasdsad</h4>
+                                            <h4>{event.title}</h4>
                                         </Row>
                                         <Row>
                                             <p>
-                                                dsfsdfdsf dsasadsad da sda  
+                                                {event.brief}
                                             </p>
                                         </Row> 
                                     </Col>
-                                    <Col>
-                                        <Button>
-                                            Reserve Now
-                                        </Button>
-                                    </Col>
                                 </Row>
-                                <Row>
+                                <Row className="event-page-description">
                                     <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                        {event.description}
                                     </p>
                                 </Row>
-                            </Container>
+                                <Row className="event-page-reserve">
+                                    <Button>
+                                        Reserve Now
+                                    </Button>
+                                </Row>
+                            </Col>
+                        </Row>))}
+                </Container>
+            </section>
+            <br/>
+            <b/>
+            <section>
+                <Container fluid>
+                    <Row>
+                        <Col md={5}>
+                            <hr></hr>
+                        </Col>
+                        <Col md={2} className="d-flex justify-content-center align-items-center">
+                            <h5>You Might Be Interested</h5>
+                        </Col>
+                        <Col md={5}>
+                            <hr></hr>
                         </Col>
                     </Row>
                 </Container>
             </section>
-            <br />
-            <br />
-            <div className="split-events">
-                <hr></hr>
-                <div className="text-block">
-                    <h4>Other Events You Might Be Interested </h4>
-                </div>
-            </div>
             <br />
             <section>
                 <Container fluid>

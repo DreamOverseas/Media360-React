@@ -10,7 +10,7 @@ const KolPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://api.meetu.life/api/kols?populate=*")
+      .get("http://api.meetu.life/api/kols?populate[0]=KolImage")
       .then(response => {
         if (response.data && response.data.data) {
           setKols(response.data.data);
@@ -32,39 +32,35 @@ const KolPage = () => {
     <Container className='kol-container'>
       <Row>
         {kols.map(kol => (
-          <Col key={kol.id} md={3} className='mb-4'>
-            <Link to={`/kol/${kol.id}`} className='card-link-KolPage'>
+          <Col
+            key={kol.id}
+            md={3}
+            className='mb-4'
+          >
+            <Link to={`/kol/${kol.id}`} className="card-link-KolPage">
               <Card className='kol-card'>
-                <Card.Img
-                  variant='top'
-                  src='https://placehold.co/80x70'
-                  fluid
-                />
-                <Card.Body>
-                  <Card.Title
-                    style={{
-                      whiteSpace: "nowrap",
-                      height: "20px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      fontSize: "18px",
-                    }}
-                    title={kol.attributes.Name}
-                  >
-                    {kol.attributes.Name}
-                  </Card.Title>
-                  <Card.Text
-                    style={{
-                      whiteSpace: "nowrap",
-                      height: "15px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      fontSize: "14px",
-                    }}
-                    title={kol.attributes.Title}
-                  >
-                    {kol.attributes.Title}
-                  </Card.Text>
+                {kol.attributes.KolImage && kol.attributes.KolImage.data ? (<Card.Img src={`http://api.meetu.life${kol.attributes.KolImage.data.attributes.url}`} alt={kol.attributes.Name} />) : 
+                  (<Card.Img variant='top' src='https://placehold.co/250x350' fluid alt='Placeholder'/>)}
+                  <Card.Body>
+                    <Card.Title 
+                        style={{
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            fontSize: '18px'
+                            }}
+                        title={kol.attributes.Name}>
+                        {kol.attributes.Name}
+                    </Card.Title>
+                    <Card.Text style={{
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            fontSize: '14px'
+                            }}
+                        title={kol.attributes.Title}>
+                        {kol.attributes.Title}
+                    </Card.Text>
                 </Card.Body>
               </Card>
             </Link>

@@ -21,6 +21,7 @@ const Header = () => {
             <Nav.Link href='/cart'>
               <i className='bi bi-cart nav-icon'></i>
             </Nav.Link>
+
             {user ? (
               <NavDropdown title={user.username} id='basic-nav-dropdown'>
                 <NavDropdown.Item href='#'>Profile</NavDropdown.Item>

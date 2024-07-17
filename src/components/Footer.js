@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className='footer'>
       <div className='footer-column logo-contact'>
-        <img src='footer_logo.png' alt='Logo' className='footer-logo' />
+        <img src='/footer_logo.png' alt='Logo' className='footer-logo' />
         <div className='contact-info'>
           <p>171 La trobe Street, Melbourne VIC 3000</p>
           <p>0413 168 533</p>
@@ -32,7 +32,7 @@ const Footer = () => {
         <button>Subscribe</button>
       </div>
       <div className='footer-column qr-social'>
-        <img src='QR_placeholder.png' alt='QR Code' className='qr-code' />
+        <img src='/QR_placeholder.png' alt='QR Code' className='qr-code' />
         <p>Scan Me</p>
         <Row>
           <Col>
