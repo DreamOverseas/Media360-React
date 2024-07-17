@@ -1,10 +1,7 @@
 import axios from "axios";
-<<<<<<< Updated upstream
 import Cookies from "js-cookie";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-=======
-import React, { useContext, useEffect, useState } from "react";
->>>>>>> Stashed changes
+
 import {
   Button,
   Card,
@@ -24,12 +21,6 @@ const ShoppingCart = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [error, setError] = useState(null);
 
-<<<<<<< Updated upstream
-  const checkAllSelected = useCallback(
-    () => cartItems.every(item => item.selected),
-    [cartItems]
-  );
-=======
   useEffect(() => {
     const fetchUserCart = async () => {
       try {
@@ -88,7 +79,6 @@ const ShoppingCart = () => {
   }, []);
 
   const checkAllSelected = () => cartItems.every(item => item.selected);
->>>>>>> Stashed changes
 
   const handleSelectionChange = id => {
     setCartItems(prevItems =>
@@ -114,7 +104,6 @@ const ShoppingCart = () => {
     );
   };
 
-<<<<<<< Updated upstream
   const calculateTotalPrice = useCallback(
     () =>
       cartItems
@@ -130,17 +119,6 @@ const ShoppingCart = () => {
         .reduce((total, item) => total + parseInt(item.qty), 0),
     [cartItems]
   );
-=======
-  const calculateTotalPrice = () =>
-    cartItems
-      .filter(item => item.selected)
-      .reduce((total, item) => total + item.product.Price * item.qty, 0);
-
-  const calculateSelectedItemsCount = () =>
-    cartItems
-      .filter(item => item.selected)
-      .reduce((total, item) => total + parseInt(item.qty), 0);
->>>>>>> Stashed changes
 
   const [isAllSelected, setIsAllSelected] = useState(checkAllSelected());
   const [totalPrice, setTotalPrice] = useState(calculateTotalPrice());
@@ -149,7 +127,6 @@ const ShoppingCart = () => {
   );
 
   useEffect(() => {
-<<<<<<< Updated upstream
     const fetchUserCart = async () => {
       try {
         // First, get the user data to find the cart ID
@@ -253,12 +230,6 @@ const ShoppingCart = () => {
     calculateTotalPrice,
     calculateSelectedItemsCount,
   ]);
-=======
-    setIsAllSelected(checkAllSelected());
-    setTotalPrice(calculateTotalPrice());
-    setSelectedItemsCount(calculateSelectedItemsCount());
-  }, [cartItems]);
->>>>>>> Stashed changes
 
   const settings = {
     className: "center",
@@ -271,11 +242,7 @@ const ShoppingCart = () => {
 
   return (
     <Container>
-<<<<<<< Updated upstream
       {error && <p className='error'>{error}</p>}
-=======
-      {error && <p className='error'>{JSON.stringify(error)}</p>}
->>>>>>> Stashed changes
       <Form.Check
         className='cart-checkbox'
         label={<b>Select all</b>}
@@ -303,11 +270,7 @@ const ShoppingCart = () => {
                       <Card.Img
                         src={
                           item.product.Image
-<<<<<<< Updated upstream
                             ? `http://api.meetu.life${item.product.Image}`
-=======
-                            ? item.product.Image.url
->>>>>>> Stashed changes
                             : "https://placehold.co/300x300"
                         }
                       />
@@ -315,14 +278,6 @@ const ShoppingCart = () => {
                     <Col md={8}>
                       <Card.Body>
                         <Card.Title>{item.product.Name}</Card.Title>
-<<<<<<< Updated upstream
-
-=======
-                        <Card.Text>
-                          {item.product.Description ||
-                            "No description available"}
-                        </Card.Text>
->>>>>>> Stashed changes
                         <Row>
                           <Col md={4}>
                             <Row>
