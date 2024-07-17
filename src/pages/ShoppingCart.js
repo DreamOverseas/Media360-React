@@ -1,230 +1,298 @@
-import React, { useState, useEffect } from "react";
-import "../css/ShoppingCart.css";
-import { Container, Row, Col, Card, Button, Form, InputGroup } from 'react-bootstrap';
+import axios from "axios";
+import Cookies from "js-cookie";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  Row,
+} from "react-bootstrap";
 import Slider from "react-slick";
+import { AuthContext } from "../context/AuthContext";
+import "../css/ShoppingCart.css";
 
-// This is the shoppingcart page for that displays items in cart
 const ShoppingCart = () => {
+  const { user } = useContext(AuthContext);
+  const [cartItems, setCartItems] = useState([]);
+  const [recommendations, setRecommendations] = useState([]);
+  const [error, setError] = useState(null);
 
-    /* =========================== Lists of objects ============================= */
+  const checkAllSelected = useCallback(
+    () => cartItems.every(item => item.selected),
+    [cartItems]
+  );
 
-    const [cartItems, setCartItems] = useState([
-        {
-            id: 1,
-            selected: true,
-            image: 'products/product0.png',
-            title: 'Media 360 Promotional Package - Basic',
-            description: 'Helps you to promote you findings.',
-            price: 500,
-            qty: 1,
-        },
-        {
-            id: 2,
-            selected: true,
-            image: 'products/product1.png',
-            title: 'Lorem ipsum',
-            description: 'Lorem ipsum dolor sit amet consectetur.',
-            price: 800,
-            qty: 1,
-        },
-        {
-            id: 3,
-            selected: true,
-            image: 'products/product2.png',
-            title: 'Lorem ipsum',
-            description: 'Lorem ipsum dolor sit amet consectetur.',
-            price: 1200,
-            qty: 1,
-        }
-    ]);
-
-    const recommendations = [
-        { id: 1, image: 'products/product3.png', title: 'Recommended Product 1' },
-        { id: 2, image: 'products/product4.png', title: 'Recommended Product 2' },
-        { id: 3, image: 'products/product5.png', title: 'Recommended Product 3' },
-        { id: 4, image: 'products/product6.png', title: 'Recommended Product 4' },
-        { id: 5, image: 'products/product7.png', title: 'Recommended Product 5' },
-    ];
-
-    /* =========================== Handler Functions ============================= */
-
-    /**
-     * Function that check whether all Items in cart are selected
-     * @param {*} cartItems
-     * @returns boolean : If all selected -> true, otherwise false
-     */
-    const checkAllSelected = () => {
-        return cartItems.every(item => item.selected);
-    };
-
-    /**
-     * Function that changes an item's selected state
-     * @param {*} id 
-     */
-    const handleSelectionChange = (id) => {
-        setCartItems((prevItems) =>
-            prevItems.map((item) =>
-                item.id === id ? { ...item, selected: !item.selected } : item
-            )
-        );
-    };
-
-    /**
-     * Function that manage select-all / de-select-all
-     */
-    const handleAllSelectionChange = () => {
-        setCartItems((prevItems) =>
-            prevItems.map((item) =>
-                ({ ...item, selected: !isAllSelected })
-            )
-        );
-    };
-
-    /**
-     * Function that deletes an item
-     * @param {*} id 
-     */
-    const deleteItem = (id) => {
-        setCartItems(prevItems => prevItems.filter(item => item.id !== id));
-    };
-
-    /**
-     * Function that handles quantity chgange with the selection drop-down
-     * @param {*} id 
-     * @param {*} newQty 
-     */
-    const handleQuantityChange = (id, newQty) => {
-        setCartItems((prevItems) =>
-            prevItems.map((item) =>
-                item.id === id ? { ...item, qty: newQty } : item
-            )
-        );
-    };
-
-    /**
-     * Function that calculates the total price
-     * @returns num : Total price of all selected items
-     */
-    const calculateTotalPrice = () => {
-        return cartItems
-            .filter(item => item.selected)
-            .reduce((total, item) => total + (item.price * item.qty), 0);
-    };
-
-    /**
-     * Functiuon that calculates number of items selected
-     * @returns Integer : The total quantity of all selected items in cartItems
-     */
-    const calculateSelectedItemsCount = () => {
-        return cartItems
-            .filter(item => item.selected)
-            .reduce((total, item) => total + parseInt(item.qty), 0);
-    };
-
-
-    /* ====================== UseState/useEffect Declarations ======================== */
-
-    const [isAllSelected, setIsAllSelected] = useState(calculateTotalPrice());
-    const [totalPrice, setTotalPrice] = useState(calculateTotalPrice());
-    const [selectedItemsCount, setSelectedItemsCount] = useState(calculateSelectedItemsCount());
-
-    // Keep related elements dynamic changing
-    useEffect(() => {
-        setIsAllSelected(checkAllSelected());
-        setTotalPrice(calculateTotalPrice());
-        setSelectedItemsCount(calculateSelectedItemsCount());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [cartItems]);
-
-    // Slick Slider settings
-    const settings = {
-        className: "center",
-        centerMode: true,
-        infinite: true,
-        centerPadding: "60px",
-        slidesToShow: 3,
-        speed: 500
-    };
-
-    return (
-        <Container>
-            <Form.Check className="cart-checkbox"
-                label={<b>Select all</b>}
-                type="checkbox"
-                checked={isAllSelected}
-                onChange={() => handleAllSelectionChange()}
-            />
-            <Row>
-                <Col md={8}>
-                    {cartItems.map(item => (
-                        <Row>
-                            <Col noGutters className="cart-checker">
-                                <Form.Check className="cart-checkbox" inline
-                                    type="checkbox"
-                                    checked={item.selected}
-                                    onChange={() => handleSelectionChange(item.id)} />
-                            </Col>
-                            <Col md={11}>
-                                <Card key={item.id} className="mb-3 cart-item">
-                                    <Row noGutters>
-                                        <Col md={4} className="item-image-container">
-                                            <Card.Img src={item.image} />
-                                        </Col>
-                                        <Col md={8}>
-                                            <Card.Body>
-                                                <Card.Title>{item.title}</Card.Title>
-                                                <Card.Text>{item.description}</Card.Text>
-                                                <Row>
-                                                    <Col md={4}>
-                                                        <Row>
-                                                            <Form.Group controlId={`qty-${item.id}`}>
-                                                                <InputGroup>
-                                                                    <InputGroup.Text>QTY</InputGroup.Text>
-                                                                    <Form.Control as="select" defaultValue={item.qty}
-                                                                        onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}>
-                                                                        {[...Array(10).keys()].map(x => (
-                                                                            <option key={x + 1} value={x + 1}>{x + 1}</option>
-                                                                        ))}
-                                                                    </Form.Control>
-                                                                </InputGroup>
-                                                            </Form.Group>
-                                                        </Row>
-                                                    </Col>
-                                                    <Col md={2}>
-                                                        <Button variant='light' className="delete_cart_button" onClick={() => deleteItem(item.id)}>Delete</Button>
-                                                    </Col>
-                                                    <Col>
-                                                        <p className="cart-price">${item.price}</p>
-                                                    </Col>
-                                                </Row>
-                                            </Card.Body>
-                                        </Col>
-                                    </Row>
-                                </Card>
-                            </Col>
-                        </Row>
-                    ))}
-                </Col>
-                <Col md={4}>
-                    <h5>Order Summary</h5>
-                    <p>Item Quantity: {selectedItemsCount}</p>
-                    <p>Total Price: ${totalPrice}</p>
-                    <Button variant="dark" block>Proceed to Check Out</Button>
-                </Col>
-            </Row>
-            <hr />
-            <h5>You might also like</h5>
-            <Slider {...settings}>
-                {recommendations.map(rec => (
-                    <div key={rec.id}>
-                        <Card>
-                            <Card.Img src={rec.image} />
-                        </Card>
-                    </div>
-                ))}
-            </Slider>
-        </Container>
+  const handleSelectionChange = id => {
+    setCartItems(prevItems =>
+      prevItems.map(item =>
+        item.id === id ? { ...item, selected: !item.selected } : item
+      )
     );
-}
+  };
+
+  const handleAllSelectionChange = () => {
+    setCartItems(prevItems =>
+      prevItems.map(item => ({ ...item, selected: !isAllSelected }))
+    );
+  };
+
+  const deleteItem = id => {
+    setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+  };
+
+  const handleQuantityChange = (id, newQty) => {
+    setCartItems(prevItems =>
+      prevItems.map(item => (item.id === id ? { ...item, qty: newQty } : item))
+    );
+  };
+
+  const calculateTotalPrice = useCallback(
+    () =>
+      cartItems
+        .filter(item => item.selected)
+        .reduce((total, item) => total + item.product.Price * item.qty, 0),
+    [cartItems]
+  );
+
+  const calculateSelectedItemsCount = useCallback(
+    () =>
+      cartItems
+        .filter(item => item.selected)
+        .reduce((total, item) => total + parseInt(item.qty), 0),
+    [cartItems]
+  );
+
+  const [isAllSelected, setIsAllSelected] = useState(checkAllSelected());
+  const [totalPrice, setTotalPrice] = useState(calculateTotalPrice());
+  const [selectedItemsCount, setSelectedItemsCount] = useState(
+    calculateSelectedItemsCount()
+  );
+
+  useEffect(() => {
+    const fetchUserCart = async () => {
+      try {
+        // First, get the user data to find the cart ID
+        console.log(`Fetching user data for user ID: ${user.id}`);
+        const userResponse = await axios.get(
+          `http://api.meetu.life/api/users/${user.id}?populate=cart`,
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get("token")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("User response:", userResponse.data);
+
+        const cartId = userResponse.data.cart.id;
+        console.log(`Fetching cart data for cart ID: ${cartId}`);
+
+        // Then, get the cart data with cart items and product details
+        const cartResponse = await axios.get(
+          `http://api.meetu.life/api/carts/${cartId}?populate[0]=*&populate[cart_items][populate][product][populate]=ProductImage`,
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get("token")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("Cart response:", cartResponse.data);
+
+        const cartData = cartResponse.data;
+        if (
+          cartData &&
+          cartData.data &&
+          cartData.data.attributes &&
+          cartData.data.attributes.cart_items
+        ) {
+          console.log("Cart items:", cartData.data.attributes.cart_items.data);
+          setCartItems(
+            cartData.data.attributes.cart_items.data.map(item => {
+              const product = item.attributes.product?.data?.attributes || {};
+              return {
+                id: item.id,
+                selected: true,
+                product: {
+                  Name: product.Name || "Unknown Product",
+                  Price: product.Price || 0,
+                  Image: product.ProductImage?.data?.attributes?.url || null,
+                  Description:
+                    product.Description || "No description available",
+                },
+                qty: item.attributes.Number,
+              };
+            })
+          );
+        } else {
+          setError("No cart items found");
+        }
+      } catch (error) {
+        console.error("Error fetching cart data:", error);
+        setError(
+          error.response
+            ? error.response.data.error.message
+            : "Error fetching data"
+        );
+      }
+    };
+
+    if (user) {
+      fetchUserCart();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    axios
+      .get("http://api.meetu.life/api/products?populate=*")
+      .then(response => {
+        setRecommendations(
+          response.data.data.map(product => ({
+            id: product.id,
+            image: product.attributes.ProductImage
+              ? `http://api.meetu.life${product.attributes.ProductImage.data.attributes.url}`
+              : "https://placehold.co/300x300",
+            title: product.attributes.Name,
+          }))
+        );
+      })
+      .catch(error => {
+        console.error("Error fetching recommendations:", error);
+        setError("Error fetching recommendations");
+      });
+  }, []);
+
+  useEffect(() => {
+    setIsAllSelected(checkAllSelected());
+    setTotalPrice(calculateTotalPrice());
+    setSelectedItemsCount(calculateSelectedItemsCount());
+  }, [
+    cartItems,
+    checkAllSelected,
+    calculateTotalPrice,
+    calculateSelectedItemsCount,
+  ]);
+
+  const settings = {
+    className: "center",
+    centerMode: true,
+    infinite: true,
+    centerPadding: "60px",
+    slidesToShow: 3,
+    speed: 500,
+  };
+
+  return (
+    <Container>
+      {error && <p className='error'>{error}</p>}
+      <Form.Check
+        className='cart-checkbox'
+        label={<b>Select all</b>}
+        type='checkbox'
+        checked={isAllSelected}
+        onChange={() => handleAllSelectionChange()}
+      />
+      <Row>
+        <Col md={8}>
+          {cartItems.map(item => (
+            <Row key={item.id}>
+              <Col noGutters className='cart-checker'>
+                <Form.Check
+                  className='cart-checkbox'
+                  inline
+                  type='checkbox'
+                  checked={item.selected}
+                  onChange={() => handleSelectionChange(item.id)}
+                />
+              </Col>
+              <Col md={11}>
+                <Card className='mb-3 cart-item'>
+                  <Row noGutters>
+                    <Col md={4} className='item-image-container'>
+                      <Card.Img
+                        src={
+                          item.product.Image
+                            ? `http://api.meetu.life${item.product.Image}`
+                            : "https://placehold.co/300x300"
+                        }
+                      />
+                    </Col>
+                    <Col md={8}>
+                      <Card.Body>
+                        <Card.Title>{item.product.Name}</Card.Title>
+
+                        <Row>
+                          <Col md={4}>
+                            <Row>
+                              <Form.Group controlId={`qty-${item.id}`}>
+                                <InputGroup>
+                                  <InputGroup.Text>QTY</InputGroup.Text>
+                                  <Form.Control
+                                    as='select'
+                                    value={item.qty}
+                                    onChange={e =>
+                                      handleQuantityChange(
+                                        item.id,
+                                        parseInt(e.target.value)
+                                      )
+                                    }
+                                  >
+                                    {[...Array(10).keys()].map(x => (
+                                      <option key={x + 1} value={x + 1}>
+                                        {x + 1}
+                                      </option>
+                                    ))}
+                                  </Form.Control>
+                                </InputGroup>
+                              </Form.Group>
+                            </Row>
+                          </Col>
+                          <Col md={2}>
+                            <Button
+                              variant='light'
+                              className='delete_cart_button'
+                              onClick={() => deleteItem(item.id)}
+                            >
+                              Delete
+                            </Button>
+                          </Col>
+                          <Col>
+                            <p className='cart-price'>${item.product.Price}</p>
+                          </Col>
+                        </Row>
+                      </Card.Body>
+                    </Col>
+                  </Row>
+                </Card>
+              </Col>
+            </Row>
+          ))}
+        </Col>
+        <Col md={4}>
+          <h5>Order Summary</h5>
+          <p>Item Quantity: {selectedItemsCount}</p>
+          <p>Total Price: ${totalPrice}</p>
+          <Button variant='dark' block>
+            Proceed to Check Out
+          </Button>
+        </Col>
+      </Row>
+      <hr />
+      <h5>You might also like</h5>
+      <Slider {...settings}>
+        {recommendations.map(rec => (
+          <div key={rec.id}>
+            <Card>
+              <Card.Img src={rec.image} />
+            </Card>
+          </div>
+        ))}
+      </Slider>
+    </Container>
+  );
+};
 
 export default ShoppingCart;
