@@ -10,7 +10,7 @@ const KolPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://api.meetu.life/api/kols?populate=*")
+      .get("http://api.meetu.life/api/kols?populate[0]=KolImage")
       .then(response => {
         if (response.data && response.data.data) {
           setKols(response.data.data);
