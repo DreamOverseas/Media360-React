@@ -16,6 +16,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ShoppingCart from "./pages/ShoppingCart";
 import Events from "./pages/Events";
+import Profile from "./pages/Profile";
 
 function App() {
   // if n only if homepage, the topmargin is 0
@@ -37,6 +38,7 @@ function App() {
       <Header />
       <Routes>
         <Route exact path='/' element={<Home />} />
+        <Route path='/profile' element={<Profile />} />
         <Route exact path='/productStudy' element={<ProductPage />} />
         <Route exact path='/productFinance' element={<ProductPage />} />
         <Route exact path='/productTravel' element={<ProductPage />} />
