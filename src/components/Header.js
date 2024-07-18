@@ -7,7 +7,7 @@ const Header = () => {
   const { user, logout } = useContext(AuthContext);
 
   return (
-    <header className='App-header'>
+    <div>
       <Navbar bg='light' expand='lg' fixed='top' className='navbar-custom'>
         <Nav.Link href='/'>
           <Image className='nav-logo' src='header_logo.png' alt='360 Media' />
@@ -38,7 +38,7 @@ const Header = () => {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-    </header>
+    </div>
   );
 };
 
