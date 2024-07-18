@@ -7,7 +7,7 @@ const Header = () => {
   const { user, logout } = useContext(AuthContext);
 
   return (
-    <header className='App-header'>
+    <div>
       <Navbar bg='light' expand='lg' fixed='top' className='navbar-custom'>
         <Nav.Link href='/'>
           <Image className='nav-logo' src='header_logo.png' alt='360 Media' />
@@ -24,7 +24,9 @@ const Header = () => {
 
             {user ? (
               <NavDropdown title={user.username} id='basic-nav-dropdown'>
-                <NavDropdown.Item href='#'>Profile</NavDropdown.Item>
+                <NavDropdown.Item href='/profile'>
+                  My Profile
+                </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href='/' onClick={logout}>
                   Logout
@@ -38,7 +40,7 @@ const Header = () => {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-    </header>
+    </div>
   );
 };
 

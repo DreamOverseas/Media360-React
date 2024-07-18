@@ -78,8 +78,20 @@ const ShoppingCart = () => {
       });
   }, []);
 
-  const checkAllSelected = () => cartItems.every(item => item.selected);
+  /**
+      * Function that check whether all Items in cart are selected
+      * @param {*} cartItems
+      * @returns boolean : If all selected -> true, otherwise false
+      */
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const checkAllSelected = useCallback(() =>
+    cartItems.every(item => item.selected));
+
+  /**
+     * Function that changes an item's selected state
+     * @param {*} id 
+     */
   const handleSelectionChange = id => {
     setCartItems(prevItems =>
       prevItems.map(item =>
@@ -88,22 +100,39 @@ const ShoppingCart = () => {
     );
   };
 
+  /**
+     * Function that changes an item's selected state
+     * @param {*} id 
+     */
   const handleAllSelectionChange = () => {
     setCartItems(prevItems =>
       prevItems.map(item => ({ ...item, selected: !isAllSelected }))
     );
   };
 
+  /**
+     * Function that changes an item's selected state
+     * @param {*} id 
+     */
   const deleteItem = id => {
     setCartItems(prevItems => prevItems.filter(item => item.id !== id));
   };
 
+  /**
+     * Function that handles quantity chgange with the selection drop-down
+     * @param {*} id 
+     * @param {*} newQty 
+     */
   const handleQuantityChange = (id, newQty) => {
     setCartItems(prevItems =>
       prevItems.map(item => (item.id === id ? { ...item, qty: newQty } : item))
     );
   };
 
+  /**
+      * Function that calculates the total price
+      * @returns num : Total price of all selected items
+      */
   const calculateTotalPrice = useCallback(
     () =>
       cartItems
@@ -112,6 +141,10 @@ const ShoppingCart = () => {
     [cartItems]
   );
 
+  /**
+    * Functiuon that calculates number of items selected
+    * @returns Integer : The total quantity of all selected items in cartItems
+    */
   const calculateSelectedItemsCount = useCallback(
     () =>
       cartItems
