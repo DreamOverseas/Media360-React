@@ -14,7 +14,9 @@ const Footer = () => {
   const subscribMe = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3001/subscribe', { email });
+      const response = await axios.post('http://mail-service.sapienplus.co/subscribe', { 
+        email
+      });
       setMessage(response.data.message);
       setEmail('');
       setError('');
