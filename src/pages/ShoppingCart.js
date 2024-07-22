@@ -1,7 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-
 import {
   Button,
   Card,
@@ -21,42 +20,74 @@ const ShoppingCart = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchUserCart = async () => {
-      try {
-        // First, get the user data to find the cart ID
-        const userResponse = await axios.get(
-          `http://api.meetu.life/api/users/${user.id}?populate=cart`
-        );
-        const cartId = userResponse.data.cart.id;
+  const fetchUserCart = useCallback(async () => {
+    try {
+      // 获取用户数据以查找购物车ID
+      const userResponse = await axios.get(
+        `http://api.meetu.life/api/users/${user.id}?populate=cart`,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-        // Then, get the cart data with cart items and product details
-        const cartResponse = await axios.get(
-          `http://api.meetu.life/api/carts/${cartId}?populate=cartItems.product`
-        );
+      const cartId = userResponse.data.cart.id;
 
+      // 获取带有购物车项目和产品详细信息的购物车数据
+      const cartResponse = await axios.get(
+        `http://api.meetu.life/api/carts/${cartId}?populate[0]=*&populate[cart_items][populate][product][populate]=ProductImage`,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const cartData = cartResponse.data;
+
+      if (
+        cartData &&
+        cartData.data &&
+        cartData.data.attributes &&
+        cartData.data.attributes.cart_items
+      ) {
         setCartItems(
-          cartResponse.data.data.cartItems.map(item => ({
-            id: item.id,
-            selected: true,
-            product: item.product,
-            qty: item.Number,
-          }))
+          cartData.data.attributes.cart_items.data.map(item => {
+            const product = item.attributes.product?.data?.attributes || {};
+            return {
+              id: item.id,
+              selected: true,
+              product: {
+                Name: product.Name || "Unknown Product",
+                Price: product.Price || 0,
+                Image: product.ProductImage?.data?.attributes?.url || null,
+                Description: product.Description || "No description available",
+              },
+              qty: item.attributes.Number,
+            };
+          })
         );
-      } catch (error) {
-        console.error("Error fetching cart data:", error);
-        setError(
-          error.response
-            ? error.response.data.error.message
-            : "Error fetching data"
-        );
+      } else {
+        setError("No cart items found");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+      setError(
+        error.response
+          ? error.response.data.error.message
+          : "Error fetching data"
+      );
+    }
+  }, [user]);
 
+  useEffect(() => {
     if (user) {
       fetchUserCart();
     }
-  }, [user]);
+  }, [user, fetchUserCart]);
 
   useEffect(() => {
     axios
@@ -65,8 +96,8 @@ const ShoppingCart = () => {
         setRecommendations(
           response.data.data.map(product => ({
             id: product.id,
-            image: product.attributes.Image
-              ? product.attributes.Image.url
+            image: product.attributes.ProductImage
+              ? `http://api.meetu.life${product.attributes.ProductImage.data.attributes.url}`
               : "https://placehold.co/300x300",
             title: product.attributes.Name,
           }))
@@ -78,7 +109,10 @@ const ShoppingCart = () => {
       });
   }, []);
 
-  const checkAllSelected = () => cartItems.every(item => item.selected);
+  const checkAllSelected = useCallback(
+    () => cartItems.every(item => item.selected),
+    [cartItems]
+  );
 
   const handleSelectionChange = id => {
     setCartItems(prevItems =>
@@ -95,13 +129,61 @@ const ShoppingCart = () => {
   };
 
   const deleteItem = id => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+    deleteItemFromDatabase(id);
   };
 
   const handleQuantityChange = (id, newQty) => {
-    setCartItems(prevItems =>
-      prevItems.map(item => (item.id === id ? { ...item, qty: newQty } : item))
-    );
+    updateItemQuantityInDatabase(id, newQty);
+  };
+
+  const updateItemQuantityInDatabase = async (id, newQty) => {
+    try {
+      await axios.put(
+        `http://api.meetu.life/api/cart-items/${id}`,
+        {
+          data: {
+            Number: newQty,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setCartItems(prevItems =>
+        prevItems.map(item =>
+          item.id === id ? { ...item, qty: newQty } : item
+        )
+      );
+    } catch (error) {
+      console.error("Error updating cart item quantity:", error);
+      setError(
+        error.response
+          ? error.response.data.error.message
+          : "Error updating cart item quantity"
+      );
+    }
+  };
+
+  const deleteItemFromDatabase = async id => {
+    try {
+      await axios.delete(`http://api.meetu.life/api/cart-items/${id}`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+    } catch (error) {
+      console.error("Error deleting cart item:", error);
+      setError(
+        error.response
+          ? error.response.data.error.message
+          : "Error deleting cart item"
+      );
+    }
   };
 
   const calculateTotalPrice = useCallback(
@@ -125,100 +207,6 @@ const ShoppingCart = () => {
   const [selectedItemsCount, setSelectedItemsCount] = useState(
     calculateSelectedItemsCount()
   );
-
-  useEffect(() => {
-    const fetchUserCart = async () => {
-      try {
-        // First, get the user data to find the cart ID
-        console.log(`Fetching user data for user ID: ${user.id}`);
-        const userResponse = await axios.get(
-          `http://api.meetu.life/api/users/${user.id}?populate=cart`,
-          {
-            headers: {
-              Authorization: `Bearer ${Cookies.get("token")}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        console.log("User response:", userResponse.data);
-
-        const cartId = userResponse.data.cart.id;
-        console.log(`Fetching cart data for cart ID: ${cartId}`);
-
-        // Then, get the cart data with cart items and product details
-        const cartResponse = await axios.get(
-          `http://api.meetu.life/api/carts/${cartId}?populate[0]=*&populate[cart_items][populate][product][populate]=ProductImage`,
-          {
-            headers: {
-              Authorization: `Bearer ${Cookies.get("token")}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        console.log("Cart response:", cartResponse.data);
-
-        const cartData = cartResponse.data;
-        if (
-          cartData &&
-          cartData.data &&
-          cartData.data.attributes &&
-          cartData.data.attributes.cart_items
-        ) {
-          console.log("Cart items:", cartData.data.attributes.cart_items.data);
-          setCartItems(
-            cartData.data.attributes.cart_items.data.map(item => {
-              const product = item.attributes.product?.data?.attributes || {};
-              return {
-                id: item.id,
-                selected: true,
-                product: {
-                  Name: product.Name || "Unknown Product",
-                  Price: product.Price || 0,
-                  Image: product.ProductImage?.data?.attributes?.url || null,
-                  Description:
-                    product.Description || "No description available",
-                },
-                qty: item.attributes.Number,
-              };
-            })
-          );
-        } else {
-          setError("No cart items found");
-        }
-      } catch (error) {
-        console.error("Error fetching cart data:", error);
-        setError(
-          error.response
-            ? error.response.data.error.message
-            : "Error fetching data"
-        );
-      }
-    };
-
-    if (user) {
-      fetchUserCart();
-    }
-  }, [user]);
-
-  useEffect(() => {
-    axios
-      .get("http://api.meetu.life/api/products?populate=*")
-      .then(response => {
-        setRecommendations(
-          response.data.data.map(product => ({
-            id: product.id,
-            image: product.attributes.ProductImage
-              ? `http://api.meetu.life${product.attributes.ProductImage.data.attributes.url}`
-              : "https://placehold.co/300x300",
-            title: product.attributes.Name,
-          }))
-        );
-      })
-      .catch(error => {
-        console.error("Error fetching recommendations:", error);
-        setError("Error fetching recommendations");
-      });
-  }, []);
 
   useEffect(() => {
     setIsAllSelected(checkAllSelected());
