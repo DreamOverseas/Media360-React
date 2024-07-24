@@ -1,17 +1,19 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import Cookies from "js-cookie";
+import { useParams, Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import { Button, Card, Col, Container, Image, Row, Form, InputGroup, Modal} from "react-bootstrap";
 import "../css/ProductDetail.css";
 
 const ProductDetail = () => {
+  const {user} = useContext(AuthContext);
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [showModal, setShowModal] = useState(false);
-  // const [recommendations, setRecommendations] = useState(null);
-  // const [isAddToCart, setIsAddToCart] = useState(false);
+  const [cartModal, setCartModal] = useState(false);
 
   const renderDescription = (description) => {
     if (description != null) {
@@ -40,6 +42,58 @@ const ProductDetail = () => {
     setShowModal(false);
   };
 
+  const handleCloseCartModal = () => {
+    setCartModal(false);
+  };
+
+  const handleAddToCart = async () => {
+    if (user && Cookies.get("token")) {
+      try {
+        const user_detail = await axios.get(`http://api.meetu.life/api/users/${user.id}?populate[cart]=*`)
+        const cartid = user_detail.data.cart.id
+        const cart_items = await axios.get(`http://api.meetu.life/api/carts/${cartid}?populate[cart_items][populate][product]=*`)
+        const cart_items_data = cart_items.data.data.attributes.cart_items.data
+        console.log(cart_items_data);
+        const added_cart_item_data = await axios.post(`http://api.meetu.life/api/cart-items`, {
+          data: {
+            Number: quantity,
+            product: product.id
+          }
+        }, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+            "Content-Type": "application/json"
+          }
+        });
+        const added_item_id = added_cart_item_data.data.data.id;
+        const added_item = await axios.get(`http://api.meetu.life/api/cart-items/${added_item_id}?populate=*`)
+        const added_data = added_item.data.data
+        console.log('add item successfully:', added_data);
+
+        const updated_cart_items_list = [...cart_items_data, added_data]
+        console.log(updated_cart_items_list)
+        const updated_cart = await axios.put(`http://api.meetu.life/api/carts/${cartid}`, {
+          data: {
+            cart_items: updated_cart_items_list
+          }
+        }, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+            "Content-Type": "application/json"
+          }
+        });
+
+        console.log('update item successfully:', updated_cart.data);
+
+      } catch (error) {
+        console.error('fail to add to cart:', error);
+      }
+    } else {
+      setCartModal(true);
+    }
+
+  };
+
   useEffect(() => {
     axios
       .get(`http://api.meetu.life/api/products/${id}?populate=*`)
@@ -55,43 +109,6 @@ const ProductDetail = () => {
         setError("Error fetching data");
       });
   }, []);
-
-  // useEffect(() => {
-  //   if (isAddToCart) {
-  //     axios
-  //     .get(`http://api.meetu.life/api/products/${id}?populate=*`)
-  //     .then(response => {
-  //       if (response.data && response.data.data) {
-  //         setProduct(response.data.data);
-  //       } else {
-  //         setError("No data found");
-  //       }
-  //       setIsAddToCart(false)
-  //     })
-  //     .catch(error => {
-  //       console.error("Error fetching data: ", error);
-  //       setError("Error fetching data");
-  //     });
-  //   }
-  // }, [isAddToCart]);
-
-    // useEffect(() => {
-    //   axios
-    //   .get(`http://api.meetu.life/api/products/${id}?populate=*`)
-    //   .then(response => {
-    //     if (response.data && response.data.data) {
-    //       setProduct(response.data.data);
-    //     } else {
-    //       setError("No data found");
-    //     }
-    //     setIsAddToCart(false)
-    //   })
-    //   .catch(error => {
-    //     console.error("Error fetching data: ", error);
-    //     setError("Error fetching data");
-    //   });
-    // }, []);
-
 
   if (error) {
     return <div>{error}</div>;
@@ -142,16 +159,17 @@ const ProductDetail = () => {
                   </Row>
                   <Row>
                     <Col>
-                      <Button className="add-to-cart"onClick={handlePurchase}>Purchase and Enquiry Now</Button>
+                      <Button className="add-to-cart" onClick={handlePurchase}>Purchase and Enquiry Now</Button>
                     </Col>
                     <Col>
-                      <Button className="add-to-cart">Add to cart</Button>
+                      <Button className="add-to-cart" onClick={handleAddToCart}>Add to cart</Button>
                     </Col>
                   </Row> 
                 </Container>
               </Col>
           </Row>
         </Container>
+
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
             <Modal.Title>{Name}</Modal.Title>
@@ -167,6 +185,26 @@ const ProductDetail = () => {
           <Modal.Footer>
             <Button variant='secondary' onClick={handleCloseModal}>
               Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal show={cartModal} onHide={handleCloseCartModal}>
+          <Modal.Header closeButton>
+          </Modal.Header>
+          <Modal.Body>
+            <Row>
+              <p>Please login in first</p>
+            </Row>
+          </Modal.Body>
+          <Modal.Footer>
+            <Link to={'/login'}>
+              <Button variant='secondary'>
+                Login
+              </Button>
+            </Link>
+            <Button variant='secondary' onClick={handleCloseCartModal}>
+              cancel
             </Button>
           </Modal.Footer>
         </Modal>
