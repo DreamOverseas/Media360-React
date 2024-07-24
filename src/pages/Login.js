@@ -1,5 +1,5 @@
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
+import Cookies from "js-cookie";
 import React, { useContext, useState } from "react";
 import {
   Button,
@@ -39,15 +39,7 @@ const Login = () => {
 
     if (email && password) {
       try {
-        const response = await axios.post(
-          "http://localhost:1337/api/auth/local",
-          {
-            identifier: email,
-            password,
-          }
-        );
-        login(response.data.user);
-        localStorage.setItem("token", response.data.jwt);
+        await login(email, password);
         navigate("/");
       } catch (error) {
         const errorMessage =
@@ -65,15 +57,15 @@ const Login = () => {
     if (email && password && confirmed && password === confirmed) {
       try {
         const response = await axios.post(
-          "http://localhost:1337/api/auth/local/register",
+          "http://api.meetu.life/api/auth/local/register",
           {
             username,
             email,
             password,
           }
         );
-        login(response.data.user);
-        localStorage.setItem("token", response.data.jwt);
+        await login(email, password); // 自动登录
+        Cookies.set("token", response.data.jwt, { expires: 7 });
         navigate("/");
       } catch (error) {
         const errorMessage =
@@ -240,12 +232,9 @@ const Login = () => {
           </Tab.Container>
         </Col>
         <Col md={6}>
-          <Image className="login-image-display"
-            src={
-              k
-                ? "sign-in.jpeg"
-                : "sign-up.jpeg"
-            }
+          <Image
+            className='login-image-display'
+            src={k ? "sign-in.jpeg" : "sign-up.jpeg"}
             fluid
           />
         </Col>

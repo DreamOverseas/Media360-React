@@ -5,6 +5,19 @@ import App from './App';
 import { AuthProvider } from "./context/AuthContext";
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
+import axios from 'axios'; 
+import Cookies from 'js-cookie'; 
+
+axios.interceptors.request.use(
+  config => {
+    const token = Cookies.get('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => Promise.reject(error)
+);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

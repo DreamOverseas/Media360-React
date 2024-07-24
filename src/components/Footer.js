@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useState } from 'react';
+import axios from 'axios';
 import "../css/Footer.css";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Form, Button, Alert } from "react-bootstrap";
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
+  /**
+   * Function that handles submission on email to the subscription list of mailchimp
+   */
+  const subscribMe = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:3001/subscribe', { email });
+      setMessage(response.data.message);
+      setEmail('');
+      setError('');
+    } catch (error) {
+      setError(error.response.data.error);
+      setMessage('');
+    }
+  };
+
   return (
     <footer className='footer'>
       <div className='footer-column logo-contact'>
@@ -28,8 +49,23 @@ const Footer = () => {
           Sign up for our newsletter to enjoy free marketing tips, inspirations,
           and more.
         </p>
-        <input type='email' placeholder='E-mail Address' />
-        <button>Subscribe</button>
+        <Form onSubmit={subscribMe}>
+          <Form.Group controlId="formEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Subscribe
+          </Button>
+        </Form>
+        {message && <Alert variant="success">{message}</Alert>}
+        {error && <Alert variant="danger">{error}</Alert>}
       </div>
       <div className='footer-column qr-social'>
         <img src='/QR_placeholder.png' alt='QR Code' className='qr-code' />
