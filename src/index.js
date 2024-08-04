@@ -6,7 +6,7 @@ import { AuthProvider } from "./context/AuthContext";
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
 import axios from 'axios'; 
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
 
 axios.interceptors.request.use(
   config => {
