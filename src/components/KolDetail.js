@@ -37,7 +37,6 @@ const KolDetail = () => {
 
   const { Name, Title, Description, KolImage, Products} = kol.attributes;
 
-
   if (!Products || !Products.data) {
     return <div>No products available</div>;
   }
@@ -55,81 +54,83 @@ const KolDetail = () => {
       return description
     }
   };
-  
 
   return (
     <div>
       <section className="kol-detail-background-image-container">
-        <h1 className = "kol-detail-banner-h1"><b>Our People</b></h1>
+        <h1 className="kol-detail-banner-h1"><b>Our People</b></h1>
       </section>
       <br />
       <section>
         <Container>
           <Row className="kol-detail-section">
-              <Col>
-                <Container className="kol-detail">
-                  <Row>
-                    <h1>{Name}</h1>
-                    <h5>{Title}</h5>
-                  </Row>
-                  <Row className="kol-description">
-                    <p>
-                      {Description ? renderDescription(Description) : "No description available"}
-                    </p>
-                  </Row> 
-                  <Row className="kol-contact">
-                    <Col>
-                      <Button onClick={handleContact}>Contact Now</Button>
-                    </Col>
-                    <Col className="d-flex align-items-center">
-                      <i class="bi bi-wechat contact-icon"></i>
-                    </Col>
-                  </Row>
-                </Container>
-              </Col>
-              <Col className="kol-image-col">
-                {KolImage && KolImage.data ? (<Image src={`http://api.meetu.life${KolImage.data.attributes.url}`} alt={Name} />) : 
-                (<Image src='https://placehold.co/650x650' alt='Placeholder'/>)}
-              </Col>
+            <Col>
+              <Container className="kol-detail">
+                <Row>
+                  <h1>{Name}</h1>
+                  <h5>{Title}</h5>
+                </Row>
+                <Row className="kol-description">
+                  <p>
+                    {Description ? renderDescription(Description) : "No description available"}
+                  </p>
+                </Row> 
+                <Row className="kol-contact">
+                  <Col>
+                    <Button onClick={handleContact}>Contact Now</Button>
+                  </Col>
+                  <Col className="d-flex align-items-center">
+                    <i className="bi bi-wechat contact-icon"></i>
+                  </Col>
+                </Row>
+              </Container>
+            </Col>
+            <Col className="kol-image-col">
+              {KolImage && KolImage.data ? (
+                <Image src={`http://api.meetu.life${KolImage.data.attributes.url}`} alt={Name} />
+              ) : (
+                <Image src='https://placehold.co/650x650' alt='Placeholder' />
+              )}
+            </Col>
           </Row>
 
           <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>{Name}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Row>
-              <p>Please scan the QR code and directly contact with the Kol</p>
-            </Row>
-            <Row className="purchase-modal-background">
-              <Image src="/QR_placeholder.png" alt="Logo" fluid />
-            </Row>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant='secondary' onClick={handleCloseModal}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+            <Modal.Header closeButton>
+              <Modal.Title>{Name}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Row>
+                <p>Please scan the QR code and directly contact with the Kol</p>
+              </Row>
+              <Row className="purchase-modal-background">
+                <Image src="/QR_placeholder.png" alt="Logo" fluid />
+              </Row>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant='secondary' onClick={handleCloseModal}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </Container>
       </section>
-      <br></br>
-      <br></br>
+      <br />
+      <br />
       <section>
         <Container fluid>
           <Row>
             <Col md={5}>
-            <hr></hr>
+              <hr />
             </Col>
             <Col md={2} className="d-flex justify-content-center align-items-center">
               <h5>Highlight Products</h5>
             </Col>
             <Col md={5}>
-            <hr></hr>
+              <hr />
             </Col>
           </Row>
         </Container>
-        <br></br>
+        <br />
       </section>
       <Container className='kol-detail-container'>
         <Row>
@@ -147,26 +148,26 @@ const KolDetail = () => {
                       <Card.Img variant='top' src='https://placehold.co/300x300' />
                     )}
                     <Card.Body>
-                    <Card.Title 
-                          style={{
-                              whiteSpace: 'nowrap',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              fontSize: '18px'
-                              }}
-                          title={product.attributes.Name}>
-                          {product.attributes.Name}
+                      <Card.Title 
+                        style={{
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          fontSize: '18px'
+                        }}
+                        title={product.attributes.Name}>
+                        {product.attributes.Name}
                       </Card.Title>
                       <Card.Text style={{
-                              display: '-webkit-box',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              fontSize: '14px',
-                              WebkitLineClamp: 4,
-                              WebkitBoxOrient: 'vertical'
-                              }}
-                          title={product.attributes.Description}>
-                          {product.attributes.Description}
+                        display: '-webkit-box',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        fontSize: '14px',
+                        WebkitLineClamp: 4,
+                        WebkitBoxOrient: 'vertical'
+                      }}
+                        title={product.attributes.Description}>
+                        {product.attributes.Description}
                       </Card.Text>
                     </Card.Body>
                   </Card>
@@ -178,9 +179,8 @@ const KolDetail = () => {
           )}
         </Row>
       </Container>
-      <br></br>
+      <br />
     </div>
-    
   );
 };
 

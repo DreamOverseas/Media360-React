@@ -62,3 +62,26 @@
   height: 24px;
   cursor: pointer;
 }
+
+/* 媒体查询，仅在小屏幕上应用 */
+@media (max-width: 768px) {
+  .footer {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .footer-column {
+    flex: 1 1 100%;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .logo-contact {
+    align-items: center;
+  }
+
+  .newsletter {
+    text-align: center;
+  }
+}
+
