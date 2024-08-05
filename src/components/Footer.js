@@ -74,13 +74,13 @@ const Footer = () => {
         <p>Scan Me</p>
         <Row>
           <Col>
-            <i class="bi bi-facebook"></i>
+            <i className="bi bi-facebook"></i>
           </Col>
           <Col>
-            <i class="bi bi-instagram"></i>
+            <i className="bi bi-instagram"></i>
           </Col>
           <Col>
-            <i class="bi bi-share"></i>
+            <i className="bi bi-share"></i>
           </Col>
         </Row>
       </div>
