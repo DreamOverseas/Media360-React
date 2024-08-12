@@ -158,16 +158,9 @@ const KolDetail = () => {
                         title={product.attributes.Name}>
                         {product.attributes.Name}
                       </Card.Title>
-                      <Card.Text style={{
-                        display: '-webkit-box',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        fontSize: '14px',
-                        WebkitLineClamp: 4,
-                        WebkitBoxOrient: 'vertical'
-                      }}
-                        title={product.attributes.Description}>
-                        {product.attributes.Description}
+                      <Card.Text 
+                        title={product.attributes.Price}>
+                        ${product.attributes.Price}
                       </Card.Text>
                     </Card.Body>
                   </Card>
