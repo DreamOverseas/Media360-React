@@ -22,7 +22,7 @@ const ShoppingCart = () => {
 
   const fetchUserCart = useCallback(async () => {
     try {
-      // 获取用户数据以查找购物车ID
+      // get user id and cart id
       const userResponse = await axios.get(
         `http://api.meetu.life/api/users/${user.id}?populate=cart`,
         {
@@ -35,7 +35,7 @@ const ShoppingCart = () => {
 
       const cartId = userResponse.data.cart.id;
 
-      // 获取带有购物车项目和产品详细信息的购物车数据
+      // find cart item id and data
       const cartResponse = await axios.get(
         `http://api.meetu.life/api/carts/${cartId}?populate[0]=*&populate[cart_items][populate][product][populate]=ProductImage`,
         {

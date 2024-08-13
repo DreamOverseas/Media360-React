@@ -1,16 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import axios from "axios";
+import Cookies from "js-cookie";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router } from "react-router-dom";
+import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter as Router } from 'react-router-dom';
-import axios from 'axios'; 
-import Cookies from 'js-cookie'; 
+import "./i18n";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
 
 axios.interceptors.request.use(
   config => {
-    const token = Cookies.get('token');
+    const token = Cookies.get("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -19,7 +20,7 @@ axios.interceptors.request.use(
   error => Promise.reject(error)
 );
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <AuthProvider>
