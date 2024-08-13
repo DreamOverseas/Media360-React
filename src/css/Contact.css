@@ -36,6 +36,7 @@ header nav ul li a {
 
 .contact-image {
   flex: 1;
+  margin-right: 2rem;
 }
 
 .contact-image img {
@@ -79,3 +80,20 @@ button {
   cursor: pointer;
   border-radius: 4px;
 }
+
+@media (max-width: 768px) {
+  .contact-content {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .contact-image {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .contact-form {
+    padding: 1rem;
+  }
+}
+

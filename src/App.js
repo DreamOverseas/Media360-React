@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { useMediaQuery } from 'react-responsive';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import "slick-carousel/slick/slick.css";
@@ -13,13 +14,14 @@ import ProductDetail from "./components/ProductDetail";
 import ProductPage from "./components/ProductPage";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
+import MobileHome from "./pages/MobileHome";
 import Login from "./pages/Login";
 import ShoppingCart from "./pages/ShoppingCart";
 import Events from "./pages/Events";
 import Profile from "./pages/Profile";
 
 function App() {
-  // if n only if homepage, the topmargin is 0
+  // If n only if homepage, the topmargin is 0
   const location = useLocation();
   const [footer, setFooter] = useState();
   useEffect(() => {
@@ -33,11 +35,14 @@ function App() {
     }
   }, [location]);
 
+  // Check if is on desktop
+  const isDesktop = useMediaQuery({ query: '(min-width: 768px)' });
+
   return (
     <div className='App'>
       <Header />
       <Routes>
-        <Route exact path='/' element={<Home />} />
+        <Route exact path='/' element={isDesktop ? <Home /> : <MobileHome />} />
         <Route path='/profile' element={<Profile />} />
         <Route exact path='/productStudy' element={<ProductPage />} />
         <Route exact path='/productFinance' element={<ProductPage />} />

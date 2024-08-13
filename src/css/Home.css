@@ -5,13 +5,33 @@
     background-size: cover;
     background-position: center;
     align-content: center;
+    align-items: center;
+    justify-content: center;
+    justify-content: center;
+}
+
+.homepage-container-mobile {
+    display: flex;
+    height: 100vh;
+    width: auto;
+    margin: 0;
+    padding: 10vh;
+    background-image: url('/public/homepage/bg.png');
+    background-size: cover;
+    background-position: center;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
     justify-content: center;
 }
 
 .home-card-container {
-    padding-left: 7%;
+    display: flex;
+    padding-left: 0;
     padding-top: 7%;
     align-content: center;
+    align-items: center;
+    justify-items: center;
     justify-content: center;
 }
 
@@ -29,6 +49,16 @@
     cursor: pointer;
 }
 
+.home-card-mobile {
+    width: 30vh;
+    height: 15vh;
+    padding: 0;
+    margin-top: 5px;
+    margin-right: 5px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .home-card:hover {
     transform: scale(1.20);
     background-color: rgba(0, 2, 109, 0.5);
@@ -38,17 +68,45 @@
     background: rgba(255, 255, 255, 0.5);
 }
 
-/* Styles for mobile */
-@media (max-width: 768px) {
-    .home-card {
-        /* Squred cards */
-        width: 24vh;
-        height: 24vh;
-        background-size: contain;
-        background-position: top;
-        padding: 0;
-        margin-right: 5vh;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+.card-link {
+    text-decoration: none !important;
+}
+
+.card-body-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-icon-mobile {
+    margin-right: 1.5vh;
+    flex: 1 1;
+    color: azure;
+    font-size: 2rem;
+}
+
+.card-flex-mobile {
+    text-align: center;
+}
+
+.card-title-mobile {
+    color: azure;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.card-study {
+    background-color: rgb(10, 170, 154);
+}
+
+.card-finance {
+    background-color: rgb(226, 167, 29);
+}
+
+.card-travel {
+    background-color: rgb(67, 167, 17);
+}
+
+.card-life {
+    background-color: rgb(206, 0, 0);
 }

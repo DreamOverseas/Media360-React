@@ -14,7 +14,9 @@ const Footer = () => {
   const subscribMe = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3001/subscribe', { email });
+      const response = await axios.post('http://mail-service.sapienplus.co/subscribe', { 
+        email
+      });
       setMessage(response.data.message);
       setEmail('');
       setError('');
@@ -72,13 +74,13 @@ const Footer = () => {
         <p>Scan Me</p>
         <Row>
           <Col>
-            <i class="bi bi-facebook"></i>
+            <i className="bi bi-facebook"></i>
           </Col>
           <Col>
-            <i class="bi bi-instagram"></i>
+            <i className="bi bi-instagram"></i>
           </Col>
           <Col>
-            <i class="bi bi-share"></i>
+            <i className="bi bi-share"></i>
           </Col>
         </Row>
       </div>
