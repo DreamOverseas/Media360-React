@@ -1,5 +1,6 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -12,14 +13,17 @@ import {
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
   const { i18n } = useTranslation();
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [cartModal, setCartModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const renderRichText = richText => {
@@ -45,6 +49,69 @@ const ProductDetail = () => {
           return null;
       }
     });
+  };
+  const handleCloseCartModal = () => {
+    setCartModal(false);
+  };
+
+  const handleAddToCart = async () => {
+    if (user && Cookies.get("token")) {
+      try {
+        const user_detail = await axios.get(
+          `http://api.meetu.life/api/users/${user.id}?populate[cart]=*`
+        );
+        const cartid = user_detail.data.cart.id;
+        const cart_items = await axios.get(
+          `http://api.meetu.life/api/carts/${cartid}?populate[cart_items][populate][product]=*`
+        );
+        const cart_items_data = cart_items.data.data.attributes.cart_items.data;
+        console.log(cart_items_data);
+        const added_cart_item_data = await axios.post(
+          `http://api.meetu.life/api/cart-items`,
+          {
+            data: {
+              Number: quantity,
+              product: product.id,
+            },
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get("token")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const added_item_id = added_cart_item_data.data.data.id;
+        const added_item = await axios.get(
+          `http://api.meetu.life/api/cart-items/${added_item_id}?populate=*`
+        );
+        const added_data = added_item.data.data;
+        console.log("add item successfully:", added_data);
+
+        const updated_cart_items_list = [...cart_items_data, added_data];
+        console.log(updated_cart_items_list);
+        const updated_cart = await axios.put(
+          `http://api.meetu.life/api/carts/${cartid}`,
+          {
+            data: {
+              cart_items: updated_cart_items_list,
+            },
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get("token")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("update item successfully:", updated_cart.data);
+      } catch (error) {
+        console.error("fail to add to cart:", error);
+      }
+    } else {
+      setCartModal(true);
+    }
   };
 
   const handleDecrement = () => {
@@ -156,7 +223,9 @@ const ProductDetail = () => {
                     </Button>
                   </Col>
                   <Col>
-                    <Button className='add-to-cart'>Add to cart</Button>
+                    <Button className='add-to-cart' onClick={handleAddToCart}>
+                      Add to cart
+                    </Button>
                   </Col>
                 </Row>
               </Container>
