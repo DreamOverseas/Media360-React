@@ -1,19 +1,31 @@
 import axios from "axios";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Container, Image, Row, Modal } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Image,
+  Modal,
+  Row,
+} from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import "../css/KolDetail.css";
 
 const KolDetail = () => {
   const { id } = useParams();
+  const { i18n } = useTranslation();
   const [kol, setKol] = useState(null);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     axios
-      .get(`http://api.meetu.life/api/kols/${id}?populate[KolImage]=*&populate[Products][populate]=*`)
+      .get(
+        `http://api.meetu.life/api/kols/${id}?populate[KolImage]=*&populate[Products][populate]=*`
+      )
       .then(response => {
         if (response.data && response.data.data) {
           setKol(response.data.data);
@@ -35,59 +47,89 @@ const KolDetail = () => {
     return <div>Loading...</div>;
   }
 
-  const { Name, Title, Description, KolImage, Products} = kol.attributes;
+  const { Name, Title, KolImage, Products } = kol.attributes;
 
-  if (!Products || !Products.data) {
-    return <div>No products available</div>;
-  }
+  const renderRichText = richText => {
+    return richText.map((block, index) => {
+      switch (block.type) {
+        case "paragraph":
+          return (
+            <p key={index}>
+              {block.children.map((child, childIndex) => (
+                <span key={childIndex}>{child.text}</span>
+              ))}
+            </p>
+          );
+        case "heading":
+          return (
+            <h2 key={index}>
+              {block.children.map((child, childIndex) => (
+                <span key={childIndex}>{child.text}</span>
+              ))}
+            </h2>
+          );
+        default:
+          return null;
+      }
+    });
+  };
 
+  const language = i18n.language;
+  const Description =
+    language === "zh"
+      ? kol.attributes.Description_zh
+      : kol.attributes.Description_en;
+
+  // 定义 handleContact 函数
   const handleContact = () => {
     setShowModal(true);
   };
 
+  // 定义 handleCloseModal 函数
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
-  const renderDescription = (description) => {
-    if (description != null) {
-      return description
-    }
-  };
-
   return (
     <div>
-      <section className="kol-detail-background-image-container">
-        <h1 className="kol-detail-banner-h1"><b>Our People</b></h1>
+      <section className='kol-detail-background-image-container'>
+        <h1 className='kol-detail-banner-h1'>
+          <b>Our People</b>
+        </h1>
       </section>
       <br />
       <section>
         <Container>
-          <Row className="kol-detail-section">
+          <Row className='kol-detail-section'>
             <Col>
-              <Container className="kol-detail">
+              <Container className='kol-detail'>
                 <Row>
                   <h1>{Name}</h1>
                   <h5>{Title}</h5>
                 </Row>
-                <Row className="kol-description">
-                  <p>
-                    {Description ? renderDescription(Description) : "No description available"}
-                  </p>
-                </Row> 
-                <Row className="kol-contact">
+                <Row className='kol-description'>
+                  <div>
+                    {Description
+                      ? renderRichText(Description)
+                      : "No description available"}
+                  </div>
+                </Row>
+                <Row className='kol-contact'>
                   <Col>
                     <Button onClick={handleContact}>Contact Now</Button>
                   </Col>
-                  <Col className="d-flex align-items-center">
-                    <i className="bi bi-wechat contact-icon"></i>
+                  <Col className='d-flex align-items-center'>
+                    <i className='bi bi-wechat contact-icon'></i>
                   </Col>
                 </Row>
               </Container>
             </Col>
-            <Col className="kol-image-col">
+            <Col className='kol-image-col'>
               {KolImage && KolImage.data ? (
-                <Image src={`http://api.meetu.life${KolImage.data.attributes.url}`} alt={Name} />
+                <Image
+                  src={`http://api.meetu.life${KolImage.data.attributes.url}`}
+                  alt={Name}
+                />
               ) : (
                 <Image src='https://placehold.co/650x650' alt='Placeholder' />
               )}
@@ -102,8 +144,8 @@ const KolDetail = () => {
               <Row>
                 <p>Please scan the QR code and directly contact with the Kol</p>
               </Row>
-              <Row className="purchase-modal-background">
-                <Image src="/QR_placeholder.png" alt="Logo" fluid />
+              <Row className='purchase-modal-background'>
+                <Image src='/QR_placeholder.png' alt='Logo' fluid />
               </Row>
             </Modal.Body>
             <Modal.Footer>
@@ -122,7 +164,10 @@ const KolDetail = () => {
             <Col md={5}>
               <hr />
             </Col>
-            <Col md={2} className="d-flex justify-content-center align-items-center">
+            <Col
+              md={2}
+              className='d-flex justify-content-center align-items-center'
+            >
               <h5>Highlight Products</h5>
             </Col>
             <Col md={5}>
@@ -137,7 +182,10 @@ const KolDetail = () => {
           {Products.data.length > 0 ? (
             Products.data.map(product => (
               <Col key={product.id} sm={12} md={6} lg={4}>
-                <Link to={`/product/${product.id}`} className="card-link-highlight">
+                <Link
+                  to={`/product/${product.id}`}
+                  className='card-link-highlight'
+                >
                   <Card className='kol-product-card'>
                     {product.attributes && product.attributes.ProductImage ? (
                       <Card.Img
@@ -145,22 +193,27 @@ const KolDetail = () => {
                         src={`http://api.meetu.life${product.attributes.ProductImage.data.attributes.url}`}
                       />
                     ) : (
-                      <Card.Img variant='top' src='https://placehold.co/300x300' />
+                      <Card.Img
+                        variant='top'
+                        src='https://placehold.co/300x300'
+                      />
                     )}
                     <Card.Body>
-                      <Card.Title 
+                      <Card.Title
                         style={{
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          fontSize: '18px'
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          fontSize: "18px",
                         }}
-                        title={product.attributes.Name}>
+                        title={product.attributes.Name}
+                      >
                         {product.attributes.Name}
                       </Card.Title>
                       <Card.Text 
                         title={product.attributes.Price}>
                         ${product.attributes.Price}
+
                       </Card.Text>
                     </Card.Body>
                   </Card>
