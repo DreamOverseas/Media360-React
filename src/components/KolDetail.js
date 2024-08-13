@@ -80,12 +80,10 @@ const KolDetail = () => {
       ? kol.attributes.Description_zh
       : kol.attributes.Description_en;
 
-  // 定义 handleContact 函数
   const handleContact = () => {
     setShowModal(true);
   };
 
-  // 定义 handleCloseModal 函数
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -210,18 +208,10 @@ const KolDetail = () => {
                       >
                         {product.attributes.Name}
                       </Card.Title>
-                      <Card.Text
-                        style={{
-                          display: "-webkit-box",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          fontSize: "14px",
-                          WebkitLineClamp: 4,
-                          WebkitBoxOrient: "vertical",
-                        }}
-                        title={product.attributes.Description}
-                      >
-                        {product.attributes.Description}
+                      <Card.Text 
+                        title={product.attributes.Price}>
+                        ${product.attributes.Price}
+
                       </Card.Text>
                     </Card.Body>
                   </Card>
