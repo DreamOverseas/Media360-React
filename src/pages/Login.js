@@ -64,7 +64,7 @@ const Login = () => {
             password,
           }
         );
-        await login(email, password); // 自动登录
+        await login(email, password);
         Cookies.set("token", response.data.jwt, { expires: 7 });
         navigate("/");
       } catch (error) {
@@ -158,7 +158,7 @@ const Login = () => {
                 </Tab.Pane>
                 <Tab.Pane eventKey='sign-up'>
                   <Container>
-                    <Row className='sign-in-table'>
+                    <Row className='sign-up-table'>
                       <Card>
                         <Card.Body>
                           <Form onSubmit={handleSignup}>

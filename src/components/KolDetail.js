@@ -80,12 +80,10 @@ const KolDetail = () => {
       ? kol.attributes.Description_zh
       : kol.attributes.Description_en;
 
-  // 定义 handleContact 函数
   const handleContact = () => {
     setShowModal(true);
   };
 
-  // 定义 handleCloseModal 函数
   const handleCloseModal = () => {
     setShowModal(false);
   };
