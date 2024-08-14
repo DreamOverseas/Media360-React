@@ -36,13 +36,13 @@
 }
 
 .home-card {
-    width: 24vh;
+    width: 13vw;
     height: auto;
     background-size: cover;
     background-position: center;
     padding: 0;
     margin-top: 10%;
-    margin-right: 5vh;
+    margin-right: 3vw;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, background-color 0.3s ease;
@@ -50,7 +50,7 @@
 }
 
 .home-card-mobile {
-    width: 30vh;
+    width: 60vw;
     height: 15vh;
     padding: 0;
     margin-top: 5px;
