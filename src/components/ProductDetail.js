@@ -9,10 +9,10 @@ import {
   Image,
   InputGroup,
   Modal,
-  Row,
+  Row
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
 
@@ -30,13 +30,17 @@ const ProductDetail = () => {
     return richText.map((block, index) => {
       switch (block.type) {
         case "paragraph":
-          return (
-            <p key={index}>
-              {block.children.map((child, childIndex) => (
-                <span key={childIndex}>{child.text}</span>
-              ))}
-            </p>
-          );
+        const paragraphText = block.children.map(child => child.text).join('\n');
+        return (
+          <p key={index} style={{fontSize: '12px'}}>
+            {paragraphText.split('\n').map((text, i) => (
+              <React.Fragment key={i}>
+                {text}
+                <br />
+              </React.Fragment>
+            ))}
+          </p>
+        );
         case "heading":
           return (
             <h2 key={index}>
@@ -50,6 +54,7 @@ const ProductDetail = () => {
       }
     });
   };
+
   const handleCloseCartModal = () => {
     setCartModal(false);
   };
@@ -180,7 +185,7 @@ const ProductDetail = () => {
                 <Image src='https://placehold.co/650x650' alt='Placeholder' />
               )}
             </Col>
-            <Col>
+            <Col className='product-detail-col'>
               <Container className='product-detail'>
                 <Row>
                   <h1>{Name}</h1>
@@ -250,24 +255,40 @@ const ProductDetail = () => {
             </Button>
           </Modal.Footer>
         </Modal>
+
+        <Modal show={cartModal} onHide={handleCloseCartModal}>
+          <Modal.Header closeButton>
+          </Modal.Header>
+          <Modal.Body>
+            <Row>
+              <p>Please login in first</p>
+            </Row>
+          </Modal.Body>
+          <Modal.Footer>
+            <Link to={'/login'}>
+              <Button variant='secondary'>
+                Login
+              </Button>
+            </Link>
+            <Button variant='secondary' onClick={handleCloseCartModal}>
+              cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </section>
       <br />
       <br />
       <section>
-        <Container fluid>
+        <Container>
           <Row>
-            <Col md={5}>
-              <hr />
-            </Col>
-            <Col
-              md={2}
-              className='d-flex justify-content-center align-items-center'
-            >
-              <h5>Recommended Products</h5>
-            </Col>
-            <Col md={5}>
-              <hr />
-            </Col>
+            <h5>Product Description</h5>
+          </Row>
+          <Row>
+            <div>
+              {Description
+                ? renderRichText(Description)
+                : "No description available"}
+            </div>
           </Row>
         </Container>
         <br />
