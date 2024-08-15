@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import React, { useContext } from "react";
 import { Image, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -10,8 +11,8 @@ const Header = () => {
 
   const changeLanguage = lng => {
     i18n.changeLanguage(lng);
+    Cookies.set("i18next", lng, { expires: 7 }); // 保存到 Cookie
   };
-
   return (
     <div>
       <Navbar bg='light' expand='lg' fixed='top' className='navbar-custom'>
@@ -29,10 +30,10 @@ const Header = () => {
             </Nav.Link>
             <NavDropdown title={t("language")} id='language-dropdown'>
               <NavDropdown.Item onClick={() => changeLanguage("en")}>
-                {t("english")}
+                English
               </NavDropdown.Item>
               <NavDropdown.Item onClick={() => changeLanguage("zh")}>
-                {t("chinese")}
+                中文
               </NavDropdown.Item>
             </NavDropdown>
 
