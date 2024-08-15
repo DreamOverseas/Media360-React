@@ -3,6 +3,9 @@ import axios from 'axios';
 import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import '../css/Footer.css';
 
+// Load Backend Host for API calls
+const EMAIL_SUBSCRIPTION = process.env.EMAIL_SUBSCRIPTION;
+
 const Footer = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -14,7 +17,7 @@ const Footer = () => {
   const subscribMe = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://mail-service.sapienplus.co/subscribe', {
+      const response = await axios.post({EMAIL_SUBSCRIPTION}, {
         email
       });
       setMessage(response.data.message);

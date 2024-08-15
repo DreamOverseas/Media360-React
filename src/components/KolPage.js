@@ -4,13 +4,17 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../css/KolPage.css";
 
+// Load Backend Host for API calls
+const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
+
 const KolPage = () => {
   const [kols, setKols] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log(`${BACKEND_HOST}/api/kols?populate[0]=KolImage`);
     axios
-      .get("http://api.meetu.life/api/kols?populate[0]=KolImage")
+      .get(`${BACKEND_HOST}/api/kols?populate[0]=KolImage`)
       .then(response => {
         if (response.data && response.data.data) {
           setKols(response.data.data);
@@ -39,7 +43,7 @@ const KolPage = () => {
           >
             <Link to={`/kol/${kol.id}`} className="card-link-KolPage">
               <Card className='kol-card'>
-                {kol.attributes.KolImage && kol.attributes.KolImage.data ? (<Card.Img src={`http://api.meetu.life${kol.attributes.KolImage.data.attributes.url}`} alt={kol.attributes.Name} />) : 
+                {kol.attributes.KolImage && kol.attributes.KolImage.data ? (<Card.Img src={`${BACKEND_HOST}${kol.attributes.KolImage.data.attributes.url}`} alt={kol.attributes.Name} />) : 
                   (<Card.Img variant='top' src='https://placehold.co/250x350' fluid alt='Placeholder'/>)}
                   <Card.Body>
                     <Card.Title 

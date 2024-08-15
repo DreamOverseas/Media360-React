@@ -5,6 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import "../css/EventPage.css";
 
+// Load Backend Host for API calls
+//const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
+
 const eventsImg = [
     {
         image: "events/showcase1.png",

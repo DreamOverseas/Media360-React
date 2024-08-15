@@ -2,6 +2,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import React, { createContext, useEffect, useState } from "react";
 
+// Load Backend Host for API calls
+const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
+
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
@@ -15,7 +18,7 @@ const AuthProvider = ({ children }) => {
       if (token) {
         try {
           const response = await axios.get(
-            "http://api.meetu.life/api/users/me",
+            `${BACKEND_HOST}/api/users/me`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -42,7 +45,7 @@ const AuthProvider = ({ children }) => {
     try {
       console.log("Attempting to log in with:", email, password);
       const response = await axios.post(
-        "http://api.meetu.life/api/auth/local",
+        `${BACKEND_HOST}/api/auth/local`,
         {
           identifier: email,
           password: password,

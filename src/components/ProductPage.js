@@ -4,6 +4,9 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import "../css/ProductPage.css";
 
+// Load Backend Host for API calls
+const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
+
 const ProductPage = () => {
   const location = useLocation();
   const [products, setProducts] = useState([]);
@@ -12,7 +15,7 @@ const ProductPage = () => {
   useEffect(() => {
     if (location.pathname ==='/productStudy') {
       axios
-      .get('http://api.meetu.life/api/products/', {
+      .get(`${BACKEND_HOST}/api/products/`, {
         params: {
           'filters[$or][0][MainCategory]': 'Study',
           'filters[$or][1][SubCategory]': 'Study',
@@ -34,7 +37,7 @@ const ProductPage = () => {
 
     if (location.pathname ==='/productFinance') {
       axios
-      .get('http://api.meetu.life/api/products', {
+      .get(`${BACKEND_HOST}/api/products`, {
         params: {
           'filters[$or][0][MainCategory]': 'Finance',
           'filters[$or][1][SubCategory]': 'Finance',
@@ -56,7 +59,7 @@ const ProductPage = () => {
 
     if (location.pathname ==='/productTravel') {
       axios
-      .get('http://api.meetu.life/api/products', {
+      .get(`${BACKEND_HOST}/api/products`, {
         params: {
           'filters[$or][0][MainCategory]': 'Travel',
           'filters[$or][1][SubCategory]': 'Travel',
@@ -78,7 +81,7 @@ const ProductPage = () => {
 
     if (location.pathname ==='/productLife') {
       axios
-      .get('http://api.meetu.life/api/products', {
+      .get(`${BACKEND_HOST}/api/products`, {
         params: {
           'filters[$or][0][MainCategory]': 'Life',
           'filters[$or][1][SubCategory]': 'Life',
@@ -114,7 +117,7 @@ const ProductPage = () => {
           >
             <Link to={`/product/${product.id}`} className="card-link-ProductPage">
               <Card className='product-card'>
-                {product.attributes.ProductImage && product.attributes.ProductImage.data ? (<Card.Img src={`http://api.meetu.life${product.attributes.ProductImage.data.attributes.url}`} alt={product.attributes.Name} />) : 
+                {product.attributes.ProductImage && product.attributes.ProductImage.data ? (<Card.Img src={`${BACKEND_HOST}${product.attributes.ProductImage.data.attributes.url}`} alt={product.attributes.Name} />) : 
                   (<Card.Img variant='top' src='https://placehold.co/250x350' fluid alt='Placeholder'/>)}
                   <Card.Body>
                     <Card.Title 
