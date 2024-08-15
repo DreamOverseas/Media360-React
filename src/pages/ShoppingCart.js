@@ -14,6 +14,9 @@ import Slider from "react-slick";
 import { AuthContext } from "../context/AuthContext";
 import "../css/ShoppingCart.css";
 
+// Load Backend Host for API calls
+const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
+
 const ShoppingCart = () => {
   const { user } = useContext(AuthContext);
   const [cartItems, setCartItems] = useState([]);
@@ -24,7 +27,7 @@ const ShoppingCart = () => {
     try {
       // get user id and cart id
       const userResponse = await axios.get(
-        `http://api.meetu.life/api/users/${user.id}?populate=cart`,
+        `${BACKEND_HOST}/api/users/${user.id}?populate=cart`,
         {
           headers: {
             Authorization: `Bearer ${Cookies.get("token")}`,
@@ -37,7 +40,7 @@ const ShoppingCart = () => {
 
       // find cart item id and data
       const cartResponse = await axios.get(
-        `http://api.meetu.life/api/carts/${cartId}?populate[0]=*&populate[cart_items][populate][product][populate]=ProductImage`,
+        `${BACKEND_HOST}/api/carts/${cartId}?populate[0]=*&populate[cart_items][populate][product][populate]=ProductImage`,
         {
           headers: {
             Authorization: `Bearer ${Cookies.get("token")}`,
@@ -91,13 +94,13 @@ const ShoppingCart = () => {
 
   useEffect(() => {
     axios
-      .get("http://api.meetu.life/api/products?populate=*")
+      .get(`${BACKEND_HOST}/api/products?populate=*`)
       .then(response => {
         setRecommendations(
           response.data.data.map(product => ({
             id: product.id,
             image: product.attributes.ProductImage
-              ? `http://api.meetu.life${product.attributes.ProductImage.data.attributes.url}`
+              ? `${BACKEND_HOST}${product.attributes.ProductImage.data.attributes.url}`
               : "https://placehold.co/300x300",
             title: product.attributes.Name,
           }))
@@ -139,7 +142,7 @@ const ShoppingCart = () => {
   const updateItemQuantityInDatabase = async (id, newQty) => {
     try {
       await axios.put(
-        `http://api.meetu.life/api/cart-items/${id}`,
+        `${BACKEND_HOST}/api/cart-items/${id}`,
         {
           data: {
             Number: newQty,
@@ -169,7 +172,7 @@ const ShoppingCart = () => {
 
   const deleteItemFromDatabase = async id => {
     try {
-      await axios.delete(`http://api.meetu.life/api/cart-items/${id}`, {
+      await axios.delete(`${BACKEND_HOST}/api/cart-items/${id}`, {
         headers: {
           Authorization: `Bearer ${Cookies.get("token")}`,
           "Content-Type": "application/json",
@@ -258,7 +261,7 @@ const ShoppingCart = () => {
                       <Card.Img
                         src={
                           item.product.Image
-                            ? `http://api.meetu.life${item.product.Image}`
+                            ? `${BACKEND_HOST}${item.product.Image}`
                             : "https://placehold.co/300x300"
                         }
                       />

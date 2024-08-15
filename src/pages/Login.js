@@ -16,6 +16,9 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../css/Login.css";
 
+// Load Backend Host for API calls
+const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -57,7 +60,7 @@ const Login = () => {
     if (email && password && confirmed && password === confirmed) {
       try {
         const response = await axios.post(
-          "http://api.meetu.life/api/auth/local/register",
+          `${BACKEND_HOST}/api/auth/local/register`,
           {
             username,
             email,

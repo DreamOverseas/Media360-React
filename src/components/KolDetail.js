@@ -14,6 +14,9 @@ import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import "../css/KolDetail.css";
 
+// Load Backend Host for API calls
+const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
+
 const KolDetail = () => {
   const { id } = useParams();
   const { i18n } = useTranslation();
@@ -24,7 +27,7 @@ const KolDetail = () => {
   useEffect(() => {
     axios
       .get(
-        `http://api.meetu.life/api/kols/${id}?populate[KolImage]=*&populate[Products][populate]=*`
+        `${BACKEND_HOST}/api/kols/${id}?populate[KolImage]=*&populate[Products][populate]=*`
       )
       .then(response => {
         if (response.data && response.data.data) {
@@ -125,7 +128,7 @@ const KolDetail = () => {
             <Col className='kol-image-col'>
               {KolImage && KolImage.data ? (
                 <Image
-                  src={`http://api.meetu.life${KolImage.data.attributes.url}`}
+                  src={`${BACKEND_HOST}${KolImage.data.attributes.url}`}
                   alt={Name}
                 />
               ) : (
@@ -188,7 +191,7 @@ const KolDetail = () => {
                     {product.attributes && product.attributes.ProductImage ? (
                       <Card.Img
                         variant='top'
-                        src={`http://api.meetu.life${product.attributes.ProductImage.data.attributes.url}`}
+                        src={`${BACKEND_HOST}${product.attributes.ProductImage.data.attributes.url}`}
                       />
                     ) : (
                       <Card.Img

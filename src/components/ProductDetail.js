@@ -16,6 +16,9 @@ import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
 
+// Load Backend Host for API calls
+const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
+
 const ProductDetail = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
@@ -58,16 +61,16 @@ const ProductDetail = () => {
     if (user && Cookies.get("token")) {
       try {
         const user_detail = await axios.get(
-          `http://api.meetu.life/api/users/${user.id}?populate[cart]=*`
+          `${BACKEND_HOST}/api/users/${user.id}?populate[cart]=*`
         );
         const cartid = user_detail.data.cart.id;
         const cart_items = await axios.get(
-          `http://api.meetu.life/api/carts/${cartid}?populate[cart_items][populate][product]=*`
+          `${BACKEND_HOST}/api/carts/${cartid}?populate[cart_items][populate][product]=*`
         );
         const cart_items_data = cart_items.data.data.attributes.cart_items.data;
         console.log(cart_items_data);
         const added_cart_item_data = await axios.post(
-          `http://api.meetu.life/api/cart-items`,
+          `${BACKEND_HOST}/api/cart-items`,
           {
             data: {
               Number: quantity,
@@ -83,7 +86,7 @@ const ProductDetail = () => {
         );
         const added_item_id = added_cart_item_data.data.data.id;
         const added_item = await axios.get(
-          `http://api.meetu.life/api/cart-items/${added_item_id}?populate=*`
+          `${BACKEND_HOST}/api/cart-items/${added_item_id}?populate=*`
         );
         const added_data = added_item.data.data;
         console.log("add item successfully:", added_data);
@@ -91,7 +94,7 @@ const ProductDetail = () => {
         const updated_cart_items_list = [...cart_items_data, added_data];
         console.log(updated_cart_items_list);
         const updated_cart = await axios.put(
-          `http://api.meetu.life/api/carts/${cartid}`,
+          `${BACKEND_HOST}/api/carts/${cartid}`,
           {
             data: {
               cart_items: updated_cart_items_list,
@@ -136,7 +139,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     axios
-      .get(`http://api.meetu.life/api/products/${id}?populate=*`)
+      .get(`${BACKEND_HOST}/api/products/${id}?populate=*`)
       .then(response => {
         if (response.data && response.data.data) {
           setProduct(response.data.data);
@@ -173,7 +176,7 @@ const ProductDetail = () => {
             <Col className='kol-image-col'>
               {ProductImage && ProductImage.data ? (
                 <Image
-                  src={`http://api.meetu.life${ProductImage.data.attributes.url}`}
+                  src={`${BACKEND_HOST}${ProductImage.data.attributes.url}`}
                   alt={Name}
                 />
               ) : (
