@@ -47,19 +47,23 @@ const KolDetail = () => {
     return <div>Loading...</div>;
   }
 
-  const { Name, Title, KolImage, Products } = kol.attributes;
+  const { Name, KolImage, Products } = kol.attributes;
 
   const renderRichText = richText => {
     return richText.map((block, index) => {
       switch (block.type) {
         case "paragraph":
-          return (
-            <p key={index}>
-              {block.children.map((child, childIndex) => (
-                <span key={childIndex}>{child.text}</span>
-              ))}
-            </p>
-          );
+        const paragraphText = block.children.map(child => child.text).join('\n');
+        return (
+          <p key={index} style={{fontSize: '12px'}}>
+            {paragraphText.split('\n').map((text, i) => (
+              <React.Fragment key={i}>
+                {text}
+                <br />
+              </React.Fragment>
+            ))}
+          </p>
+        );
         case "heading":
           return (
             <h2 key={index}>
@@ -79,6 +83,11 @@ const KolDetail = () => {
     language === "zh"
       ? kol.attributes.Description_zh
       : kol.attributes.Description_en;
+  
+  const Title =
+    language === "zh"
+    ? kol.attributes.Title_zh
+    : kol.attributes.Title_en;
 
   const handleContact = () => {
     setShowModal(true);

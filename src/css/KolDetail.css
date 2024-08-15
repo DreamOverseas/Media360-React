@@ -34,11 +34,9 @@
 }
 
 .kol-description {
-  padding-top: 1%;
-}
-
-.kol-description p {
-  white-space: pre-wrap;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .kol-product {
@@ -46,12 +44,11 @@
 }
 
 .kol-detail-section {
-  min-height: 650px;
+  height: 600px;
 }
 
 .kol-image-col {
-  width: 100%;
-  height: 100%;
+  height: 600px;
 }
 
 .kol-image-col img {
