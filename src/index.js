@@ -23,6 +23,7 @@ axios.interceptors.request.use(
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>
+    {/* To enable Strict mode, change the upper tag to <React.StrictMode>*/}
     <AuthProvider>
       <Router>
         <App />
