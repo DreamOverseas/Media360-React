@@ -9,10 +9,11 @@ import {
   Image,
   InputGroup,
   Modal,
-  Row
+  Row,
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useParams, Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import { Link, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
 
@@ -28,35 +29,6 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [cartModal, setCartModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
-  const renderRichText = richText => {
-    return richText.map((block, index) => {
-      switch (block.type) {
-        case "paragraph":
-        const paragraphText = block.children.map(child => child.text).join('\n');
-        return (
-          <p key={index} style={{fontSize: '12px'}}>
-            {paragraphText.split('\n').map((text, i) => (
-              <React.Fragment key={i}>
-                {text}
-                <br />
-              </React.Fragment>
-            ))}
-          </p>
-        );
-        case "heading":
-          return (
-            <h2 key={index}>
-              {block.children.map((child, childIndex) => (
-                <span key={childIndex}>{child.text}</span>
-              ))}
-            </h2>
-          );
-        default:
-          return null;
-      }
-    });
-  };
 
   const handleCloseCartModal = () => {
     setCartModal(false);
@@ -173,6 +145,11 @@ const ProductDetail = () => {
       ? product.attributes.Description_zh
       : product.attributes.Description_en;
 
+  const ShortDescription =
+    language === "zh"
+      ? product.attributes.Short_zh
+      : product.attributes.Short_en;
+
   return (
     <div>
       <section>
@@ -193,11 +170,13 @@ const ProductDetail = () => {
                 <Row>
                   <h1>{Name}</h1>
                 </Row>
-                <Row className='product-description'>
+                <Row className='product-short-description'>
                   <div>
-                    {Description
-                      ? renderRichText(Description)
-                      : "No description available"}
+                    {ShortDescription ? (
+                      <p>{ShortDescription}</p>
+                    ) : (
+                      "No description available"
+                    )}
                   </div>
                 </Row>
                 <Row className='product-price-quantity'>
@@ -260,18 +239,15 @@ const ProductDetail = () => {
         </Modal>
 
         <Modal show={cartModal} onHide={handleCloseCartModal}>
-          <Modal.Header closeButton>
-          </Modal.Header>
+          <Modal.Header closeButton></Modal.Header>
           <Modal.Body>
             <Row>
               <p>Please login in first</p>
             </Row>
           </Modal.Body>
           <Modal.Footer>
-            <Link to={'/login'}>
-              <Button variant='secondary'>
-                Login
-              </Button>
+            <Link to={"/login"}>
+              <Button variant='secondary'>Login</Button>
             </Link>
             <Button variant='secondary' onClick={handleCloseCartModal}>
               cancel
@@ -288,9 +264,11 @@ const ProductDetail = () => {
           </Row>
           <Row>
             <div>
-              {Description
-                ? renderRichText(Description)
-                : "No description available"}
+              {Description ? (
+                <ReactMarkdown>{Description}</ReactMarkdown>
+              ) : (
+                "No description available"
+              )}
             </div>
           </Row>
         </Container>
