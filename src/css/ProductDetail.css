@@ -1,19 +1,11 @@
-/* .product-detail {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  margin: 2rem;
-} */
 .product-detail {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 .product-detail-section {
-  min-height: 650px; /* 使用 min-height 而非固定高度 */
-  height: auto; /* 让高度自动调整 */
+  min-height: 650px;
+  height: auto;
 }
 
 .add-to-cart {
@@ -22,12 +14,23 @@
   margin: 0;
 }
 
+.kol-image-col {
+  height:600px;
+  object-fit: cover;
+}
+
+.product-detail-col {
+  height:600px;
+}
+
 .product-price-quantity {
   padding-bottom: 10%;
 }
 
 .product-description {
   flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .purchase-modal-background {
