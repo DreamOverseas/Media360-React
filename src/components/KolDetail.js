@@ -58,7 +58,7 @@ const KolDetail = () => {
         case "paragraph":
         const paragraphText = block.children.map(child => child.text).join('\n');
         return (
-          <p key={index} style={{fontSize: '12px'}}>
+          <p key={index} style={{fontSize: '13px'}}>
             {paragraphText.split('\n').map((text, i) => (
               <React.Fragment key={i}>
                 {text}
