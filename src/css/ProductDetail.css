@@ -15,19 +15,19 @@
 }
 
 .kol-image-col {
-  height:600px;
+  height: 600px;
   object-fit: cover;
 }
 
 .product-detail-col {
-  height:600px;
+  height: 600px;
 }
 
 .product-price-quantity {
   padding-bottom: 10%;
 }
 
-.product-description {
+.product-short-description {
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
