@@ -1,7 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import "../css/Contact.css";
-
 const Contact = () => {
+  const { t } = useTranslation();
+
   return (
     <div className='contact-page'>
       <div className='contact-content'>
@@ -9,21 +11,21 @@ const Contact = () => {
           <img src='Contact.png' alt='Contact' />
         </div>
         <div className='contact-form'>
-          <h2>Contact us</h2>
+          <h2>{t("contact.title")}</h2>
           <form>
             <div className='form-group'>
-              <label htmlFor='name'>Full name</label>
+              <label htmlFor='name'>{t("contact.full_name")}</label>
               <input type='text' id='name' name='name' />
             </div>
             <div className='form-group'>
-              <label htmlFor='email'>E-mail address</label>
+              <label htmlFor='email'>{t("contact.email_address")}</label>
               <input type='email' id='email' name='email' />
             </div>
             <div className='form-group'>
-              <label htmlFor='message'>Message</label>
+              <label htmlFor='message'>{t("contact.message")}</label>
               <textarea id='message' name='message' rows='4'></textarea>
             </div>
-            <button type='submit'>Send</button>
+            <button type='submit'>{t("contact.send")}</button>
           </form>
         </div>
       </div>
@@ -32,4 +34,3 @@ const Contact = () => {
 };
 
 export default Contact;
-

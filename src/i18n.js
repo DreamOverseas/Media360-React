@@ -16,6 +16,11 @@ const resources = {
       chinese: "中文",
       myProfile: "My Profile",
       logout: "Logout",
+      "contact.title": "Contact us",
+      "contact.full_name": "Full name",
+      "contact.email_address": "E-mail address",
+      "contact.message": "Message",
+      "contact.send": "Send",
     },
   },
   zh: {
@@ -28,6 +33,11 @@ const resources = {
       chinese: "中文",
       myProfile: "我的资料",
       logout: "登出",
+      "contact.title": "联系我们",
+      "contact.full_name": "全名",
+      "contact.email_address": "电子邮件地址",
+      "contact.message": "留言",
+      "contact.send": "发送",
     },
   },
 };
