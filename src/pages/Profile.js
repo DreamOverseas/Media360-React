@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookies from "js-cookie";
 import { Container, Row, Col, Modal, Button, Form, Alert } from 'react-bootstrap';
 import { AuthContext } from "../context/AuthContext";
+import "../css/Profile.css";
 
 const Profile = () => {
     const { user, setUser } = useContext(AuthContext);
@@ -21,11 +22,11 @@ const Profile = () => {
     };
 
     const openEdit = () => {
-        setShow (true);
+        setShow(true);
     };
 
     const closeEdit = () => {
-        setShow (false);
+        setShow(false);
     };
 
     const handleSave = async () => {
@@ -88,29 +89,21 @@ const Profile = () => {
 
     return (
         <Container className="mt-5 profile-container">
-            <br /><br /><br />
+
             <Row md={8} className="profile-intro-row">
                 {/* Profile Image */}
                 <Col xs={3}>
-                    {user ? (
-                        user.avatar && user.avatar !== "" ? (
-                            <img
-                            src={user.avatar.startsWith('http') ? user.avatar : `${BACKEND_HOST}${user.avatar.url}`}
-                            alt="User Profile"
-                            className="img-fluid rounded-circle"
+                    {user && user.avatar ? (
+                        <img
+                            src={`${BACKEND_HOST}${user.avatar.url}`}
+                            alt="Profile"
+                            className="img-fluid rounded-circle profile-avatar"
                         />
-                        ) : (
-                            <img
-                            src="default-avatar.jpg"
-                            alt="Default Profile"
-                            className="img-fluid rounded-circle"
-                        />
-                        )
                     ) : (
                         <img
                             src="default-avatar.jpg"
-                            alt="Default Profile"
-                            className="img-fluid rounded-circle"
+                            alt="Profile"
+                            className="img-fluid rounded-circle profile-avatar"
                         />
                     )}
                 </Col>
@@ -119,7 +112,7 @@ const Profile = () => {
                     <Col xs={9}>
                         <div className="d-flex justify-content-between align-items-center">
                             <h3 className="mb-0">{user.username}</h3>
-                            {/* <Button variant="link" className="text-primary" onClick={openEdit}>Edit</Button> */}
+                            <Button variant="link" className="text-primary" onClick={openEdit}>Edit</Button>
                         </div>
                         <p className="text-muted mt-2">
                             {user.bio}
@@ -127,7 +120,7 @@ const Profile = () => {
                     </Col>
                 ) : (
                     <Col xs={9}>
-                        <h2>Loading</h2>
+                        <h2>Loading...</h2>
                     </Col>
                 )}
             </Row>
@@ -165,6 +158,9 @@ const Profile = () => {
                                 accept="image/*"
                                 onChange={handleFileChange}
                             />
+                            <Form.Text id="AvatarHint" muted>
+                                Please select a square-shaped image ~
+                            </Form.Text>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
@@ -196,7 +192,6 @@ const Profile = () => {
                 </Modal.Footer>
             </Modal>
 
-            <br /><br /><br />
         </Container>
     );
 }
