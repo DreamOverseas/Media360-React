@@ -10,7 +10,7 @@ import {
   InputGroup,
   Row,
 } from "react-bootstrap";
-import Slider from "react-slick";
+import { useTranslation } from "react-i18next"; // 引入useTranslation
 import { AuthContext } from "../context/AuthContext";
 import "../css/ShoppingCart.css";
 
@@ -18,6 +18,7 @@ import "../css/ShoppingCart.css";
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const ShoppingCart = () => {
+  const { t } = useTranslation();
   const { user } = useContext(AuthContext);
   const [cartItems, setCartItems] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
@@ -233,10 +234,11 @@ const ShoppingCart = () => {
 
   return (
     <Container>
+      <h2>{t("cart.title")}</h2>
       {error && <p className='error'>{error}</p>}
       <Form.Check
         className='cart-checkbox'
-        label={<b>Select all</b>}
+        label={<b>{t("cart.select_all")}</b>}
         type='checkbox'
         checked={isAllSelected}
         onChange={() => handleAllSelectionChange()}
@@ -301,7 +303,7 @@ const ShoppingCart = () => {
                               className='delete_cart_button'
                               onClick={() => deleteItem(item.id)}
                             >
-                              Delete
+                              {t("cart.delete")}
                             </Button>
                           </Col>
                           <Col>
@@ -317,16 +319,20 @@ const ShoppingCart = () => {
           ))}
         </Col>
         <Col md={4}>
-          <h5>Order Summary</h5>
-          <p>Item Quantity: {selectedItemsCount}</p>
-          <p>Total Price: ${totalPrice}</p>
+          <h5>{t("cart.order_summary")}</h5>
+          <p>
+            {t("cart.item_quantity")}: {selectedItemsCount}
+          </p>
+          <p>
+            {t("cart.total_price")}: ${totalPrice}
+          </p>
           <Button variant='dark' block>
-            Proceed to Check Out
+            {t("cart.proceed_checkout")}
           </Button>
         </Col>
       </Row>
       <hr />
-      <h5>You might also like</h5>
+      {/*<h5>You might also like</h5>
       <Slider {...settings}>
         {recommendations.map(rec => (
           <div key={rec.id}>
@@ -335,7 +341,7 @@ const ShoppingCart = () => {
             </Card>
           </div>
         ))}
-      </Slider>
+      </Slider>*/}
     </Container>
   );
 };
