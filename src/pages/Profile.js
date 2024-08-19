@@ -1,8 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Cookies from "js-cookie";
 import { Container, Row, Col, Modal, Button, Form, Alert } from 'react-bootstrap';
 import { AuthContext } from "../context/AuthContext";
+import "../css/Profile.css";
 
 const Profile = () => {
     const { user, setUser } = useContext(AuthContext);
@@ -12,31 +13,46 @@ const Profile = () => {
     const [avatar, setAvatar] = useState(null);
     const [warning, setWarning] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [avatarUrl, setAvatarUrl] = useState(null);
 
     // Load Backend Host for API calls
     const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
+
+    // Recompute the avatar URL whenever the user or user.avatar changes
+    useEffect(() => {
+        if (user && user.avatar) {
+            // Update avatarUrl whenever user's avatar changes
+            setAvatarUrl(`${BACKEND_HOST}${user.avatar.url}`);
+        } else {
+            setAvatarUrl("default-avatar.jpg");
+        }
+    }, [BACKEND_HOST, user]);
 
     const handleFileChange = (e) => {
         setAvatar(e.target.files[0]);
     };
 
     const openEdit = () => {
-        setShow (true);
+        setUsername(user.username);
+        setBio(user.bio);
+        setShow(true);
     };
 
     const closeEdit = () => {
-        setShow (false);
+        setShow(false);
     };
 
     const handleSave = async () => {
+        if (username === user.username && bio === user.bio && avatar == null) {
+            // Close modal for no change to save API call consumptions
+            closeEdit();
+        }
         try {
             const token = Cookies.get("token");
-            setUsername(user.username);
-            setBio(user.bio);
 
             // First, upload the avatar if a new file is selected
             let avatarId = user.avatar?.id;
-            if (avatar) {
+            if (avatar && avatar !== null) {
                 const formData = new FormData();
                 formData.append('files', avatar);
 
@@ -70,6 +86,7 @@ const Profile = () => {
             console.error('Error saving user profile:', error.response?.data || error.message);
             setErrorMessage('Error saving profile. Please try again.');
         }
+        window.location.reload(); // force reload to get newest changes
     };
 
     const handleCancel = () => {
@@ -88,38 +105,22 @@ const Profile = () => {
 
     return (
         <Container className="mt-5 profile-container">
-            <br /><br /><br />
+
             <Row md={8} className="profile-intro-row">
                 {/* Profile Image */}
                 <Col xs={3}>
-                    {user ? (
-                        user.avatar && user.avatar !== "" ? (
-                            <img
-                            src={user.avatar.startsWith('http') ? user.avatar : `${BACKEND_HOST}${user.avatar.url}`}
-                            alt="User Profile"
-                            className="img-fluid rounded-circle"
-                        />
-                        ) : (
-                            <img
-                            src="default-avatar.jpg"
-                            alt="Default Profile"
-                            className="img-fluid rounded-circle"
-                        />
-                        )
-                    ) : (
-                        <img
-                            src="default-avatar.jpg"
-                            alt="Default Profile"
-                            className="img-fluid rounded-circle"
-                        />
-                    )}
+                    <img
+                        src={avatarUrl}
+                        alt="Profile"
+                        className="img-fluid rounded-circle profile-avatar"
+                    />
                 </Col>
                 {/* User Details */}
                 {user ? (
                     <Col xs={9}>
                         <div className="d-flex justify-content-between align-items-center">
                             <h3 className="mb-0">{user.username}</h3>
-                            {/* <Button variant="link" className="text-primary" onClick={openEdit}>Edit</Button> */}
+                            <Button variant="link" className="text-primary" onClick={openEdit}>Edit</Button>
                         </div>
                         <p className="text-muted mt-2">
                             {user.bio}
@@ -127,7 +128,7 @@ const Profile = () => {
                     </Col>
                 ) : (
                     <Col xs={9}>
-                        <h2>Loading</h2>
+                        <h2>Loading...</h2>
                     </Col>
                 )}
             </Row>
@@ -165,6 +166,9 @@ const Profile = () => {
                                 accept="image/*"
                                 onChange={handleFileChange}
                             />
+                            <Form.Text id="AvatarHint" muted>
+                                Please select a square-shaped image for best looking~
+                            </Form.Text>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
@@ -196,7 +200,6 @@ const Profile = () => {
                 </Modal.Footer>
             </Modal>
 
-            <br /><br /><br />
         </Container>
     );
 }

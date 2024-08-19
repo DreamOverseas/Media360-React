@@ -18,7 +18,7 @@ const AuthProvider = ({ children }) => {
       if (token) {
         try {
           const response = await axios.get(
-            `${BACKEND_HOST}/api/users/me`,
+            `${BACKEND_HOST}/api/users/me?populate=avatar`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
