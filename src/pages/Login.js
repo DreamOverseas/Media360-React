@@ -12,6 +12,7 @@ import {
   Row,
   Tab,
 } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../css/Login.css";
@@ -30,6 +31,7 @@ const Login = () => {
   const [error, setError] = useState(null);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { t } = useTranslation(); // Import the translation function
 
   const loginPicture = () => {
     setK(prev => (prev === true ? false : true));
@@ -46,7 +48,7 @@ const Login = () => {
         navigate("/");
       } catch (error) {
         const errorMessage =
-          error.response?.data?.error?.message || "An error occurred";
+          error.response?.data?.error?.message || t("error_occurred");
         setError(errorMessage);
       }
     }
@@ -72,11 +74,11 @@ const Login = () => {
         navigate("/");
       } catch (error) {
         const errorMessage =
-          error.response?.data?.error?.message || "An error occurred";
+          error.response?.data?.error?.message || t("error_occurred");
         setError(errorMessage);
       }
     } else {
-      setError("Passwords do not match");
+      setError(t("password_mismatch"));
     }
   };
 
@@ -97,7 +99,7 @@ const Login = () => {
                   }`}
                   onClick={() => setActiveKey("sign-in")}
                 >
-                  Sign in
+                  {t("sign_in")}
                 </Nav.Link>
               </Col>
               <Col>
@@ -108,7 +110,7 @@ const Login = () => {
                   }`}
                   onClick={() => setActiveKey("sign-up")}
                 >
-                  Sign up
+                  {t("sign_up")}
                 </Nav.Link>
               </Col>
             </Row>
@@ -121,36 +123,36 @@ const Login = () => {
                         <Card.Body>
                           <Form onSubmit={handleSignin}>
                             <Form.Group controlId='userEmail'>
-                              <Form.Label>Email</Form.Label>
+                              <Form.Label>{t("email")}</Form.Label>
                               <Form.Control
                                 type='email'
-                                placeholder='Enter email'
+                                placeholder={t("enter_email")}
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                                 isInvalid={submitted && !email}
                               />
                               <Form.Control.Feedback type='invalid'>
-                                Please provide a valid email.
+                                {t("email_invalid")}
                               </Form.Control.Feedback>
                             </Form.Group>
 
                             <Form.Group controlId='userPassword'>
-                              <Form.Label>Password</Form.Label>
+                              <Form.Label>{t("password")}</Form.Label>
                               <Form.Control
                                 type='password'
-                                placeholder='Password'
+                                placeholder={t("enter_password")}
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
                                 isInvalid={submitted && !password}
                               />
                               <Form.Control.Feedback type='invalid'>
-                                Password is required.
+                                {t("password_required")}
                               </Form.Control.Feedback>
                             </Form.Group>
                             {error && <p className='error'>{error}</p>}
                             <div className='form-button-container'>
                               <Button variant='primary' type='submit'>
-                                Sign in
+                                {t("sign_in")}
                               </Button>
                             </div>
                           </Form>
@@ -166,62 +168,62 @@ const Login = () => {
                         <Card.Body>
                           <Form onSubmit={handleSignup}>
                             <Form.Group controlId='userUsername'>
-                              <Form.Label>Username</Form.Label>
+                              <Form.Label>{t("username")}</Form.Label>
                               <Form.Control
                                 type='text'
-                                placeholder='Enter username'
+                                placeholder={t("enter_username")}
                                 value={username}
                                 onChange={e => setUsername(e.target.value)}
                                 isInvalid={submitted && !username}
                               />
                               <Form.Control.Feedback type='invalid'>
-                                Please provide a valid username.
+                                {t("username_invalid")}
                               </Form.Control.Feedback>
                             </Form.Group>
 
                             <Form.Group controlId='userEmail'>
-                              <Form.Label>Email</Form.Label>
+                              <Form.Label>{t("email")}</Form.Label>
                               <Form.Control
                                 type='email'
-                                placeholder='Enter email'
+                                placeholder={t("enter_email")}
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                                 isInvalid={submitted && !email}
                               />
                               <Form.Control.Feedback type='invalid'>
-                                Please provide a valid email.
+                                {t("email_invalid")}
                               </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group controlId='userPassword'>
-                              <Form.Label>Password</Form.Label>
+                              <Form.Label>{t("password")}</Form.Label>
                               <Form.Control
                                 type='password'
-                                placeholder='Password'
+                                placeholder={t("enter_password")}
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
                                 isInvalid={submitted && !password}
                               />
                               <Form.Control.Feedback type='invalid'>
-                                Password is required.
+                                {t("password_required")}
                               </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group controlId='confirmedPassword'>
-                              <Form.Label>Confirm Password</Form.Label>
+                              <Form.Label>{t("confirm_password")}</Form.Label>
                               <Form.Control
                                 type='password'
-                                placeholder='Confirm Password'
+                                placeholder={t("confirm_password")}
                                 value={confirmed}
                                 onChange={e => setConfirmed(e.target.value)}
                                 isInvalid={submitted && password !== confirmed}
                               />
                               <Form.Control.Feedback type='invalid'>
-                                Two passwords do not match, please check again.
+                                {t("password_mismatch")}
                               </Form.Control.Feedback>
                             </Form.Group>
                             {error && <p className='error'>{error}</p>}
                             <div className='form-button-container'>
                               <Button variant='primary' type='submit'>
-                                Sign up
+                                {t("sign_up")}
                               </Button>
                             </div>
                           </Form>
@@ -237,7 +239,7 @@ const Login = () => {
         <Col md={6}>
           <Image
             className='login-image-display'
-            src={k ? "sign-in.jpeg" : "sign-up.jpeg"}
+            src={k ? t("sign_in_image") : t("sign_up_image")}
             fluid
           />
         </Col>

@@ -257,7 +257,7 @@ const ShoppingCart = () => {
                 />
               </Col>
               <Col md={11}>
-                <Card className='mb-3 cart-item'>
+                <Card className='mb-3 cart-item  card-small'>
                   <Row noGutters>
                     <Col md={4} className='item-image-container'>
                       <Card.Img
