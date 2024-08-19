@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Cookies from "js-cookie";
 import { Container, Row, Col, Modal, Button, Form, Alert } from 'react-bootstrap';
@@ -13,15 +13,28 @@ const Profile = () => {
     const [avatar, setAvatar] = useState(null);
     const [warning, setWarning] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [avatarUrl, setAvatarUrl] = useState(null);
 
     // Load Backend Host for API calls
     const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
+
+    // Recompute the avatar URL whenever the user or user.avatar changes
+    useEffect(() => {
+        if (user && user.avatar) {
+            // Update avatarUrl whenever user's avatar changes
+            setAvatarUrl(`${BACKEND_HOST}${user.avatar.url}`);
+        } else {
+            setAvatarUrl("default-avatar.jpg");
+        }
+    }, [BACKEND_HOST, user]);
 
     const handleFileChange = (e) => {
         setAvatar(e.target.files[0]);
     };
 
     const openEdit = () => {
+        setUsername(user.username);
+        setBio(user.bio);
         setShow(true);
     };
 
@@ -30,14 +43,16 @@ const Profile = () => {
     };
 
     const handleSave = async () => {
+        if (username === user.username && bio === user.bio && avatar == null) {
+            // Close modal for no change to save API call consumptions
+            closeEdit();
+        }
         try {
             const token = Cookies.get("token");
-            setUsername(user.username);
-            setBio(user.bio);
 
             // First, upload the avatar if a new file is selected
             let avatarId = user.avatar?.id;
-            if (avatar) {
+            if (avatar && avatar !== null) {
                 const formData = new FormData();
                 formData.append('files', avatar);
 
@@ -68,8 +83,9 @@ const Profile = () => {
             // Close modal on success
             closeEdit();
         } catch (error) {
-            console.error('Error saving user profile:', error.response?.data || error.message);
-            setErrorMessage('Error saving profile. Please try again.');
+            setErrorMessage('Error saving user profile:', error);
+            // console.error('Error saving user profile:', error.response?.data || error.message);
+            // setErrorMessage('Error saving profile. Please try again.');
         }
     };
 
@@ -93,19 +109,11 @@ const Profile = () => {
             <Row md={8} className="profile-intro-row">
                 {/* Profile Image */}
                 <Col xs={3}>
-                    {user && user.avatar ? (
-                        <img
-                            src={`${BACKEND_HOST}${user.avatar.url}`}
-                            alt="Profile"
-                            className="img-fluid rounded-circle profile-avatar"
-                        />
-                    ) : (
-                        <img
-                            src="default-avatar.jpg"
-                            alt="Profile"
-                            className="img-fluid rounded-circle profile-avatar"
-                        />
-                    )}
+                    <img
+                        src={avatarUrl}
+                        alt="Profile"
+                        className="img-fluid rounded-circle profile-avatar"
+                    />
                 </Col>
                 {/* User Details */}
                 {user ? (
@@ -159,7 +167,7 @@ const Profile = () => {
                                 onChange={handleFileChange}
                             />
                             <Form.Text id="AvatarHint" muted>
-                                Please select a square-shaped image ~
+                                Please select a square-shaped image for best looking~
                             </Form.Text>
                         </Form.Group>
                     </Form>
