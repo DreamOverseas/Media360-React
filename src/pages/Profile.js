@@ -83,10 +83,10 @@ const Profile = () => {
             // Close modal on success
             closeEdit();
         } catch (error) {
-            setErrorMessage('Error saving user profile:', error);
-            // console.error('Error saving user profile:', error.response?.data || error.message);
-            // setErrorMessage('Error saving profile. Please try again.');
+            console.error('Error saving user profile:', error.response?.data || error.message);
+            setErrorMessage('Error saving profile. Please try again.');
         }
+        window.location.reload(); // force reload to get newest changes
     };
 
     const handleCancel = () => {
