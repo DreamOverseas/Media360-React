@@ -1,0 +1,15 @@
+.profile-container {
+    align-items: center;
+    min-height: 50vh;
+}
+
+.profile-intro-row {
+    align-items: center;
+    height: 50vh;
+    width: auto;
+}
+
+.profile-avatar {
+    height: 300px;
+    width: 300px;
+}
