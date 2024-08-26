@@ -4,7 +4,7 @@ import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import '../css/Footer.css';
 
 // Load Backend Host for API calls
-const EMAIL_SUBSCRIPTION = process.env.EMAIL_SUBSCRIPTION;
+const EMAIL_SUBSCRIPTION = process.env.REACT_APP_EMAIL_SUBSCRIPTION+"360media-quick/";
 
 const Footer = () => {
   const [email, setEmail] = useState('');
@@ -17,7 +17,7 @@ const Footer = () => {
   const subscribMe = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post({EMAIL_SUBSCRIPTION}, {
+      const response = await axios.post(EMAIL_SUBSCRIPTION, {
         email
       });
       setMessage(response.data.message);

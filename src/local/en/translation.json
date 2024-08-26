@@ -1,7 +1,8 @@
 {
     "contact": {
       "title": "Contact us",
-      "full_name": "Full name",
+      "firstname": "First name",
+      "lastname": "Last name",
       "email_address": "E-mail address",
       "message": "Message",
       "send": "Send"
