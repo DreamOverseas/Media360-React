@@ -17,7 +17,7 @@ const Footer = () => {
   const subscribMe = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post({EMAIL_SUBSCRIPTION}, {
+      const response = await axios.post(EMAIL_SUBSCRIPTION, {
         email
       });
       setMessage(response.data.message);
