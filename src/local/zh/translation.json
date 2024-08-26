@@ -1,7 +1,8 @@
 {
     "contact": {
       "title": "联系我们",
-      "full_name": "全名",
+      "firstname": "名",
+      "lastname": "姓",
       "email_address": "电子邮箱",
       "message": "信息",
       "send": "发送"

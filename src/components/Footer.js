@@ -4,7 +4,7 @@ import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import '../css/Footer.css';
 
 // Load Backend Host for API calls
-const EMAIL_SUBSCRIPTION = process.env.EMAIL_SUBSCRIPTION;
+const EMAIL_SUBSCRIPTION = process.env.REACT_APP_EMAIL_SUBSCRIPTION+"360media-quick/";
 
 const Footer = () => {
   const [email, setEmail] = useState('');
