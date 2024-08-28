@@ -1,7 +1,7 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
-import { useMediaQuery } from "react-responsive";
+// import { useMediaQuery } from "react-responsive";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -16,7 +16,6 @@ import Contact from "./pages/Contact";
 import Events from "./pages/Events";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import MobileHome from "./pages/MobileHome";
 import Profile from "./pages/Profile";
 import ShoppingCart from "./pages/ShoppingCart";
 
@@ -36,13 +35,13 @@ function App() {
   }, [location]);
 
   // Check if is on desktop
-  const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
+  // const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 
   return (
     <div className='App'>
       <Header />
       <Routes>
-        <Route exact path='/' element={isDesktop ? <Home /> : <MobileHome />} />
+        <Route exact path='/' element={<Home />} />
         <Route path='/profile' element={<Profile />} />
         <Route exact path='/productStudy' element={<ProductPage />} />
         <Route exact path='/productFinance' element={<ProductPage />} />
