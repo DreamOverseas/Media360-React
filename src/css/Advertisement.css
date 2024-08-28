@@ -1,0 +1,16 @@
+.ad-item {
+  margin: 0 10px; /* Add some horizontal space between ads */
+}
+
+.ads-carousel {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto; /* Center the carousel */
+  padding-top: 20px; /* Add padding at the top */
+}
+
+.ad-image {
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+}
