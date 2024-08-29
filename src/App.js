@@ -25,11 +25,11 @@ function App() {
   const [footer, setFooter] = useState();
   useEffect(() => {
     if (location.pathname === "/") {
-      document.body.style.marginTop = "0";
+      //document.body.style.marginTop = "0";
       // eslint-disable-next-line react-hooks/exhaustive-deps
       setFooter(<></>);
     } else {
-      document.body.style.marginTop = "67px"; // Reserved margin for fix-top Navbar
+      //document.body.style.marginTop = "72px"; // Reserved margin for fix-top Navbar
       setFooter(<Footer />);
     }
   }, [location]);
