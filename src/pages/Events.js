@@ -1,55 +1,40 @@
-import React, { useState } from 'react';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+// import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import "../css/EventPage.css";
 
 // Load Backend Host for API calls
-//const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
+const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
-const eventsImg = [
-    {
-        image: "events/showcase1.png",
-        title: "Event Title 1",
-        brief: "Brief description of event 1.",
-        description: "Long description of event 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-    },
-    {
-        image: "events/showcase1.png",
-        title: "Event Title 2",
-        brief: "Brief description of event 2.",
-        description: "Long description of event 2. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-    },
-    {
-        image: "events/showcase1.png",
-        title: "Event Title 3",
-        brief: "Brief description of event 3.",
-        description: "Long description of event 3. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-    }
-];
+// const initialImages = [
+//     "events/case1.png",
+//     "events/case2.png",
+//     "events/case3.png",
+//     "events/case4.png",
+//     "events/case1.png",
+//     "events/case2.png"
 
-const initialImages = [
-    "events/case1.png",
-    "events/case2.png",
-    "events/case3.png",
-    "events/case4.png",
-    "events/case1.png",
-    "events/case2.png"
-
-];
+// ];
 
 const Events = () => {
-    const [images, setImages] = useState(initialImages);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [error, setError] = useState(null);
+    const [events, setEvents] = useState([]);
+    const [images, setImages] = useState([]);
+    const { i18n } = useTranslation();
 
     const handleNext = () => {
-        if (currentIndex + 4 < initialImages.length) {
+        if (currentIndex + 4 < events.length) {
             setCurrentIndex(currentIndex + 1);
         } else {
             const nextImageIndex = currentIndex + 4;
-            if (nextImageIndex < initialImages.length) {
-                setImages([...images, initialImages[nextImageIndex]]);
+            if (nextImageIndex < events.length) {
+                setImages([...images, image_list[nextImageIndex]]);
                 setCurrentIndex(currentIndex + 1);
             }
         }
@@ -61,6 +46,36 @@ const Events = () => {
         }
     };
 
+    useEffect(() => {
+        axios
+          .get(`${BACKEND_HOST}/api/events?populate=*`)
+          .then(response => {
+            if (response.data && response.data.data) {
+              setEvents(response.data.data);
+              console.log(events);
+            } else {
+              setError("No data found");
+            }
+          })
+          .catch(error => {
+            console.error("Error fetching data: ", error);
+            setError("Error fetching data");
+          });
+      }, []);
+
+    const language = i18n.language;
+    const image_list = [];
+    for (let i = 0; i < events.length; i++) {
+        image_list.push(events[i].attributes.Image.data.attributes.url)
+        
+    }
+
+    setImages(image_list);
+
+    if (error) {
+        return <div>{error}</div>;
+    }
+
     return (
         <div>
             <section className="event-page-background-image-container">
@@ -69,20 +84,22 @@ const Events = () => {
             <br />
             <section>
                 <Container>
-                    {eventsImg.map((event, index) => (
+                    {events.map((event, index) => (
                         <Row key={index} className="event-item mb-5">
                             <Col lg={6} className="d-flex justify-content-end">
-                                <Image src={event.image} fluid />
+                                
+                                {event ? (
+                                    <Image src={`${BACKEND_HOST}${event.attributes.Image.data.attributes.url}`} fluid/>
+                                ) : (
+                                    <Image src='https://placehold.co/350x350' alt='Placeholder' fluid />
+                                )}
                             </Col>
                             <Col lg={6} className="event-page-section">
                                 <Row>
-                                    <Col>
-                                        <h4>{event.title}</h4>
-                                        <p>{event.brief}</p>
-                                    </Col>
+                                    <h4>{language ==="zh" ? event.attributes.Name_zh : event.attributes.Name_en}</h4>
                                 </Row>
                                 <Row className="event-page-description">
-                                    <p>{event.description}</p>
+                                    <p>{language ==="zh" ? event.attributes.Short_zh : event.attributes.Short_en}</p>
                                 </Row>
                                 <Row className="event-page-reserve mt-auto">
                                     <Button>Reserve Now</Button>
@@ -93,7 +110,7 @@ const Events = () => {
                 </Container>
             </section>
             <br />
-            <section>
+            {/* <section>
                 <Container fluid>
                     <Row>
                         <Col md={5}><hr /></Col>
@@ -129,7 +146,7 @@ const Events = () => {
                         </Col>
                     </Row>
                 </Container>
-            </section>
+            </section> */}
             <br />
         </div>
     );

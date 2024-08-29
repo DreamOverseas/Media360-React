@@ -17,7 +17,7 @@ const Header = () => {
     <div>
       <Navbar bg='light' expand='lg' fixed='top' className='navbar-custom'>
         <Nav.Link href='/'>
-          <Image className='nav-logo' src='header_logo.png' alt='360 Media' />
+          <Image className='nav-logo' src='/header_logo.png' alt='360 Media' />
         </Nav.Link>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
