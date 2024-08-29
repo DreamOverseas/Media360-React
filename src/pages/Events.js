@@ -2,10 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import "../css/EventPage.css";
 
 // Load Backend Host for API calls
@@ -34,7 +34,7 @@ const Events = () => {
         } else {
             const nextImageIndex = currentIndex + 4;
             if (nextImageIndex < events.length) {
-                setImages([...images, events[nextImageIndex]]);
+                setImages([...images, image_list[nextImageIndex]]);
                 setCurrentIndex(currentIndex + 1);
             }
         }
@@ -69,6 +69,8 @@ const Events = () => {
         image_list.push(events[i].attributes.Image.data.attributes.url)
         
     }
+
+    setImages(image_list);
 
     if (error) {
         return <div>{error}</div>;
@@ -108,7 +110,7 @@ const Events = () => {
                 </Container>
             </section>
             <br />
-            <section>
+            {/* <section>
                 <Container fluid>
                     <Row>
                         <Col md={5}><hr /></Col>
@@ -120,7 +122,7 @@ const Events = () => {
                 </Container>
             </section>
             <br />
-            {/* <section>
+            <section>
                 <Container fluid>
                     <Row>
                         <Col xs={1} className="d-flex align-items-center justify-content-start">
