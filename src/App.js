@@ -1,8 +1,8 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useEffect, useState } from "react";
+import React from "react";
 // import { useMediaQuery } from "react-responsive";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes /*, useLocation */ } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "./App.css";
@@ -20,19 +20,18 @@ import Profile from "./pages/Profile";
 import ShoppingCart from "./pages/ShoppingCart";
 
 function App() {
-  // If n only if homepage, the topmargin is 0
-  const location = useLocation();
-  const [footer, setFooter] = useState();
-  useEffect(() => {
-    if (location.pathname === "/") {
-      //document.body.style.marginTop = "0";
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      setFooter(<></>);
-    } else {
-      //document.body.style.marginTop = "72px"; // Reserved margin for fix-top Navbar
-      setFooter(<Footer />);
-    }
-  }, [location]);
+  // Resercved for different needs of costomisation across pages
+  // const location = useLocation();
+  // const [footer, setFooter] = useState();
+  // useEffect(() => {
+  //   if (location.pathname === "/") {
+  //     //document.body.style.marginTop = "0";
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps
+  //     setFooter(<></>);
+  //   } else {
+  //     setFooter(<Footer />);
+  //   }
+  // }, [location]);
 
   // Check if is on desktop
   // const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
@@ -40,25 +39,25 @@ function App() {
   return (
     <div className='App'>
       <Header />
-      <div  className="main-content">
-      <Routes>
-        <Route exact path='/' element={<Home />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route exact path='/productStudy' element={<ProductPage />} />
-        <Route exact path='/productFinance' element={<ProductPage />} />
-        <Route exact path='/productTravel' element={<ProductPage />} />
-        <Route exact path='/productLife' element={<ProductPage />} />
-        <Route path='/product/:id' element={<ProductDetail />} />
-        <Route path='/eventpage' element={<Events />} />
-        <Route exact path='/product/:id' element={<ProductDetail />} />
-        <Route exact path='/login' element={<Login />} />
-        <Route path='/contact' element={<Contact />} />
-        <Route path='/kolpage' element={<KolPage />} />
-        <Route path='/kol/:id' element={<KolDetail />} />
-        <Route path='/cart' element={<ShoppingCart />} />
-      </Routes>
+      <div className="main-content">
+        <Routes>
+          <Route exact path='/' element={<Home />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route exact path='/productStudy' element={<ProductPage />} />
+          <Route exact path='/productFinance' element={<ProductPage />} />
+          <Route exact path='/productTravel' element={<ProductPage />} />
+          <Route exact path='/productLife' element={<ProductPage />} />
+          <Route path='/product/:id' element={<ProductDetail />} />
+          <Route path='/eventpage' element={<Events />} />
+          <Route exact path='/product/:id' element={<ProductDetail />} />
+          <Route exact path='/login' element={<Login />} />
+          <Route path='/contact' element={<Contact />} />
+          <Route path='/kolpage' element={<KolPage />} />
+          <Route path='/kol/:id' element={<KolDetail />} />
+          <Route path='/cart' element={<ShoppingCart />} />
+        </Routes>
       </div>
-      {footer}
+      <Footer />
     </div>
   );
 }
