@@ -40,6 +40,7 @@ function App() {
   return (
     <div className='App'>
       <Header />
+      <div  className="main-content">
       <Routes>
         <Route exact path='/' element={<Home />} />
         <Route path='/profile' element={<Profile />} />
@@ -56,6 +57,7 @@ function App() {
         <Route path='/kol/:id' element={<KolDetail />} />
         <Route path='/cart' element={<ShoppingCart />} />
       </Routes>
+      </div>
       {footer}
     </div>
   );
