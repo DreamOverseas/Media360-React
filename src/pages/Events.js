@@ -22,29 +22,29 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 // ];
 
 const Events = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+    // const [currentIndex, setCurrentIndex] = useState(0);
     const [error, setError] = useState(null);
     const [events, setEvents] = useState([]);
-    const [images, setImages] = useState([]);
+    // const [images, setImages] = useState([]);
     const { i18n } = useTranslation();
 
-    const handleNext = () => {
-        if (currentIndex + 4 < events.length) {
-            setCurrentIndex(currentIndex + 1);
-        } else {
-            const nextImageIndex = currentIndex + 4;
-            if (nextImageIndex < events.length) {
-                setImages([...images, image_list[nextImageIndex]]);
-                setCurrentIndex(currentIndex + 1);
-            }
-        }
-    };
+    // const handleNext = () => {
+    //     if (currentIndex + 4 < events.length) {
+    //         setCurrentIndex(currentIndex + 1);
+    //     } else {
+    //         const nextImageIndex = currentIndex + 4;
+    //         if (nextImageIndex < events.length) {
+    //             setImages([...images, image_list[nextImageIndex]]);
+    //             setCurrentIndex(currentIndex + 1);
+    //         }
+    //     }
+    // };
 
-    const handlePrev = () => {
-        if (currentIndex > 0) {
-            setCurrentIndex(currentIndex - 1);
-        }
-    };
+    // const handlePrev = () => {
+    //     if (currentIndex > 0) {
+    //         setCurrentIndex(currentIndex - 1);
+    //     }
+    // };
 
     useEffect(() => {
         axios
@@ -52,7 +52,6 @@ const Events = () => {
           .then(response => {
             if (response.data && response.data.data) {
               setEvents(response.data.data);
-              console.log(events);
             } else {
               setError("No data found");
             }
@@ -64,13 +63,13 @@ const Events = () => {
       }, []);
 
     const language = i18n.language;
-    const image_list = [];
-    for (let i = 0; i < events.length; i++) {
-        image_list.push(events[i].attributes.Image.data.attributes.url)
+    // const image_list = [];
+    // for (let i = 0; i < events.length; i++) {
+    //     image_list.push(events[i].attributes.Image.data.attributes.url)
         
-    }
+    // }
 
-    setImages(image_list);
+    // setImages(image_list);
 
     if (error) {
         return <div>{error}</div>;
