@@ -24,10 +24,7 @@ const Header = () => {
           <Nav className='ms-auto'>
             <Nav.Link href='/kolpage'>{t("kol")}</Nav.Link>
             <Nav.Link href='/eventpage'>{t("events")}</Nav.Link>
-            <Nav.Link href='/Contact'>{t("contact")}</Nav.Link>
-            <Nav.Link href='/cart'>
-              <i className='bi bi-cart nav-icon'></i>
-            </Nav.Link>
+            <Nav.Link href='/contact'>{t("contact")}</Nav.Link>
             <NavDropdown title={t("language")} id='language-dropdown'>
               <NavDropdown.Item onClick={() => changeLanguage("en")}>
                 English
@@ -38,15 +35,20 @@ const Header = () => {
             </NavDropdown>
 
             {user ? (
-              <NavDropdown title={user.username} id='basic-nav-dropdown'>
-                <NavDropdown.Item href='/profile'>
-                  {t("myProfile")}
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href='/' onClick={logout}>
-                  {t("logout")}
-                </NavDropdown.Item>
-              </NavDropdown>
+              <>
+                <Nav.Link href='/cart'>
+                  <i className='bi bi-cart nav-icon'></i>
+                </Nav.Link>
+                <NavDropdown title={user.username} id='basic-nav-dropdown'>
+                  <NavDropdown.Item href='/profile'>
+                    {t("myProfile")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href='/' onClick={logout}>
+                    {t("logout")}
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </>
             ) : (
               <Nav.Link href='/login'>
                 <i className='bi bi-person nav-icon'></i>
