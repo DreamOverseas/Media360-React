@@ -206,7 +206,7 @@ const ProductDetail = () => {
                 <Row>
                   <Col>
                     <Button className='add-to-cart' onClick={handlePurchase}>
-                      Purchase and Enquiry Now
+                      Enquiry Now
                     </Button>
                   </Col>
                   <Col>

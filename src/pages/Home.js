@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Image, Row } from "react-bootstrap";
+import { Link} from "react-router-dom";
 import Advertisement from "../components/Advertisement";
 import "../css/Home.css";
 
@@ -51,7 +52,7 @@ const HomePage = () => {
         const response = await axios.get(
           `${BACKEND_HOST}/api/events?populate=*`
         );
-        setEvents(response.data.data);
+        setEvents(response.data.data.slice(0,8));
       } catch (error) {
         console.error("Error fetching events:", error);
       }
@@ -75,14 +76,16 @@ const HomePage = () => {
         <Row className='kol-row justify-content-center'>
           {kols.length > 0 ? (
             kols.map(kol => (
-              <Col xs={3} sm={2} md={1} className='kol-col' key={kol.id}>
-                <Image
-                  src={`${BACKEND_HOST}${kol.attributes.KolImage?.data?.attributes?.url}`}
-                  roundedCircle
-                  className='kol-image'
-                  alt={kol.attributes.Name}
-                />
-              </Col>
+                <Col xs={3} sm={2} md={1} className='kol-col' key={kol.id}>
+                  <Link to={`/kol/${kol.id}`}>
+                    <Image
+                      src={`${BACKEND_HOST}${kol.attributes.KolImage?.data?.attributes?.url}`}
+                      roundedCircle
+                      className='kol-image'
+                      alt={kol.attributes.Name}
+                    />
+                  </Link>
+                </Col>
             ))
           ) : (
             <p>No KOLs available</p>
@@ -97,17 +100,19 @@ const HomePage = () => {
           {products.length > 0 ? (
             products.map(product => (
               <Col xs={12} sm={6} md={3} key={product.id}>
-                <Card className='product-card'>
-                  <Card.Img
-                    variant='top'
-                    src={`${BACKEND_HOST}${product.attributes.ProductImage?.data?.attributes?.url}`}
-                    alt={product.attributes.Name}
-                  />
-                  <Card.Body>
-                    <Card.Title>{product.attributes.Name}</Card.Title>
-                    <Card.Text>¥{product.attributes.Price}</Card.Text>
-                  </Card.Body>
-                </Card>
+                <Link to={`/product/${product.id}`} className="home-card-link-ProductPage">
+                  <Card className='product-card'>
+                      <Card.Img
+                        variant='top'
+                        src={`${BACKEND_HOST}${product.attributes.ProductImage?.data?.attributes?.url}`}
+                        alt={product.attributes.Name}
+                      />
+                      <Card.Body>
+                        <Card.Title>{product.attributes.Name}</Card.Title>
+                        <Card.Text>¥{product.attributes.Price}</Card.Text>
+                      </Card.Body>
+                    </Card>
+                </Link>
               </Col>
             ))
           ) : (
@@ -123,13 +128,15 @@ const HomePage = () => {
           {events.length > 0 ? (
             events.map(event => (
               <Col xs={12} sm={6} md={3} key={event.id}>
-                <Card className='event-card'>
-                  <Card.Img
-                    variant='top'
-                    src={`${BACKEND_HOST}${event.attributes.EventImage?.data?.attributes?.url}`}
-                    alt={event.attributes.Title}
-                  />
-                </Card>
+                <Link to={`/event/${event.id}`} className="event-card-link">
+                  <Card className='event-card'>
+                    <Card.Img
+                      variant='top'
+                      src={`${BACKEND_HOST}${event.attributes.Image.data.attributes?.url}`}
+                      alt={event.attributes.Title}
+                    />
+                  </Card>
+                </Link>
               </Col>
             ))
           ) : (
