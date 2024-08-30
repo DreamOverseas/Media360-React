@@ -258,22 +258,22 @@ const ProductDetail = () => {
       <br />
       <br />
       <section>
-        <Container>
-          <Row>
-            <h5>Product Description</h5>
-          </Row>
-          <Row>
-            <div>
-              {Description ? (
-                <ReactMarkdown>{Description}</ReactMarkdown>
-              ) : (
-                "No description available"
-              )}
-            </div>
-          </Row>
-        </Container>
-        <br />
-      </section>
+  <Container>
+    <Row>
+      <h5>Product Description</h5>
+    </Row>
+    <Row>
+      <div className="markdown-content">
+        {Description ? (
+          <ReactMarkdown>{Description}</ReactMarkdown>
+        ) : (
+          "No description available"
+        )}
+      </div>
+    </Row>
+  </Container>
+  <br />
+</section>
     </div>
   );
 };

@@ -62,3 +62,52 @@
 .price-control button {
   margin: 0;
 }
+
+
+
+/* Ensure the image is centered */
+.markdown-content img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Style the headings for better readability */
+.markdown-content h1, .markdown-content h2, .markdown-content h3 {
+  color: #2c3e50;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+/* Paragraph and text styling */
+.markdown-content p {
+  line-height: 1.8;
+  margin-bottom: 1em;
+  color: #34495e;
+}
+
+/* Lists styling */
+.markdown-content ul {
+  padding-left: 20px;
+  margin-bottom: 1.5em;
+}
+
+/* Blockquote styling */
+.markdown-content blockquote {
+  border-left: 5px solid #ecf0f1;
+  padding-left: 1em;
+  color: #7f8c8d;
+  margin-left: 0;
+  margin-right: 0;
+  font-style: italic;
+}
+
+/* Code block styling */
+.markdown-content code {
+  background-color: #f0f0f0;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: 'Courier New', Courier, monospace;
+}
