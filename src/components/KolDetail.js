@@ -19,7 +19,7 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const KolDetail = () => {
   const { id } = useParams();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [kol, setKol] = useState(null);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -47,7 +47,7 @@ const KolDetail = () => {
   }
 
   if (!kol) {
-    return <div>Loading...</div>;
+    return <div>{t("loading")}</div>;
   }
 
   const { Name, KolImage, Products } = kol.attributes;
@@ -104,7 +104,7 @@ const KolDetail = () => {
     <div>
       <section className='kol-detail-background-image-container'>
         <h1 className='kol-detail-banner-h1'>
-          <b>Our People</b>
+          <b>{t("kol")}</b>
         </h1>
       </section>
       <br />
@@ -121,12 +121,12 @@ const KolDetail = () => {
                   <div>
                     {Description
                       ? renderRichText(Description)
-                      : "No description available"}
+                      : t("noDescription")}
                   </div>
                 </Row>
                 <Row className='kol-contact'>
                   <Col>
-                    <Button onClick={handleContact}>Contact Now</Button>
+                    <Button onClick={handleContact}>{t("contactNow")}</Button>
                   </Col>
                   <Col className='d-flex align-items-center'>
                     <i className='bi bi-wechat contact-icon'></i>
@@ -160,7 +160,7 @@ const KolDetail = () => {
             </Modal.Body>
             <Modal.Footer>
               <Button variant='secondary' onClick={handleCloseModal}>
-                Close
+                {t("close")}
               </Button>
             </Modal.Footer>
           </Modal>
@@ -178,7 +178,7 @@ const KolDetail = () => {
               md={2}
               className='d-flex justify-content-center align-items-center'
             >
-              <h5>Highlight Products</h5>
+              <h5>{t("highlightedProduct")}</h5>
             </Col>
             <Col md={5}>
               <hr />
@@ -231,7 +231,7 @@ const KolDetail = () => {
               </Col>
             ))
           ) : (
-            <p>No products available</p>
+            <p>{t("noProducts")}</p>
           )}
         </Row>
       </Container>
