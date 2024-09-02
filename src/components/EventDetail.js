@@ -17,7 +17,7 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const EventDetail = () => {
   const { id } = useParams();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [event, setEvent] = useState(null);
   const [error, setError] = useState(null);
 
@@ -44,7 +44,7 @@ const EventDetail = () => {
   }
 
   if (!event) {
-    return <div>Loading...</div>;
+    return <div>{t("loading")}</div>;
   }
   const EventImage = event.attributes.Image;
   const language = i18n.language;
@@ -60,6 +60,10 @@ const EventDetail = () => {
 
   return (
     <div>
+      <section className="event-detail-background-image-container">
+        <h1 className="event-detail-banner-h1"><b>{t("event")}</b></h1>
+      </section>
+      <br />
       <section>
         <Container>
           <Row className='event-detail-section'>
@@ -82,12 +86,12 @@ const EventDetail = () => {
                   <div>
                     {Description
                       ? <ReactMarkdown>{ShortDescription}</ReactMarkdown>
-                      : "No description available"}
+                      : t("noDescription")}
                   </div>
                 </Row>
                 <Row className='event-contact'>
                   <Col>
-                    <Button>Coming soon</Button>
+                    <Button>{t("comingSoon")}</Button>
                   </Col>
                 </Row>
               </Container>
@@ -100,14 +104,14 @@ const EventDetail = () => {
       <section>
         <Container>
           <Row>
-            <h5>Event Description</h5>
+            <h1><b>{t("eventDescription")}</b></h1>
           </Row>
           <Row>
             <div className="markdown-content">
               {Description ? (
                 <ReactMarkdown>{Description}</ReactMarkdown>
               ) : (
-                "No description available"
+                t("noDescription")
               )}
             </div>
           </Row>

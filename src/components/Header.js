@@ -23,7 +23,7 @@ const Header = () => {
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='ms-auto'>
             <Nav.Link href='/kolpage'>{t("kol")}</Nav.Link>
-            <Nav.Link href='/eventpage'>{t("events")}</Nav.Link>
+            <Nav.Link href='/eventpage'>{t("event")}</Nav.Link>
             <Nav.Link href='/Contact'>{t("contact")}</Nav.Link>
             <Nav.Link href='/cart'>
               <i className='bi bi-cart nav-icon'></i>

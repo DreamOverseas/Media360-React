@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Link } from 'react-router-dom';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -27,7 +26,7 @@ const Events = () => {
     const [error, setError] = useState(null);
     const [events, setEvents] = useState([]);
     // const [images, setImages] = useState([]);
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     // const handleNext = () => {
     //     if (currentIndex + 4 < events.length) {
@@ -78,7 +77,7 @@ const Events = () => {
     return (
         <div>
             <section className="event-page-background-image-container">
-                <h1 className="event-page-banner-h1"><b>Our Events</b></h1>
+                <h1 className="event-page-banner-h1"><b>{t("event")}</b></h1>
             </section>
             <br />
             <section>
@@ -102,7 +101,7 @@ const Events = () => {
                                 </Row>
                                 <Row className="event-page-reserve mt-auto">
                                     <Link to={`/event/${event.id}`} className="link-EventPage">
-                                        <Button>More Details</Button>
+                                        <Button>{t("moreDetails")}</Button>
                                     </Link>
                                 </Row>
                             </Col>

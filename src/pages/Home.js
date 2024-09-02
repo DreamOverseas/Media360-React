@@ -1,13 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Image, Row } from "react-bootstrap";
+import { Card, Col, Container, Image, Row} from "react-bootstrap";
 import { Link} from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Advertisement from "../components/Advertisement";
 import "../css/Home.css";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const HomePage = () => {
+  const {t} = useTranslation();
   const [ads, setAds] = useState([]);
   const [kols, setKols] = useState([]);
   const [products, setProducts] = useState([]);
@@ -67,16 +69,18 @@ const HomePage = () => {
     <div>
       {/* Carousel Section */}
       <section className='home-ads-section'>
-        <Advertisement ads={ads} />
+        <Container>
+          <Advertisement ads={ads} />
+        </Container>
       </section>
 
       {/* KOL Section */}
       <Container className='kol-section'>
-        <h2 className='section-title'>KOL</h2>
-        <Row className='kol-row justify-content-center'>
+        <h2 className='section-title'>{t("kol")}</h2>
+        <Row className='kol-row'>
           {kols.length > 0 ? (
             kols.map(kol => (
-                <Col xs={3} sm={2} md={1} className='kol-col' key={kol.id}>
+                <Col xs={6} sm={4} md={3} className='kol-col' key={kol.id}>
                   <Link to={`/kol/${kol.id}`}>
                     <Image
                       src={`${BACKEND_HOST}${kol.attributes.KolImage?.data?.attributes?.url}`}
@@ -88,14 +92,14 @@ const HomePage = () => {
                 </Col>
             ))
           ) : (
-            <p>No KOLs available</p>
+            <p>{t("noKols")}</p>
           )}
         </Row>
       </Container>
 
       {/* Products Section */}
       <Container className='products-section'>
-        <h2 className='section-title'>Products</h2>
+        <h2 className='section-title'>{t("product")}</h2>
         <Row className='products-row'>
           {products.length > 0 ? (
             products.map(product => (
@@ -116,14 +120,14 @@ const HomePage = () => {
               </Col>
             ))
           ) : (
-            <p>No products available</p>
+            <p>{t("noProducts")}</p>
           )}
         </Row>
       </Container>
 
       {/* Events Section */}
       <Container className='events-section'>
-        <h2 className='section-title'>Events</h2>
+        <h2 className='section-title'>{t("event")}</h2>
         <Row className='events-row'>
           {events.length > 0 ? (
             events.map(event => (
@@ -132,15 +136,18 @@ const HomePage = () => {
                   <Card className='event-card'>
                     <Card.Img
                       variant='top'
-                      src={`${BACKEND_HOST}${event.attributes.Image.data.attributes?.url}`}
+                      src={`${BACKEND_HOST}${event.attributes.Image.data.attributes.url}`}
                       alt={event.attributes.Title}
                     />
+                    <Card.Body>
+                        <Card.Title>{event.attributes.Name_zh}</Card.Title>
+                    </Card.Body>
                   </Card>
                 </Link>
               </Col>
             ))
           ) : (
-            <p>No events available</p>
+            <p>{t("noEvents")}</p>
           )}
         </Row>
       </Container>

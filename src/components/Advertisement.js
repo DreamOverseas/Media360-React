@@ -13,7 +13,7 @@ const Advertisement = ({ ads }) => {
             src={
               advertisement.attributes.Adimage?.data?.[0]?.attributes?.url
                 ? `${BACKEND_HOST}${advertisement.attributes.Adimage.data[0].attributes.url}`
-                : "https://placehold.co/900x400"
+                : "https://placehold.co/1200x400"
             }
             className='d-block w-100 ad-image'
             alt={advertisement.attributes.Name || "Advertisement"}
