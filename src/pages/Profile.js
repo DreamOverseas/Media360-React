@@ -17,6 +17,9 @@ const Profile = () => {
 
     // Load Backend Host for API calls
     const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
+    // Maximum length for fields
+    const maxNameLen = 16;
+    const maxBioLen = 500;
 
     // Recompute the avatar URL whenever the user or user.avatar changes
     useEffect(() => {
@@ -40,6 +43,18 @@ const Profile = () => {
 
     const closeEdit = () => {
         setShow(false);
+    };
+
+    const handleUsernameChange = (value) => {
+        if (value.length <= maxNameLen) {
+            setUsername(value);
+        }
+    };
+
+    const handleBioChange = (value) => {
+        if (value.length <= maxBioLen) {
+            setBio(value);
+        }
     };
 
     const handleSave = async () => {
@@ -145,8 +160,9 @@ const Profile = () => {
                             <Form.Control
                                 type="text"
                                 value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                onChange={(e) => handleUsernameChange(e.target.value)}
                                 placeholder="Wish to have a new name for your account?"
+                                maxLength={maxNameLen}
                             />
                         </Form.Group>
                         <Form.Group controlId="formBio" className="mt-3">
@@ -155,8 +171,9 @@ const Profile = () => {
                                 as="textarea"
                                 rows={3}
                                 value={bio}
-                                onChange={(e) => setBio(e.target.value)}
+                                onChange={(e) => handleBioChange(e.target.value)}
                                 placeholder="Rewrite a short bio"
+                                maxLength={maxBioLen}
                             />
                         </Form.Group>
                         <Form.Group controlId="formAvatar" className="mt-3">

@@ -39,13 +39,15 @@ const Contact = () => {
       const result = await response.json();
 
       if (response.ok) {
+        setResponseMessage('');
         setSuccessMsg("Successfully Subscribed!");
       } else {
+        setSuccessMsg('');
         setResponseMessage(result.error || 'An error occurred while subscribing');
       }
     } catch (error) {
-      setResponseMessage(EMAIL_SUBSCRIPTION);
-      // setResponseMessage('Network error or server issue');
+      setSuccessMsg('');
+      setResponseMessage('Network error or server issue');
     }
   };
 
