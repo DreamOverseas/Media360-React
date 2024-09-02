@@ -45,18 +45,17 @@
 .kol-row {
   display: flex;
   justify-content: space-around; /* Center KOL images */
+  align-items: center;
   flex-wrap: wrap;
-  margin: 0 -10px;
 }
 
 .kol-col {
-  padding: 10px;
   text-align: center;
 }
 
 .kol-image {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
 }
 
