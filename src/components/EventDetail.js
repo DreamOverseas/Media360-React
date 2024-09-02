@@ -1,5 +1,4 @@
 import axios from "axios";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -10,7 +9,8 @@ import {
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import "../css/KolDetail.css";
+import ReactMarkdown from "react-markdown";
+import "../css/EventDetail.css";
 
 // Load Backend Host for API calls
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
@@ -46,64 +46,42 @@ const EventDetail = () => {
   if (!event) {
     return <div>Loading...</div>;
   }
-
-  const {Image} = event.attributes;
-
-  const renderRichText = richText => {
-    return richText.map((block, index) => {
-      switch (block.type) {
-        case "paragraph":
-        const paragraphText = block.children.map(child => child.text).join('\n');
-        return (
-          <p key={index} style={{fontSize: '13px'}}>
-            {paragraphText.split('\n').map((text, i) => (
-              <React.Fragment key={i}>
-                {text}
-                <br />
-              </React.Fragment>
-            ))}
-          </p>
-        );
-        case "heading":
-          return (
-            <h2 key={index}>
-              {block.children.map((child, childIndex) => (
-                <span key={childIndex}>{child.text}</span>
-              ))}
-            </h2>
-          );
-        default:
-          return null;
-      }
-    });
-  };
-
+  const EventImage = event.attributes.Image;
   const language = i18n.language;
   const Description =
     language === "zh"
       ? event.attributes.Description_zh
-      : event.attributes.Description_en;                                    
+      : event.attributes.Description_en;
+      
+  const ShortDescription =
+  language === "zh"
+    ? event.attributes.Short_zh
+    : event.attributes.Short_en;
 
   return (
     <div>
-      <section className='event-detail-background-image-container'>
-        <h1 className='event-detail-banner-h1'>
-          <b>Our People</b>
-        </h1>
-      </section>
-      <br />
       <section>
         <Container>
-          <Row className='eventt-detail-section'>
-            <Col>
+          <Row className='event-detail-section'>
+          <Col className='event-image-col'>
+              {EventImage && EventImage.data ? (
+                <Image
+                  src={`${BACKEND_HOST}${EventImage.data.attributes.url}`}
+                  alt={language ==="zh" ? event.attributes.Name_zh : event.attributes.Name_en}
+                />
+              ) : (
+                <Image src='https://placehold.co/650x650' alt='No Image Available' />
+              )}
+            </Col>
+            <Col className="event-detail-col">
               <Container className='event-detail'>
                 <Row>
-                  <h1>{language ==="zh" ? event.attributes.Name_zh : event.attributes.Name_en}</h1>
+                  <h2>{language ==="zh" ? event.attributes.Name_zh : event.attributes.Name_en}</h2>
                 </Row>
-                <Row className='event-description'>
+                <Row className='event-short-description'>
                   <div>
                     {Description
-                      ? renderRichText(Description)
+                      ? <ReactMarkdown>{ShortDescription}</ReactMarkdown>
                       : "No description available"}
                   </div>
                 </Row>
@@ -111,27 +89,30 @@ const EventDetail = () => {
                   <Col>
                     <Button>Coming soon</Button>
                   </Col>
-                  {/* <Col className='d-flex align-items-center'>
-                    <i className='bi bi-wechat contact-icon'></i>
-                  </Col> */}
                 </Row>
               </Container>
-            </Col>
-            <Col className='event-image-col'>
-              {Image && Image.data ? (
-                <Image
-                  src={`${BACKEND_HOST}${Image.data.attributes.url}`}
-                  alt={language ==="zh" ? event.attributes.Name_zh : event.attributes.Name_en}
-                />
-              ) : (
-                <Image src='https://placehold.co/650x650' alt='No Image Available' />
-              )}
             </Col>
           </Row>
         </Container>
       </section>
       <br />
       <br />
+      <section>
+        <Container>
+          <Row>
+            <h5>Event Description</h5>
+          </Row>
+          <Row>
+            <div className="markdown-content">
+              {Description ? (
+                <ReactMarkdown>{Description}</ReactMarkdown>
+              ) : (
+                "No description available"
+              )}
+            </div>
+          </Row>
+        </Container>
+      </section>
       {/* <section>
         <Container fluid>
           <Row>

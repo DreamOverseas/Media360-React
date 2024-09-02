@@ -4,6 +4,7 @@ import { Container, Row, Col, Button, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Link } from 'react-router-dom';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import "../css/EventPage.css";
@@ -45,7 +46,6 @@ const Events = () => {
     //         setCurrentIndex(currentIndex - 1);
     //     }
     // };
-
     useEffect(() => {
         axios
           .get(`${BACKEND_HOST}/api/events?populate=*`)
@@ -101,7 +101,9 @@ const Events = () => {
                                     <p>{language ==="zh" ? event.attributes.Short_zh : event.attributes.Short_en}</p>
                                 </Row>
                                 <Row className="event-page-reserve mt-auto">
-                                    <Button>Reserve Now</Button>
+                                    <Link to={`/event/${event.id}`} className="link-EventPage">
+                                        <Button>More Details</Button>
+                                    </Link>
                                 </Row>
                             </Col>
                         </Row>
