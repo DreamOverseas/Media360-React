@@ -22,7 +22,7 @@
 .event-detail-section {
   display: flex;
   flex-direction: row;
-  min-height: 650px;
+  min-height: 600px;
   height: auto;
 }
 
