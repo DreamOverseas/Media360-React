@@ -86,7 +86,7 @@ const Footer = () => {
           </Col>
           {onDesktop &&
             <Col md={3} className='footer-column qr-social'>
-              <img src='/QR_placeholder.png' alt='QR Code' className='qr-code' />
+              <img src='/QR_JohnDu.png' alt='QR Code' className='qr-code' />
               <p>Scan Me</p>
               <Row>
                 <Col>
