@@ -3,8 +3,11 @@
 }
 
 .ad-image {
+
+  max-height: 500px;
+
   max-width: 1200px;
-  max-height: 400px;
+
   object-fit: cover;
   border-radius: 10px;
 }
