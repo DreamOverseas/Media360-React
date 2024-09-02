@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useMediaQuery } from 'react-responsive';
+import { useTranslation } from "react-i18next";
 import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import '../css/Footer.css';
 
 // Load Backend Host for API calls
-const EMAIL_SUBSCRIPTION = process.env.REACT_APP_EMAIL_SUBSCRIPTION+"360media-quick/";
+const EMAIL_SUBSCRIPTION = process.env.REACT_APP_EMAIL_SUBSCRIPTION + "360media-quick/";
 
 const Footer = () => {
   const [email, setEmail] = useState('');
@@ -33,6 +34,8 @@ const Footer = () => {
     }
   };
 
+  const { t } = useTranslation();
+
   return (
     <footer className='footer'>
       <Container>
@@ -46,27 +49,26 @@ const Footer = () => {
             </div>
           </Col>
           {onDesktop &&
-          <Col className='footer-link'>
-            <Row>
-              <h5>OUR PEOPLE</h5>
-            </Row>
-            <Row>
-              <h5>OUR MISSION</h5>
-            </Row>
-            <Row>
-              <h5>OUR EVENT</h5>
-            </Row>
-          </Col>
+            <Col className='footer-link'>
+              <Row>
+                <h5>{t("footer_people")}</h5>
+              </Row>
+              <Row>
+                <h5>{t("footer_mission")}</h5>
+              </Row>
+              <Row>
+                <h5>{t("footer_event")}</h5>
+              </Row>
+            </Col>
           }
           <Col md={3} className='footer-column newsletter'>
-            <h2>Join Our Newsletter</h2>
+            <h2>{t("footer_join_title")}</h2>
             <p>
-              Sign up for our newsletter to enjoy free marketing tips, inspirations,
-              and more.
+              {t("footer_join_intro")}
             </p>
             <Form onSubmit={subscribMe}>
               <Form.Group controlId="formEmail">
-                <Form.Label>Email address</Form.Label>
+                <Form.Label>{t("footer_email")}</Form.Label>
                 <Form.Control
                   type="email"
                   placeholder="Enter email"
@@ -76,28 +78,28 @@ const Footer = () => {
                 />
               </Form.Group>
               <Button variant="primary" type="submit">
-                Subscribe
+                {t("footer_sub")}
               </Button>
             </Form>
             {message && <Alert variant="success">{message}</Alert>}
             {error && <Alert variant="danger">{error}</Alert>}
           </Col>
           {onDesktop &&
-          <Col md={3} className='footer-column qr-social'>
-            <img src='/QR_placeholder.png' alt='QR Code' className='qr-code' />
-            <p>Scan Me</p>
-            <Row>
-              <Col>
-                <i className="bi bi-facebook"></i>
-              </Col>
-              <Col>
-                <i className="bi bi-instagram"></i>
-              </Col>
-              <Col>
-                <i className="bi bi-share"></i>
-              </Col>
-            </Row>
-          </Col>
+            <Col md={3} className='footer-column qr-social'>
+              <img src='/QR_placeholder.png' alt='QR Code' className='qr-code' />
+              <p>Scan Me</p>
+              <Row>
+                <Col>
+                  <i className="bi bi-facebook"></i>
+                </Col>
+                <Col>
+                  <i className="bi bi-instagram"></i>
+                </Col>
+                <Col>
+                  <i className="bi bi-share"></i>
+                </Col>
+              </Row>
+            </Col>
           }
         </Row>
       </Container>
