@@ -28,8 +28,6 @@ const Header = () => {
             <Nav.Link href='/cart'>
               <i className='bi bi-cart nav-icon'></i>
             </Nav.Link>
-            <Nav.Link href='/eventpage'>{t("events")}</Nav.Link>
-            <Nav.Link href='/contact'>{t("contact")}</Nav.Link>
             <NavDropdown title={t("language")} id='language-dropdown'>
               <NavDropdown.Item onClick={() => changeLanguage("en")}>
                 English
