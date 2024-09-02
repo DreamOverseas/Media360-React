@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useMediaQuery } from 'react-responsive';
 import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import '../css/Footer.css';
 
@@ -10,6 +11,9 @@ const Footer = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+
+  // Check if is on desktop
+  const onDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 
   /**
    * Function that handles submission on email to the subscription list of mailchimp
@@ -41,6 +45,7 @@ const Footer = () => {
               <p>john.du@do360.com</p>
             </div>
           </Col>
+          {onDesktop &&
           <Col className='footer-link'>
             <Row>
               <h5>OUR PEOPLE</h5>
@@ -52,6 +57,7 @@ const Footer = () => {
               <h5>OUR EVENT</h5>
             </Row>
           </Col>
+          }
           <Col md={3} className='footer-column newsletter'>
             <h2>Join Our Newsletter</h2>
             <p>
@@ -76,6 +82,7 @@ const Footer = () => {
             {message && <Alert variant="success">{message}</Alert>}
             {error && <Alert variant="danger">{error}</Alert>}
           </Col>
+          {onDesktop &&
           <Col md={3} className='footer-column qr-social'>
             <img src='/QR_placeholder.png' alt='QR Code' className='qr-code' />
             <p>Scan Me</p>
@@ -91,6 +98,7 @@ const Footer = () => {
               </Col>
             </Row>
           </Col>
+          }
         </Row>
       </Container>
     </footer>

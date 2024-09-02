@@ -85,7 +85,7 @@ body {
 
 footer {
   background: #333;
-  height: 400px;
+  height: auto;
   color: #fff;
   padding: 2rem;
   display: flex;
@@ -97,5 +97,5 @@ footer {
 }
 
 .main-content {
-  min-height: calc(100vh - 472px);
+  min-height: calc(100vh - 489px);
 }
