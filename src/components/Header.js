@@ -11,19 +11,19 @@ const Header = () => {
 
   const changeLanguage = lng => {
     i18n.changeLanguage(lng);
-    Cookies.set("i18next", lng, { expires: 7 }); // 保存到 Cookie
+    Cookies.set("i18next", lng, { expires: 7 });
   };
   return (
     <div>
       <Navbar bg='light' expand='lg' fixed='top' className='navbar-custom'>
         <Nav.Link href='/'>
-          <Image className='nav-logo' src='header_logo.png' alt='360 Media' />
+          <Image className='nav-logo' src='/header_logo.png' alt='360 Media' />
         </Nav.Link>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='ms-auto'>
             <Nav.Link href='/kolpage'>{t("kol")}</Nav.Link>
-            <Nav.Link href='/eventpage'>{t("events")}</Nav.Link>
+            <Nav.Link href='/eventpage'>{t("event")}</Nav.Link>
             <Nav.Link href='/Contact'>{t("contact")}</Nav.Link>
             <Nav.Link href='/cart'>
               <i className='bi bi-cart nav-icon'></i>
@@ -38,15 +38,20 @@ const Header = () => {
             </NavDropdown>
 
             {user ? (
-              <NavDropdown title={user.username} id='basic-nav-dropdown'>
-                <NavDropdown.Item href='/profile'>
-                  {t("myProfile")}
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href='/' onClick={logout}>
-                  {t("logout")}
-                </NavDropdown.Item>
-              </NavDropdown>
+              <>
+                <Nav.Link href='/cart'>
+                  <i className='bi bi-cart nav-icon'></i>
+                </Nav.Link>
+                <NavDropdown title={user.username} id='basic-nav-dropdown'>
+                  <NavDropdown.Item href='/profile'>
+                    {t("myProfile")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href='/' onClick={logout}>
+                    {t("logout")}
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </>
             ) : (
               <Nav.Link href='/login'>
                 <i className='bi bi-person nav-icon'></i>

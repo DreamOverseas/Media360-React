@@ -24,6 +24,7 @@ const Advertisement = ({ ads }) => {
               alt={advertisement.attributes.Name || "Advertisement"}
             />
           </a>
+
           <Carousel.Caption>
             <h3>{advertisement.attributes.Name}</h3>
           </Carousel.Caption>

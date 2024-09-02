@@ -62,5 +62,9 @@
   .event-page-reserve {
     width: 100%;
   }
+
+  .link-EventPage {
+    text-decoration: none;
+  }
 }
 
