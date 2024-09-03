@@ -228,7 +228,7 @@ const ProductDetail = () => {
               <p>Please scan the QR code and directly contact with the Kol</p>
             </Row>
             <Row className='purchase-modal-background'>
-              <Image src='/QR_placeholder.png' alt='Logo' fluid />
+              <Image src='/QR_JohnDu.png' alt='Logo' fluid />
             </Row>
           </Modal.Body>
           <Modal.Footer>
