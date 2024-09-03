@@ -9,15 +9,22 @@ const Advertisement = ({ ads }) => {
     <Carousel className='ads-carousel' interval={3000}>
       {ads.map((advertisement, index) => (
         <Carousel.Item key={index}>
-          <Image
-            src={
-              advertisement.attributes.Adimage?.data?.[0]?.attributes?.url
-                ? `${BACKEND_HOST}${advertisement.attributes.Adimage.data[0].attributes.url}`
-                : "https://placehold.co/900x400"
-            }
-            className='d-block w-100 ad-image'
-            alt={advertisement.attributes.Name || "Advertisement"}
-          />
+          <a
+            href={advertisement.attributes.link || "#"}
+            target={advertisement.attributes.link ? "_blank" : "_self"}
+            rel='noopener noreferrer'
+          >
+            <Image
+              src={
+                advertisement.attributes.Adimage?.data?.[0]?.attributes?.url
+                  ? `${BACKEND_HOST}${advertisement.attributes.Adimage.data[0].attributes.url}`
+                  : "https://placehold.co/900x400"
+              }
+              className='d-block w-100 ad-image'
+              alt={advertisement.attributes.Name || "Advertisement"}
+            />
+          </a>
+
           <Carousel.Caption>
             <h3>{advertisement.attributes.Name}</h3>
           </Carousel.Caption>

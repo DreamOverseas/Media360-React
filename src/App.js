@@ -9,10 +9,11 @@ import "./App.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import KolDetail from "./components/KolDetail";
-import KolPage from "./components/KolPage";
 import ProductDetail from "./components/ProductDetail";
-import ProductPage from "./components/ProductPage";
+import EventDetail from "./components/EventDetail";
+import ProductPage from "./pages/ProductPage";
 import Contact from "./pages/Contact";
+import KolPage from "./pages/KolPage";
 import Events from "./pages/Events";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -50,6 +51,7 @@ function App() {
           <Route path='/product/:id' element={<ProductDetail />} />
           <Route path='/eventpage' element={<Events />} />
           <Route exact path='/product/:id' element={<ProductDetail />} />
+          <Route exact path='/event/:id' element={<EventDetail />} />
           <Route exact path='/login' element={<Login />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/kolpage' element={<KolPage />} />

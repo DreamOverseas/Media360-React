@@ -3,7 +3,10 @@
   flex-direction: column;
   height: 100%;
 }
+
 .product-detail-section {
+  display: flex;
+  flex-direction: row;
   min-height: 650px;
   height: auto;
 }
@@ -63,8 +66,6 @@
   margin: 0;
 }
 
-
-
 /* Ensure the image is centered */
 .markdown-content img {
   display: block;
@@ -110,4 +111,48 @@
   padding: 0.2em 0.4em;
   border-radius: 3px;
   font-family: 'Courier New', Courier, monospace;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .product-detail-section {
+    flex-direction: column;
+    height: auto; /* Ensure container adapts to content height */
+  }
+
+  .kol-image-col {
+    order: -1; /* Move the image to the top */
+    height: auto; /* Ensure the image adapts to content height */
+  }
+
+  .product-detail-col {
+    height: auto; /* Ensure text section adapts to content height */
+  }
+
+  .add-to-cart {
+    width: 100%; /* Ensure buttons take full width */
+    margin-bottom: 1rem; /* Add spacing between buttons */
+  }
+
+  .product-price-quantity {
+    padding-bottom: 2rem; /* Adjust bottom padding for smaller screens */
+  }
+
+  .kol-image-col img {
+    width: 100%;
+    height: auto; /* Ensure images scale correctly on smaller screens */
+    object-fit: cover;
+  }
+
+  .product-detail p {
+    white-space: normal; /* Ensure text wraps correctly on smaller screens */
+  }
+
+  .modal-dialog {
+    max-width: 90%; /* Reduce modal width for smaller screens */
+  }
+
+  .purchase-modal-background {
+    padding: 1rem; /* Adjust modal content padding for smaller screens */
+  }
 }

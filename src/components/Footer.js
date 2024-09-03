@@ -71,7 +71,7 @@ const Footer = () => {
                 <Form.Label>{t("footer_email")}</Form.Label>
                 <Form.Control
                   type="email"
-                  placeholder="Enter email"
+                  placeholder={t("enterEmail")}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required

@@ -11,7 +11,7 @@ const Header = () => {
 
   const changeLanguage = lng => {
     i18n.changeLanguage(lng);
-    Cookies.set("i18next", lng, { expires: 7 }); // 保存到 Cookie
+    Cookies.set("i18next", lng, { expires: 7 });
   };
   return (
     <div>
@@ -23,8 +23,11 @@ const Header = () => {
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='ms-auto'>
             <Nav.Link href='/kolpage'>{t("kol")}</Nav.Link>
-            <Nav.Link href='/eventpage'>{t("events")}</Nav.Link>
-            <Nav.Link href='/contact'>{t("contact")}</Nav.Link>
+            <Nav.Link href='/eventpage'>{t("event")}</Nav.Link>
+            <Nav.Link href='/Contact'>{t("contact")}</Nav.Link>
+            <Nav.Link href='/cart'>
+              <i className='bi bi-cart nav-icon'></i>
+            </Nav.Link>
             <NavDropdown title={t("language")} id='language-dropdown'>
               <NavDropdown.Item onClick={() => changeLanguage("en")}>
                 English

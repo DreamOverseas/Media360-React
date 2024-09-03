@@ -23,7 +23,7 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 const ProductDetail = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -135,7 +135,7 @@ const ProductDetail = () => {
   }
 
   if (!product) {
-    return <div>Loading...</div>;
+    return <div>{t("loading")}</div>;
   }
 
   const { Name, Price, ProductImage } = product.attributes;
@@ -175,7 +175,7 @@ const ProductDetail = () => {
                     {ShortDescription ? (
                       <p>{ShortDescription}</p>
                     ) : (
-                      "No description available"
+                      t("noDescription")
                     )}
                   </div>
                 </Row>
@@ -206,12 +206,12 @@ const ProductDetail = () => {
                 <Row>
                   <Col>
                     <Button className='add-to-cart' onClick={handlePurchase}>
-                      Purchase and Enquiry Now
+                      {t("enquireNow")}
                     </Button>
                   </Col>
                   <Col>
                     <Button className='add-to-cart' onClick={handleAddToCart}>
-                      Add to cart
+                      {t("addToCart")}
                     </Button>
                   </Col>
                 </Row>
@@ -233,7 +233,7 @@ const ProductDetail = () => {
           </Modal.Body>
           <Modal.Footer>
             <Button variant='secondary' onClick={handleCloseModal}>
-              Close
+              {t("close")}
             </Button>
           </Modal.Footer>
         </Modal>
@@ -242,15 +242,15 @@ const ProductDetail = () => {
           <Modal.Header closeButton></Modal.Header>
           <Modal.Body>
             <Row>
-              <p>Please login in first</p>
+              <p>{t("loginAlert")}</p>
             </Row>
           </Modal.Body>
           <Modal.Footer>
             <Link to={"/login"}>
-              <Button variant='secondary'>Login</Button>
+              <Button variant='secondary'>{t("logIn")}</Button>
             </Link>
             <Button variant='secondary' onClick={handleCloseCartModal}>
-              cancel
+              {t("cancel")}
             </Button>
           </Modal.Footer>
         </Modal>
@@ -258,22 +258,22 @@ const ProductDetail = () => {
       <br />
       <br />
       <section>
-  <Container>
-    <Row>
-      <h5>Product Description</h5>
-    </Row>
-    <Row>
-      <div className="markdown-content">
-        {Description ? (
-          <ReactMarkdown>{Description}</ReactMarkdown>
-        ) : (
-          "No description available"
-        )}
-      </div>
-    </Row>
-  </Container>
-  <br />
-</section>
+        <Container>
+          <Row>
+            <h1><b>{t("productDescription")}</b></h1>
+          </Row>
+          <Row>
+            <div className="markdown-content">
+              {Description ? (
+                <ReactMarkdown>{Description}</ReactMarkdown>
+              ) : (
+                t("noDescription")
+              )}
+            </div>
+          </Row>
+        </Container>
+        <br />
+      </section>
     </div>
   );
 };
