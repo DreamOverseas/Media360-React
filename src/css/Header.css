@@ -3,6 +3,10 @@
   padding: 0 10px;
 }
 
+/* .nav-custom {
+  align-items: end !important;
+} */
+
 .nav-icon {
   font-size: 1.5rem;
 }
