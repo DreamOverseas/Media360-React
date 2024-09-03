@@ -82,6 +82,7 @@
 
 @media (max-width: 768px) {
   .footer {
+    width: 100%;
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -111,4 +112,3 @@
     text-align: center;
   }
 }
-
