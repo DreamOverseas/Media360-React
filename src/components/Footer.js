@@ -87,7 +87,7 @@ const Footer = () => {
           {onDesktop &&
             <Col md={3} className='footer-column qr-social'>
               <img src='/QR_JohnDu.png' alt='QR Code' className='qr-code' />
-              <p>Scan Me</p>
+              <p>{t("footer_scan")}</p>
               <Row>
                 <Col>
                   <i className="bi bi-facebook"></i>
