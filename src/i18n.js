@@ -71,6 +71,7 @@ const resources = {
       footer_join_intro: "Sign up for our newsletter to enjoy free marketing tips, inspirations, and more.",
       footer_email: "Email address:",
       footer_sub: "Subscribe",
+      footer_scan: "Scan me",
     },
   },
   zh: {
@@ -138,6 +139,7 @@ const resources = {
       footer_join_intro: "即刻享受我们免费提供的营销技巧、灵感等。心动不如行动！",
       footer_email: "电子邮件：",
       footer_sub: "提交",
+      footer_scan: "扫码关注",
     },
   },
 };
