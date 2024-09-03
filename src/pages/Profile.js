@@ -123,7 +123,7 @@ const Profile = () => {
 
             <Row md={8} className="profile-intro-row">
                 {/* Profile Image */}
-                <Col xs={3}>
+                <Col md={3} className='avatar-row'>
                     <img
                         src={avatarUrl}
                         alt="Profile"
@@ -132,7 +132,7 @@ const Profile = () => {
                 </Col>
                 {/* User Details */}
                 {user ? (
-                    <Col xs={9}>
+                    <Col md={9}>
                         <div className="d-flex justify-content-between align-items-center">
                             <h3 className="mb-0">{user.username}</h3>
                             <Button variant="link" className="text-primary" onClick={openEdit}>Edit</Button>
@@ -142,7 +142,7 @@ const Profile = () => {
                         </p>
                     </Col>
                 ) : (
-                    <Col xs={9}>
+                    <Col md={9}>
                         <h2>Loading...</h2>
                     </Col>
                 )}

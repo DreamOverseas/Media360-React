@@ -3,13 +3,26 @@
     min-height: 50vh;
 }
 
+.avatar-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
 .profile-intro-row {
     align-items: center;
-    height: 50vh;
+    min-height: 50vh;
     width: auto;
 }
 
 .profile-avatar {
     height: 300px;
     width: 300px;
+}
+
+@media (max-width: 768px) {
+    .profile-avatar {
+        height: 200px;
+        width: 200px;
+    }
 }
