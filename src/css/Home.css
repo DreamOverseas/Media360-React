@@ -161,8 +161,9 @@
   }
 
   .kol-col {
-    flex: 1 0 100px;
-    max-width: 100px;
+    flex: 0 0 50%;
+    max-width: 50%;
+    margin-bottom: 5%;
   }
 
   .product-card,

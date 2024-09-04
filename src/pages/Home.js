@@ -80,7 +80,7 @@ const HomePage = () => {
         <Row className='kol-row'>
           {kols.length > 0 ? (
             kols.map(kol => (
-                <Col xs={6} sm={4} md={3} className='kol-col' key={kol.id}>
+                <Col xs={12} sm={6} md={3} className='kol-col' key={kol.id}>
                   <Link to={`/kol/${kol.id}`}>
                     <Image
                       src={`${BACKEND_HOST}${kol.attributes.KolImage?.data?.attributes?.url}`}
