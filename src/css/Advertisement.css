@@ -1,6 +1,6 @@
 .ads-carousel {
-  width: 79vw;
-  height: 25vh;
+  width: 100%;
+  height: 100%;
   margin-top: 2%;
   display: flex;
   overflow-x: auto;
@@ -8,8 +8,6 @@
 }
 
 .ad-image {
-  max-height: 25vh;
-  max-width: 79vw;
   object-fit: cover;
   border-radius: 10px;
 }
