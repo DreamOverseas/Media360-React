@@ -14,7 +14,7 @@
 .kol-section,
 .products-section,
 .events-section {
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 }
 
 /* Carousel */
@@ -89,12 +89,14 @@
   overflow: hidden; /* Hide overflow if the content exceeds the height */
 }
 
-.product-card .card-title {
+.product-card .card-title,
+.event-card .card-title {
   font-size: 1.1rem; /* Adjust font size */
   margin-bottom: 10px; /* Adjust margin */
 }
 
-.product-card .card-text {
+.product-card .card-text,
+.event-card .card-text {
   font-size: 0.9rem; /* Reduce text size */
   line-height: 1.2; /* Adjust line height */
   max-height: 20px; /* Limit the height of the text */
@@ -117,6 +119,8 @@
   border-radius: 8px;
   text-align: center;
   transition: transform 0.5s ease;
+  max-width: 250px;
+  height: 270px;
 
 }
 
@@ -143,15 +147,18 @@
   }
 
   .kol-col {
-    flex: 0 0 50%;
-    max-width: 50%;
     margin-bottom: 5%;
+  }
+
+  .product-card .card-title,
+  .event-card .card-title {
+    font-size: 0.85rem; /* Adjust font size */
+    margin-bottom: 10px; /* Adjust margin */
   }
 
   .product-card,
   .event-card {
-    flex: 1 0 100%;
-    max-width: 100%;
+    height: 240px;
   }
 
   .product-card img,
