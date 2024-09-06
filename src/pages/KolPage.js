@@ -38,7 +38,9 @@ const KolPage = () => {
         {kols.map(kol => (
           <Col
             key={kol.id}
-            md={3}
+            xs={6}  // 2 cards per row on mobile
+            sm={6}  // 2 cards per row on small screens
+            md={3}  // 4 cards per row on medium screens
             className='mb-4'
           >
             <Link to={`/kol/${kol.id}`} className="card-link-KolPage">
