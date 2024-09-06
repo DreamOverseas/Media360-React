@@ -78,7 +78,7 @@ const HomePage = () => {
         <Row className='kol-row'>
           {kols.length > 0 ? (
             kols.map(kol => (
-                <Col xs={12} sm={6} md={3} className='kol-col' key={kol.id}>
+                <Col xs={6} sm={6} md={3} className='kol-col' key={kol.id}>
                   <Link to={`/kol/${kol.id}`}>
                     <Image
                       src={`${BACKEND_HOST}${kol.attributes.KolImage?.data?.attributes?.url}`}
@@ -101,7 +101,7 @@ const HomePage = () => {
         <Row className='products-row'>
           {products.length > 0 ? (
             products.map(product => (
-              <Col xs={12} sm={6} md={3} key={product.id}>
+              <Col xs={6} sm={6} md={3} key={product.id}>
                 <Link to={`/product/${product.id}`} className="home-card-link-ProductPage">
                   <Card className='product-card'>
                       <Card.Img
@@ -129,7 +129,7 @@ const HomePage = () => {
         <Row className='events-row'>
           {events.length > 0 ? (
             events.map(event => (
-              <Col xs={12} sm={6} md={3} key={event.id}>
+              <Col xs={6} sm={6} md={3} key={event.id}>
                 <Link to={`/event/${event.id}`} className="event-card-link">
                   <Card className='event-card'>
                     <Card.Img

@@ -23,3 +23,14 @@
 .card-link-KolPage {
   text-decoration: none;
 }
+
+
+@media (max-width: 768px) {
+  .kol-card {
+    height: 250px;
+  }
+
+  .kol-card img {
+    height: 200px;
+  }
+}
