@@ -27,19 +27,10 @@
 
 @media (max-width: 768px) {
   .kol-card {
-    transform: scale(0.85);
-    height: auto;
+    height: 250px;
   }
 
   .kol-card img {
     height: 200px;
-  }
-
-  .kol-card .card-title {
-    font-size: 14px;
-  }
-
-  .kol-card .card-text {
-    font-size: 12px;
   }
 }
