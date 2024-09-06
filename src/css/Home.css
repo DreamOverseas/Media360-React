@@ -140,6 +140,10 @@
 
 /* Mobile Adjustments */
 @media (max-width: 768px) {
+  .ads-section {
+    height: 200px;
+  }
+
   .kol-row,
   .products-row,
   .events-row {
