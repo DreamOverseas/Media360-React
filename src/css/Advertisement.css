@@ -1,13 +1,28 @@
 .ads-carousel {
+  width: 79vw;
+  height: 25vh;
   margin-top: 2%;
+  display: flex;
+  overflow-x: auto;
+  margin-bottom: 20px;
 }
 
 .ad-image {
-
-  max-height: 600px;
-
-  max-width: 1200px;
-
+  max-height: 25vh;
+  max-width: 79vw;
   object-fit: cover;
   border-radius: 10px;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: auto;
+}
+
+.ad-item img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  max-height: 300px;
 }

@@ -7,7 +7,7 @@
 .product-detail-section {
   display: flex;
   flex-direction: row;
-  min-height: 650px;
+  min-height: 450px;
   height: auto;
 }
 
@@ -17,13 +17,20 @@
   margin: 0;
 }
 
-.kol-image-col {
-  height: 600px;
+.product-image-col {
+  height: 400px;
   object-fit: cover;
+  padding-left: 20px;
+}
+
+.product-img {
+  height: 400px;
+  width: auto;
+  justify-self: center;
 }
 
 .product-detail-col {
-  height: 600px;
+  height: 400px;
 }
 
 .product-price-quantity {

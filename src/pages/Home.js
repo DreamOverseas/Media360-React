@@ -68,11 +68,9 @@ const HomePage = () => {
   return (
     <div>
       {/* Carousel Section */}
-      <section className='home-ads-section'>
-        <Container>
+        <Container className="ads-section">
           <Advertisement ads={ads} />
         </Container>
-      </section>
 
       {/* KOL Section */}
       <Container className='kol-section'>

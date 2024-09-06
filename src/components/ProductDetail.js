@@ -155,11 +155,12 @@ const ProductDetail = () => {
       <section>
         <Container>
           <Row className='product-detail-section'>
-            <Col className='kol-image-col'>
+            <Col className='product-image-col'>
               {ProductImage && ProductImage.data ? (
                 <Image
                   src={`${BACKEND_HOST}${ProductImage.data.attributes.url}`}
                   alt={Name}
+                  className="product-img"
                 />
               ) : (
                 <Image src='https://placehold.co/650x650' alt='Placeholder' />
