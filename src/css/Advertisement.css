@@ -24,3 +24,18 @@
   border-radius: 8px;
   max-height: 300px;
 }
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .ads-carousel {
+    height: 200px;
+    margin-top: 2%;
+    display: flex;
+    overflow-x: auto;
+    margin-bottom: 20px;
+  }
+
+  .carousel-item img {
+    height: 200px;
+  }
+}
