@@ -15,7 +15,7 @@ const Header = () => {
   };
   return (
     <div>
-      <Navbar bg='light' expand='lg' fixed='top' className='navbar-custom'>
+      <Navbar bg='light' expand='md' fixed='top' className='navbar-custom'>
         <Nav.Link href='/'>
           <Image className='nav-logo' src='/header_logo.png' alt='360 Media' />
         </Nav.Link>
