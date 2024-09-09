@@ -43,7 +43,7 @@ const Footer = () => {
           <Col md={3} className='footer-column logo-contact'>
             <img src='/footer_logo.png' alt='Logo' className='footer-logo' />
             <div className='contact-info'>
-              <p>171 La trobe Street, Melbourne VIC 3000</p>
+              <p>171 La trobe Street <br />Melbourne VIC 3000</p>
               <p>0413 168 533</p>
               <p>john.du@do360.com</p>
             </div>
