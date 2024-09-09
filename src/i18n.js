@@ -71,7 +71,7 @@ const resources = {
       footer_join_intro: "Sign up for our newsletter to enjoy free marketing tips, inspirations, and more.",
       footer_email: "Email address:",
       footer_sub: "Subscribe",
-      footer_scan: "Scan me",
+      footer_scan: "Scan me for more info",
     },
   },
   zh: {
@@ -135,11 +135,11 @@ const resources = {
       footer_people: "关于我们",
       footer_mission: "目标所向",
       footer_event: "活动参与",
-      footer_join_title: "来通过邮件订阅！",
-      footer_join_intro: "即刻享受我们免费提供的营销技巧、灵感等。心动不如行动！",
+      footer_join_title: "免费订阅邮件！",
+      footer_join_intro: "即可第一时间获得商品折扣消息，享受我们免费提供的营销技巧、灵感等。快人一步尽在指尖！",
       footer_email: "电子邮件：",
       footer_sub: "提交",
-      footer_scan: "扫码关注",
+      footer_scan: "获取更多信息",
     },
   },
 };
