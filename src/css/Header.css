@@ -1,6 +1,6 @@
 .navbar-custom {
   background-color: rgba(255, 255, 255, 0.8) !important;
-  padding: 0 355px;
+  padding: 0 15px;
 }
 
 .nav-icon {
@@ -44,11 +44,4 @@ button:focus {
   height: 2rem;
   width: auto;
   margin: 11px;
-}
-
-@media (max-width: 1024px) {
-  .navbar-custom {
-    background-color: rgba(255, 255, 255, 0.8) !important;
-    padding: 0 10px;
-  }
 }

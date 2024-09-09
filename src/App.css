@@ -1,13 +1,12 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding-top: 72px;
+  /* padding-top: 54px; */
   box-sizing: border-box;
 }
 
 .App-header {
   background: #fff;
-  padding: 1rem;
   border-bottom: 1px solid #ccc;
 }
 
@@ -97,5 +96,6 @@ footer {
 }
 
 .main-content {
-  min-height: calc(100vh - 489px);
+  padding: 0 !important;
+  min-height: calc(100vh - 471px);
 }

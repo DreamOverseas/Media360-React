@@ -1,8 +1,8 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
+import React, {useEffect} from "react";
 // import { useMediaQuery } from "react-responsive";
-import { Route, Routes /*, useLocation */ } from "react-router-dom";
+import { Route, Routes, useLocation  } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "./App.css";
@@ -21,18 +21,21 @@ import Profile from "./pages/Profile";
 import ShoppingCart from "./pages/ShoppingCart";
 
 function App() {
-  // Resercved for different needs of costomisation across pages
-  // const location = useLocation();
-  // const [footer, setFooter] = useState();
-  // useEffect(() => {
-  //   if (location.pathname === "/") {
-  //     //document.body.style.marginTop = "0";
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //     setFooter(<></>);
-  //   } else {
-  //     setFooter(<Footer />);
-  //   }
-  // }, [location]);
+
+  // Reserved for different needs of costomisation across pages
+  const location = useLocation();
+  //const [footer, setFooter] = useState();
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      document.body.style.marginTop = "-24px";
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      //setFooter(<></>);
+    } else {
+      document.body.style.marginTop = "54px";
+      //setFooter(<Footer />);
+    }
+  }, [location]);
 
   // Check if is on desktop
   // const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });

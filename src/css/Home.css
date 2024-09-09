@@ -1,7 +1,14 @@
 .container {
   max-width: 1200px;
   margin: 0 auto; /* Center the container */
-  padding: 0 15px; /* Add padding for mobile */
+}
+
+.homepage-background {
+  background-image: url(/public/homepage/bg.png);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
 .section-title {
@@ -14,7 +21,7 @@
 .kol-section,
 .products-section,
 .events-section {
-  margin-bottom: 40px;
+  margin-bottom: 0;
 }
 
 /* Carousel */
@@ -26,7 +33,7 @@
 /* KOL Section */
 .kol-row {
   display: flex;
-  justify-content: space-around; /* Center KOL images */
+  justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -57,7 +64,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  margin: 0 -10px;
+  margin: 0 10px;
 }
 
 .product-card {
