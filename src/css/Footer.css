@@ -1,6 +1,6 @@
 .footer {
   display: flex;
-  min-height: 417px;
+  min-height: 320px;
   justify-content: space-around;
   padding: 2rem;
   background-color: #333;
