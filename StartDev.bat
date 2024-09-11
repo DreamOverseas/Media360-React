@@ -1,5 +1,4 @@
 @echo off
-start npm install
-pause
+start code .
 @echo on
 start npm start run

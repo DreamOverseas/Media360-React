@@ -1,7 +1,6 @@
 .footer {
   display: flex;
-  min-height: 320px;
-  justify-content: space-around;
+  min-height: 280px;
   padding: 2rem;
   background-color: #333;
   color: #fff;
@@ -14,11 +13,8 @@
   align-items: center;
 }
 
-.footer-link {
-  height: 240px;
-  display: flex;
-  flex-direction: column;
-  justify-content:space-around;
+.subscribe-column {
+ flex: 1.5;
 }
 
 .footer-link h5 {
@@ -32,8 +28,8 @@
 }
 
 .footer-logo {
-  width: 80px;
-  margin-bottom: 1rem;
+  width: 50px;
+  margin-bottom: 0.5rem;
 }
 
 .contact-info p {
@@ -50,12 +46,14 @@
 }
 
 .newsletter button {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem;
   border: none;
   background-color: #444;
   color: #fff;
   cursor: pointer;
   border-radius: 4px;
+  align-self: flex-end;
+  margin: 0 !important;
 }
 
 .newsletter button:hover {
@@ -93,9 +91,8 @@
     text-align: center;
   }
 
-  .footer-link {
-    height: auto;
-    padding-bottom: 1rem;
+  .subscribe-button{
+    margin: 0 !important;
   }
 
   .footer-link h5 {
