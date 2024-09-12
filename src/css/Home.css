@@ -61,18 +61,12 @@
 }
 
 /* Products Section */
-.products-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin: 0 10px;
-}
-
 .product-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  max-width: 250px; /* Set a maximum width */
-  height: 270px; /* Set a fixed height for the card */
+  border: none; /* Remove border */
+  background-color: transparent; /* Make the background transparent */
+  box-shadow: none; /* Remove any shadows */
+  max-width: 250px; /* Keep the maximum width */
+  height: 270px; /* Keep the fixed height */
   display: flex;
   flex-direction: column;
   margin-bottom: 9%;
@@ -82,13 +76,19 @@
 
 .product-card:hover {
   transform: scale(1.1); /* Lift effect on hover */
-  background-color: white
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.2
+  ); /* Slight hover effect, optional */
 }
 
 .product-card img {
   max-width: 100%;
   height: 150px; /* Reduce image height */
   object-fit: cover;
+  border-radius: 8px;
 }
 
 .product-card .card-body {
@@ -96,7 +96,6 @@
   max-height: 150px; /* Limit the height of the card body */
   overflow: hidden; /* Hide overflow if the content exceeds the height */
 }
-
 .product-card .card-title,
 .event-card .card-title {
   font-size: 1.1rem; /* Adjust font size */
@@ -123,13 +122,13 @@
   margin-top: 2%;
   margin-bottom: 9%;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: none; /* Remove border */
+  background-color: transparent; /* Make the background transparent */
+  box-shadow: none; /* Remove any shadows */
   text-align: center;
   transition: transform 0.5s ease;
   max-width: 250px;
   height: 270px;
-
 }
 
 .event-card-link {
@@ -138,12 +137,19 @@
 
 .event-card:hover {
   transform: scale(1.1); /* Lift effect on hover */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.2
+  ); /* Slight hover effect, optional */
 }
 
 .event-card img {
   max-width: 100%;
   height: 200px;
   object-fit: cover;
+  border-radius: 8px;
 }
 
 /* Mobile Adjustments */
