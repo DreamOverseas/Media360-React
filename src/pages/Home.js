@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Image, Row} from "react-bootstrap";
-import { Link} from "react-router-dom";
+import { Card, CardFooter, Col, Container, Image, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Advertisement from "../components/Advertisement";
 import "../css/Home.css";
@@ -9,7 +9,7 @@ import "../css/Home.css";
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const HomePage = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [ads, setAds] = useState([]);
   const [kols, setKols] = useState([]);
   const [products, setProducts] = useState([]);
@@ -54,7 +54,7 @@ const HomePage = () => {
         const response = await axios.get(
           `${BACKEND_HOST}/api/events?populate=*`
         );
-        setEvents(response.data.data.slice(0,8));
+        setEvents(response.data.data.slice(0, 8));
       } catch (error) {
         console.error("Error fetching events:", error);
       }
@@ -69,9 +69,9 @@ const HomePage = () => {
     <div className="homepage-background">
       <br /><br /><br />
       {/* Carousel Section */}
-        <Container className="ads-section">
-          <Advertisement ads={ads} />
-        </Container>
+      <Container className="ads-section">
+        <Advertisement ads={ads} />
+      </Container>
 
       {/* KOL Section */}
       <Container className='kol-section'>
@@ -79,16 +79,16 @@ const HomePage = () => {
         <Row className='kol-row'>
           {kols.length > 0 ? (
             kols.map(kol => (
-                <Col xs={6} sm={6} md={3} className='kol-col' key={kol.id}>
-                  <Link to={`/kol/${kol.id}`}>
-                    <Image
-                      src={`${BACKEND_HOST}${kol.attributes.KolImage?.data?.attributes?.url}`}
-                      roundedCircle
-                      className='kol-image'
-                      alt={kol.attributes.Name}
-                    />
-                  </Link>
-                </Col>
+              <Col xs={6} sm={6} md={3} className='kol-col' key={kol.id}>
+                <Link to={`/kol/${kol.id}`}>
+                  <Image
+                    src={`${BACKEND_HOST}${kol.attributes.KolImage?.data?.attributes?.url}`}
+                    roundedCircle
+                    className='kol-image'
+                    alt={kol.attributes.Name}
+                  />
+                </Link>
+              </Col>
             ))
           ) : (
             <p>{t("noKols")}</p>
@@ -105,16 +105,16 @@ const HomePage = () => {
               <Col xs={6} sm={6} md={3} key={product.id}>
                 <Link to={`/product/${product.id}`} className="home-card-link-ProductPage">
                   <Card className='product-card'>
-                      <Card.Img
-                        variant='top'
-                        src={`${BACKEND_HOST}${product.attributes.ProductImage?.data?.attributes?.url}`}
-                        alt={product.attributes.Name}
-                      />
-                      <Card.Body>
-                        <Card.Title>{product.attributes.Name}</Card.Title>
-                        <Card.Text>¥{product.attributes.Price}</Card.Text>
-                      </Card.Body>
-                    </Card>
+                    <Card.Img
+                      variant='top'
+                      src={`${BACKEND_HOST}${product.attributes.ProductImage?.data?.attributes?.url}`}
+                      alt={product.attributes.Name}
+                    />
+                    <Card.Body className="card-body">
+                      <Card.Title>{product.attributes.Name}</Card.Title>
+                      <p class="product-price">¥{product.attributes.Price}</p>
+                    </Card.Body>
+                  </Card>
                 </Link>
               </Col>
             ))
@@ -139,7 +139,7 @@ const HomePage = () => {
                       alt={event.attributes.Title}
                     />
                     <Card.Body>
-                        <Card.Title>{event.attributes.Name_zh}</Card.Title>
+                      <Card.Title>{event.attributes.Name_zh}</Card.Title>
                     </Card.Body>
                   </Card>
                 </Link>
