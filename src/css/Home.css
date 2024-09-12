@@ -84,7 +84,7 @@
 .product-price {
   position: absolute;
   /* Absolute in relative and using rem to ensure responsive remains */
-  bottom: 0.5rem;
+  bottom: 0.3rem;
   right: 1rem;
   font-size: 14px;
   color: #333;
