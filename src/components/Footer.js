@@ -40,6 +40,7 @@ const Footer = () => {
     <footer className='footer'>
       <Container>
         <Row className='d-flex'>
+
           <Col md={3} className='footer-column logo-contact'>
             <img src='/footer_logo.png' alt='Logo' className='footer-logo' />
             <div className='contact-info'>
@@ -57,6 +58,7 @@ const Footer = () => {
               </Row>
             </div>
           </Col>
+
           <Col md={6} className='subscribe-column newsletter'>
             <h2>{t("footer_join_title")}</h2>
             <p>
@@ -81,6 +83,7 @@ const Footer = () => {
             {message && <Alert variant="success">{message}</Alert>}
             {error && <Alert variant="danger">{error}</Alert>}
           </Col>
+          
           {onDesktop &&
             <Col md={3} className='footer-column qr-social'>
               <img src='/QR_JohnDu.png' alt='QR Code' className='qr-code' />
