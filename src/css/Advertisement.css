@@ -1,3 +1,20 @@
+.carousel-indicators li {
+  background-color: #000; /* Change the dot color as needed */
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 1rem;
+}
+
+/* Adjust the position of the carousel indicators */
+.ads-carousel .carousel-indicators {
+  bottom: -25px; /* Moves the indicators downwards */
+}
+
+/* Custom styling for the active dot */
+.carousel-indicators .active {
+  background-color: #fff; /* Active dot color */
+}
 .ads-carousel {
   width: 100%;
   height: 100%;
@@ -38,4 +55,16 @@
   .carousel-item img {
     height: 200px;
   }
+}
+
+.ads-carousel .carousel-caption {
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  text-align: left;
+}
+
+.ad-text {
+  color: white; /* Adjust color if needed */
+  font-size: 1rem;
 }
