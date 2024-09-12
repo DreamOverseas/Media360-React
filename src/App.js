@@ -16,7 +16,6 @@ import Contact from "./pages/Contact";
 import KolPage from "./pages/KolPage";
 import Events from "./pages/Events";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import ShoppingCart from "./pages/ShoppingCart";
 
@@ -55,7 +54,6 @@ function App() {
           <Route path='/eventpage' element={<Events />} />
           <Route exact path='/product/:id' element={<ProductDetail />} />
           <Route exact path='/event/:id' element={<EventDetail />} />
-          <Route exact path='/login' element={<Login />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/kolpage' element={<KolPage />} />
           <Route path='/kol/:id' element={<KolDetail />} />

@@ -1,18 +1,29 @@
+import React, { useContext, useState } from "react";
+import {
+  Image,
+  Nav,
+  Navbar,
+  NavDropdown,
+} from "react-bootstrap";
 import Cookies from "js-cookie";
-import React, { useContext } from "react";
-import { Image, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { AuthContext } from "../context/AuthContext";
+import LoginModal from "./LoginModal"; // Import the new LoginModal component
 import "../css/Header.css";
 
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
   const { t, i18n } = useTranslation();
+  const [showLoginModal, setShowLoginModal] = useState(false); // Manage modal visibility
 
   const changeLanguage = lng => {
     i18n.changeLanguage(lng);
     Cookies.set("i18next", lng, { expires: 7 });
   };
+
+  const handleLoginModalOpen = () => setShowLoginModal(true);
+  const handleLoginModalClose = () => setShowLoginModal(false);
+
   return (
     <div>
       <Navbar bg='light' expand='md' fixed='top' className='navbar-custom'>
@@ -50,13 +61,16 @@ const Header = () => {
                 </NavDropdown>
               </>
             ) : (
-              <Nav.Link href='/login'>
+              <Nav.Link onClick={handleLoginModalOpen}>
                 <i className='bi bi-person nav-icon'></i>
               </Nav.Link>
             )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
+
+      {/* Login Modal */}
+      <LoginModal show={showLoginModal} handleClose={handleLoginModalClose} />
     </div>
   );
 };
