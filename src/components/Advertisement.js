@@ -25,8 +25,11 @@ const Advertisement = ({ ads }) => {
             />
           </a>
 
-          <Carousel.Caption>
+          <Carousel.Caption className='text-left'>
             <h3>{advertisement.attributes.Name}</h3>
+            {advertisement.attributes.text && (
+              <p className='ad-text'>{advertisement.attributes.text}</p>
+            )}
           </Carousel.Caption>
         </Carousel.Item>
       ))}
