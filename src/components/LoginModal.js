@@ -24,7 +24,7 @@ const LoginModal = ({ show, handleClose }) => {
   const [password, setPassword] = useState("");
   const [confirmed, setConfirmed] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [activeKey, setActiveKey] = useState("sign-in");  // 使用 activeKey 来控制表单和图片的切换
+  const [activeKey, setActiveKey] = useState("sign-in");
   const [error, setError] = useState(null);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
