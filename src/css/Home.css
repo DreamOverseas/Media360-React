@@ -14,7 +14,8 @@
 
 .section-title {
   text-align: center;
-  margin: 40px 0 20px 0;
+  /* margin: 40px 0 20px 0; */
+  margin-bottom: 3%;
   font-size: 2rem;
   font-weight: bold;
 }
@@ -22,7 +23,7 @@
 .kol-section,
 .products-section,
 .events-section {
-  margin-bottom: 0;
+  margin-bottom: 5%;
 }
 
 /* Carousel */
