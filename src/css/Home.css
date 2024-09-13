@@ -21,9 +21,12 @@
 }
 
 .kol-section,
-.products-section,
-.events-section {
+.products-section {
   margin-bottom: 5%;
+}
+
+.events-section {
+  margin-bottom: 0;
 }
 
 /* Carousel */
