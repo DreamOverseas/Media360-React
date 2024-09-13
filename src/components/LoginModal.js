@@ -22,7 +22,7 @@ const LoginModal = ({ show, handleClose }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmed, setConfirmed] = useState("");
+  const [confirmedPassword, setConfirmedPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [activeKey, setActiveKey] = useState("sign-in");
   const [error, setError] = useState(null);
@@ -53,14 +53,14 @@ const LoginModal = ({ show, handleClose }) => {
     setSubmitted(true);
     setError(null);
 
-    if (email && password && confirmed && password === confirmed) {
+    if (email && password && confirmedPassword && password === confirmedPassword) {
       try {
         const response = await axios.post(
           `${BACKEND_HOST}/api/auth/local/register`,
           {
             username,
             email,
-            password,
+            password
           }
         );
 
@@ -219,9 +219,9 @@ const LoginModal = ({ show, handleClose }) => {
                         <Form.Control
                           type="password"
                           placeholder={t("confirm_password")}
-                          value={confirmed}
-                          onChange={e => setConfirmed(e.target.value)}
-                          isInvalid={submitted && password !== confirmed}
+                          value={confirmedPassword}
+                          onChange={e => setConfirmedPassword(e.target.value)}
+                          isInvalid={submitted && password !== confirmedPassword}
                           className="login-modal-form-control"
                         />
                         <Form.Control.Feedback type="invalid" className="login-modal-invalid-feedback">
