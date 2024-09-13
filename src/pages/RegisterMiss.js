@@ -68,12 +68,12 @@ const RegisterMiss = () => {
 
     requiredFields.forEach(field => {
       if (!formData[field]) {
-        newErrors[field] = '此字段为必填';
+        newErrors[field] = '请填写此项';
       }
     });
 
     if (formData.Gallery.length === 0) {
-      newErrors.Gallery = '你必须上传至少一张图片';
+      newErrors.Gallery = '请您上传至少一张图片';
     }
 
     setErrors(newErrors);
@@ -114,9 +114,9 @@ const RegisterMiss = () => {
 
       const result = await response.json();
       if (response.ok) {
-        alert('表单提交成功');
+        alert('表单提交成功，谢谢您的耐心！');
       } else {
-        alert('提交失败');
+        alert('诶呀，提交失败了，请稍后重试...');
         console.log(result);
       }
     } catch (error) {
@@ -126,7 +126,7 @@ const RegisterMiss = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center" style={{ fontSize: '36px', color: 'skyblue' }}>申请表格</h2>
+      <h2 className="text-center" style={{ fontSize: '36px', color: 'skyblue' }}>佳丽申请表格 - 2024</h2>
       <br />
       <form onSubmit={handleSubmit}>
         <div className="row">
