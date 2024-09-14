@@ -26,10 +26,11 @@ const RegisterMiss = () => {
     WechatID: '',
     Email: '',
     Company: '',
-    SocialMediaAccounts: [{ Platform: '', Fans: '' }],
+    SocialMediaAccounts: [],
     Gallery: []
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
@@ -95,6 +96,7 @@ const RegisterMiss = () => {
     if (!validateForm()) {
       return;
     }
+    setIsSubmitting(true);
 
     // Step 1: Upload files to Media Library
     const uploadedImageUrls = [];
@@ -119,11 +121,13 @@ const RegisterMiss = () => {
         } else {
           console.error('Failed to upload image:', uploadResult);
           alert('图片上传失败，请重试');
+          setIsSubmitting(false);
           return;
         }
       } catch (error) {
         console.error('Error during file upload:', error);
         alert('图片上传时出现错误');
+        setIsSubmitting(false);
         return;
       }
     }
@@ -173,15 +177,17 @@ const RegisterMiss = () => {
       const result = await response.json();
       if (response.ok) {
         alert('表单提交成功，感谢您的耐心！');
+        window.location.reload();
       } else {
         alert('提交失败，请稍后重试...');
         console.log(result);
       }
     } catch (error) {
       console.error('Error during form submission:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
 
   return (
     <div className="container mt-5">
@@ -348,20 +354,6 @@ const RegisterMiss = () => {
           </div>
         </div>
 
-        {/* 居住地 */}
-        <div className="form-group">
-          <label>居住地*</label>
-          <input
-            type="text"
-            name="Location"
-            className="form-control"
-            value={formData.Location}
-            onChange={handleInputChange}
-            required
-          />
-          {errors.Location && <small className="text-danger">{errors.Location}</small>}
-        </div>
-
         {/* ID证件号码 */}
         <div className="form-group">
           <label>ID证件号码*</label>
@@ -374,6 +366,20 @@ const RegisterMiss = () => {
             required
           />
           {errors.IDNumber && <small className="text-danger">{errors.IDNumber}</small>}
+        </div>
+
+        {/* 居住地 */}
+        <div className="form-group">
+          <label>居住地*</label>
+          <input
+            type="text"
+            name="Location"
+            className="form-control"
+            value={formData.Location}
+            onChange={handleInputChange}
+            required
+          />
+          {errors.Location && <small className="text-danger">{errors.Location}</small>}
         </div>
 
         <div className="row">
@@ -552,8 +558,15 @@ const RegisterMiss = () => {
         </div>
 
         <div className="d-flex justify-content-end">
-          <button type="submit" className="btn btn-primary" style={{ width: '200px' }}>
-            提交
+          <button type="submit" className="btn btn-primary mt-3" style={{ width: '200px' }} disabled={isSubmitting}>
+            {isSubmitting ? (
+              <>
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                提交中...
+              </>
+            ) : (
+              "提交"
+            )}
           </button>
         </div>
         <br />
