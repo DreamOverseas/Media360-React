@@ -1,8 +1,8 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, {useEffect} from "react";
+import React, { useEffect, useState } from "react";
 // import { useMediaQuery } from "react-responsive";
-import { Route, Routes, useLocation  } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "./App.css";
@@ -18,21 +18,29 @@ import Events from "./pages/Events";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import ShoppingCart from "./pages/ShoppingCart";
+import RegisterMiss from "./pages/RegisterMiss";
 
 function App() {
 
   // Reserved for different needs of costomisation across pages
   const location = useLocation();
-  //const [footer, setFooter] = useState();
+  const [header, setHeader] = useState(<Header />);
+  const [footer, setFooter] = useState(<Footer />);
 
   useEffect(() => {
     if (location.pathname === "/") {
       document.body.style.marginTop = "-24px";
+      setHeader(<Header />);
+      setFooter(<Footer />);
+    }
+    if (location.pathname === "/miss-register") {
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      //setFooter(<></>);
+      setFooter(<></>);
+      setHeader(<></>);
     } else {
       document.body.style.marginTop = "54px";
-      //setFooter(<Footer />);
+      setHeader(<Header />);
+      setFooter(<Footer />);
     }
   }, [location]);
 
@@ -41,7 +49,7 @@ function App() {
 
   return (
     <div className='App'>
-      <Header />
+      {header}
       <div className="main-content">
         <Routes>
           <Route exact path='/' element={<Home />} />
@@ -58,9 +66,11 @@ function App() {
           <Route path='/kolpage' element={<KolPage />} />
           <Route path='/kol/:id' element={<KolDetail />} />
           <Route path='/cart' element={<ShoppingCart />} />
+          <Route path='/cart' element={<ShoppingCart />} />
+          <Route path='/miss-register' element={<RegisterMiss />} />
         </Routes>
       </div>
-      <Footer />
+      {footer}
     </div>
   );
 }
