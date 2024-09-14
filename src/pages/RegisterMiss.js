@@ -61,6 +61,12 @@ const RegisterMiss = () => {
     });
   };
 
+  const removeSocialMedia = (index) => {
+    const newAccounts = [...formData.SocialMediaAccounts];
+    newAccounts.splice(index, 1);
+    setFormData({ ...formData, SocialMediaAccounts: newAccounts });
+  };
+
   const validateForm = () => {
     const newErrors = {};
     const requiredFields = [
@@ -487,7 +493,7 @@ const RegisterMiss = () => {
         <div className="form-group">
           <label>自媒体账号</label>
           {formData.SocialMediaAccounts.map((account, index) => (
-            <div key={index} className="d-flex">
+            <div key={index} className="d-flex align-items-center mb-2">
               <input
                 list="MediaPlatformOptions"
                 type="text"
@@ -511,16 +517,25 @@ const RegisterMiss = () => {
                 type="number"
                 name="Fans"
                 placeholder="粉丝数"
-                className="form-control"
+                className="form-control mr-2"
                 value={account.Fans}
                 onChange={(e) => handleSocialMediaChange(index, e)}
               />
+              {/* 添加删除按钮 */}
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => removeSocialMedia(index)}
+              >
+                <i className="bi bi-dash"></i> {/* Bootstrap Icons 减号 */}
+              </button>
             </div>
           ))}
           <button type="button" className="btn btn-secondary mt-2" onClick={addSocialMedia}>
             添加自媒体账号
           </button>
         </div>
+
 
         {/* 上传照片 */}
         <div className="form-group">
