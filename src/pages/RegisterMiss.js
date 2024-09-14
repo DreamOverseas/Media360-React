@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../css/Forms.css";
 // import { saveAs } from 'file-saver';
 
 // Load Backend Host for API calls
@@ -178,7 +179,20 @@ const RegisterMiss = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center" style={{ fontSize: '36px', color: 'skyblue' }}>佳丽申请表格 - 2024</h2>
+      <div className="row align-items-center">
+        <div className="col-auto">
+          <img
+            src="/miss_reg_form/MissUniverse.png"
+            alt="MissUniverse"
+            style={{ height: '140px', width: 'auto' }}
+          />
+        </div>
+        <div className="col">
+          <h2 className="text-center" style={{ fontSize: '36px', color: 'skyblue' }}>
+            第73届环球小姐中国区大赛澳洲赛区-墨尔本2024
+          </h2>
+        </div>
+      </div>
       <br />
       <form onSubmit={handleSubmit}>
         <div className="row">
@@ -522,10 +536,30 @@ const RegisterMiss = () => {
           {errors.Gallery && <small className="text-danger">{errors.Gallery}</small>}
         </div>
 
-        <button type="submit" className="btn btn-primary mt-3">
-          提交
-        </button>
+        <div className="d-flex justify-content-end">
+          <button type="submit" className="btn btn-primary" style={{ width: '200px' }}>
+            提交
+          </button>
+        </div>
+        <br />
       </form>
+      <div class="row">
+        <div class="col text-center">
+          <p>联合主办:</p>
+          <img src="/miss_reg_form/MissInternational.png" alt="Miss International" class="sponsor-logo" />
+          <img src="/miss_reg_form/MissWeb3.png" alt="Miss Web3" class="sponsor-logo" />
+        </div>
+
+        <div class="col text-center">
+          <p>冠名赞助:</p>
+          <img src="/miss_reg_form/Greeness.png" alt="Greeness" class="sponsor-logo" />
+        </div>
+
+        <div class="col text-center">
+          <p>授权方:</p>
+          <img src="/miss_reg_form/NewShell.png" alt="New Shell" class="sponsor-logo" />
+        </div>
+      </div>
     </div>
   );
 }
