@@ -1,4 +1,11 @@
 .form-button-container {
     display: flex;
-    justify-content: flex-end; /* Aligns button to the right */
+    justify-content: flex-end;
+    /* Aligns button to the right */
+}
+
+.sponsor-logo {
+    max-width: 150px;
+    max-height: 100px;
+    margin: 10px;
 }

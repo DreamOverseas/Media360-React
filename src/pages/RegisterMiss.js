@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../css/Forms.css";
 // import { saveAs } from 'file-saver';
 
 // Load Backend Host for API calls
@@ -25,10 +26,11 @@ const RegisterMiss = () => {
     WechatID: '',
     Email: '',
     Company: '',
-    SocialMediaAccounts: [{ Platform: '', Fans: '' }],
+    SocialMediaAccounts: [],
     Gallery: []
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
@@ -60,6 +62,12 @@ const RegisterMiss = () => {
     });
   };
 
+  const removeSocialMedia = (index) => {
+    const newAccounts = [...formData.SocialMediaAccounts];
+    newAccounts.splice(index, 1);
+    setFormData({ ...formData, SocialMediaAccounts: newAccounts });
+  };
+
   const validateForm = () => {
     const newErrors = {};
     const requiredFields = [
@@ -88,6 +96,7 @@ const RegisterMiss = () => {
     if (!validateForm()) {
       return;
     }
+    setIsSubmitting(true);
 
     // Step 1: Upload files to Media Library
     const uploadedImageUrls = [];
@@ -112,11 +121,13 @@ const RegisterMiss = () => {
         } else {
           console.error('Failed to upload image:', uploadResult);
           alert('图片上传失败，请重试');
+          setIsSubmitting(false);
           return;
         }
       } catch (error) {
         console.error('Error during file upload:', error);
         alert('图片上传时出现错误');
+        setIsSubmitting(false);
         return;
       }
     }
@@ -166,19 +177,34 @@ const RegisterMiss = () => {
       const result = await response.json();
       if (response.ok) {
         alert('表单提交成功，感谢您的耐心！');
+        window.location.reload();
       } else {
         alert('提交失败，请稍后重试...');
         console.log(result);
       }
     } catch (error) {
       console.error('Error during form submission:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-
   return (
     <div className="container mt-5">
-      <h2 className="text-center" style={{ fontSize: '36px', color: 'skyblue' }}>佳丽申请表格 - 2024</h2>
+      <div className="row align-items-center">
+        <div className="col-auto">
+          <img
+            src="/miss_reg_form/MissUniverse.png"
+            alt="MissUniverse"
+            style={{ height: '140px', width: 'auto' }}
+          />
+        </div>
+        <div className="col">
+          <h2 className="text-center" style={{ fontSize: '36px', color: 'skyblue' }}>
+            第73届环球小姐中国区大赛澳洲赛区-墨尔本2024
+          </h2>
+        </div>
+      </div>
       <br />
       <form onSubmit={handleSubmit}>
         <div className="row">
@@ -328,20 +354,6 @@ const RegisterMiss = () => {
           </div>
         </div>
 
-        {/* 居住地 */}
-        <div className="form-group">
-          <label>居住地*</label>
-          <input
-            type="text"
-            name="Location"
-            className="form-control"
-            value={formData.Location}
-            onChange={handleInputChange}
-            required
-          />
-          {errors.Location && <small className="text-danger">{errors.Location}</small>}
-        </div>
-
         {/* ID证件号码 */}
         <div className="form-group">
           <label>ID证件号码*</label>
@@ -354,6 +366,20 @@ const RegisterMiss = () => {
             required
           />
           {errors.IDNumber && <small className="text-danger">{errors.IDNumber}</small>}
+        </div>
+
+        {/* 居住地 */}
+        <div className="form-group">
+          <label>居住地*</label>
+          <input
+            type="text"
+            name="Location"
+            className="form-control"
+            value={formData.Location}
+            onChange={handleInputChange}
+            required
+          />
+          {errors.Location && <small className="text-danger">{errors.Location}</small>}
         </div>
 
         <div className="row">
@@ -473,7 +499,7 @@ const RegisterMiss = () => {
         <div className="form-group">
           <label>自媒体账号</label>
           {formData.SocialMediaAccounts.map((account, index) => (
-            <div key={index} className="d-flex">
+            <div key={index} className="d-flex align-items-center mb-2">
               <input
                 list="MediaPlatformOptions"
                 type="text"
@@ -497,16 +523,25 @@ const RegisterMiss = () => {
                 type="number"
                 name="Fans"
                 placeholder="粉丝数"
-                className="form-control"
+                className="form-control mr-2"
                 value={account.Fans}
                 onChange={(e) => handleSocialMediaChange(index, e)}
               />
+              {/* 添加删除按钮 */}
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => removeSocialMedia(index)}
+              >
+                <i className="bi bi-dash"></i> {/* Bootstrap Icons 减号 */}
+              </button>
             </div>
           ))}
           <button type="button" className="btn btn-secondary mt-2" onClick={addSocialMedia}>
             添加自媒体账号
           </button>
         </div>
+
 
         {/* 上传照片 */}
         <div className="form-group">
@@ -522,10 +557,37 @@ const RegisterMiss = () => {
           {errors.Gallery && <small className="text-danger">{errors.Gallery}</small>}
         </div>
 
-        <button type="submit" className="btn btn-primary mt-3">
-          提交
-        </button>
+        <div className="d-flex justify-content-end">
+          <button type="submit" className="btn btn-primary mt-3" style={{ width: '200px' }} disabled={isSubmitting}>
+            {isSubmitting ? (
+              <>
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                提交中...
+              </>
+            ) : (
+              "提交"
+            )}
+          </button>
+        </div>
+        <br />
       </form>
+      <div class="row">
+        <div class="col text-center">
+          <p>联合主办:</p>
+          <img src="/miss_reg_form/MissInternational.png" alt="Miss International" class="sponsor-logo" />
+          <img src="/miss_reg_form/MissWeb3.png" alt="Miss Web3" class="sponsor-logo" />
+        </div>
+
+        <div class="col text-center">
+          <p>冠名赞助:</p>
+          <img src="/miss_reg_form/Greeness.png" alt="Greeness" class="sponsor-logo" />
+        </div>
+
+        <div class="col text-center">
+          <p>授权方:</p>
+          <img src="/miss_reg_form/NewShell.png" alt="New Shell" class="sponsor-logo" />
+        </div>
+      </div>
     </div>
   );
 }
