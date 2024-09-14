@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+// import { saveAs } from 'file-saver';
 
 // Load Backend Host for API calls
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
@@ -24,7 +25,7 @@ const RegisterMiss = () => {
     WechatID: '',
     Email: '',
     Company: '',
-    SocialMediaAccounts: [{ platform: '', fans: '' }],
+    SocialMediaAccounts: [{ Platform: '', Fans: '' }],
     Gallery: []
   });
 
@@ -55,7 +56,7 @@ const RegisterMiss = () => {
   const addSocialMedia = () => {
     setFormData({
       ...formData,
-      SocialMediaAccounts: [...formData.SocialMediaAccounts, { platform: '', fans: '' }]
+      SocialMediaAccounts: [...formData.SocialMediaAccounts, { Platform: '', Fans: '' }]
     });
   };
 
@@ -82,47 +83,98 @@ const RegisterMiss = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate form before processing
     if (!validateForm()) {
       return;
     }
 
-    const formDataToSend = new FormData();
+    // Step 1: Upload files to Media Library
+    const uploadedImageUrls = [];
+    for (let i = 0; i < formData.Gallery.length; i++) {
+      const file = formData.Gallery[i];
+      const formDataToUpload = new FormData();
+      formDataToUpload.append('files', file);
 
-    Object.keys(formData).forEach((key) => {
-      if (key === 'Gallery') {
-        formData[key].forEach((file) => {
-          formDataToSend.append('files', file);
+      try {
+        const uploadResponse = await fetch(`${BACKEND_HOST}/api/upload`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${API_KEY_MI}`,
+          },
+          body: formDataToUpload,
         });
-      } else if (key === 'SocialMediaAccounts') {
-        formData.SocialMediaAccounts.forEach((account, index) => {
-          formDataToSend.append(`data.MediaAccounts[${index}][Platform]`, account.platform);
-          formDataToSend.append(`data.MediaAccounts[${index}][Fans]`, account.fans);
-        });
-      } else {
-        formDataToSend.append(`data.${key}`, formData[key]);
+
+        const uploadResult = await uploadResponse.json();
+        if (uploadResponse.ok && uploadResult.length > 0) {
+          // Push the image URL into the array
+          uploadedImageUrls.push(uploadResult[0].url);
+        } else {
+          console.error('Failed to upload image:', uploadResult);
+          alert('图片上传失败，请重试');
+          return;
+        }
+      } catch (error) {
+        console.error('Error during file upload:', error);
+        alert('图片上传时出现错误');
+        return;
       }
-    });
+    }
+
+    // Step 2: Create RegisteredMiss with image URLs in Gallery and wrap it in `data`
+    const finalFormData = {
+      Name_zh: formData.Name_zh,
+      Name_en: formData.Name_en,
+      OccupationNow: formData.OccupationNow,
+      OccupationHoped: formData.OccupationHoped,
+      OccupatedPlace: formData.CompanyOrSchool,
+      Education: formData.Education,
+      MajorStudied: formData.MajorStudied,
+      Age: formData.Age,
+      Height: formData.Height,
+      Weight: formData.Weight,
+      Talent: formData.Talent,
+      IDInfo: {
+        Nationality: formData.Nationality,
+        Type: formData.IDType,
+        Number: formData.IDNumber
+      },
+      Phone: formData.Phone,
+      WechatID: formData.WechatID,
+      Email: formData.Email,
+      Company: formData.Company,
+      MediaAccounts: formData.SocialMediaAccounts,
+      Gallery: uploadedImageUrls.map((url) => ({ url })),
+      Location: formData.Location
+    };
+
+    // // Output finalFormData to a file
+    // const finalFormDataString = JSON.stringify({ data: finalFormData }, null, 2); // Convert to JSON string
+    // const blob = new Blob([finalFormDataString], { type: 'application/json' }); // Create a Blob object
+    // saveAs(blob, 'finalFormData.json'); // Save the file as finalFormData.json
 
     try {
       const response = await fetch(`${BACKEND_HOST}/api/registered-misses`, {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${API_KEY_MI}`,
         },
-        body: formDataToSend,
+        body: JSON.stringify({ data: finalFormData }),
       });
 
       const result = await response.json();
       if (response.ok) {
-        alert('表单提交成功，谢谢您的耐心！');
+        alert('表单提交成功，感谢您的耐心！');
       } else {
-        alert('诶呀，提交失败了，请稍后重试...');
+        alert('提交失败，请稍后重试...');
         console.log(result);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error during form submission:', error);
     }
   };
+
 
   return (
     <div className="container mt-5">
@@ -425,10 +477,10 @@ const RegisterMiss = () => {
               <input
                 list="MediaPlatformOptions"
                 type="text"
-                name="platform"
+                name="Platform"
                 placeholder="平台"
                 className="form-control mr-2"
-                value={account.platform}
+                value={account.Platform}
                 onChange={(e) => handleSocialMediaChange(index, e)}
               />
               <datalist id="MediaPlatformOptions">
@@ -443,10 +495,10 @@ const RegisterMiss = () => {
               </datalist>
               <input
                 type="number"
-                name="fans"
+                name="Fans"
                 placeholder="粉丝数"
                 className="form-control"
-                value={account.fans}
+                value={account.Fans}
                 onChange={(e) => handleSocialMediaChange(index, e)}
               />
             </div>
