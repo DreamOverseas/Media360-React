@@ -5,7 +5,7 @@ const Greeness = () => {
     return (
         <div style={{ marginLeft: '30px', marginRight: '30px' }}>
             <Row>
-                <Col className="col-auto">
+                <Col md={1} className="d-flex align-items-center justify-content-center">
                     <Image
                         src="/sponsors/greeness_logo.png"
                         alt="GreenessLogo"
@@ -14,7 +14,7 @@ const Greeness = () => {
                 </Col>
                 <Col className="d-flex align-items-center justify-content-center">
                     <h2 className="text-center" style={{ fontSize: '36px', color: 'limegreen' }}>
-                        Green Ess，将绿色能源带到生活的每个角落
+                        Greeness, 将绿色能源带到生活的每个角落
                     </h2>
                 </Col>
             </Row>
@@ -22,7 +22,7 @@ const Greeness = () => {
             <Row className="align-items-center my-4 flex-column-reverse flex-md-row">
                 <Col md={6} className="text-center">
                     <p>
-                        Green Ess是一家致力于绿色清洁能源产品研发的公司。我们坚信，绿色能源是未来可持续发展的关键，而家庭用电与户外用电相结合的能源中心将成为未来的主流趋势。在Green Ess，我们不断研究推动清洁能源进步的技术，还致力于为家庭和社区提供高效、环保的能源解决方案。
+                        Greeness是一家致力于绿色清洁能源产品研发的公司。我们坚信，绿色能源是未来可持续发展的关键，而家庭用电与户外用电相结合的能源中心将成为未来的主流趋势。在Greeness，我们不断研究推动清洁能源进步的技术，还致力于为家庭和社区提供高效、环保的能源解决方案。
                         我们的口号“将绿色能源带入生活的每个角落”完美诠释了我们的理念，通过创新的绿色清洁能源产品，提供可持续、环保的能源选择，从而共同推动现有能源结构向更清洁、可再生的方向发展。
                         我们的目标是打造家庭用电和户外用电相结合的能源中心，让每个家庭都能够自主、高效地利用清洁能源，从而减少对传统能源的依赖，降低碳排放，实现共同的绿色未来。
                     </p>
@@ -70,7 +70,7 @@ const Greeness = () => {
             <Row className="align-items-center my-4 flex-column-reverse flex-md-row">
                 <Col md={6} className="text-center">
                     <p>
-                        Green Ess的卓越产品设计提供了全面的全屋备份解决方案，能够支持您的房屋100% 的用电负载。这确保了即使在停电期间也能为您的家庭需求提供不间断的电力供应。当极端天气导致电网损坏且在停电期间电池耗尽时，Green Ess的灾难模式起到了至关重要的作用。此独特功能激活了并网逆变器，使太阳能系统能够为电池充电并为家庭提供基本的电力需求，完全离网运行，在最具挑战的条件下提供安心。
+                        Greeness的卓越产品设计提供了全面的全屋备份解决方案，能够支持您的房屋100% 的用电负载。这确保了即使在停电期间也能为您的家庭需求提供不间断的电力供应。当极端天气导致电网损坏且在停电期间电池耗尽时，Greeness的灾难模式起到了至关重要的作用。此独特功能激活了并网逆变器，使太阳能系统能够为电池充电并为家庭提供基本的电力需求，完全离网运行，在最具挑战的条件下提供安心。
                     </p>
                 </Col>
                 <Col md={6} className="text-center">
@@ -85,7 +85,7 @@ const Greeness = () => {
             <Row className="align-items-center my-4 flex-column-reverse flex-md-row">
                 <Col md={6} className="text-center">
                     <p>
-                        智能发电机和智能涡轮系统，体验 Green Ess带来的能源独立。
+                        智能发电机和智能涡轮系统，体验 Greeness带来的能源独立。
                     </p>
                 </Col>
                 <Col md={6} className="text-center">
