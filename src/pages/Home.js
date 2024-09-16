@@ -67,7 +67,6 @@ const HomePage = () => {
 
   return (
     <div className="homepage-background">
-      <br /><br /><br />
       {/* Carousel Section */}
       <Container className="ads-section">
         <Advertisement ads={ads} />

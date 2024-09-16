@@ -19,6 +19,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import ShoppingCart from "./pages/ShoppingCart";
 import RegisterMiss from "./pages/RegisterMiss";
+import Greeness from "./pages/Greeness";
 
 function App() {
 
@@ -29,11 +30,10 @@ function App() {
 
   useEffect(() => {
     if (location.pathname === "/") {
-      document.body.style.marginTop = "-24px";
       setHeader(<Header />);
       setFooter(<Footer />);
     }
-    if (location.pathname === "/miss-register") {
+    if (location.pathname === "/miss-register" || location.pathname === "/sponsor/greeness") {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       setFooter(<></>);
       setHeader(<></>);
@@ -68,6 +68,7 @@ function App() {
           <Route path='/cart' element={<ShoppingCart />} />
           <Route path='/cart' element={<ShoppingCart />} />
           <Route path='/miss-register' element={<RegisterMiss />} />
+          <Route path='/sponsor/greeness' element={<Greeness />} />
         </Routes>
       </div>
       {footer}
