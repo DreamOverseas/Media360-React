@@ -1,0 +1,103 @@
+.login-modal-nav-link-Login.active {
+  text-decoration: underline;
+  font-weight: 700;
+  text-underline-offset: 6px;
+}
+
+.login-modal-nav-link-Login:hover {
+  color: #0056b3 !important;
+}
+
+.login-modal-nav-link-Login {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333 !important;
+  padding-bottom: 10px;
+}
+
+.login-modal-sign-in-table,
+.login-modal-sign-up-table {
+  padding-top: 20px;
+}
+
+.login-modal-sign-in-up-image-display {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.login-modal-login-image-display.fade-in {
+  opacity: 1;
+}
+
+.login-modal-login-image-display.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.login-modal-form-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+button.login-modal-submit-btn {
+  width: 50%;
+  background-color: #007bff;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 10px 20px;
+}
+
+button.login-modal-submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.login-modal-custom-modal-dialog {
+  max-width: 950px;
+  border-radius: 10px;
+}
+
+.login-modal-custom-modal-content {
+  height: 100%;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.login-modal-form-group {
+  margin-bottom: 2%;
+}
+
+.login-modal-form-label {
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.login-modal-form-control {
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.login-modal-invalid-feedback {
+  margin-top: 1%;
+  color: red;
+}
+
+.sign-in-up-panel {
+  text-align: center ;
+}
+
+@media (max-width: 768px) {
+  .login-modal-nav-link-Login {
+    font-size: 20px;
+  }
+
+  .login-modal-form-button-container button {
+    width: 80%;
+  }
+}
+

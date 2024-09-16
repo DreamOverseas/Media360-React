@@ -1,7 +1,6 @@
 .footer {
   display: flex;
-  min-height: 417px;
-  justify-content: space-around;
+  min-height: 280px;
   padding: 2rem;
   background-color: #333;
   color: #fff;
@@ -10,15 +9,13 @@
 
 .footer-column {
   flex: 1;
-  padding: 1rem;
+  padding: 1cap;
   align-items: center;
 }
 
-.footer-link {
-  height: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content:space-around;
+.subscribe-column {
+  padding-top: 5px;
+  flex: 1.5;
 }
 
 .footer-link h5 {
@@ -32,8 +29,8 @@
 }
 
 .footer-logo {
-  width: 150px;
-  margin-bottom: 1rem;
+  width: 50px;
+  margin-bottom: 0.5rem;
 }
 
 .contact-info p {
@@ -50,16 +47,18 @@
 }
 
 .newsletter button {
-  padding: 0.5rem 1rem;
+  width: 100%;
+  padding: 0.5rem 2rem;
   border: none;
-  background-color: #444;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(68, 68, 68, 1) 20%, rgba(68, 68, 68, 1) 80%, rgba(255, 255, 255, 0));
   color: #fff;
   cursor: pointer;
   border-radius: 4px;
+  margin: 0 !important;
 }
 
 .newsletter button:hover {
-  background-color:gray;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(128, 128, 128, 1) 25%, rgba(128, 128, 128, 1) 75%, rgba(255, 255, 255, 0));
 }
 
 .qr-social {
@@ -93,9 +92,8 @@
     text-align: center;
   }
 
-  .footer-link {
-    height: auto;
-    padding-bottom: 1rem;
+  .subscribe-button {
+    margin: 0 !important;
   }
 
   .footer-link h5 {

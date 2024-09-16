@@ -39,36 +39,33 @@ const Footer = () => {
   return (
     <footer className='footer'>
       <Container>
-        <Row>
+        <Row className='d-flex'>
+
           <Col md={3} className='footer-column logo-contact'>
             <img src='/footer_logo.png' alt='Logo' className='footer-logo' />
             <div className='contact-info'>
-              <p>171 La trobe Street, Melbourne VIC 3000</p>
-              <p>0413 168 533</p>
-              <p>john.du@do360.com</p>
+              <Row>
+                <Col md={1} className='d-flex justify-content-center align-items-center'> <i class="bi bi-pin-map-fill"></i> </Col>
+                <Col> <p>171 La trobe Street <br />Melbourne VIC 3000</p> </Col>
+              </Row>
+              <Row>
+                <Col md={1} className='d-flex justify-content-center align-items-center'> <i class="bi bi-telephone-inbound-fill"></i> </Col>
+                <Col> <p>0413 168 533</p> </Col>
+              </Row>
+              <Row>
+                <Col md={1} className='d-flex justify-content-center align-items-center'> <i class="bi bi-mailbox2"></i> </Col>
+                <Col> <p>john.du@do360.com</p> </Col>
+              </Row>
             </div>
           </Col>
-          {onDesktop &&
-            <Col className='footer-link'>
-              <Row>
-                <h5>{t("footer_people")}</h5>
-              </Row>
-              <Row>
-                <h5>{t("footer_mission")}</h5>
-              </Row>
-              <Row>
-                <h5>{t("footer_event")}</h5>
-              </Row>
-            </Col>
-          }
-          <Col md={3} className='footer-column newsletter'>
+
+          <Col md={6} className='subscribe-column newsletter'>
             <h2>{t("footer_join_title")}</h2>
             <p>
               {t("footer_join_intro")}
             </p>
             <Form onSubmit={subscribMe}>
               <Form.Group controlId="formEmail">
-                <Form.Label>{t("footer_email")}</Form.Label>
                 <Form.Control
                   type="email"
                   placeholder={t("enterEmail")}
@@ -77,18 +74,21 @@ const Footer = () => {
                   required
                 />
               </Form.Group>
-              <Button variant="primary" type="submit">
+              <div className='d-flex justify-content-end'>
+              <Button variant="primary" type="submit" className='subscribe-button'>
                 {t("footer_sub")}
               </Button>
+              </div>
             </Form>
             {message && <Alert variant="success">{message}</Alert>}
             {error && <Alert variant="danger">{error}</Alert>}
           </Col>
+          
           {onDesktop &&
             <Col md={3} className='footer-column qr-social'>
               <img src='/QR_JohnDu.png' alt='QR Code' className='qr-code' />
               <p>{t("footer_scan")}</p>
-              <Row>
+              {/* <Row>
                 <Col>
                   <i className="bi bi-facebook"></i>
                 </Col>
@@ -98,7 +98,7 @@ const Footer = () => {
                 <Col>
                   <i className="bi bi-share"></i>
                 </Col>
-              </Row>
+              </Row> */}
             </Col>
           }
         </Row>

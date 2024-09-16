@@ -13,8 +13,10 @@ import {
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import LoginModal from "./LoginModal";
 import { AuthContext } from "../context/AuthContext";
+
 import "../css/ProductDetail.css";
 
 // Load Backend Host for API calls
@@ -29,6 +31,13 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [cartModal, setCartModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const handleLoginModalOpen = () => {
+    setShowLoginModal(true); 
+    setCartModal(false);
+  }
+  const handleLoginModalClose = () => setShowLoginModal(false);
 
   const handleCloseCartModal = () => {
     setCartModal(false);
@@ -155,11 +164,12 @@ const ProductDetail = () => {
       <section>
         <Container>
           <Row className='product-detail-section'>
-            <Col className='kol-image-col'>
+            <Col className='product-image-col'>
               {ProductImage && ProductImage.data ? (
                 <Image
                   src={`${BACKEND_HOST}${ProductImage.data.attributes.url}`}
                   alt={Name}
+                  className="product-img"
                 />
               ) : (
                 <Image src='https://placehold.co/650x650' alt='Placeholder' />
@@ -246,14 +256,12 @@ const ProductDetail = () => {
             </Row>
           </Modal.Body>
           <Modal.Footer>
-            <Link to={"/login"}>
-              <Button variant='secondary'>{t("logIn")}</Button>
-            </Link>
-            <Button variant='secondary' onClick={handleCloseCartModal}>
-              {t("cancel")}
-            </Button>
+            <Button variant='secondary' onClick={handleLoginModalOpen}>{t("logIn")}</Button>
+            <Button variant='secondary' onClick={handleCloseCartModal}>{t("cancel")}</Button>
           </Modal.Footer>
         </Modal>
+
+        <LoginModal show={showLoginModal} handleClose={handleLoginModalClose} />
       </section>
       <br />
       <br />

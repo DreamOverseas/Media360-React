@@ -1,8 +1,8 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 // import { useMediaQuery } from "react-responsive";
-import { Route, Routes /*, useLocation */ } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "./App.css";
@@ -16,30 +16,40 @@ import Contact from "./pages/Contact";
 import KolPage from "./pages/KolPage";
 import Events from "./pages/Events";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import ShoppingCart from "./pages/ShoppingCart";
+import RegisterMiss from "./pages/RegisterMiss";
 
 function App() {
-  // Resercved for different needs of costomisation across pages
-  // const location = useLocation();
-  // const [footer, setFooter] = useState();
-  // useEffect(() => {
-  //   if (location.pathname === "/") {
-  //     //document.body.style.marginTop = "0";
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //     setFooter(<></>);
-  //   } else {
-  //     setFooter(<Footer />);
-  //   }
-  // }, [location]);
+
+  // Reserved for different needs of costomisation across pages
+  const location = useLocation();
+  const [header, setHeader] = useState(<Header />);
+  const [footer, setFooter] = useState(<Footer />);
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      document.body.style.marginTop = "-24px";
+      setHeader(<Header />);
+      setFooter(<Footer />);
+    }
+    if (location.pathname === "/miss-register") {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      setFooter(<></>);
+      setHeader(<></>);
+    } else {
+      document.body.style.marginTop = "54px";
+      setHeader(<Header />);
+      setFooter(<Footer />);
+    }
+  }, [location]);
 
   // Check if is on desktop
   // const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 
   return (
     <div className='App'>
-      <Header />
+      {header}
       <div className="main-content">
         <Routes>
           <Route exact path='/' element={<Home />} />
@@ -52,14 +62,15 @@ function App() {
           <Route path='/eventpage' element={<Events />} />
           <Route exact path='/product/:id' element={<ProductDetail />} />
           <Route exact path='/event/:id' element={<EventDetail />} />
-          <Route exact path='/login' element={<Login />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/kolpage' element={<KolPage />} />
           <Route path='/kol/:id' element={<KolDetail />} />
           <Route path='/cart' element={<ShoppingCart />} />
+          <Route path='/cart' element={<ShoppingCart />} />
+          <Route path='/miss-register' element={<RegisterMiss />} />
         </Routes>
       </div>
-      <Footer />
+      {footer}
     </div>
   );
 }

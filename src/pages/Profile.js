@@ -120,8 +120,8 @@ const Profile = () => {
 
     return (
         <Container className="mt-5 profile-container">
-
-            <Row md={8} className="profile-intro-row">
+            <br />
+            <Row md={7} className="profile-intro-row">
                 {/* Profile Image */}
                 <Col md={3} className='avatar-row'>
                     <img

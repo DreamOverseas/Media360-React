@@ -16,8 +16,8 @@
 }
 
 .profile-avatar {
-    height: 300px;
-    width: 300px;
+    height: 275px;
+    width: 275px;
 }
 
 @media (max-width: 768px) {

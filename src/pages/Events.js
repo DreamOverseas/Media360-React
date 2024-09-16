@@ -99,7 +99,7 @@ const Events = () => {
                                 <Row className="event-page-description">
                                     <p>{language ==="zh" ? event.attributes.Short_zh : event.attributes.Short_en}</p>
                                 </Row>
-                                <Row className="event-page-reserve mt-auto">
+                                <Row className="event-page-more-detail mt-auto">
                                     <Link to={`/event/${event.id}`} className="link-EventPage">
                                         <Button>{t("moreDetails")}</Button>
                                     </Link>

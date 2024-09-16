@@ -1,13 +1,72 @@
+.carousel-indicators li {
+  background-color: #000;
+  /* Change the dot color as needed */
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 1rem;
+}
+
+/* Adjust the position of the carousel indicators */
+.ads-carousel .carousel-indicators {
+  bottom: -20px;
+  /* Moves the indicators downwards */
+}
+
+/* Custom styling for the active dot */
+.carousel-indicators .active {
+  background-color: #fff;
+  /* Active dot color */
+}
+
 .ads-carousel {
+  width: 100%;
+  height: 100%;
   margin-top: 2%;
+  display: flex;
+  margin-bottom: 20px;
 }
 
 .ad-image {
-
-  max-height: 600px;
-
-  max-width: 1200px;
-
   object-fit: cover;
   border-radius: 10px;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: auto;
+}
+
+.ad-item img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  max-height: 300px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .ads-carousel {
+    height: 200px;
+    margin-top: 2%;
+    display: flex;
+    margin-bottom: 20px;
+  }
+
+  .carousel-item img {
+    height: 200px;
+  }
+}
+
+.ads-carousel .carousel-caption {
+  bottom: 10px;
+  left: 20px;
+  text-align: left;
+}
+
+.ad-text {
+  color: white;
+  /* Adjust color if needed */
+  font-size: 1rem;
 }
