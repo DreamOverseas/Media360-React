@@ -100,6 +100,7 @@ const RegisterMiss = () => {
 
     // Step 1: Upload files to Media Library
     const uploadedImageUrls = [];
+    const uploadedImageIds = [];
     for (let i = 0; i < formData.Gallery.length; i++) {
       const file = formData.Gallery[i];
       const formDataToUpload = new FormData();
@@ -118,6 +119,7 @@ const RegisterMiss = () => {
         if (uploadResponse.ok && uploadResult.length > 0) {
           // Push the image URL into the array
           uploadedImageUrls.push(uploadResult[0].url);
+          uploadedImageIds.push(uploadResult[0].id);
         } else {
           console.error('Failed to upload image:', uploadResult);
           alert('图片上传失败，请重试');
@@ -155,7 +157,7 @@ const RegisterMiss = () => {
       Email: formData.Email,
       Company: formData.Company,
       MediaAccounts: formData.SocialMediaAccounts,
-      Gallery: uploadedImageUrls.map((url) => ({ url })),
+      Gallery: uploadedImageIds.map((id) => ({ Photo: id })),
       Location: formData.Location
     };
 
@@ -209,7 +211,6 @@ const RegisterMiss = () => {
       <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="col">
-            {/* 中文姓名 */}
             <div className="form-group">
               <label>中文姓名*</label>
               <input
@@ -224,7 +225,6 @@ const RegisterMiss = () => {
             </div>
           </div>
           <div className="col">
-            {/* 英文姓名 */}
             <div className="form-group">
               <label>英文姓名*</label>
               <input
@@ -242,7 +242,6 @@ const RegisterMiss = () => {
 
         <div className="row">
           <div className="col">
-            {/* 年龄 */}
             <div className="form-group">
               <label>年龄*</label>
               <input
@@ -257,7 +256,6 @@ const RegisterMiss = () => {
             </div>
           </div>
           <div className="col">
-            {/* 身高 */}
             <div className="form-group">
               <label>身高（cm）*</label>
               <input
@@ -272,7 +270,6 @@ const RegisterMiss = () => {
             </div>
           </div>
           <div className="col">
-            {/* 体重 */}
             <div className="form-group">
               <label>体重（kg）*</label>
               <input
@@ -290,7 +287,6 @@ const RegisterMiss = () => {
 
         <div className="row">
           <div className="col">
-            {/* 手机号 */}
             <div className="form-group">
               <label>手机号*</label>
               <input
@@ -305,7 +301,6 @@ const RegisterMiss = () => {
             </div>
           </div>
           <div className="col">
-            {/* 邮箱 */}
             <div className="form-group">
               <label>邮箱*</label>
               <input
@@ -323,10 +318,10 @@ const RegisterMiss = () => {
 
         <div className="row">
           <div className="col">
-            {/* 国籍 */}
             <div className="form-group">
               <label>ID证件国籍*</label>
               <input
+              list="IDNationality"
                 type="text"
                 name="Nationality"
                 className="form-control"
@@ -334,14 +329,18 @@ const RegisterMiss = () => {
                 onChange={handleInputChange}
                 required
               />
+              <datalist id="IDNationality">
+                <option value="中国" />
+                <option value="澳大利亚" />
+              </datalist>
               {errors.Nationality && <small className="text-danger">{errors.Nationality}</small>}
             </div>
           </div>
           <div className="col">
-            {/* ID证件类型 */}
             <div className="form-group">
               <label>ID证件类型*</label>
               <input
+                list="IDType"
                 type="text"
                 name="IDType"
                 className="form-control"
@@ -349,12 +348,18 @@ const RegisterMiss = () => {
                 onChange={handleInputChange}
                 required
               />
+              <datalist id="IDType">
+              <option value="护照号" />
+              <option value="澳洲驾照号" />
+              <option value="国际驾照号" />
+              <option value="海员执照" />
+              <option value="其他种类（请直接在框中输入，注意要是政府认可的种类）" />
+            </datalist>
               {errors.IDType && <small className="text-danger">{errors.IDType}</small>}
             </div>
           </div>
         </div>
 
-        {/* ID证件号码 */}
         <div className="form-group">
           <label>ID证件号码*</label>
           <input
@@ -368,7 +373,6 @@ const RegisterMiss = () => {
           {errors.IDNumber && <small className="text-danger">{errors.IDNumber}</small>}
         </div>
 
-        {/* 居住地 */}
         <div className="form-group">
           <label>居住地*</label>
           <input
@@ -384,7 +388,6 @@ const RegisterMiss = () => {
 
         <div className="row">
           <div className="col">
-            {/* 目前职业 */}
             <div className="form-group">
               <label>目前职业</label>
               <input
@@ -397,7 +400,6 @@ const RegisterMiss = () => {
             </div>
           </div>
           <div className="col">
-            {/* 希望职业 */}
             <div className="form-group">
               <label>希望职业</label>
               <input
@@ -425,7 +427,6 @@ const RegisterMiss = () => {
           </div>
         </div>
 
-        {/* 工作单位/学校 */}
         <div className="form-group">
           <label>工作单位/学校</label>
           <input
@@ -439,7 +440,6 @@ const RegisterMiss = () => {
 
         <div className="row">
           <div className="col">
-            {/* 学历 */}
             <div className="form-group">
               <label>学历</label>
               <input
@@ -449,10 +449,15 @@ const RegisterMiss = () => {
                 value={formData.Education}
                 onChange={handleInputChange}
               />
+              <datalist id="EducationLvl">
+                <option value="专科" />
+                <option value="本科" />
+                <option value="研究生" />
+                <option value="PhD" />
+              </datalist>
             </div>
           </div>
           <div className="col">
-            {/* 专业 */}
             <div className="form-group">
               <label>专业</label>
               <input
@@ -466,7 +471,6 @@ const RegisterMiss = () => {
           </div>
         </div>
 
-        {/* 才艺 */}
         <div className="form-group">
           <label>才艺*</label>
           <input
@@ -481,7 +485,6 @@ const RegisterMiss = () => {
           {errors.Talent && <small className="text-danger">{errors.Talent}</small>}
         </div>
 
-        {/* 微信号 */}
         <div className="form-group">
           <label>微信号*</label>
           <input
@@ -495,7 +498,6 @@ const RegisterMiss = () => {
           {errors.WechatID && <small className="text-danger">{errors.WechatID}</small>}
         </div>
 
-        {/* 自媒体账号 */}
         <div className="form-group">
           <label>自媒体账号</label>
           {formData.SocialMediaAccounts.map((account, index) => (
@@ -527,13 +529,12 @@ const RegisterMiss = () => {
                 value={account.Fans}
                 onChange={(e) => handleSocialMediaChange(index, e)}
               />
-              {/* 添加删除按钮 */}
               <button
                 type="button"
                 className="btn btn-danger"
                 onClick={() => removeSocialMedia(index)}
               >
-                <i className="bi bi-dash"></i> {/* Bootstrap Icons 减号 */}
+                <i className="bi bi-dash"></i>
               </button>
             </div>
           ))}
@@ -542,8 +543,6 @@ const RegisterMiss = () => {
           </button>
         </div>
 
-
-        {/* 上传照片 */}
         <div className="form-group">
           <label>上传照片*（最多 5 张，1MB 限制）</label>
           <input
