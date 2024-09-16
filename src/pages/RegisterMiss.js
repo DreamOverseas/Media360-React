@@ -100,6 +100,7 @@ const RegisterMiss = () => {
 
     // Step 1: Upload files to Media Library
     const uploadedImageUrls = [];
+    const uploadedImageIds = [];
     for (let i = 0; i < formData.Gallery.length; i++) {
       const file = formData.Gallery[i];
       const formDataToUpload = new FormData();
@@ -118,6 +119,7 @@ const RegisterMiss = () => {
         if (uploadResponse.ok && uploadResult.length > 0) {
           // Push the image URL into the array
           uploadedImageUrls.push(uploadResult[0].url);
+          uploadedImageIds.push(uploadResult[0].id);
         } else {
           console.error('Failed to upload image:', uploadResult);
           alert('图片上传失败，请重试');
@@ -155,7 +157,7 @@ const RegisterMiss = () => {
       Email: formData.Email,
       Company: formData.Company,
       MediaAccounts: formData.SocialMediaAccounts,
-      Gallery: uploadedImageUrls.map((url) => ({ url })),
+      Gallery: uploadedImageIds.map((id) => ({ Photo: id })),
       Location: formData.Location
     };
 
