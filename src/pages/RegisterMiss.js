@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "../css/Forms.css";
+import Cookies from "js-cookie";
+import { useTranslation } from "react-i18next";
 // import { saveAs } from 'file-saver';
 
 // Load Backend Host for API calls
@@ -41,7 +43,7 @@ const RegisterMiss = () => {
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     if (files.length > 5) {
-      setErrors({ ...errors, Gallery: '最多上传5张图片' });
+      setErrors({ ...errors, Gallery: '最多上传5张图片 (Max images allowed: 5)' });
     } else {
       setFormData({ ...formData, Gallery: files });
       setErrors({ ...errors, Gallery: '' });
@@ -77,12 +79,12 @@ const RegisterMiss = () => {
 
     requiredFields.forEach(field => {
       if (!formData[field]) {
-        newErrors[field] = '请填写此项';
+        newErrors[field] = t("miss_reg_please_fill");
       }
     });
 
     if (formData.Gallery.length === 0) {
-      newErrors.Gallery = '请您上传至少一张图片';
+      newErrors.Gallery = t("miss_reg_please_upload");
     }
 
     setErrors(newErrors);
@@ -122,13 +124,13 @@ const RegisterMiss = () => {
           uploadedImageIds.push(uploadResult[0].id);
         } else {
           console.error('Failed to upload image:', uploadResult);
-          alert('图片上传失败，请重试');
+          alert('图片上传失败，请重试 (Please retry image uploading.)');
           setIsSubmitting(false);
           return;
         }
       } catch (error) {
         console.error('Error during file upload:', error);
-        alert('图片上传时出现错误');
+        alert('图片上传时出现错误 (Error on image uploading, mind the maximum image size will be 1M)');
         setIsSubmitting(false);
         return;
       }
@@ -178,10 +180,10 @@ const RegisterMiss = () => {
 
       const result = await response.json();
       if (response.ok) {
-        alert('表单提交成功，感谢您的耐心！');
+        alert(t("miss_reg_success"));
         window.location.reload();
       } else {
-        alert('提交失败，请稍后重试...');
+        alert(t("miss_reg_fail"));
         console.log(result);
       }
     } catch (error) {
@@ -189,6 +191,13 @@ const RegisterMiss = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Language change migrated from Navbar
+  const { t, i18n } = useTranslation();
+  const changeLanguage = lng => {
+    i18n.changeLanguage(lng);
+    Cookies.set("i18next", lng, { expires: 7 });
   };
 
   return (
@@ -202,9 +211,15 @@ const RegisterMiss = () => {
           />
         </div>
         <div className="col">
-          <h2 className="text-center" style={{ fontSize: '36px', color: 'skyblue' }}>
-            第73届环球小姐中国区大赛澳洲赛区-墨尔本2024
+          <h2 className="text-center miss-reg-form-title">
+            {t("miss_reg_contest_title")}
           </h2>
+        </div>
+        <div className="col-auto">
+          <select id="language-select" onChange={(e) => changeLanguage(e.target.value)}>
+            <option value="en">EN</option>
+            <option value="zh">ZH</option>
+          </select>
         </div>
       </div>
       <br />
@@ -212,7 +227,7 @@ const RegisterMiss = () => {
         <div className="row">
           <div className="col">
             <div className="form-group">
-              <label>中文姓名*</label>
+              <label>{t("miss_reg_name_zh")}</label>
               <input
                 type="text"
                 name="Name_zh"
@@ -226,7 +241,7 @@ const RegisterMiss = () => {
           </div>
           <div className="col">
             <div className="form-group">
-              <label>英文姓名*</label>
+              <label>{t("miss_reg_name_en")}</label>
               <input
                 type="text"
                 name="Name_en"
@@ -243,7 +258,7 @@ const RegisterMiss = () => {
         <div className="row">
           <div className="col">
             <div className="form-group">
-              <label>年龄*</label>
+              <label>{t("miss_reg_age")}</label>
               <input
                 type="number"
                 name="Age"
@@ -257,7 +272,7 @@ const RegisterMiss = () => {
           </div>
           <div className="col">
             <div className="form-group">
-              <label>身高（cm）*</label>
+              <label>{t("miss_reg_height")}</label>
               <input
                 type="number"
                 name="Height"
@@ -271,7 +286,7 @@ const RegisterMiss = () => {
           </div>
           <div className="col">
             <div className="form-group">
-              <label>体重（kg）*</label>
+              <label>{t("miss_reg_weight")}</label>
               <input
                 type="number"
                 name="Weight"
@@ -288,7 +303,7 @@ const RegisterMiss = () => {
         <div className="row">
           <div className="col">
             <div className="form-group">
-              <label>手机号*</label>
+              <label>{t("miss_reg_phone")}</label>
               <input
                 type="phone"
                 name="Phone"
@@ -302,7 +317,7 @@ const RegisterMiss = () => {
           </div>
           <div className="col">
             <div className="form-group">
-              <label>邮箱*</label>
+              <label>{t("miss_reg_email")}</label>
               <input
                 type="email"
                 name="Email"
@@ -319,9 +334,9 @@ const RegisterMiss = () => {
         <div className="row">
           <div className="col">
             <div className="form-group">
-              <label>ID证件国籍*</label>
+              <label>{t("miss_reg_id_nationality")}</label>
               <input
-              list="IDNationality"
+                list="IDNationality"
                 type="text"
                 name="Nationality"
                 className="form-control"
@@ -330,15 +345,15 @@ const RegisterMiss = () => {
                 required
               />
               <datalist id="IDNationality">
-                <option value="中国" />
-                <option value="澳大利亚" />
+                <option value="中国(China)" />
+                <option value="澳大利亚(Australia)" />
               </datalist>
               {errors.Nationality && <small className="text-danger">{errors.Nationality}</small>}
             </div>
           </div>
           <div className="col">
             <div className="form-group">
-              <label>ID证件类型*</label>
+              <label>{t("miss_reg_id_type")}</label>
               <input
                 list="IDType"
                 type="text"
@@ -349,19 +364,19 @@ const RegisterMiss = () => {
                 required
               />
               <datalist id="IDType">
-              <option value="护照号" />
-              <option value="澳洲驾照号" />
-              <option value="国际驾照号" />
-              <option value="海员执照" />
-              <option value="其他种类（请直接在框中输入，注意要是政府认可的种类）" />
-            </datalist>
+                <option value="护照(Passport)" />
+                <option value="澳洲驾照(AU Driver's Licence)" />
+                <option value="国际驾照(International Driver's Licence)" />
+                <option value="海员执照(VIC Marine Licence)" />
+                <option value="其他种类(Other Genre)" />
+              </datalist>
               {errors.IDType && <small className="text-danger">{errors.IDType}</small>}
             </div>
           </div>
         </div>
 
         <div className="form-group">
-          <label>ID证件号码*</label>
+          <label>{t("miss_reg_id_number")}</label>
           <input
             type="text"
             name="IDNumber"
@@ -374,7 +389,7 @@ const RegisterMiss = () => {
         </div>
 
         <div className="form-group">
-          <label>居住地*</label>
+          <label>{t("miss_reg_location")}</label>
           <input
             type="text"
             name="Location"
@@ -389,7 +404,7 @@ const RegisterMiss = () => {
         <div className="row">
           <div className="col">
             <div className="form-group">
-              <label>目前职业</label>
+              <label>{t("miss_reg_occupation_now")}</label>
               <input
                 type="text"
                 name="OccupationNow"
@@ -401,7 +416,7 @@ const RegisterMiss = () => {
           </div>
           <div className="col">
             <div className="form-group">
-              <label>希望职业</label>
+              <label>{t("miss_reg_occupation_hoped")}</label>
               <input
                 list="OccupationHopedOptions"
                 name="OccupationHoped"
@@ -410,17 +425,17 @@ const RegisterMiss = () => {
                 onChange={handleInputChange}
               />
               <datalist id="OccupationHopedOptions">
-                <option value="跨国MCN公司" />
-                <option value="传媒公司" />
-                <option value="金融公司" />
-                <option value="市场营销公司" />
-                <option value="地产公司" />
-                <option value="私人俱乐部" />
-                <option value="生态营地管理" />
-                <option value="餐厅" />
-                <option value="建筑" />
-                <option value="技工" />
-                <option value="其他" />
+                <option value="跨国MCN公司(International MCN)" />
+                <option value="传媒公司(Media)" />
+                <option value="金融公司(Finace)" />
+                <option value="市场营销公司(Marketing)" />
+                <option value="地产公司(Real Estate)" />
+                <option value="私人俱乐部(Private Club)" />
+                <option value="生态营地管理(Eco-campsite Management)" />
+                <option value="餐厅(Restaurant)" />
+                <option value="建筑(Builder)" />
+                <option value="技工(Technitian)" />
+                <option value="其他(Others)" />
               </datalist>
               {errors.OccupationHoped && <small className="text-danger">{errors.OccupationHoped}</small>}
             </div>
@@ -428,7 +443,7 @@ const RegisterMiss = () => {
         </div>
 
         <div className="form-group">
-          <label>工作单位/学校</label>
+          <label>{t("miss_reg_company_school")}</label>
           <input
             type="text"
             name="CompanyOrSchool"
@@ -441,8 +456,9 @@ const RegisterMiss = () => {
         <div className="row">
           <div className="col">
             <div className="form-group">
-              <label>学历</label>
+              <label>{t("miss_reg_education")}</label>
               <input
+                list="EducationLvl"
                 type="text"
                 name="Education"
                 className="form-control"
@@ -450,16 +466,16 @@ const RegisterMiss = () => {
                 onChange={handleInputChange}
               />
               <datalist id="EducationLvl">
-                <option value="专科" />
-                <option value="本科" />
-                <option value="研究生" />
-                <option value="PhD" />
+                <option value="专科(Collage)" />
+                <option value="本科(Bachelor)" />
+                <option value="研究生(Masters)" />
+                <option value="博士(PhD)" />
               </datalist>
             </div>
           </div>
           <div className="col">
             <div className="form-group">
-              <label>专业</label>
+              <label>{t("miss_reg_major")}</label>
               <input
                 type="text"
                 name="MajorStudied"
@@ -472,21 +488,20 @@ const RegisterMiss = () => {
         </div>
 
         <div className="form-group">
-          <label>才艺*</label>
+          <label>{t("miss_reg_talent")}</label>
           <input
             type="text"
             name="Talent"
             className="form-control"
             value={formData.Talent}
             onChange={handleInputChange}
-            placeholder="舞蹈/歌唱/乐器/书法/表演等都可以"
             required
           />
           {errors.Talent && <small className="text-danger">{errors.Talent}</small>}
         </div>
 
         <div className="form-group">
-          <label>微信号*</label>
+          <label>{t("miss_reg_wechat")}</label>
           <input
             type="text"
             name="WechatID"
@@ -499,23 +514,23 @@ const RegisterMiss = () => {
         </div>
 
         <div className="form-group">
-          <label>自媒体账号</label>
+          <label>{t("miss_reg_social_media")}</label>
           {formData.SocialMediaAccounts.map((account, index) => (
             <div key={index} className="d-flex align-items-center mb-2">
               <input
                 list="MediaPlatformOptions"
                 type="text"
                 name="Platform"
-                placeholder="平台"
+                placeholder="平台(Platform)"
                 className="form-control mr-2"
                 value={account.Platform}
                 onChange={(e) => handleSocialMediaChange(index, e)}
               />
               <datalist id="MediaPlatformOptions">
                 <option value="抖音" />
-                <option value="小红书" />
-                <option value="快手" />
-                <option value="微博" />
+                <option value="小红书(REDNote)" />
+                <option value="快手(Kuaishou)" />
+                <option value="微博(Weibo)" />
                 <option value="TikTok" />
                 <option value="Instagram" />
                 <option value="X(Twitter)" />
@@ -524,7 +539,7 @@ const RegisterMiss = () => {
               <input
                 type="number"
                 name="Fans"
-                placeholder="粉丝数"
+                placeholder="粉丝数(Fan Number)"
                 className="form-control mr-2"
                 value={account.Fans}
                 onChange={(e) => handleSocialMediaChange(index, e)}
@@ -539,12 +554,12 @@ const RegisterMiss = () => {
             </div>
           ))}
           <button type="button" className="btn btn-secondary mt-2" onClick={addSocialMedia}>
-            添加自媒体账号
+          {t("miss_reg_add_media")}
           </button>
         </div>
 
         <div className="form-group">
-          <label>上传照片*（最多 5 张，1MB 限制）</label>
+          <label>{t("miss_reg_photo_upload")}</label>
           <input
             type="file"
             className="form-control-file"
@@ -561,10 +576,10 @@ const RegisterMiss = () => {
             {isSubmitting ? (
               <>
                 <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                提交中...
+                {t("miss_reg_submitting")}
               </>
             ) : (
-              "提交"
+              t("miss_reg_submit")
             )}
           </button>
         </div>
@@ -572,18 +587,18 @@ const RegisterMiss = () => {
       </form>
       <div class="row">
         <div class="col text-center">
-          <p>联合主办:</p>
+          <p>{t("miss_reg_joint_organizers")}</p>
           <img src="/miss_reg_form/MissInternational.png" alt="Miss International" class="sponsor-logo" />
           <img src="/miss_reg_form/MissWeb3.png" alt="Miss Web3" class="sponsor-logo" />
         </div>
 
         <div class="col text-center">
-          <p>冠名赞助:</p>
+          <p>{t("miss_reg_title_sponsor")}</p>
           <img src="/miss_reg_form/Greeness.png" alt="Greeness" class="sponsor-logo" />
         </div>
 
         <div class="col text-center">
-          <p>授权方:</p>
+          <p>{t("miss_reg_authorization")}</p>
           <img src="/miss_reg_form/NewShell.png" alt="New Shell" class="sponsor-logo" />
         </div>
       </div>
