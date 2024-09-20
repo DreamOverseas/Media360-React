@@ -130,7 +130,7 @@ const RegisterMiss = () => {
         }
       } catch (error) {
         console.error('Error during file upload:', error);
-        alert('图片上传时出现错误 (Error on image uploading, mind the maximum image size will be 1M)');
+        alert('图片上传时出现错误 (Error on image uploading, mind the maximum image size will be 5M)');
         setIsSubmitting(false);
         return;
       }

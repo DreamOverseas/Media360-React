@@ -46,7 +46,7 @@ const Footer = () => {
             <div className='contact-info'>
               <Row>
                 <Col md={1} className='d-flex justify-content-center align-items-center'> <i class="bi bi-pin-map-fill"></i> </Col>
-                <Col> <p>171 La trobe Street <br />Melbourne VIC 3000</p> </Col>
+                <Col> <p>L2 171 La trobe Street <br />Melbourne VIC 3000</p> </Col>
               </Row>
               <Row>
                 <Col md={1} className='d-flex justify-content-center align-items-center'> <i class="bi bi-telephone-inbound-fill"></i> </Col>
