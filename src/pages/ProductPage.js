@@ -1,168 +1,155 @@
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../css/ProductPage.css";
 
 // Load Backend Host for API calls
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const ProductPage = () => {
-  // const location = useLocation();
-  const [products, setProducts] = useState([]);
-  const [error, setError] = useState(null);
+  const [products, setProducts] = useState([]); // List of products
+  const [error, setError] = useState(null); // Error state
+  const [page, setPage] = useState(1); // Current page number
+  const [loading, setLoading] = useState(false); // Loading state
+  const [hasMore, setHasMore] = useState(true); // Whether there are more products to load
+  const observer = useRef(); // Ref for observing the last product element
 
+  // Function to fetch products
+  const fetchProducts = (pageNum) => {
+    setLoading(true);
+    axios
+      .get(`${BACKEND_HOST}/api/products`, {
+        params: {
+          "pagination[page]": pageNum,
+          "pagination[pageSize]": 12, // Load 8 products per page
+          "populate": "*",
+        },
+      })
+      .then((response) => {
+        if (response.data && response.data.data) {
+          setProducts((prevProducts) => [...prevProducts, ...response.data.data]);
+          setHasMore(response.data.meta.pagination.page < response.data.meta.pagination.pageCount); // Check if more products are available
+        } else {
+          setHasMore(false); // If no more products, set to false
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+        setError("Error fetching data");
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading after data is fetched
+      });
+  };
+
+  // Fetch data when the page loads or when the page number changes
   useEffect(() => {
-    // filter funtion for future extension
-    // if (location.pathname ==='/productStudy') {
-    //   axios
-    //   .get(`${BACKEND_HOST}/api/products/`, {
-    //     params: {
-    //       'filters[$or][0][MainCategory]': 'Study',
-    //       'filters[$or][1][SubCategory]': 'Study',
-    //       'populate': 'ProductImage'
-    //     }
-    //   })
-    //   .then(response => {
-    //     if (response.data && response.data.data) {
-    //       setProducts(response.data.data);
-    //     } else {
-    //       setError("No data found");
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.error("Error fetching data: ", error);
-    //     setError("Error fetching data");
-    //   });
-    // }
+    fetchProducts(page); // Load first page on initial load
+  }, [page]);
 
-    // if (location.pathname ==='/productFinance') {
-    //   axios
-    //   .get(`${BACKEND_HOST}/api/products`, {
-    //     params: {
-    //       'filters[$or][0][MainCategory]': 'Finance',
-    //       'filters[$or][1][SubCategory]': 'Finance',
-    //       'populate': 'ProductImage'
-    //     }
-    //   })
-    //   .then(response => {
-    //     if (response.data && response.data.data) {
-    //       setProducts(response.data.data);
-    //     } else {
-    //       setError("No data found");
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.error("Error fetching data: ", error);
-    //     setError("Error fetching data");
-    //   });
-    // }
+  // Ref to track the last product in the list
+  const lastProductElementRef = useRef();
 
-    // if (location.pathname ==='/productTravel') {
-    //   axios
-    //   .get(`${BACKEND_HOST}/api/products`, {
-    //     params: {
-    //       'filters[$or][0][MainCategory]': 'Travel',
-    //       'filters[$or][1][SubCategory]': 'Travel',
-    //       'populate': 'ProductImage'
-    //     }
-    //   })
-    //   .then(response => {
-    //     if (response.data && response.data.data) {
-    //       setProducts(response.data.data);
-    //     } else {
-    //       setError("No data found");
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.error("Error fetching data: ", error);
-    //     setError("Error fetching data");
-    //   });
-    // }
+  // Use IntersectionObserver to detect when the user scrolls to the last product
+  useEffect(() => {
+    if (loading) return; // Skip if currently loading
+    if (!hasMore) return; // Stop if there are no more products to load
 
-    // if (location.pathname ==='/productLife') {
-    //   axios
-    //   .get(`${BACKEND_HOST}/api/products`, {
-    //     params: {
-    //       'filters[$or][0][MainCategory]': 'Life',
-    //       'filters[$or][1][SubCategory]': 'Life',
-    //       'populate': 'ProductImage'
-    //     }
-    //   })
-    //   .then(response => {
-    //     if (response.data && response.data.data) {
-    //       setProducts(response.data.data);
-    //     } else {
-    //       setError("No data found");
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.error("Error fetching data: ", error);
-    //     setError("Error fetching data");
-    //   });
-      axios
-        .get(`${BACKEND_HOST}/api/products/?populate=*`)
-        .then(response => {
-          if (response.data && response.data.data) {
-            setProducts(response.data.data);
-          } else {
-            setError("No data found");
-          }
-        })
-        .catch(error => {
-          console.error("Error fetching data: ", error);
-          setError("Error fetching data");
-        });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const observerCallback = (entries) => {
+      if (entries[0].isIntersecting) {
+        setPage((prevPage) => prevPage + 1); // Increment page when the last product comes into view
+      }
+    };
+
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 1.0, // Trigger when the last product is fully visible
+    };
+
+    observer.current = new IntersectionObserver(observerCallback, observerOptions);
+
+    if (lastProductElementRef.current) {
+      observer.current.observe(lastProductElementRef.current); // Observe the last product
+    }
+
+    return () => {
+      if (observer.current && lastProductElementRef.current) {
+        observer.current.unobserve(lastProductElementRef.current); // Cleanup the observer
+      }
+    };
+  }, [loading, hasMore]);
 
   if (error) {
     return <div>{error}</div>;
   }
 
   return (
-    <Container className='kol-container'>
+    <Container className="kol-container">
       <Row>
-        {products.map(product => (
-          <Col
-            key={product.id}
-            md={4}
-            className='mb-4'
-          >
-            <Link to={`/product/${product.attributes.url}`} className="card-link-ProductPage">
-              <Card className='product-card'>
-                {product.attributes.ProductImage && product.attributes.ProductImage.data ? (<Card.Img src={`${BACKEND_HOST}${product.attributes.ProductImage.data.attributes.url}`} alt={product.attributes.Name} />) : 
-                  (<Card.Img variant='top' src='https://placehold.co/250x350' fluid alt='Placeholder'/>)}
+        {products.map((product, index) => {
+          const isLastElement = index === products.length - 1; // Check if it's the last product
+          return (
+            <Col
+              key={product.id}
+              xs={6} // 2 items per row on extra small devices (optional)
+              sm={4} // 3 items per row on small devices
+              md={3} // 4 items per row on medium devices and above
+              className="mb-4"
+              ref={isLastElement ? lastProductElementRef : null} // Attach ref to the last product
+            >
+              <Link to={`/product/${product.attributes.url}`} className="card-link-ProductPage">
+                <Card className="product-card">
+                  {product.attributes.ProductImage && product.attributes.ProductImage.data ? (
+                    <Card.Img
+                      src={`${BACKEND_HOST}${product.attributes.ProductImage.data.attributes.url}`}
+                      alt={product.attributes.Name}
+                    />
+                  ) : (
+                    <Card.Img
+                      variant="top"
+                      src="https://placehold.co/250x350"
+                      fluid
+                      alt="Placeholder"
+                    />
+                  )}
                   <Card.Body>
-                    <Card.Title 
-                        style={{
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            fontSize: '18px'
-                            }}
-                        title={product.attributes.Name}>
-                        {product.attributes.Name}
+                    <Card.Title
+                      style={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        fontSize: "18px",
+                      }}
+                      title={product.attributes.Name}
+                    >
+                      {product.attributes.Name}
                     </Card.Title>
-                    <Card.Text style={{
-                            display: '-webkit-box',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            fontSize: '14px',
-                            WebkitLineClamp: 4,
-                            WebkitBoxOrient: 'vertical'
-                            }}
-                        title={product.attributes.Description}>
-                        {product.attributes.Description}
+                    <Card.Text
+                      style={{
+                        display: "-webkit-box",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        fontSize: "14px",
+                        WebkitLineClamp: 4,
+                        WebkitBoxOrient: "vertical",
+                      }}
+                      title={product.attributes.Description}
+                    >
+                      {product.attributes.Description}
                     </Card.Text>
-                </Card.Body>
-              </Card>
-            </Link>
-          </Col>
-        ))}
+                  </Card.Body>
+                </Card>
+              </Link>
+            </Col>
+          );
+        })}
       </Row>
+      {loading && <div>Loading more products...</div>} {/* Show loading text when fetching more products */}
     </Container>
   );
 };
 
 export default ProductPage;
+
