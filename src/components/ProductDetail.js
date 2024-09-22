@@ -13,7 +13,7 @@ import {
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import { AuthContext } from "../context/AuthContext";
 
@@ -23,7 +23,7 @@ import "../css/ProductDetail.css";
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const ProductDetail = () => {
-  const { id } = useParams();
+  const location = useLocation()
   const { user } = useContext(AuthContext);
   const { t, i18n } = useTranslation();
   const [product, setProduct] = useState(null);
@@ -124,8 +124,14 @@ const ProductDetail = () => {
   };
 
   useEffect(() => {
+    const path = location.pathname.replace('/product/', '')
     axios
-      .get(`${BACKEND_HOST}/api/products/${id}?populate=*`)
+      .get(`${BACKEND_HOST}/api/products`,{
+            params: {
+              'filters[url]': path,
+              'populate': 'ProductImage'
+            }
+          })
       .then(response => {
         if (response.data && response.data.data) {
           setProduct(response.data.data);
@@ -137,7 +143,7 @@ const ProductDetail = () => {
         console.error("Error fetching data: ", error);
         setError("Error fetching data");
       });
-  }, [id]);
+  }, []);
 
   if (error) {
     return <div>{error}</div>;
@@ -147,17 +153,17 @@ const ProductDetail = () => {
     return <div>{t("loading")}</div>;
   }
 
-  const { Name, Price, ProductImage } = product.attributes;
+  const { Name, Price, ProductImage } = product[0].attributes;
   const language = i18n.language;
   const Description =
     language === "zh"
-      ? product.attributes.Description_zh
-      : product.attributes.Description_en;
+      ? product[0].attributes.Description_zh
+      : product[0].attributes.Description_en;
 
   const ShortDescription =
     language === "zh"
-      ? product.attributes.Short_zh
-      : product.attributes.Short_en;
+      ? product[0].attributes.Short_zh
+      : product[0].attributes.Short_en;
 
   return (
     <div>

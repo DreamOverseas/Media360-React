@@ -54,13 +54,13 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route path='/profile' element={<Profile />} />
-          <Route exact path='/productStudy' element={<ProductPage />} />
-          <Route exact path='/productFinance' element={<ProductPage />} />
+          <Route exact path='/productpage' element={<ProductPage />} />
+          {/* <Route exact path='/productFinance' element={<ProductPage />} />
           <Route exact path='/productTravel' element={<ProductPage />} />
-          <Route exact path='/productLife' element={<ProductPage />} />
-          <Route path='/product/:id' element={<ProductDetail />} />
+          <Route exact path='/productLife' element={<ProductPage />} /> */}
+          <Route path='/product/:name' element={<ProductDetail />} />
           <Route path='/eventpage' element={<Events />} />
-          <Route exact path='/product/:id' element={<ProductDetail />} />
+          <Route exact path='/product/:name' element={<ProductDetail />} />
           <Route exact path='/event/:id' element={<EventDetail />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/kolpage' element={<KolPage />} />
