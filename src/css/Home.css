@@ -1,39 +1,56 @@
+/* Global Container */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  /* Center the container */
+  padding: 0 15px; /* Add some padding for smaller screens */
 }
 
+/* Homepage Background */
 .homepage-background {
   background-image: url(/public/homepage/bg_clear.png);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
+  padding: 4rem 0; /* Add padding for visual breathing room */
 }
 
+/* Section Title */
 .section-title {
   text-align: center;
-  /* margin: 40px 0 20px 0; */
   margin-bottom: 3%;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
+  color: #333;
 }
 
+/* Section Spacing */
 .kol-section,
-.products-section {
-  margin-bottom: 5%;
-}
-
+.products-section,
 .events-section {
-  margin-bottom: 0;
+  margin-bottom: 4rem;
 }
 
-/* Carousel */
+/* Carousel Section */
 .ads-section {
-  padding-top: 0.2rem;
   width: 100%;
-  height: auto;
+  padding-top: 1rem;
+  margin-bottom: 4rem;
+}
+
+.ads-carousel img {
+  object-fit: cover;
+  width: 100%;
+  border-radius: 8px; /* Rounded corners for ad images */
+}
+
+.ads-carousel .carousel-caption {
+  bottom: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  background: none; /* Remove background color */
+  color: #fff; /* Ensure the text color is visible on the ad image */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Add a slight shadow to ensure text readability */
 }
 
 /* KOL Section */
@@ -42,6 +59,7 @@
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
+  row-gap: 3rem; /* Ensure enough space between rows */
 }
 
 .kol-col {
@@ -50,165 +68,137 @@
 }
 
 .kol-image {
-  border: 1px solid #ddd;
   width: 150px;
   height: 150px;
   object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid #ddd;
   transition: transform 0.5s ease;
 }
 
 .kol-col:hover .kol-image {
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .home-card-link-ProductPage {
   text-decoration: none;
 }
 
-/* Products Section */
-.product-card {
+/* Products and Events Section Shared Styles */
+.product-card,
+.event-card {
   position: relative;
   border: none;
-  /* Remove border */
   background-color: transparent;
-  /* Make the background transparent */
   box-shadow: none;
-  /* Remove any shadows */
   max-width: 250px;
-  /* Keep the maximum width */
-  height: 250px;
-  /* Keep the fixed height */
+  height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-bottom: 9%;
-  margin-top: 2%;
+  margin-bottom: 4%;
   transition: transform 0.5s ease;
 }
 
-.product-price {
-  position: absolute;
-  /* Absolute in relative and using rem to ensure responsive remains */
-  bottom: 0.3rem;
-  right: 1rem;
-  font-size: 14px;
-  color: #333;
-}
-
-.product-card:hover {
-  transform: scale(1.1);
-  /* Lift effect on hover */
-  background-color: rgba(255,
-      255,
-      255,
-      0.2);
-  /* Slight hover effect, optional */
-}
-
-.product-card img {
+.product-card img,
+.event-card img {
   max-width: 100%;
-  height: 150px;
-  /* Reduce image height */
+  height: 180px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 12px; /* Add rounded corners */
 }
 
-.product-card .card-body {
+.product-card .card-body,
+.event-card .card-body {
   padding: 10px;
-  /* Adjust padding */
-  max-height: 150px;
-  /* Limit the height of the card body */
+  max-height: 100px;
   overflow: hidden;
-  /* Hide overflow if the content exceeds the height */
 }
 
 .product-card .card-title,
 .event-card .card-title {
   font-size: 1.1rem;
-  /* Adjust font size */
   margin-bottom: 10px;
-  /* Adjust margin */
+  font-weight: bold;
+  text-align: left;
+  color: #333;
 }
 
 .product-card .card-text,
 .event-card .card-text {
   font-size: 0.9rem;
-  /* Reduce text size */
   line-height: 1.2;
-  /* Adjust line height */
-  max-height: 20px;
-  /* Limit the height of the text */
-  overflow: hidden;
-  /* Hide overflow if the content exceeds the height */
+  color: #666;
+  text-align: left;
 }
 
-/* Events Section */
-.events-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin: 0 -10px;
-}
-
-.event-card {
-  margin-top: 2%;
-  margin-bottom: 9%;
-  padding: 10px;
-  border: none;
-  /* Remove border */
-  background-color: transparent;
-  /* Make the background transparent */
-  box-shadow: none;
-  /* Remove any shadows */
-  text-align: center;
-  transition: transform 0.5s ease;
-  max-width: 250px;
-  height: 270px;
-}
-
-.event-card-link {
-  text-decoration: none;
-}
-
+/* Hover Effects */
+.product-card:hover,
 .event-card:hover {
-  transform: scale(1.1);
-  /* Lift effect on hover */
-  background-color: rgba(255,
-      255,
-      255,
-      0.2);
-  /* Slight hover effect, optional */
+  transform: scale(1.05);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.event-card img {
-  max-width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
+/* Responsive Design */
+
+/* Tablet Screens (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .kol-row,
+  .products-row,
+  .events-row {
+    justify-content: space-between;
+    row-gap: 2rem;
+  }
 }
 
-/* Mobile Adjustments */
+/* Mobile Screens (Max Width: 768px) */
 @media (max-width: 768px) {
   .ads-section {
     height: 200px;
+  }
+
+  .section-title {
+    font-size: 1.8rem; /* Smaller font for mobile */
   }
 
   .kol-row,
   .products-row,
   .events-row {
     justify-content: center;
+    gap: 1.5rem;
   }
 
   .kol-col {
     margin-bottom: 5%;
   }
 
+  .product-card,
+  .event-card {
+    height: 270px;
+    width: 100%; /* Full width for mobile */
+    margin-bottom: 5%;
+  }
+
+  .product-card img,
+  .event-card img {
+    height: 160px;
+  }
+
   .product-card .card-title,
   .event-card .card-title {
     font-size: 0.85rem;
-    /* Adjust font size */
-    margin-bottom: 10px;
-    /* Adjust margin */
+  }
+
+  .product-card .card-text,
+  .event-card .card-text {
+    font-size: 0.75rem;
+  }
+}
+
+/* Very Small Mobile Screens (Max Width: 480px) */
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.5rem; /* Further reduce font size */
   }
 
   .product-card,
@@ -218,6 +208,6 @@
 
   .product-card img,
   .event-card img {
-    height: 150px;
+    height: 140px;
   }
 }
