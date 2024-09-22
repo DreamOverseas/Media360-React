@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "../css/ProductPage.css";
 
 // Load Backend Host for API calls
@@ -9,6 +10,7 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]); // List of products
+  const {i18n} = useTranslation();
   const [error, setError] = useState(null); // Error state
   const [page, setPage] = useState(1); // Current page number
   const [loading, setLoading] = useState(false); // Loading state
@@ -81,6 +83,8 @@ const ProductPage = () => {
     };
   }, [loading, hasMore]);
 
+  const language = i18n.language;
+
   if (error) {
     return <div>{error}</div>;
   }
@@ -90,6 +94,10 @@ const ProductPage = () => {
       <Row>
         {products.map((product, index) => {
           const isLastElement = index === products.length - 1; // Check if it's the last product
+          const Name =
+            language === "zh"
+              ? product.attributes.Name_zh
+              : product.attributes.Name_en;
           return (
             <Col
               key={product.id}
@@ -100,11 +108,12 @@ const ProductPage = () => {
               ref={isLastElement ? lastProductElementRef : null} // Attach ref to the last product
             >
               <Link to={`/product/${product.attributes.url}`} className="card-link-ProductPage">
-                <Card className="product-card">
+                <Card className="productpage-product-card">
                   {product.attributes.ProductImage && product.attributes.ProductImage.data ? (
                     <Card.Img
+                      variant='top'
                       src={`${BACKEND_HOST}${product.attributes.ProductImage.data.attributes.url}`}
-                      alt={product.attributes.Name}
+                      alt={Name}
                     />
                   ) : (
                     <Card.Img
@@ -116,29 +125,11 @@ const ProductPage = () => {
                   )}
                   <Card.Body>
                     <Card.Title
-                      style={{
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        fontSize: "18px",
-                      }}
-                      title={product.attributes.Name}
+                      title={Name}
                     >
-                      {product.attributes.Name}
+                      {Name}
                     </Card.Title>
-                    <Card.Text
-                      style={{
-                        display: "-webkit-box",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        fontSize: "14px",
-                        WebkitLineClamp: 4,
-                        WebkitBoxOrient: "vertical",
-                      }}
-                      title={product.attributes.Description}
-                    >
-                      {product.attributes.Description}
-                    </Card.Text>
+                    <p class="productpage-product-price">¥{product.attributes.Price}</p>
                   </Card.Body>
                 </Card>
               </Link>
