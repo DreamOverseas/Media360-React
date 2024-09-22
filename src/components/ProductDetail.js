@@ -13,7 +13,7 @@ import {
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import { AuthContext } from "../context/AuthContext";
 
@@ -171,6 +171,9 @@ const ProductDetail = () => {
       ? product[0].attributes.Short_zh
       : product[0].attributes.Short_en;
 
+  const available = product[0].attributes.Available
+  const sponsor = product[0].attributes.Sponsor
+
   return (
     <div>
       <section>
@@ -205,7 +208,7 @@ const ProductDetail = () => {
                   <Col>
                     <h4>${Price}</h4>
                   </Col>
-                  <Col>
+                  {available && (<Col>
                     <Form.Group className='price-control'>
                       <InputGroup className='d-flex justify-content-center align-items-center'>
                         <Button
@@ -223,19 +226,29 @@ const ProductDetail = () => {
                         </Button>
                       </InputGroup>
                     </Form.Group>
-                  </Col>
+                  </Col>)}
                 </Row>
                 <Row>
-                  <Col>
-                    <Button className='add-to-cart' onClick={handlePurchase}>
-                      {t("enquireNow")}
-                    </Button>
-                  </Col>
-                  <Col>
-                    <Button className='add-to-cart' onClick={handleAddToCart}>
-                      {t("addToCart")}
-                    </Button>
-                  </Col>
+                  {(Price !== 0 || 1) && available ? (
+                      <>
+                        <Col>
+                          <Button className='add-to-cart' onClick={handlePurchase}>
+                            {t("enquireNow")}
+                          </Button>
+                        </Col>
+
+                        <Col>
+                          <Button className='add-to-cart' onClick={handleAddToCart}>
+                            {t("addToCart")}
+                          </Button>
+                        </Col>
+                      </>     
+                    ) : (
+                      <Button className='add-to-cart' onClick={handlePurchase}>
+                        {t("enquireNow")}
+                      </Button>
+                    )
+                  }
                 </Row>
               </Container>
             </Col>
@@ -246,12 +259,25 @@ const ProductDetail = () => {
             <Modal.Title>{Name}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Row>
-              <p>Please scan the QR code and directly contact with the Kol</p>
-            </Row>
-            <Row className='purchase-modal-background'>
-              <Image src='/QR_JohnDu.png' alt='Logo' fluid />
-            </Row>
+          {Price === 0 && sponsor ?(
+              <div>
+                <Row>
+                  <h5>Product Website</h5>
+                  <Link to={`/sponsor/${product[0].attributes.url}`}>www.do360.com/sponsor/{product[0].attributes.url}</Link>
+                </Row>
+              </div>
+            ) : (
+              <div>
+                <Row>
+                  <p>Please scan the QR code and directly contact with the Kol</p>
+                </Row>
+
+                <Row className='purchase-modal-background'>
+                  <Image src='/QR_JohnDu.png' alt='Logo' fluid />
+                </Row>
+              </div>
+            )
+          }
           </Modal.Body>
           <Modal.Footer>
             <Button variant='secondary' onClick={handleCloseModal}>
