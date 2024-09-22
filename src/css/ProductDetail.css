@@ -1,3 +1,4 @@
+/* Overall layout for the product detail page */
 .product-detail {
   display: flex;
   flex-direction: column;
@@ -11,98 +12,77 @@
   height: auto;
 }
 
+/* Button styling */
 .add-to-cart {
   height: 50px;
   width: 100%;
   margin: 0;
 }
 
+/* Image container styling */
 .product-image-col {
-  height: 400px;
-  object-fit: cover;
   padding-left: 20px;
 }
 
+/* Image styling to ensure responsiveness on desktop and mobile */
 .product-img {
-  height: 400px;
-  width: auto;
-  justify-self: center;
+  max-width: 100%;  /* Ensures the image does not exceed container width */
+  height: 100%;     /* Height adjusts based on width */
+  object-fit: cover; /* Maintains image aspect ratio */
 }
 
+/* Product detail information container */
 .product-detail-col {
-  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 20px;
 }
 
+/* Price and quantity selection styling */
 .product-price-quantity {
   padding-bottom: 10%;
 }
 
+/* Short description styling */
 .product-short-description {
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* Purchase modal background */
 .purchase-modal-background {
   background-color: black;
   object-fit: fill;
 }
 
-.product-detail h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.product-detail p {
-  margin: 0.5rem 0;
-}
-
-.product-detail .description {
-  margin-top: 1rem;
-}
-
-.product-detail .description h3 {
-  margin-bottom: 0.5rem;
-}
-
-.product-detail .description p {
-  margin: 0.25rem 0;
-}
-
-.price-control button {
-  margin: 0;
-}
-
-/* Ensure the image is centered */
+/* React Markdown content styling */
 .markdown-content img {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  max-width: 100%;
+  max-width: 100%;  /* Ensures the image does not exceed parent container */
   height: auto;
 }
 
-/* Style the headings for better readability */
 .markdown-content h1, .markdown-content h2, .markdown-content h3 {
   color: #2c3e50;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
 }
 
-/* Paragraph and text styling */
 .markdown-content p {
   line-height: 1.8;
   margin-bottom: 1em;
   color: #34495e;
 }
 
-/* Lists styling */
 .markdown-content ul {
   padding-left: 20px;
   margin-bottom: 1.5em;
 }
 
-/* Blockquote styling */
 .markdown-content blockquote {
   border-left: 5px solid #ecf0f1;
   padding-left: 1em;
@@ -112,7 +92,6 @@
   font-style: italic;
 }
 
-/* Code block styling */
 .markdown-content code {
   background-color: #f0f0f0;
   padding: 0.2em 0.4em;
@@ -120,46 +99,60 @@
   font-family: 'Courier New', Courier, monospace;
 }
 
-/* Responsive adjustments for smaller screens */
+/* Responsive design for mobile devices */
 @media (max-width: 768px) {
+  .product-detail h1 {
+    margin-top: 4%;
+  }
+  /* Adjusts product detail layout to vertical direction */
   .product-detail-section {
     flex-direction: column;
-    height: auto; /* Ensure container adapts to content height */
+    height: auto; /* Container height adjusts based on content */
   }
 
-  .kol-image-col {
-    order: -1; /* Move the image to the top */
-    height: auto; /* Ensure the image adapts to content height */
+  /* Image container full width, removes left padding */
+  .product-image-col {
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%; /* Full width for mobile devices */
   }
 
+  /* Ensures the image fits the screen width and maintains aspect ratio */
+  .product-img {
+    width: 100%;  /* Full width image */
+    height: auto; /* Height adjusts based on width */
+    object-fit: cover; /* Maintains image aspect ratio */
+  }
+
+  /* Product detail container adapts to full width */
   .product-detail-col {
-    height: auto; /* Ensure text section adapts to content height */
+    width: 100%; /* Content area takes full width */
+    padding: 0 15px; /* Adds adequate side padding */
   }
 
+  /* Adjusts button style for mobile display */
   .add-to-cart {
-    width: 100%; /* Ensure buttons take full width */
-    margin-bottom: 1rem; /* Add spacing between buttons */
+    width: 100%; /* Full width button */
+    margin-bottom: 1rem; /* Adds spacing between buttons */
   }
 
+  /* Adjust quantity selection on mobile */
   .product-price-quantity {
-    padding-bottom: 2rem; /* Adjust bottom padding for smaller screens */
+    padding-bottom: 2rem; /* Adds extra bottom padding */
   }
 
-  .kol-image-col img {
-    width: 100%;
-    height: auto; /* Ensure images scale correctly on smaller screens */
-    object-fit: cover;
-  }
-
-  .product-detail p {
-    white-space: normal; /* Ensure text wraps correctly on smaller screens */
-  }
-
-  .modal-dialog {
-    max-width: 90%; /* Reduce modal width for smaller screens */
-  }
-
+  /* Adjusts modal background for mobile devices */
   .purchase-modal-background {
-    padding: 1rem; /* Adjust modal content padding for smaller screens */
+    padding: 1rem; /* Adjusts modal content padding for mobile */
+  }
+
+  /* Adjusts modal dialog width for mobile screens */
+  .modal-dialog {
+    max-width: 90%; /* Limits modal width to 90% on mobile */
+  }
+
+  /* Ensures description text wraps correctly on mobile */
+  .product-detail p {
+    white-space: normal; /* Forces text to wrap on mobile */
   }
 }
