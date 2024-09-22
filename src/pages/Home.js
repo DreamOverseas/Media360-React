@@ -102,7 +102,7 @@ const HomePage = () => {
           {products.length > 0 ? (
             products.map(product => (
               <Col xs={6} sm={6} md={3} key={product.id}>
-                <Link to={`/product/${product.id}`} className="home-card-link-ProductPage">
+                <Link to={`/product/${product.attributes.url}`} className="home-card-link-ProductPage">
                   <Card className='product-card'>
                     <Card.Img
                       variant='top'
