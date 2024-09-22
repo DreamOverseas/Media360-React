@@ -9,7 +9,7 @@ import "../css/Home.css";
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const HomePage = () => {
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
   const [ads, setAds] = useState([]);
   const [kols, setKols] = useState([]);
   const [products, setProducts] = useState([]);
@@ -65,6 +65,8 @@ const HomePage = () => {
     fetchEvents();
   }, []);
 
+  const language = i18n.language;
+
   return (
     <div className="homepage-background">
       {/* Carousel Section */}
@@ -100,26 +102,38 @@ const HomePage = () => {
         <h2 className='section-title'>{t("product")}</h2>
         <Row className='products-row'>
           {products.length > 0 ? (
-            products.map(product => (
-              <Col xs={6} sm={6} md={3} key={product.id}>
-                <Link to={`/product/${product.attributes.url}`} className="home-card-link-ProductPage">
-                  <Card className='product-card'>
-                    <Card.Img
-                      variant='top'
-                      src={`${BACKEND_HOST}${product.attributes.ProductImage?.data?.attributes?.url}`}
-                      alt={product.attributes.Name}
-                    />
-                    <Card.Body className="card-body">
-                      <Card.Title>{product.attributes.Name}</Card.Title>
-                      <p class="product-price">¥{product.attributes.Price}</p>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </Col>
-            ))
-          ) : (
+            products.map(product => {
+              const Name =
+              language === "zh"
+                ? product.attributes.Name_zh
+                : product.attributes.Name_en;
+              return (
+                <Col xs={6} sm={6} md={3} key={product.id}>
+                  <Link to={`/product/${product.attributes.url}`} className="home-card-link-ProductPage">
+                    <Card className='product-card'>
+                      <Card.Img
+                        variant='top'
+                        src={`${BACKEND_HOST}${product.attributes.ProductImage?.data?.attributes?.url}`}
+                        alt={Name}
+                      />
+                      <Card.Body className="card-body">
+                        <Card.Title
+                        title={Name}
+                        >
+                          {Name}
+                        </Card.Title>
+                        <p class="product-price">¥{product.attributes.Price}</p>
+                      </Card.Body>
+                    </Card>
+                  </Link>
+                </Col>
+              )
+            })
+          ) 
+          : (
             <p>{t("noProducts")}</p>
-          )}
+          )
+        }
         </Row>
       </Container>
 

@@ -153,8 +153,14 @@ const ProductDetail = () => {
     return <div>{t("loading")}</div>;
   }
 
-  const { Name, Price, ProductImage } = product[0].attributes;
+  const {Price, ProductImage } = product[0].attributes;
   const language = i18n.language;
+  
+  const Name =
+    language === "zh"
+      ? product[0].attributes.Name_zh
+      : product[0].attributes.Name_en;
+
   const Description =
     language === "zh"
       ? product[0].attributes.Description_zh
