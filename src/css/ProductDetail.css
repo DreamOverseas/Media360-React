@@ -27,7 +27,7 @@
 /* Image styling to ensure responsiveness on desktop and mobile */
 .product-img {
   max-width: 100%;  /* Ensures the image does not exceed container width */
-  height: auto;     /* Height adjusts based on width */
+  height: 100%;     /* Height adjusts based on width */
   object-fit: cover; /* Maintains image aspect ratio */
 }
 

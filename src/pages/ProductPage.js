@@ -129,7 +129,7 @@ const ProductPage = () => {
                     >
                       {Name}
                     </Card.Title>
-                    <p class="productpage-product-price">¥{product.attributes.Price}</p>
+                    <p class="productpage-product-price">AU${product.attributes.Price}</p>
                   </Card.Body>
                 </Card>
               </Link>
