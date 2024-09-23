@@ -3,20 +3,22 @@ import axios from "axios";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+
 import "../css/ProductPage.css";
 
 // Load Backend Host for API calls
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
+
 const ProductPage = () => {
   const [products, setProducts] = useState([]); // List of products
-  const {i18n} = useTranslation();
+
   const [error, setError] = useState(null); // Error state
   const [page, setPage] = useState(1); // Current page number
   const [loading, setLoading] = useState(false); // Loading state
   const [hasMore, setHasMore] = useState(true); // Whether there are more products to load
   const observer = useRef(); // Ref for observing the last product element
-
+  const { t, i18n } = useTranslation();
   // Function to fetch products
   const fetchProducts = (pageNum) => {
     setLoading(true);
@@ -90,6 +92,12 @@ const ProductPage = () => {
   }
 
   return (
+    <div>
+      <section className='product-page-background-image-container'>
+        <h1 className='product-page-banner-h1'>
+          <b>{t("product")}</b>
+        </h1>
+      </section>
     <Container className="kol-container">
       <Row>
         {products.map((product, index) => {
@@ -139,6 +147,7 @@ const ProductPage = () => {
       </Row>
       {loading && <div>Loading more products...</div>} {/* Show loading text when fetching more products */}
     </Container>
+    </div>
   );
 };
 

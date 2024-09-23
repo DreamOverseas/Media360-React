@@ -3,6 +3,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
+import "../css/Sponsor.css";
 
 const Sponsor = () => {
     const [sponsors, setSponsors] = useState([]);
@@ -26,8 +27,14 @@ const Sponsor = () => {
     };
 
     return (
+        <div>
+      <section className='product-page-background-image-container'>
+        <h1 className='product-page-banner-h1'>
+          <b>{t("sponsor")}</b>
+        </h1>
+      </section>
         <Container>
-            <h1 className="text-center my-4">{t("sponsor")}</h1>
+  
 
             <Row className="justify-content-center align-items-center">
                 {sponsors.map((sponsor) => (
@@ -50,6 +57,7 @@ const Sponsor = () => {
                 ))}
             </Row>
         </Container>
+        </div>
     );
 };
 

@@ -1,123 +1,124 @@
+/* Banner Styling */
+.product-page-background-image-container {
+  background-image: url("/public/events/banner.png");
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+  width: 100%;
+  height: 250px; /* Increased height for a more prominent banner */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 3%; /* Add margin below the banner */
+}
+
+.product-page-banner-h1 {
+  color: white;
+  font-size: 2.5rem; /* Increase font size for a bolder look */
+  margin: 0;
+}
+
 /* Products Section */
 .productpage-product-card {
   position: relative;
-  border: none;
-  /* Remove border */
-  background-color: transparent;
-  /* Make the background transparent */
-  box-shadow: none;
-  /* Remove any shadows */
-  max-width: 250px;
-  /* Keep the maximum width */
-  height: 370px;
-  /* Keep the fixed height */
+  border: none; /* Remove border */
+  background-color: transparent; /* Make the background transparent */
+  box-shadow: none; /* Remove any shadows */
+  max-width: 250px; /* Maintain consistent width */
+  height: 370px; /* Fixed height */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-bottom: 9%;
-  margin-top: 2%;
+  margin-bottom: 7%; /* Adjust spacing between cards */
+  margin-top: 3%; /* Adjust spacing above cards */
   transition: transform 0.5s ease;
 }
 
 .productpage-product-price {
   position: absolute;
-  /* Absolute in relative and using rem to ensure responsive remains */
   bottom: 0.3rem;
   right: 1rem;
   font-size: 14px;
   color: #333;
 }
 
+/* Hover Effect */
 .productpage-product-card:hover {
-  transform: scale(1.1);
-  /* Lift effect on hover */
-  background-color: rgba(255,
-      255,
-      255,
-      0.2);
-  /* Slight hover effect, optional */
+  transform: scale(1.05); /* Slightly reduced scale for smoother hover */
+  background-color: rgba(255, 255, 255, 0.15); /* Subtle hover effect */
 }
 
+/* Image Styling */
 .productpage-product-card img {
   max-width: 100%;
   height: 250px;
-  /* Reduce image height */
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 8px; /* Rounded corners */
 }
 
+/* Card Body */
 .productpage-product-card .card-body {
   padding: 10px;
-  /* Adjust padding */
-  max-height: 250px;
-  /* Limit the height of the card body */
-  overflow: hidden;
-  /* Hide overflow if the content exceeds the height */
+  max-height: 120px;
+  overflow: hidden; /* Ensure overflow is hidden */
 }
 
-.productpage-product-card .card-title{
+/* Title Styling */
+.productpage-product-card .card-title {
   font-size: 1.1rem;
-  /* Adjust font size */
   margin-bottom: 10px;
-  /* Adjust margin */
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 3; /* Limit title to 3 lines */
 }
 
+/* Description Styling */
 .productpage-product-card .card-text {
   font-size: 0.9rem;
-  /* Reduce text size */
   line-height: 1.2;
-  /* Adjust line height */
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 3; /* Limit description to 3 lines */
 }
 
+/* Adjust Link Styling */
 .card-link-ProductPage {
   text-decoration: none;
 }
 
-
+/* Responsive Design */
 @media (max-width: 768px) {
-  .productpage-product-card {
-    height: 250px; /* Let the height adjust automatically on small screens */
+  .product-page-background-image-container {
+    height: 200px; /* Adjust banner height on smaller screens */
+    margin-bottom: 5%; /* Increase space between banner and cards */
   }
 
+  .productpage-product-card {
+    height: 250px; /* Adjust height for smaller screens */
+  }
 
   .productpage-product-card img {
-    max-width: 100%;
-    height: 150px;
-    /* Reduce image height */
-    object-fit: cover;
-    border-radius: 8px;
+    height: 150px; /* Reduce image height for mobile */
   }
-  .productpage-product-card .card-title{
-    font-size: 0.8rem;
-    /* Adjust font size */
+
+  .productpage-product-card .card-body {
+    padding: 5px; /* Adjust padding on mobile */
+    max-height: 100px; /* Adjust body height for mobile */
+  }
+
+  .productpage-product-card .card-title {
+    font-size: 0.8rem; /* Reduce font size */
     margin-bottom: 10px;
-    /* Adjust margin */
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 2; /* Limit title to 2 lines */
   }
-  
+
   .productpage-product-card .card-text {
-    font-size: 0.6rem;
-    /* Reduce text size */
-    line-height: 1.2;
-    /* Adjust line height */
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 2;
+    font-size: 0.7rem; /* Reduce text size */
+    -webkit-line-clamp: 2; /* Limit text to 2 lines */
   }
 }
