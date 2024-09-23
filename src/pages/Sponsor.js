@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 
 const Sponsor = () => {
     const [sponsors, setSponsors] = useState([]);
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
     useEffect(() => {
@@ -25,7 +27,7 @@ const Sponsor = () => {
 
     return (
         <Container>
-            <h1 className="text-center my-4">Sponsors</h1>
+            <h1 className="text-center my-4">{t("sponsor")}</h1>
 
             <Row className="justify-content-center align-items-center">
                 {sponsors.map((sponsor) => (
