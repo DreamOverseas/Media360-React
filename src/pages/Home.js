@@ -77,10 +77,16 @@ const HomePage = () => {
       {/* KOL Section */}
       <Container className='kol-section'>
         <h2 className='section-title'>{t("kol")}</h2>
-        <Row className='kol-row'>
+        <Row>
           {kols.length > 0 ? (
             kols.map(kol => (
-              <Col xs={6} sm={6} md={3} className='kol-col' key={kol.id}>
+              <Col 
+                xs={6}
+                sm={6}
+                md={3}
+                className='kol-col'
+                key={kol.id}
+              >
                 <Link to={`/kol/${kol.id}`}>
                   <Image
                     src={`${BACKEND_HOST}${kol.attributes.KolImage?.data?.attributes?.url}`}
@@ -100,7 +106,7 @@ const HomePage = () => {
       {/* Products Section */}
       <Container className='products-section'>
         <h2 className='section-title'>{t("product")}</h2>
-        <Row className='products-row'>
+        <Row>
           {products.length > 0 ? (
             products.map(product => {
               const Name =
@@ -108,8 +114,14 @@ const HomePage = () => {
                 ? product.attributes.Name_zh
                 : product.attributes.Name_en;
               return (
-                <Col xs={6} sm={6} md={3} key={product.id}>
-                  <Link to={`/product/${product.attributes.url}`} className="home-card-link-ProductPage">
+                <Col 
+                xs={6}
+                sm={4}
+                md={3}
+                className="mb-4"
+                key={product.id}
+                >
+                  <Link to={`/product/${product.attributes.url}`} className="home-product-card-link">
                     <Card className='product-card'>
                       <Card.Img
                         variant='top'
@@ -122,7 +134,7 @@ const HomePage = () => {
                         >
                           {Name}
                         </Card.Title>
-                        <p class="product-price">¥{product.attributes.Price}</p>
+                        <p class="product-price">AU${product.attributes.Price}</p>
                       </Card.Body>
                     </Card>
                   </Link>
@@ -144,7 +156,7 @@ const HomePage = () => {
           {events.length > 0 ? (
             events.map(event => (
               <Col xs={6} sm={6} md={3} key={event.id}>
-                <Link to={`/event/${event.id}`} className="event-card-link">
+                <Link to={`/event/${event.id}`} className="home-event-card-link">
                   <Card className='event-card'>
                     <Card.Img
                       variant='top'
