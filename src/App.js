@@ -30,9 +30,12 @@ function App() {
   const [footer, setFooter] = useState(<Footer />);
 
   useEffect(() => {
-    if (location.pathname === "/") {
-      setHeader(<Header />);
-      setFooter(<Footer />);
+    if (location.pathname === '/') {
+      document.body.style.marginTop = "0px";
+      setFooter(<></>);
+      setHeader(<></>);
+      // setHeader(<Header />);
+      // setFooter(<Footer />);
     }
     if (location.pathname === "/miss-register" || location.pathname === "/sponsor/greeness") {
       // eslint-disable-next-line react-hooks/exhaustive-deps

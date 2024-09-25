@@ -12,7 +12,7 @@
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
-  padding: 4rem 0; /* Add padding for visual breathing room */
+  padding: 0; /* Removed padding for too much "visual breathing room" unless you like Miss Nagatoro */
 }
 
 /* Section Title */
@@ -26,9 +26,12 @@
 
 /* Section Spacing */
 .kol-section,
-.products-section,
-.events-section {
+.products-section {
   margin-bottom: 4rem;
+}
+
+.events-section {
+  margin-bottom: 0; /* Removed margin for the undermost section */
 }
 
 /* Carousel Section */
