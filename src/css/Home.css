@@ -57,13 +57,14 @@
 }
 
 /* KOL Section */
-.kol-row {
+/* Ensure enough space between rows */
+/* .kol-row {
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
-  row-gap: 3rem; /* Ensure enough space between rows */
-}
+  row-gap: 3rem;
+} */
 
 .kol-col {
   text-align: center;
@@ -83,7 +84,11 @@
   transform: scale(1.1);
 }
 
-.home-card-link-ProductPage {
+.home-product-card-link {
+  text-decoration: none;
+}
+
+.home-event-card-link {
   text-decoration: none;
 }
 
@@ -114,7 +119,7 @@
 .product-card .card-body,
 .event-card .card-body {
   padding: 10px;
-  max-height: 100px;
+  max-height: 120px;
   overflow: hidden;
 }
 
@@ -122,17 +127,29 @@
 .event-card .card-title {
   font-size: 1.1rem;
   margin-bottom: 10px;
-  font-weight: bold;
-  text-align: left;
-  color: #333;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3; /* Limit title to 3 lines */
 }
 
 .product-card .card-text,
 .event-card .card-text {
   font-size: 0.9rem;
   line-height: 1.2;
-  color: #666;
-  text-align: left;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3; /* Limit description to 3 lines */
+}
+
+.product-price {
+  position: absolute;
+  bottom: 0.3rem;
+  right: 1rem;
+  font-size: 14px;
 }
 
 /* Hover Effects */
@@ -146,11 +163,16 @@
 
 /* Tablet Screens (768px - 1024px) */
 @media (min-width: 768px) and (max-width: 1024px) {
-  .kol-row,
-  .products-row,
-  .events-row {
-    justify-content: space-between;
-    row-gap: 2rem;
+  .product-card .card-title,
+  .event-card .card-title {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 2; /* Limit title to 2 lines */
+  }
+
+  .product-card .card-text,
+  .event-card .card-text {
+    font-size: 0.75rem;
+    -webkit-line-clamp: 2; /* Limit title to 2 lines */
   }
 }
 
@@ -164,13 +186,6 @@
     font-size: 1.8rem; /* Smaller font for mobile */
   }
 
-  .kol-row,
-  .products-row,
-  .events-row {
-    justify-content: center;
-    gap: 1.5rem;
-  }
-
   .kol-col {
     margin-bottom: 5%;
   }
@@ -178,7 +193,6 @@
   .product-card,
   .event-card {
     height: 270px;
-    width: 100%; /* Full width for mobile */
     margin-bottom: 5%;
   }
 
@@ -190,27 +204,12 @@
   .product-card .card-title,
   .event-card .card-title {
     font-size: 0.85rem;
+    -webkit-line-clamp: 2; /* Limit title to 2 lines */
   }
 
   .product-card .card-text,
   .event-card .card-text {
     font-size: 0.75rem;
-  }
-}
-
-/* Very Small Mobile Screens (Max Width: 480px) */
-@media (max-width: 480px) {
-  .section-title {
-    font-size: 1.5rem; /* Further reduce font size */
-  }
-
-  .product-card,
-  .event-card {
-    height: 240px;
-  }
-
-  .product-card img,
-  .event-card img {
-    height: 140px;
+    -webkit-line-clamp: 2; /* Limit title to 2 lines */
   }
 }
