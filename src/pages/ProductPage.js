@@ -98,7 +98,7 @@ const ProductPage = () => {
           <b>{t("product")}</b>
         </h1>
       </section>
-    <Container className="kol-container">
+    <Container>
       <Row>
         {products.map((product, index) => {
           const isLastElement = index === products.length - 1; // Check if it's the last product
