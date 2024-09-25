@@ -259,7 +259,7 @@ const ProductDetail = () => {
             <Modal.Title>{Name}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          {Price === 0 && sponsor ?(
+          {sponsor ?(
               <div>
                 <Row>
                   <h5>Product Website</h5>
