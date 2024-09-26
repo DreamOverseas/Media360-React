@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Row, Col, Alert, Nav, Accordion, Tab } from 'react-bootstrap';
+import { useMediaQuery } from "react-responsive";
 import ReactMarkdown from "react-markdown";
 import axios from 'axios';
 import moment from 'moment';
@@ -21,6 +22,9 @@ const Contact = () => {
   const [jobs, setJobs] = useState([]);
   // active keys indicates activated tab, it's either recruitment / apply / contact
   const [activeKey, setActiveKey] = useState("recruitment");
+
+  // Check if is on desktop
+  const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 
   useEffect(() => {
     axios.get(`${BACKEND_HOST}/api/recruitments`)
@@ -119,7 +123,6 @@ const Contact = () => {
         <br />
 
         <Tab.Content>
-          {/* 招聘信息栏位 */}
           <Tab.Pane eventKey="recruitment">
             <h2 className="text-center my-4">岗位详情</h2>
             {/* If no job is actively recuiting */}
@@ -136,18 +139,24 @@ const Contact = () => {
                           {/* Second row：Type & Participation */}
                           <Row>
                             <Col>
-                              <strong>类型：</strong>{' '}
+                            {isDesktop ? (
+                              <strong>类型：</strong>
+                            ) : (<></>)}
                               {job.attributes.Type}
                             </Col>
                             <Col>
-                              <strong>参与方式：</strong>{' '}
+                            {isDesktop ? (
+                              <strong>参与方式：</strong>
+                            ) : (<></>)}
                               {job.attributes.Participation}
                             </Col>
                           </Row>
                           {/* Third row：Location */}
                           <Row className="mt-2">
                             <Col>
-                              <strong>工作地点：</strong>{' '}
+                            {isDesktop ? (
+                              <strong>工作地点：</strong>
+                            ) : (<></>)}
                               {job.attributes.Location}
                             </Col>
                             <Col className="text-end">
