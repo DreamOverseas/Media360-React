@@ -20,7 +20,6 @@ import Profile from "./pages/Profile";
 import ShoppingCart from "./pages/ShoppingCart";
 import RegisterMiss from "./pages/RegisterMiss";
 import Sponsor from "./pages/Sponsor";
-import Recruitment from "./pages/Recruitment";
 import Greeness from "./pages/Greeness";
 
 function App() {
@@ -72,7 +71,6 @@ function App() {
           <Route path='/cart' element={<ShoppingCart />} />
           <Route path='/cart' element={<ShoppingCart />} />
           <Route path='/miss-register' element={<RegisterMiss />} />
-          <Route path='/jobs' element={<Recruitment />} />
           <Route path='/sponsor' element={<Sponsor />} />
           <Route path='/sponsor/greeness' element={<Greeness />} />
         </Routes>

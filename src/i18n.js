@@ -10,7 +10,8 @@ const resources = {
     translation: {
       kol: "KOL",
       event: "Event",
-      contact: "Contact",
+      contact: "Contact Us",
+      joinus: "Join Us",
       product: "Product",
       sponsor: "Sponsor",
       language: "Language",
@@ -77,6 +78,8 @@ const resources = {
       footer_join_intro: "Sign up for our newsletter to enjoy free marketing tips, inspirations, and more.",
       footer_sub: "Subscribe",
       footer_scan: "Scan me for more info",
+      recruitment: "Recruitment Info",
+      apply: "Application",
 
       /* Miss Registration form components */
       "miss_reg_contest_title": "The 73rd Miss Universe China Competition Australia Division - Melbourne 2024",
@@ -117,6 +120,7 @@ const resources = {
       kol: "意见领袖",
       event: "活动",
       contact: "联系我们",
+      joinus: "加入我们",
       product: "产品",
       sponsor: "赞助商",
       language: "语言",
@@ -182,6 +186,8 @@ const resources = {
       footer_join_intro: "即可第一时间获得商品折扣和礼品等消息，现在订阅，快人一步尽在指尖！",
       footer_sub: "提交",
       footer_scan: "获取更多信息",
+      recruitment: "招聘详情",
+      apply: "如何申请",
 
       /* Miss Registration form components */
       "miss_reg_contest_title": "第73届环球小姐中国区大赛澳洲赛区-墨尔本2024",

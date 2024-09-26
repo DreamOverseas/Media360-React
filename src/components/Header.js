@@ -37,7 +37,7 @@ const Header = () => {
             <Nav.Link href='/kolpage'>{t("kol")}</Nav.Link>
             <Nav.Link href='/eventpage'>{t("event")}</Nav.Link>
             <Nav.Link href='/sponsor'>{t("sponsor")}</Nav.Link>
-            <Nav.Link href='/Contact'>{t("contact")}</Nav.Link>
+            <Nav.Link href='/Contact'>{t("joinus")}</Nav.Link>
             <NavDropdown title={t("language")} id='language-dropdown'>
               <NavDropdown.Item onClick={() => changeLanguage("en")}>
                 English
