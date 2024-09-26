@@ -80,7 +80,7 @@ const Contact = () => {
     }
   };
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <div className='contact-page'>
@@ -124,39 +124,43 @@ const Contact = () => {
 
         <Tab.Content>
           <Tab.Pane eventKey="recruitment">
-            <h2 className="text-center my-4">岗位详情</h2>
+            <h2 className="text-center my-4">{t("recruit_info")}</h2>
             {/* If no job is actively recuiting */}
             {jobs.length === 0 ? (
-              <p className="text-center">当前暂无招聘信息，请持续关注我们的新动态。</p>
+              <p className="text-center">{t("no_job")}</p>
             ) : (
               <Accordion>
                 {jobs.map((job, index) => (
                   <Accordion.Item eventKey={index.toString()} key={job.id}>
                     <Accordion.Header>
                       <div style={{ flex: 1 }}>
-                        <div className="fw-bold" style={{ fontSize: 20 }}>{job.attributes.Job_Title_zh}</div> <br />
+                        <div className="fw-bold" style={{ fontSize: 20 }}>
+                          {i18n.language === "zh"
+                            ? (job.attributes.Job_Title_zh)
+                            : (job.attributes.Job_Title_en)}
+                        </div> <br />
                         <div>
                           {/* Second row：Type & Participation */}
                           <Row>
                             <Col>
-                            {isDesktop ? (
-                              <strong>类型：</strong>
-                            ) : (<></>)}
+                              {isDesktop ? (
+                                <strong>{t("recruit_type")}</strong>
+                              ) : (<></>)}
                               {job.attributes.Type}
                             </Col>
                             <Col>
-                            {isDesktop ? (
-                              <strong>参与方式：</strong>
-                            ) : (<></>)}
+                              {isDesktop ? (
+                                <strong>{t("recruit_participation")}</strong>
+                              ) : (<></>)}
                               {job.attributes.Participation}
                             </Col>
                           </Row>
                           {/* Third row：Location */}
                           <Row className="mt-2">
                             <Col>
-                            {isDesktop ? (
-                              <strong>工作地点：</strong>
-                            ) : (<></>)}
+                              {isDesktop ? (
+                                <strong>{t("recruit_location")}</strong>
+                              ) : (<></>)}
                               {job.attributes.Location}
                             </Col>
                             <Col className="text-end">
@@ -171,8 +175,12 @@ const Contact = () => {
                     </Accordion.Header>
                     <Accordion.Body>
                       {/* OnShow：Intro */}
-                      <strong>职位介绍：</strong>
-                      <ReactMarkdown>{job.attributes.Intro_zh}</ReactMarkdown>
+                      <strong>{t("recruit_intro")}</strong>
+                      <ReactMarkdown>
+                        {i18n.language === "zh"
+                          ? (job.attributes.Intro_zh)
+                          : (job.attributes.Intro_en)}
+                      </ReactMarkdown>
                     </Accordion.Body>
                   </Accordion.Item>
                 ))}

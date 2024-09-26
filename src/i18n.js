@@ -80,6 +80,12 @@ const resources = {
       footer_scan: "Scan me for more info",
       recruitment: "Recruitment Info",
       apply: "Application",
+      recruit_info: "Recruitment Details",
+      no_job: "Currently there's no position is opening, please keep your eyes on our website, we do looking forward to see you someday in the near future!",
+      recruit_type: "Type: ",
+      recruit_participation: "Participation: ",
+      recruit_location: "Location: ",
+      recruit_intro: "Job Introduction: ",
 
       /* Miss Registration form components */
       "miss_reg_contest_title": "The 73rd Miss Universe China Competition Australia Division - Melbourne 2024",
@@ -188,6 +194,12 @@ const resources = {
       footer_scan: "获取更多信息",
       recruitment: "招聘详情",
       apply: "如何申请",
+      recruit_info: "岗位详情",
+      no_job: "当前暂无招聘信息，请持续关注我们的网站和新动态！",
+      recruit_type: "类型：",
+      recruit_participation: "参与方式：",
+      recruit_location: "工作地点：",
+      recruit_intro: "职位介绍：",
 
       /* Miss Registration form components */
       "miss_reg_contest_title": "第73届环球小姐中国区大赛澳洲赛区-墨尔本2024",
