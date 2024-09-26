@@ -5,6 +5,10 @@ import "../css/Advertisement.css";
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const Advertisement = ({ ads }) => {
+
+  // Sort Ads by its order
+  ads.sort((a, b) => a.attributes.Order - b.attributes.Order);
+
   return (
     <Carousel className='ads-carousel' interval={3000}>
       {ads.map((advertisement, index) => (
