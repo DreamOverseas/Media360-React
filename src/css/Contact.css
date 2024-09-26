@@ -24,6 +24,15 @@ header nav ul li a {
   color: #333;
 }
 
+.nav-link-Login.active{
+  text-decoration: underline;
+  font-weight: 700;
+  text-underline-offset: 50%;
+}
+.nav-link-Login:hover {
+  color:black !important;
+}
+
 .contact-content {
   display: flex;
   justify-content: space-between;
