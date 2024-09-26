@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Row, Col, Alert, Nav, Accordion, Tab } from 'react-bootstrap';
+import { Row, Col, Alert, Nav, Accordion, Tab, Image } from 'react-bootstrap';
 import { useMediaQuery } from "react-responsive";
 import ReactMarkdown from "react-markdown";
 import axios from 'axios';
@@ -188,7 +188,17 @@ const Contact = () => {
             )}
           </Tab.Pane>
           <Tab.Pane eventKey="apply">
-            <p>Please send your CV to john.du@do360.com, stating your basic information and the job title you're applying, and we'll get back to you later.</p>
+            <Row>
+              <Col md={4} className="d-flex justify-content-center">
+                <Image
+                  src="apply.png"
+                  height={400}
+                />
+              </Col>
+              <Col md={8} className="d-flex justify-content-center">
+                <p>Please send your CV to john.du@do360.com, stating your basic information and the job title you're applying, and we'll get back to you later.</p>
+              </Col>
+            </Row>
           </Tab.Pane>
           <Tab.Pane eventKey="contact">
             <div className='contact-content'>
