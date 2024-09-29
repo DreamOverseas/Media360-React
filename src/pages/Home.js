@@ -161,7 +161,7 @@ const HomePage = () => {
           {events.length > 0 ? (
             events.map(event => (
               <Col xs={6} sm={6} md={3} key={event.id}>
-                <Link to={`/event/${event.id}`} className="home-event-card-link">
+                <Link to={`/event/${event.attributes.url}`} className="home-event-card-link">
                   <Card className='event-card'>
                     <Card.Img
                       variant='top'
