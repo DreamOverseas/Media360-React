@@ -51,9 +51,14 @@ const HomePage = () => {
 
     const fetchEvents = async () => {
       try {
-        const response = await axios.get(
-          `${BACKEND_HOST}/api/events?populate=*`
-        );
+        const response = await 
+        axios.get(`${BACKEND_HOST}/api/events`, {
+          params: {
+            "filters[Active][$eq]": true,
+            "sort": "Order:desc",
+            "populate": "*",
+          },
+      });
         setEvents(response.data.data.slice(0, 8));
       } catch (error) {
         console.error("Error fetching events:", error);
