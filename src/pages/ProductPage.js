@@ -26,7 +26,7 @@ const ProductPage = () => {
       .get(`${BACKEND_HOST}/api/products`, {
         params: {
           "pagination[page]": pageNum,
-          "pagination[pageSize]": 12, // Load 8 products per page
+          "pagination[pageSize]": 8, // Load 8 products per page
           "populate": "*",
         },
       })

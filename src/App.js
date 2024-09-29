@@ -64,7 +64,7 @@ function App() {
           <Route path='/product/:name' element={<ProductDetail />} />
           <Route path='/eventpage' element={<Events />} />
           <Route exact path='/product/:name' element={<ProductDetail />} />
-          <Route exact path='/event/:id' element={<EventDetail />} />
+          <Route exact path='/event/:name' element={<EventDetail />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/kolpage' element={<KolPage />} />
           <Route path='/kol/:id' element={<KolDetail />} />

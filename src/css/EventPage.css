@@ -1,115 +1,137 @@
+/* Banner Styling */
 .event-page-background-image-container {
   background-image: url("/public/events/banner.png");
   background-size: cover;
   background-position: center;
   text-align: center;
   width: 100%;
-  height: 250px; /* Increased height for a more prominent banner */
+  height: 250px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  margin-bottom: 3%; /* Add margin below the banner */
+  margin-bottom: 3%;
 }
 
 .event-page-banner-h1 {
   color: white;
-  font-size: 2.5rem; /* Increase font size for a bolder look */
+  font-size: 2.5rem;
   margin: 0;
 }
 
-.event-page-more-detail {
-  width: fit-content;
-}
-
-.event-page-more-detail button {
-  margin-left: 0 !important;
-}
-
-.event-item {
+/* Events Section */
+.eventpage-event-card {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  transition: transform 0.5s ease;
+  margin-bottom: 7%;
   margin-top: 3%;
-  margin-bottom: 3%;
-  padding: 15px 0;
 }
 
-.event-image {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
+.eventpage-event-card:hover {
+  transform: scale(1.05);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Image Styling */
+.eventpage-event-card img {
+  max-width: 100%;
+  height: 230px; /* Adjusted image height to leave more room for text */
   object-fit: cover;
+  border-radius: 8px;
 }
 
-.event-page-section {
+/* Card Body */
+.eventpage-event-card .card-body {
+  flex-grow: 1;
+  padding: 12px; /* Slightly smaller padding */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
+  overflow: hidden;
 }
 
-.event-title {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
+/* Title Styling */
+.eventpage-event-card .card-title {
+  font-size: 1.2rem; /* Adjusted font size for better fit */
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 8px; /* Smaller margin */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2; /* Limit title to 2 lines */
 }
 
-.event-page-description p {
-  font-size: 1rem;
-  color: #555;
+/* Date Styling */
+.eventpage-event-card .eventpage-event-date {
+  font-size: 0.95rem; /* Smaller font size */
+  color: #888888;
+  margin-bottom: 6px; /* Reduced margin */
+  line-height: 1.2; /* Adjusted line height */
 }
 
-.link-EventPage {
+/* Location Styling */
+.eventpage-event-card .eventpage-event-location {
+  font-size: 0.9rem; /* Slightly smaller */
+  color: #555555;
+  margin-bottom: 6px;
+}
+
+/* Host Styling */
+.eventpage-event-card .eventpage-event-host {
+  font-size: 0.85rem; /* Smaller font for host */
+  color: #999999;
+  font-style: italic;
+  margin-bottom: 6px;
+}
+
+/* Adjust Link Styling */
+.card-link-EventPage {
   text-decoration: none;
+  height: 100%;
+  display: block;
 }
 
-.event-button {
-  background-color: #007bff;
-  color: white;
-  border-radius: 5px;
-  padding: 10px 20px;
-  transition: background-color 0.3s ease;
-}
-
-.event-button:hover {
-  background-color: #0056b3;
-}
-
-@media (max-width: 992px) {
-  .event-item {
-    flex-direction: column;
-  }
-
-  .event-page-description p {
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .event-button {
-    width: 100%;
-    text-align: center;
-  }
-}
-
+/* Responsive Design */
 @media (max-width: 768px) {
-  .event-title {
-    font-size: 1.5rem;
+  .event-page-background-image-container {
+    height: 200px;
+    margin-bottom: 5%;
   }
 
-  .event-page-section {
-    padding: 10px 0;
+  .eventpage-event-card img {
+    height: 150px; /* Reduce image height for smaller screens */
   }
 
-  .event-image {
-    border-radius: 8px;
-    margin-bottom: 20px;
+  .eventpage-event-card .card-body {
+    padding: 8px; /* Smaller padding on mobile */
   }
 
-  .event-button {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
+  .eventpage-event-card .card-title {
+    font-size: 1rem; /* Reduce title font size */
+    -webkit-line-clamp: 2;
+    margin-bottom: 5px; /* Adjusted margin */
+  }
+
+  
+  .eventpage-event-card .eventpage-event-location,
+  .eventpage-event-card .eventpage-event-host {
+    font-size: 0.8rem; /* Adjust font size for smaller screens */
+    margin-bottom: 4px; /* Reduce spacing */
+  }
+
+  .eventpage-event-card .eventpage-event-date {
+    font-size: 0.6rem;
+    margin-bottom: 4px;
+  }
+
+  .eventpage-event-card .eventpage-event-date {
+    line-height: 1.1; /* Adjust line height for smaller screens */
   }
 }

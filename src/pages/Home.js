@@ -51,9 +51,14 @@ const HomePage = () => {
 
     const fetchEvents = async () => {
       try {
-        const response = await axios.get(
-          `${BACKEND_HOST}/api/events?populate=*`
-        );
+        const response = await 
+        axios.get(`${BACKEND_HOST}/api/events`, {
+          params: {
+            "filters[Active][$eq]": true,
+            "sort": "Order:desc",
+            "populate": "*",
+          },
+      });
         setEvents(response.data.data.slice(0, 8));
       } catch (error) {
         console.error("Error fetching events:", error);
@@ -156,7 +161,7 @@ const HomePage = () => {
           {events.length > 0 ? (
             events.map(event => (
               <Col xs={6} sm={6} md={3} key={event.id}>
-                <Link to={`/event/${event.id}`} className="home-event-card-link">
+                <Link to={`/event/${event.attributes.url}`} className="home-event-card-link">
                   <Card className='event-card'>
                     <Card.Img
                       variant='top'
