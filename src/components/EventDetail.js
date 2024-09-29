@@ -1,15 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  Container,
-  Row,
-  Image
-} from "react-bootstrap";
+import { Button, Col, Container, Image, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import { useParams } from "react-router-dom";
 import "../css/EventDetail.css";
 
 // Load Backend Host for API calls
@@ -23,9 +17,7 @@ const EventDetail = () => {
 
   useEffect(() => {
     axios
-      .get(
-        `${BACKEND_HOST}/api/events/${id}?populate=*`
-      )
+      .get(`${BACKEND_HOST}/api/events/${id}?populate=*`)
       .then(response => {
         if (response.data && response.data.data) {
           setEvent(response.data.data);
@@ -46,52 +38,113 @@ const EventDetail = () => {
   if (!event) {
     return <div>{t("loading")}</div>;
   }
+
   const EventImage = event.attributes.Image;
   const language = i18n.language;
   const Description =
     language === "zh"
       ? event.attributes.Description_zh
       : event.attributes.Description_en;
-      
+
   const ShortDescription =
-  language === "zh"
-    ? event.attributes.Short_zh
-    : event.attributes.Short_en;
+    language === "zh" ? event.attributes.Short_zh : event.attributes.Short_en;
+
+  const EventTime = event.attributes.Time;
+  const EventLocation =
+    language === "zh"
+      ? event.attributes.Location_zh
+      : event.attributes.Location_en;
+  const EventHost =
+    language === "zh" ? event.attributes.Host_zh : event.attributes.Host_en;
 
   return (
     <div>
-      <section className="event-detail-background-image-container">
-        <h1 className="event-detail-banner-h1"><b>{t("event")}</b></h1>
+      {/* Event Banner Section */}
+      <section className='event-detail-background-image-container'>
+        {/* 包裹横幅图片和文字的容器 */}
+        <div className='event-banner-wrapper'>
+          <Image
+            src={`${BACKEND_HOST}${
+              EventImage?.data?.attributes?.url ||
+              "https://placehold.co/1200x600"
+            }`} // 替换为实际图片路径或占位符
+            alt='Event Banner'
+            className='event-banner-image'
+          />
+          <div className='banner-text'>
+            <h1 className='event-title'>
+              {language === "zh"
+                ? event.attributes.Name_zh
+                : event.attributes.Name_en}
+            </h1>
+            <h2 className='event-subtitle'>{t("The Lifetimes Tour")}</h2>
+          </div>
+        </div>
       </section>
+
       <br />
+
+      {/* Main Content Section */}
       <section>
         <Container>
           <Row className='event-detail-section'>
-          <Col className='event-image-col'>
+            {/* Left Column: Event Image */}
+            <Col md={6} className='event-image-col'>
               {EventImage && EventImage.data ? (
                 <Image
                   src={`${BACKEND_HOST}${EventImage.data.attributes.url}`}
-                  alt={language ==="zh" ? event.attributes.Name_zh : event.attributes.Name_en}
+                  alt={
+                    language === "zh"
+                      ? event.attributes.Name_zh
+                      : event.attributes.Name_en
+                  }
+                  fluid
                 />
               ) : (
-                <Image src='https://placehold.co/650x650' alt='No Image Available' />
+                <Image
+                  src='https://placehold.co/650x650'
+                  alt='No Image Available'
+                  fluid
+                />
               )}
             </Col>
-            <Col className="event-detail-col">
+
+            {/* Right Column: Event Details */}
+            <Col md={6} className='event-detail-col'>
               <Container className='event-detail'>
                 <Row>
-                  <h2>{language ==="zh" ? event.attributes.Name_zh : event.attributes.Name_en}</h2>
+                  <h2>
+                    {language === "zh"
+                      ? event.attributes.Name_zh
+                      : event.attributes.Name_en}
+                  </h2>
                 </Row>
+
                 <Row className='event-short-description'>
+                  <p>
+                    {t("time")}: {EventTime ? EventTime : t("noTime")}
+                  </p>
+                  <p>
+                    {t("location")}:{" "}
+                    {EventLocation ? EventLocation : t("noLocation")}
+                  </p>
+                  <p>
+                    {t("host")}: {EventHost ? EventHost : t("noHost")}
+                  </p>
                   <div>
-                    {Description
-                      ? <ReactMarkdown>{ShortDescription}</ReactMarkdown>
-                      : t("noDescription")}
+                    {ShortDescription ? (
+                      <ReactMarkdown>{ShortDescription}</ReactMarkdown>
+                    ) : (
+                      t("noDescription")
+                    )}
                   </div>
                 </Row>
+
                 <Row className='event-contact'>
                   <Col>
-                    <Button>{t("comingSoon")}</Button>
+                    <Button className='event-register-btn'>
+                      {t("comingSoon")}
+                    </Button>
                   </Col>
                 </Row>
               </Container>
@@ -99,15 +152,20 @@ const EventDetail = () => {
           </Row>
         </Container>
       </section>
+
       <br />
       <br />
+
+      {/* Event Description Section */}
       <section>
         <Container>
           <Row>
-            <h1><b>{t("eventDescription")}</b></h1>
+            <h1>
+              <b>{t("eventDescription")}</b>
+            </h1>
           </Row>
           <Row>
-            <div className="markdown-content">
+            <div className='markdown-content'>
               {Description ? (
                 <ReactMarkdown>{Description}</ReactMarkdown>
               ) : (
@@ -117,73 +175,6 @@ const EventDetail = () => {
           </Row>
         </Container>
       </section>
-      {/* <section>
-        <Container fluid>
-          <Row>
-            <Col md={5}>
-              <hr />
-            </Col>
-            <Col
-              md={2}
-              className='d-flex justify-content-center align-items-center'
-            >
-              <h5>Highlight Products</h5>
-            </Col>
-            <Col md={5}>
-              <hr />
-            </Col>
-          </Row>
-        </Container>
-        <br />
-      </section> */}
-      {/* <Container className='kol-detail-container'>
-        <Row>
-          {Products.data.length > 0 ? (
-            Products.data.map(product => (
-              <Col key={product.id} sm={12} md={6} lg={4}>
-                <Link
-                  to={`/product/${product.id}`}
-                  className='card-link-highlight'
-                >
-                  <Card className='kol-product-card'>
-                    {product.attributes && product.attributes.ProductImage ? (
-                      <Card.Img
-                        variant='top'
-                        src={`${BACKEND_HOST}${product.attributes.ProductImage.data.attributes.url}`}
-                      />
-                    ) : (
-                      <Card.Img
-                        variant='top'
-                        src='https://placehold.co/300x300'
-                      />
-                    )}
-                    <Card.Body>
-                      <Card.Title
-                        style={{
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          fontSize: "18px",
-                        }}
-                        title={product.attributes.Name}
-                      >
-                        {product.attributes.Name}
-                      </Card.Title>
-                      <Card.Text 
-                        title={product.attributes.Price}>
-                        ${product.attributes.Price}
-
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </Col>
-            ))
-          ) : (
-            <p>No products available</p>
-          )}
-        </Row>
-      </Container> */}
     </div>
   );
 };
