@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../css/Forms.css";
+import axios from 'axios';
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
 // import { saveAs } from 'file-saver';
@@ -7,6 +8,9 @@ import { useTranslation } from "react-i18next";
 // Load Backend Host for API calls
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 const API_KEY_MI = "774cd7539026322d69c227b2ffec7810a8457c25b94357a655a6b911ad0f4bcbb42a0487cad1cb5f58483118b65e4ff13e120960a186110ef2a2835c1c8a679922f1b37d8e2baa37fcf80d05b899be4cb07d8940ad2f9044abd0667b935e332c0521104490af9c9497c0e2116be875da51d41621bd354f632e36278e39238be7";
+
+// Load Backend Host for API calls
+const EMAIL_NOTIFY = process.env.REACT_APP_MISS_NOTIFICATION;
 
 const RegisterMiss = () => {
   const [formData, setFormData] = useState({
@@ -181,7 +185,7 @@ const RegisterMiss = () => {
       const result = await response.json();
       if (response.ok) {
         alert(t("miss_reg_success"));
-        window.location.reload();
+        notify_by_email();
       } else {
         alert(t("miss_reg_fail"));
         console.log(result);
@@ -198,6 +202,23 @@ const RegisterMiss = () => {
   const changeLanguage = lng => {
     i18n.changeLanguage(lng);
     Cookies.set("i18next", lng, { expires: 7 });
+  };
+
+  /**
+   * Function that handles email notification
+   */
+  const notify_by_email = async () => {
+    const name = formData.Name_en;
+    const email = formData.Email;
+    try {
+      await axios.post(EMAIL_NOTIFY, {
+        name,
+        email
+      });
+      setErrors('');
+    } catch (error) {
+      setErrors(error);
+    }
   };
 
   return (
