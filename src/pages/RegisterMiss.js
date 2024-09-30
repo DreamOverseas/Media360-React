@@ -186,6 +186,7 @@ const RegisterMiss = () => {
       if (response.ok) {
         alert(t("miss_reg_success"));
         notify_by_email();
+        window.location.reload();
       } else {
         alert(t("miss_reg_fail"));
         console.log(result);
