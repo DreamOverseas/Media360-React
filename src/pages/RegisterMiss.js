@@ -209,7 +209,7 @@ const RegisterMiss = () => {
    * Function that handles email notification
    */
   const notify_by_email = async () => {
-    const name = formData.Name_en;
+    const name = formData.Name_zh;
     const email = formData.Email;
     try {
       await axios.post(EMAIL_NOTIFY, {
