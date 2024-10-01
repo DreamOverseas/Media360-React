@@ -140,10 +140,30 @@ const ProductDetail = () => {
     );
   }
 
-  const { Price, ProductImage, Available, Sponsor } = product.attributes;
-  const Name = getLocalizedAttribute(product.attributes.Name_en, product.attributes.Name_zh);
-  const Description = getLocalizedAttribute(product.attributes.Description_en, product.attributes.Description_zh);
-  const ShortDescription = getLocalizedAttribute(product.attributes.Short_en, product.attributes.Short_zh);
+  const { Price, ProductImage } = product[0].attributes;
+  const language = i18n.language;
+
+  const display_price = Price === 0 ? 
+                              (t("price_tbd")) : 
+                              (`AU$${Price}`)
+  
+  const Name =
+    language === "zh"
+      ? product[0].attributes.Name_zh
+      : product[0].attributes.Name_en;
+
+  const Description =
+    language === "zh"
+      ? product[0].attributes.Description_zh
+      : product[0].attributes.Description_en;
+
+  const ShortDescription =
+    language === "zh"
+      ? product[0].attributes.Short_zh
+      : product[0].attributes.Short_en;
+
+  const available = product[0].attributes.Available
+  const sponsor = product[0].attributes.Sponsor
 
   return (
     <div>
@@ -171,7 +191,7 @@ const ProductDetail = () => {
                 </Row>
                 <Row className='product-price-quantity'>
                   <Col>
-                    <h4>${Price}</h4>
+                    <h4>{display_price}</h4>
                   </Col>
                   {Available && (
                     <Col>

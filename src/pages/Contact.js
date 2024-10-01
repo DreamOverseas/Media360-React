@@ -31,7 +31,8 @@ const Contact = () => {
       .then(response => {
         // Filter Active === True 
         const activeJobs = response.data.data.filter(job => job.attributes.Active);
-        setJobs(activeJobs);
+        const sortedJobs = activeJobs.sort((a, b) => a.attributes.Order - b.attributes.Order);
+        setJobs(sortedJobs);
       })
       .catch(error => {
         console.error('Error fetching jobs:', error);
