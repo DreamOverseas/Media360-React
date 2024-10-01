@@ -1,34 +1,37 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Image, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { useLocation } from "react-router-dom";
 import moment from 'moment';
 import 'moment-timezone';
 import "../css/EventDetail.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock, faMapMarkerAlt, faUserTie } from '@fortawesome/free-solid-svg-icons';
 
 // Load Backend Host for API calls
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const EventDetail = () => {
-  const location = useLocation()
+  const location = useLocation();
   const { t, i18n } = useTranslation();
   const [event, setEvent] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const path = location.pathname.replace('/event/', '')
+    const path = location.pathname.replace('/event/', '');
     axios
-      .get(`${BACKEND_HOST}/api/events`,{
-          params: {
-            'filters[url]': path,
-            'populate': 'Image'
-          }
+      .get(`${BACKEND_HOST}/api/events`, {
+        params: {
+          'filters[url]': path,
+          'populate': 'Image'
+        }
       })
       .then(response => {
-        if (response.data && response.data.data) {
-          setEvent(response.data.data);
+        const eventData = response.data?.data || null; // 确保 data 存在
+        if (eventData && eventData.length > 0) {
+          setEvent(eventData);
         } else {
           setError("No data found");
         }
@@ -37,7 +40,7 @@ const EventDetail = () => {
         console.error("Error fetching data: ", error);
         setError("Error fetching data");
       });
-  }, []);
+  }, [location]);
 
   if (error) {
     return <div>{error}</div>;
@@ -47,63 +50,59 @@ const EventDetail = () => {
     return <div>{t("loading")}</div>;
   }
 
+  // 时间防御处理，显示 "N/A" 代替空值
   const formatDateTime = (datetime) => {
-    if (!datetime) return null;
-    
-    // Convert to your desired timezone (e.g., 'Australia/Sydney')
-    const timezone = 'Australia/Sydney'; // Adjust this to your desired timezone
-    
-    // Format as 'Thu, 10 Oct, 12:00 am AEDT'
+    if (!datetime) return "N/A";
+
+    const timezone = 'Australia/Sydney'; // 可根据需求调整
     return moment(datetime).tz(timezone).format('ddd, DD MMM, h:mm a z');
-  }
+  };
 
   const calculateTime = (start, end) => {
-    if (start && end) {
-      const head = formatDateTime(start);
-      const tail = formatDateTime(end);
-      return `${head} - ${tail}`;
-    }
+    if (!start) return "N/A";
 
-    if (start != null && end == null) {
-      return formatDateTime(start);
-    }
+    const startTime = formatDateTime(start);
+    const endTime = end ? formatDateTime(end) : null;
 
-    return null;
-  }
+    return endTime ? `${startTime} - ${endTime}` : startTime;
+  };
 
-  const EventImage = event[0].attributes.Image;
+  // 使用防御性处理 event 数据，显示尽可能多的信息
+  const eventAttributes = event[0]?.attributes || {};
+  const EventImage = eventAttributes.Image?.data?.attributes?.url || "https://placehold.co/1200x600"; // 默认图片
+
   const language = i18n.language;
-  const Description =
-    language === "zh"
-      ? event[0].attributes.Description_zh
-      : event[0].attributes.Description_en;
+  const Description = language === "zh" ? eventAttributes.Description_zh || "N/A" : eventAttributes.Description_en || "N/A";
+  const ShortDescription = language === "zh" ? eventAttributes.Short_zh || "N/A" : eventAttributes.Short_en || "N/A";
 
-  const ShortDescription =
-    language === "zh" ? event[0].attributes.Short_zh : event.attributes.Short_en;
+  const EventTime = calculateTime(eventAttributes.Start_Date, eventAttributes.End_Date);
+  const EventLocation = eventAttributes.Location || "N/A";
+  const EventHost = eventAttributes.Host || "N/A";
 
-  const EventTime = calculateTime(event[0].attributes.Start_Date, event[0].attributes.End_Date);
-  const EventLocation = event[0].attributes.Location;
-  const EventHost = event[0].attributes.Host;
+  // 时间判断逻辑：判断活动是否已结束
+  const isEventEnded = () => {
+    const currentTime = moment();
+    const eventEndTime = eventAttributes.End_Date
+      ? moment(eventAttributes.End_Date)
+      : moment(eventAttributes.Start_Date); // 如果没有 End_Date 则以 Start_Date 判断
+    return currentTime.isAfter(eventEndTime);
+  };
 
   return (
     <div>
       {/* Event Banner Section */}
       <section className='event-detail-background-image-container'>
-
         <div className='event-banner-wrapper'>
-          <Image
-            src={`${BACKEND_HOST}${
-              EventImage?.data?.attributes?.url ||
-              "https://placehold.co/1200x600"
-            }`}
+          <img
+            src={`${BACKEND_HOST}${EventImage}`}
             alt='Event Banner'
             className='event-banner-image'
           />
           <div className='banner-text'>
             <h1 className='event-title'>
               {language === "zh"
-                ? event[0].attributes.Name_zh
-                : event[0].attributes.Name_en}
+                ? eventAttributes.Name_zh || "N/A"
+                : eventAttributes.Name_en || "N/A"}
             </h1>
             <h2 className='event-subtitle'>{t("The Lifetimes Tour")}</h2>
           </div>
@@ -116,55 +115,45 @@ const EventDetail = () => {
       <section>
         <Container>
           <Row className='event-detail-section'>
-            {/* Left Column: Event Image */}
-            <Col md={6} className='event-image-col'>
-              {EventImage && EventImage.data ? (
-                <Image
-                  src={`${BACKEND_HOST}${EventImage.data.attributes.url}`}
-                  alt={
-                    language === "zh"
-                      ? event[0].attributes.Name_zh
-                      : event[0].attributes.Name_en
-                  }
-                  fluid
-                />
-              ) : (
-                <Image
-                  src='https://placehold.co/650x650'
-                  alt='No Image Available'
-                  fluid
-                />
-              )}
-            </Col>
-
-            {/* Right Column: Event Details */}
-            <Col md={6} className='event-detail-col'>
+            <Col md={12} className='event-detail-col'>
               <Container className='event-detail'>
                 <Row>
                   <h2>
                     {language === "zh"
-                      ? event[0].attributes.Name_zh
-                      : event[0].attributes.Name_en}
+                      ? eventAttributes.Name_zh || "N/A"
+                      : eventAttributes.Name_en || "N/A"}
                   </h2>
                 </Row>
 
-                <Row className='event-short-description'>
-                  <p>
-                    {t("time")}: {EventTime ? EventTime : t("noTime")}
-                  </p>
-                  <p>
-                    {t("location")}:{EventLocation ? EventLocation : t("noLocation")}
-                  </p>
-                  <p>
-                    {t("host")}: {EventHost ? EventHost : t("noHost")}
-                  </p>
-                  <div>
-                    {ShortDescription ? (
+                <Row className='event-info'>
+                  <Col md={4}>
+                    <p>
+                      <FontAwesomeIcon icon={faClock} />{' '}
+                      <strong>{t("time")}:</strong> {EventTime}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p>
+                      <FontAwesomeIcon icon={faMapMarkerAlt} />{' '}
+                      <strong>{t("location")}:</strong> {EventLocation}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p>
+                      <FontAwesomeIcon icon={faUserTie} />{' '}
+                      <strong>{t("host")}:</strong> {EventHost}
+                    </p>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col>
+                    {ShortDescription !== "N/A" ? (
                       <ReactMarkdown>{ShortDescription}</ReactMarkdown>
                     ) : (
-                      t("noDescription")
+                      <p>{t("noDescription")}</p>
                     )}
-                  </div>
+                  </Col>
                 </Row>
               </Container>
             </Col>
@@ -185,15 +174,24 @@ const EventDetail = () => {
           </Row>
           <Row>
             <div className='markdown-content'>
-              {Description ? (
+              {Description !== "N/A" ? (
                 <ReactMarkdown>{Description}</ReactMarkdown>
               ) : (
-                t("noDescription")
+                <p>{t("noDescription")}</p>
               )}
             </div>
           </Row>
         </Container>
       </section>
+
+      {/* 悬浮窗：报名或已结束按钮 */}
+      <div className="floating-register-btn">
+        {isEventEnded() ? (
+          <Button variant="secondary" disabled>{t("eventEnded")}</Button>
+        ) : (
+          <Button variant="primary">{t("registerNow")}</Button>
+        )}
+      </div>
     </div>
   );
 };
