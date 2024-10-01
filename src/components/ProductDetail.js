@@ -21,7 +21,6 @@ import { AuthContext } from "../context/AuthContext";
 
 import "../css/ProductDetail.css";
 
-// Load Backend Host for API calls
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const ProductDetail = () => {
@@ -93,10 +92,8 @@ const ProductDetail = () => {
     setShowModal(true);
   };
 
-  const handleCloseModal = () => setShowModal(false);
-
-  const getLocalizedAttribute = (attr_en, attr_zh) => {
-    return i18n.language === "zh" ? attr_zh : attr_en;
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   useEffect(() => {
@@ -121,15 +118,6 @@ const ProductDetail = () => {
       });
   }, [location.pathname, t]);
 
-  if (error) {
-    return (
-      <Container className="error-container">
-        <h4>{t("errorLoadingProduct")}</h4>
-        <p>{error}</p>
-      </Container>
-    );
-  }
-
   if (!product || !product.attributes) {
     return (
       <div className="loading-container">
@@ -140,30 +128,27 @@ const ProductDetail = () => {
     );
   }
 
-  const { Price, ProductImage } = product[0].attributes;
+  const { Price, ProductImage, Available, Sponsor } = product.attributes;
   const language = i18n.language;
 
   const display_price = Price === 0 ? 
                               (t("price_tbd")) : 
-                              (`AU$${Price}`)
-  
+                              (`AU$${Price}`);
+
   const Name =
     language === "zh"
-      ? product[0].attributes.Name_zh
-      : product[0].attributes.Name_en;
+      ? product.attributes.Name_zh
+      : product.attributes.Name_en;
 
   const Description =
     language === "zh"
-      ? product[0].attributes.Description_zh
-      : product[0].attributes.Description_en;
+      ? product.attributes.Description_zh
+      : product.attributes.Description_en;
 
   const ShortDescription =
     language === "zh"
-      ? product[0].attributes.Short_zh
-      : product[0].attributes.Short_en;
-
-  const available = product[0].attributes.Available
-  const sponsor = product[0].attributes.Sponsor
+      ? product.attributes.Short_zh
+      : product.attributes.Short_en;
 
   return (
     <div>
