@@ -153,8 +153,12 @@ const ProductDetail = () => {
     return <div>{t("loading")}</div>;
   }
 
-  const {Price, ProductImage } = product[0].attributes;
+  const { Price, ProductImage } = product[0].attributes;
   const language = i18n.language;
+
+  const display_price = Price === 0 ? 
+                              (t("price_tbd")) : 
+                              (`AU$${Price}`)
   
   const Name =
     language === "zh"
@@ -206,7 +210,7 @@ const ProductDetail = () => {
                 </Row>
                 <Row className='product-price-quantity'>
                   <Col>
-                    <h4>${Price}</h4>
+                    <h4>{display_price}</h4>
                   </Col>
                   {available && (<Col>
                     <Form.Group className='price-control'>

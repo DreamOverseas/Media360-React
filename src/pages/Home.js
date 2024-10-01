@@ -139,7 +139,9 @@ const HomePage = () => {
                         >
                           {Name}
                         </Card.Title>
-                        <p class="product-price">AU${product.attributes.Price}</p>
+                        <p class="product-price">AU${product.attributes.Price === 0 ? 
+                                                          (t("price_tbd")) : 
+                                                          (`AU${product.attributes.Price}`)}</p>
                       </Card.Body>
                     </Card>
                   </Link>
