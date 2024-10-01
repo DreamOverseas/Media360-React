@@ -188,6 +188,9 @@ const Recruitment = () => {
                           ? (job.attributes.Intro_zh)
                           : (job.attributes.Intro_en)}
                       </ReactMarkdown>
+                      <div class="text-end">
+                        <a href="mailto:john.du@do360.com" class="btn btn-primary w-25">{t("contact")}</a>
+                      </div>
                     </Accordion.Body>
                   </Accordion.Item>
                 ))}
@@ -203,7 +206,13 @@ const Recruitment = () => {
                 />
               </Col>
               <Col md={8} className="d-flex justify-content-center">
-                <p>Please send your CV to john.du@do360.com, stating your basic information and the job title you're applying, and we'll get back to you later.</p>
+                <p>
+                  Please send your CV to john.du@do360.com, stating your basic information and the job title you're applying, and we'll get back to you later.
+                  <br />
+                  <div class="text-end">
+                    <a href="mailto:john.du@do360.com" class="btn btn-primary w-25">{t("contact")}</a>
+                  </div>
+                </p>
               </Col>
             </Row>
           </Tab.Pane>
