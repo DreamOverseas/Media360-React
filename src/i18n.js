@@ -86,6 +86,7 @@ const resources = {
       recruit_participation: "Participation: ",
       recruit_location: "Location: ",
       recruit_intro: "Job Introduction: ",
+      recruit_company: "Company： ",
       price_tbd: "Price upon request",
 
       /* Miss Registration form components */
@@ -201,6 +202,7 @@ const resources = {
       recruit_participation: "参与方式：",
       recruit_location: "工作地点：",
       recruit_intro: "职位介绍：",
+      recruit_company: "公司主体：",
       price_tbd: "价格面议",
 
       /* Miss Registration form components */

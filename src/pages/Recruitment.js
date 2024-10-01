@@ -5,14 +5,14 @@ import { useMediaQuery } from "react-responsive";
 import ReactMarkdown from "react-markdown";
 import axios from 'axios';
 import moment from 'moment';
-import "../css/Contact.css";
+import "../css/Recruitment.css";
 
 // Load Backend Host for API calls
 const EMAIL_SUBSCRIPTION = process.env.REACT_APP_EMAIL_SUBSCRIPTION + "360media-contact/";
 // Load Backend Host for API calls
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
-const Contact = () => {
+const Recruitment = () => {
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -164,12 +164,18 @@ const Contact = () => {
                               ) : (<></>)}
                               {job.attributes.Location}
                             </Col>
-                            <Col className="text-end">
-                              <small>
-                                {calculateTimeAgo(job.attributes.Published)}
-                              </small>
+                            <Col>
+                              {isDesktop ? (
+                                <strong>{t("recruit_company")}</strong>
+                              ) : (<></>)}
+                              {job.attributes.Company}
                             </Col>
                           </Row>
+                          <div className="text-end">
+                            <small>
+                              {calculateTimeAgo(job.attributes.Published)}
+                            </small>
+                          </div>
                         </div>
                       </div>
 
@@ -182,6 +188,9 @@ const Contact = () => {
                           ? (job.attributes.Intro_zh)
                           : (job.attributes.Intro_en)}
                       </ReactMarkdown>
+                      <div class="text-end">
+                        <a href="mailto:john.du@do360.com" class="btn btn-primary w-25">{t("contact")}</a>
+                      </div>
                     </Accordion.Body>
                   </Accordion.Item>
                 ))}
@@ -197,7 +206,13 @@ const Contact = () => {
                 />
               </Col>
               <Col md={8} className="d-flex justify-content-center">
-                <p>Please send your CV to john.du@do360.com, stating your basic information and the job title you're applying, and we'll get back to you later.</p>
+                <p>
+                  Please send your CV to john.du@do360.com, stating your basic information and the job title you're applying, and we'll get back to you later.
+                  <br />
+                  <div class="text-end">
+                    <a href="mailto:john.du@do360.com" class="btn btn-primary w-25">{t("contact")}</a>
+                  </div>
+                </p>
               </Col>
             </Row>
           </Tab.Pane>
@@ -262,4 +277,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default Recruitment;
