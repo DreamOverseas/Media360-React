@@ -12,7 +12,7 @@ import KolDetail from "./components/KolDetail";
 import ProductDetail from "./components/ProductDetail";
 import EventDetail from "./components/EventDetail";
 import ProductPage from "./pages/ProductPage";
-import Contact from "./pages/Contact";
+import Recruitment from "./pages/Recruitment";
 import KolPage from "./pages/KolPage";
 import Events from "./pages/Events";
 import Home from "./pages/Home";
@@ -65,7 +65,7 @@ function App() {
           <Route path='/eventpage' element={<Events />} />
           <Route exact path='/product/:name' element={<ProductDetail />} />
           <Route exact path='/event/:name' element={<EventDetail />} />
-          <Route path='/contact' element={<Contact />} />
+          <Route path='/join-us' element={<Recruitment />} />
           <Route path='/kolpage' element={<KolPage />} />
           <Route path='/kol/:id' element={<KolDetail />} />
           <Route path='/cart' element={<ShoppingCart />} />
