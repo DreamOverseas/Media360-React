@@ -10,11 +10,13 @@ import {
   InputGroup,
   Modal,
   Row,
+  Spinner,
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { Link, useLocation } from "react-router-dom";
 import LoginModal from "./LoginModal";
+import rehypeRaw from 'rehype-raw';
 import { AuthContext } from "../context/AuthContext";
 
 import "../css/ProductDetail.css";
@@ -23,7 +25,7 @@ import "../css/ProductDetail.css";
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const ProductDetail = () => {
-  const location = useLocation()
+  const location = useLocation();
   const { user } = useContext(AuthContext);
   const { t, i18n } = useTranslation();
   const [product, setProduct] = useState(null);
@@ -34,74 +36,13 @@ const ProductDetail = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const handleLoginModalOpen = () => {
-    setShowLoginModal(true); 
+    setShowLoginModal(true);
     setCartModal(false);
-  }
+  };
+
   const handleLoginModalClose = () => setShowLoginModal(false);
 
-  const handleCloseCartModal = () => {
-    setCartModal(false);
-  };
-
-  const handleAddToCart = async () => {
-    if (user && Cookies.get("token")) {
-      try {
-        const user_detail = await axios.get(
-          `${BACKEND_HOST}/api/users/${user.id}?populate[cart]=*`
-        );
-        const cartid = user_detail.data.cart.id;
-        const cart_items = await axios.get(
-          `${BACKEND_HOST}/api/carts/${cartid}?populate[cart_items][populate][product]=*`
-        );
-        const cart_items_data = cart_items.data.data.attributes.cart_items.data;
-        console.log(cart_items_data);
-        const added_cart_item_data = await axios.post(
-          `${BACKEND_HOST}/api/cart-items`,
-          {
-            data: {
-              Number: quantity,
-              product: product.id,
-            },
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${Cookies.get("token")}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const added_item_id = added_cart_item_data.data.data.id;
-        const added_item = await axios.get(
-          `${BACKEND_HOST}/api/cart-items/${added_item_id}?populate=*`
-        );
-        const added_data = added_item.data.data;
-        console.log("add item successfully:", added_data);
-
-        const updated_cart_items_list = [...cart_items_data, added_data];
-        console.log(updated_cart_items_list);
-        const updated_cart = await axios.put(
-          `${BACKEND_HOST}/api/carts/${cartid}`,
-          {
-            data: {
-              cart_items: updated_cart_items_list,
-            },
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${Cookies.get("token")}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        console.log("update item successfully:", updated_cart.data);
-      } catch (error) {
-        console.error("fail to add to cart:", error);
-      }
-    } else {
-      setCartModal(true);
-    }
-  };
+  const handleCloseCartModal = () => setCartModal(false);
 
   const handleDecrement = () => {
     if (quantity > 1) {
@@ -115,64 +56,94 @@ const ProductDetail = () => {
     }
   };
 
+  const handleAddToCart = async () => {
+    if (user && Cookies.get("token")) {
+      try {
+        const user_detail = await axios.get(`${BACKEND_HOST}/api/users/${user.id}?populate[cart]=*`);
+        const cartid = user_detail.data.cart.id;
+        const cart_items = await axios.get(`${BACKEND_HOST}/api/carts/${cartid}?populate[cart_items][populate][product]=*`);
+        const cart_items_data = cart_items.data.data.attributes.cart_items.data;
+
+        const existingItem = cart_items_data.find(item => item.attributes.product.data.id === product.id);
+
+        if (existingItem) {
+          await axios.put(
+            `${BACKEND_HOST}/api/cart-items/${existingItem.id}`,
+            { data: { Number: existingItem.attributes.Number + quantity } },
+            { headers: { Authorization: `Bearer ${Cookies.get("token")}`, "Content-Type": "application/json" } }
+          );
+        } else {
+          await axios.post(
+            `${BACKEND_HOST}/api/cart-items`,
+            { data: { Number: quantity, product: product.id } },
+            { headers: { Authorization: `Bearer ${Cookies.get("token")}`, "Content-Type": "application/json" } }
+          );
+        }
+
+        console.log("Item added to cart successfully.");
+      } catch (error) {
+        console.error("Failed to add to cart:", error);
+      }
+    } else {
+      setCartModal(true);
+    }
+  };
+
   const handlePurchase = () => {
     setShowModal(true);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const handleCloseModal = () => setShowModal(false);
+
+  const getLocalizedAttribute = (attr_en, attr_zh) => {
+    return i18n.language === "zh" ? attr_zh : attr_en;
   };
 
   useEffect(() => {
-    const path = location.pathname.replace('/product/', '')
+    const path = location.pathname.replace('/product/', '');
     axios
-      .get(`${BACKEND_HOST}/api/products`,{
-            params: {
-              'filters[url]': path,
-              'populate': 'ProductImage'
-            }
-          })
+      .get(`${BACKEND_HOST}/api/products`, {
+        params: {
+          'filters[url]': path,
+          'populate': 'ProductImage',
+        },
+      })
       .then(response => {
-        if (response.data && response.data.data) {
-          setProduct(response.data.data);
+        if (response.data && response.data.data && response.data.data.length > 0) {
+          setProduct(response.data.data[0]);
         } else {
-          setError("No data found");
+          setError(t("noProductFound"));
         }
       })
       .catch(error => {
         console.error("Error fetching data: ", error);
-        setError("Error fetching data");
+        setError(t("errorFetchingProductData"));
       });
-  }, []);
+  }, [location.pathname, t]);
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <Container className="error-container">
+        <h4>{t("errorLoadingProduct")}</h4>
+        <p>{error}</p>
+      </Container>
+    );
   }
 
-  if (!product) {
-    return <div>{t("loading")}</div>;
+  if (!product || !product.attributes) {
+    return (
+      <div className="loading-container">
+        <Spinner animation="border" role="status">
+          <span className="sr-only">{t("loading")}</span>
+        </Spinner>
+      </div>
+    );
   }
 
-  const {Price, ProductImage } = product[0].attributes;
-  const language = i18n.language;
-  
-  const Name =
-    language === "zh"
-      ? product[0].attributes.Name_zh
-      : product[0].attributes.Name_en;
-
-  const Description =
-    language === "zh"
-      ? product[0].attributes.Description_zh
-      : product[0].attributes.Description_en;
-
-  const ShortDescription =
-    language === "zh"
-      ? product[0].attributes.Short_zh
-      : product[0].attributes.Short_en;
-
-  const available = product[0].attributes.Available
-  const sponsor = product[0].attributes.Sponsor
+  const { Price, ProductImage, Available, Sponsor } = product.attributes;
+  const Name = getLocalizedAttribute(product.attributes.Name_en, product.attributes.Name_zh);
+  const Description = getLocalizedAttribute(product.attributes.Description_en, product.attributes.Description_zh);
+  const ShortDescription = getLocalizedAttribute(product.attributes.Short_en, product.attributes.Short_zh);
 
   return (
     <div>
@@ -196,59 +167,37 @@ const ProductDetail = () => {
                   <h1>{Name}</h1>
                 </Row>
                 <Row className='product-short-description'>
-                  <div>
-                    {ShortDescription ? (
-                      <p>{ShortDescription}</p>
-                    ) : (
-                      t("noDescription")
-                    )}
-                  </div>
+                  <div>{ShortDescription ? <p>{ShortDescription}</p> : t("noDescription")}</div>
                 </Row>
                 <Row className='product-price-quantity'>
                   <Col>
                     <h4>${Price}</h4>
                   </Col>
-                  {available && (<Col>
-                    <Form.Group className='price-control'>
-                      <InputGroup className='d-flex justify-content-center align-items-center'>
-                        <Button
-                          variant='outline-secondary'
-                          onClick={handleDecrement}
-                        >
-                          -
-                        </Button>
-                        <InputGroup.Text readOnly>{quantity}</InputGroup.Text>
-                        <Button
-                          variant='outline-secondary'
-                          onClick={handleIncrement}
-                        >
-                          +
-                        </Button>
-                      </InputGroup>
-                    </Form.Group>
-                  </Col>)}
+                  {Available && (
+                    <Col>
+                      <Form.Group className='price-control'>
+                        <InputGroup className='d-flex justify-content-center align-items-center'>
+                          <Button variant='outline-secondary' onClick={handleDecrement}>-</Button>
+                          <InputGroup.Text readOnly>{quantity}</InputGroup.Text>
+                          <Button variant='outline-secondary' onClick={handleIncrement}>+</Button>
+                        </InputGroup>
+                      </Form.Group>
+                    </Col>
+                  )}
                 </Row>
                 <Row>
-                  {(Price !== 0 || 1) && available ? (
-                      <>
-                        <Col>
-                          <Button className='add-to-cart' onClick={handlePurchase}>
-                            {t("enquireNow")}
-                          </Button>
-                        </Col>
-
-                        <Col>
-                          <Button className='add-to-cart' onClick={handleAddToCart}>
-                            {t("addToCart")}
-                          </Button>
-                        </Col>
-                      </>     
-                    ) : (
-                      <Button className='add-to-cart' onClick={handlePurchase}>
-                        {t("enquireNow")}
-                      </Button>
-                    )
-                  }
+                  {(Price !== 0 || 1) && Available ? (
+                    <>
+                      <Col>
+                        <Button className='add-to-cart' onClick={handlePurchase}>{t("enquireNow")}</Button>
+                      </Col>
+                      <Col>
+                        <Button className='add-to-cart' onClick={handleAddToCart}>{t("addToCart")}</Button>
+                      </Col>
+                    </>
+                  ) : (
+                    <Button className='add-to-cart' onClick={handlePurchase}>{t("enquireNow")}</Button>
+                  )}
                 </Row>
               </Container>
             </Col>
@@ -259,39 +208,31 @@ const ProductDetail = () => {
             <Modal.Title>{Name}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          {sponsor ?(
+            {Sponsor ? (
               <div>
                 <Row>
-                  <h5>Product Website</h5>
-                  <Link to={`/sponsor/${product[0].attributes.url}`}>www.do360.com/sponsor/{product[0].attributes.url}</Link>
+                  <h5>{t("productWebsite")}</h5>
+                  <Link to={`/sponsor/${product.attributes.url}`}>www.do360.com/sponsor/{product.attributes.url}</Link>
                 </Row>
               </div>
             ) : (
               <div>
-                <Row>
-                  <p>Please scan the QR code and directly contact with the Kol</p>
-                </Row>
-
+                <Row><p>{t("contactKol")}</p></Row>
                 <Row className='purchase-modal-background'>
                   <Image src='/QR_JohnDu.png' alt='Logo' fluid />
                 </Row>
               </div>
-            )
-          }
+            )}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant='secondary' onClick={handleCloseModal}>
-              {t("close")}
-            </Button>
+            <Button variant='secondary' onClick={handleCloseModal}>{t("close")}</Button>
           </Modal.Footer>
         </Modal>
 
         <Modal show={cartModal} onHide={handleCloseCartModal}>
           <Modal.Header closeButton></Modal.Header>
           <Modal.Body>
-            <Row>
-              <p>{t("loginAlert")}</p>
-            </Row>
+            <Row><p>{t("loginAlert")}</p></Row>
           </Modal.Body>
           <Modal.Footer>
             <Button variant='secondary' onClick={handleLoginModalOpen}>{t("logIn")}</Button>
@@ -311,7 +252,7 @@ const ProductDetail = () => {
           <Row>
             <div className="markdown-content">
               {Description ? (
-                <ReactMarkdown>{Description}</ReactMarkdown>
+                <ReactMarkdown rehypePlugins={[rehypeRaw]}>{Description}</ReactMarkdown>
               ) : (
                 t("noDescription")
               )}
