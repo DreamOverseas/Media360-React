@@ -12,29 +12,32 @@ const API_KEY_MI = "774cd7539026322d69c227b2ffec7810a8457c25b94357a655a6b911ad0f
 // Load Backend Host for API calls
 const EMAIL_NOTIFY = process.env.REACT_APP_MISS_NOTIFICATION;
 
+const initialFormData = {
+  Name_zh: '',
+  Name_en: '',
+  OccupationNow: '',
+  OccupationHoped: '',
+  CompanyOrSchool: '',
+  Education: '',
+  MajorStudied: '',
+  Age: '',
+  Height: '',
+  Weight: '',
+  Talent: '',
+  Nationality: '',
+  IDType: '',
+  IDNumber: '',
+  Phone: '',
+  WechatID: '',
+  Email: '',
+  Company: '',
+  SocialMediaAccounts: [],
+  Gallery: []
+};
+
+
 const RegisterMiss = () => {
-  const [formData, setFormData] = useState({
-    Name_zh: '',
-    Name_en: '',
-    OccupationNow: '',
-    OccupationHoped: '',
-    CompanyOrSchool: '',
-    Education: '',
-    MajorStudied: '',
-    Age: '',
-    Height: '',
-    Weight: '',
-    Talent: '',
-    Nationality: '',
-    IDType: '',
-    IDNumber: '',
-    Phone: '',
-    WechatID: '',
-    Email: '',
-    Company: '',
-    SocialMediaAccounts: [],
-    Gallery: []
-  });
+  const [formData, setFormData] = useState(initialFormData);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -93,6 +96,25 @@ const RegisterMiss = () => {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  /**
+   * Function that handles email notification
+   */
+  const notify_by_email = async () => {
+    setErrors('');
+    const name = formData.Name_zh;
+    const email = formData.Email;
+    try {
+      await axios.post(EMAIL_NOTIFY, {
+        name,
+        email
+      });
+      setErrors('');
+    } catch (error) {
+      setErrors(error);
+      alert(`${error}, Email not sent... But you are recorded if no other errors occured!`);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -184,9 +206,9 @@ const RegisterMiss = () => {
 
       const result = await response.json();
       if (response.ok) {
-        alert(t("miss_reg_success"));
         notify_by_email();
-        window.location.reload();
+        alert(t("miss_reg_success"));
+        setFormData(initialFormData); // Clear out on submit
       } else {
         alert(t("miss_reg_fail"));
         console.log(result);
@@ -203,23 +225,6 @@ const RegisterMiss = () => {
   const changeLanguage = lng => {
     i18n.changeLanguage(lng);
     Cookies.set("i18next", lng, { expires: 7 });
-  };
-
-  /**
-   * Function that handles email notification
-   */
-  const notify_by_email = async () => {
-    const name = formData.Name_zh;
-    const email = formData.Email;
-    try {
-      await axios.post(EMAIL_NOTIFY, {
-        name,
-        email
-      });
-      setErrors('');
-    } catch (error) {
-      setErrors(error);
-    }
   };
 
   return (
