@@ -12,30 +12,32 @@ const API_KEY_MI = "774cd7539026322d69c227b2ffec7810a8457c25b94357a655a6b911ad0f
 // Load Backend Host for API calls
 const EMAIL_NOTIFY = process.env.REACT_APP_MISS_NOTIFICATION;
 
+const initialFormData = {
+  Name_zh: '',
+  Name_en: '',
+  OccupationNow: '',
+  OccupationHoped: '',
+  CompanyOrSchool: '',
+  Education: '',
+  MajorStudied: '',
+  Age: '',
+  Height: '',
+  Weight: '',
+  Talent: '',
+  Nationality: '',
+  IDType: '',
+  IDNumber: '',
+  Phone: '',
+  WechatID: '',
+  Email: '',
+  Company: '',
+  SocialMediaAccounts: [],
+  Gallery: []
+};
+
 
 const RegisterMiss = () => {
-  const [formData, setFormData] = useState({
-    Name_zh: '',
-    Name_en: '',
-    OccupationNow: '',
-    OccupationHoped: '',
-    CompanyOrSchool: '',
-    Education: '',
-    MajorStudied: '',
-    Age: '',
-    Height: '',
-    Weight: '',
-    Talent: '',
-    Nationality: '',
-    IDType: '',
-    IDNumber: '',
-    Phone: '',
-    WechatID: '',
-    Email: '',
-    Company: '',
-    SocialMediaAccounts: [],
-    Gallery: []
-  });
+  const [formData, setFormData] = useState(initialFormData);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -206,7 +208,7 @@ const RegisterMiss = () => {
       if (response.ok) {
         notify_by_email();
         alert(t("miss_reg_success"));
-        window.location.reload();
+        setFormData(initialFormData); // Clear out on submit
       } else {
         alert(t("miss_reg_fail"));
         console.log(result);
