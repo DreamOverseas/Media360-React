@@ -2,7 +2,8 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 15px; /* Add some padding for smaller screens */
+  padding: 0 15px;
+  /* Add some padding for smaller screens */
 }
 
 /* Homepage Background */
@@ -12,7 +13,8 @@
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
-  padding: 0; /* Removed padding for too much "visual breathing room" unless you like Miss Nagatoro */
+  padding: 0;
+  /* Removed padding for too much "visual breathing room" unless you like Miss Nagatoro */
 }
 
 /* Section Title */
@@ -31,7 +33,8 @@
 }
 
 .events-section {
-  margin-bottom: 0; /* Removed margin for the undermost section */
+  margin-bottom: 0;
+  /* Removed margin for the undermost section */
 }
 
 /* Carousel Section */
@@ -44,16 +47,20 @@
 .ads-carousel img {
   object-fit: cover;
   width: 100%;
-  border-radius: 8px; /* Rounded corners for ad images */
+  border-radius: 8px;
+  /* Rounded corners for ad images */
 }
 
 .ads-carousel .carousel-caption {
   bottom: 10px;
   padding: 10px;
   border-radius: 4px;
-  background: none; /* Remove background color */
-  color: #fff; /* Ensure the text color is visible on the ad image */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Add a slight shadow to ensure text readability */
+  background: none;
+  /* Remove background color */
+  color: #fff;
+  /* Ensure the text color is visible on the ad image */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  /* Add a slight shadow to ensure text readability */
 }
 
 /* KOL Section */
@@ -113,7 +120,8 @@
   max-width: 100%;
   height: 180px;
   object-fit: cover;
-  border-radius: 12px; /* Add rounded corners */
+  border-radius: 12px;
+  /* Add rounded corners */
 }
 
 .product-card .card-body,
@@ -131,7 +139,8 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  -webkit-line-clamp: 3; /* Limit title to 3 lines */
+  -webkit-line-clamp: 3;
+  /* Limit title to 3 lines */
 }
 
 .product-card .card-text,
@@ -142,7 +151,8 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  -webkit-line-clamp: 3; /* Limit description to 3 lines */
+  -webkit-line-clamp: 3;
+  /* Limit description to 3 lines */
 }
 
 .product-price {
@@ -163,16 +173,19 @@
 
 /* Tablet Screens (768px - 1024px) */
 @media (min-width: 768px) and (max-width: 1024px) {
+
   .product-card .card-title,
   .event-card .card-title {
     font-size: 0.85rem;
-    -webkit-line-clamp: 2; /* Limit title to 2 lines */
+    -webkit-line-clamp: 2;
+    /* Limit title to 2 lines */
   }
 
   .product-card .card-text,
   .event-card .card-text {
     font-size: 0.75rem;
-    -webkit-line-clamp: 2; /* Limit title to 2 lines */
+    -webkit-line-clamp: 2;
+    /* Limit title to 2 lines */
   }
 }
 
@@ -183,7 +196,8 @@
   }
 
   .section-title {
-    font-size: 1.8rem; /* Smaller font for mobile */
+    font-size: 1.8rem;
+    /* Smaller font for mobile */
   }
 
   .kol-col {
@@ -204,12 +218,14 @@
   .product-card .card-title,
   .event-card .card-title {
     font-size: 0.85rem;
-    -webkit-line-clamp: 2; /* Limit title to 2 lines */
+    -webkit-line-clamp: 2;
+    /* Limit title to 2 lines */
   }
 
   .product-card .card-text,
   .event-card .card-text {
     font-size: 0.75rem;
-    -webkit-line-clamp: 2; /* Limit title to 2 lines */
+    -webkit-line-clamp: 2;
+    /* Limit title to 2 lines */
   }
 }
