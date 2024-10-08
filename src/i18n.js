@@ -88,6 +88,7 @@ const resources = {
       recruit_intro: "Job Introduction: ",
       recruit_company: "Company： ",
       price_tbd: "Price upon request",
+      brands: "Brands",
 
       /* Miss Registration form components */
       "miss_reg_contest_title": "The 73rd Miss Universe China Competition Australia Division - Melbourne 2024",
@@ -204,6 +205,7 @@ const resources = {
       recruit_intro: "职位介绍：",
       recruit_company: "公司主体：",
       price_tbd: "价格面议",
+      brands: "品牌",
 
       /* Miss Registration form components */
       "miss_reg_contest_title": "第73届环球小姐中国区大赛澳洲赛区-墨尔本2024",

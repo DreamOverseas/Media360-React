@@ -3,9 +3,8 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
-import "../css/Sponsor.css";
 
-const Sponsor = () => {
+const BrandPage = () => {
     const [sponsors, setSponsors] = useState([]);
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -34,8 +33,6 @@ const Sponsor = () => {
         </h1>
       </section>
         <Container>
-  
-
             <Row className="justify-content-center align-items-center">
                 {sponsors.map((sponsor) => (
                     <Col key={sponsor.id} xs={12} sm={6} md={4} lg={3} className="d-flex justify-content-center my-3">
@@ -61,4 +58,4 @@ const Sponsor = () => {
     );
 };
 
-export default Sponsor;
+export default BrandPage;

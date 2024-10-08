@@ -19,7 +19,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import ShoppingCart from "./pages/ShoppingCart";
 import RegisterMiss from "./pages/RegisterMiss";
-import Sponsor from "./pages/Sponsor";
+import BrandPage from "./pages/BrandPage";
 import Greeness from "./pages/Greeness";
 
 function App() {
@@ -71,7 +71,7 @@ function App() {
           <Route path='/cart' element={<ShoppingCart />} />
           <Route path='/cart' element={<ShoppingCart />} />
           <Route path='/miss-register' element={<RegisterMiss />} />
-          <Route path='/sponsor' element={<Sponsor />} />
+          <Route path='/brands' element={<BrandPage />} />
           <Route path='/sponsor/greeness' element={<Greeness />} />
         </Routes>
       </div>
