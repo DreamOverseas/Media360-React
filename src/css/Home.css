@@ -8,6 +8,7 @@
 
 /* Homepage Background */
 .homepage-background {
+  align-items: center;
   background-image: url(/public/homepage/bg_clear.png);
   background-size: cover;
   background-position: center;
@@ -26,22 +27,29 @@
   color: #333;
 }
 
+.ad_row-section,
+.kol-section {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 /* Section Spacing */
-.kol-section,
 .products-section {
   margin-bottom: 4rem;
 }
 
 .events-section {
   margin-bottom: 0;
-  /* Removed margin for the undermost section */
+  /* Removed high margin for the undermost section */
 }
 
 /* Carousel Section */
 .ads-section {
   width: 100%;
   padding-top: 1rem;
-  margin-bottom: 4rem;
+  padding-left: 0;
+  margin-bottom: 1rem;
 }
 
 .ads-carousel img {
@@ -52,6 +60,7 @@
 }
 
 .ads-carousel .carousel-caption {
+  display: flex;
   bottom: 10px;
   padding: 10px;
   border-radius: 4px;
@@ -107,12 +116,16 @@
   background-color: transparent;
   box-shadow: none;
   max-width: 250px;
-  height: 300px;
+  height: 250px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 4%;
   transition: transform 0.5s ease;
+}
+
+.product-card {
+  height: 280px !important;
 }
 
 .product-card img,
@@ -169,6 +182,54 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+.btn-more {
+  position: relative;
+  float: right;
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: #000;
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.btn-more:hover {
+  transform: translateX(10px); /* Moves 10px to the right on hover */
+}
+
+.btn-more:focus {
+  outline: none;
+}
+
+.btn-navigation {
+  background-color: rgba(128, 128, 128, 0.6);
+  color: white; 
+  border: 2px solid black;
+  width: 100%;
+  height: 50px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-navigation:hover {
+  background-color: transparent;
+  color: black; 
+}
+
+.btn-navigation:focus {
+  outline: none;
+}
+
+.home-news-ticker {
+  height: 28vw;
+  margin-top: 30px;
+  padding-right: 12px;
+  padding-left: 0;
+}
+
 /* Responsive Design */
 
 /* Tablet Screens (768px - 1024px) */
@@ -191,9 +252,6 @@
 
 /* Mobile Screens (Max Width: 768px) */
 @media (max-width: 768px) {
-  .ads-section {
-    height: 200px;
-  }
 
   .section-title {
     font-size: 1.8rem;
@@ -227,5 +285,10 @@
     font-size: 0.75rem;
     -webkit-line-clamp: 2;
     /* Limit title to 2 lines */
+  }
+
+  .home-news-ticker {
+    padding: 0;
+    margin: 0 12px 25px 12px;
   }
 }
