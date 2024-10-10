@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import "../css/Advertisement.css";
+import { useTranslation } from "react-i18next";
 
 const NewsTicker = ({ ads }) => {
     const tickerRef = useRef(null);
     const newsContainerRef = useRef(null);
+    const { t } = useTranslation();
     const [duplicatedItems, setDuplicatedItems] = useState([]);
     let scrollInterval; // Define scrollInterval here so it's accessible
 
@@ -66,7 +68,10 @@ const NewsTicker = ({ ads }) => {
 
     return (
         <div className="news-ticker-wrapper">
-            <h2 className="news-title">Latest News</h2>
+            <h2 className="news-title">
+                <i class="bi bi-newspaper"></i>
+                {t("news_title")}
+            </h2>
             <div className="news-ticker-container" ref={tickerRef}>
                 <div className="news-ticker" ref={newsContainerRef}>
                     {duplicatedItems.concat(duplicatedItems).map((item, index) => (
