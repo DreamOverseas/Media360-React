@@ -158,6 +158,9 @@ const HomePage = () => {
               <p>{t("noProducts")}</p>
             )
           }
+          <Link to="/productpage/">
+            <button class="btn-more"><b>{t("btn_more")}</b></button>
+          </Link>
         </Row>
       </Container>
 
