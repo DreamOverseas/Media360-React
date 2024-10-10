@@ -6,12 +6,14 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const Advertisement = ({ ads }) => {
 
-  // Sort Ads by its order
-  ads.sort((a, b) => a.attributes.Order - b.attributes.Order);
+  // Only displays ads with AdImage
+  const filteredAds = ads.filter(adItem => 
+    adItem.attributes && adItem.attributes.Adimage && adItem.attributes.Adimage.data !== null
+  );
 
   return (
     <Carousel className='ads-carousel' interval={3000}>
-      {ads.map((advertisement, index) => (
+      {filteredAds.map((advertisement, index) => (
         <Carousel.Item key={index}>
           <a
             href={advertisement.attributes.link || "#"}

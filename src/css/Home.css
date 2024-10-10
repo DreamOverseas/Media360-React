@@ -226,6 +226,8 @@
 .home-news-ticker {
   height: 28vw;
   margin-top: 30px;
+  padding-right: 12px;
+  padding-left: 0;
 }
 
 /* Responsive Design */
@@ -287,6 +289,6 @@
 
   .home-news-ticker {
     padding: 0;
-    margin: 0 10px 25px 10px;
+    margin: 0 12px 25px 12px;
   }
 }

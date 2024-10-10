@@ -22,7 +22,7 @@ const HomePage = () => {
       .get(`${BACKEND_HOST}/api/advertisements?populate=*`)
       .then(response => {
         if (response.data && response.data.data) {
-          setAds(response.data.data);
+          setAds(response.data.data.sort((a, b) => a.attributes.Order - b.attributes.Order));
         }
       })
       .catch(error => {
@@ -107,7 +107,7 @@ const HomePage = () => {
                 <p>{t("noKols")}</p>
               )} */}
           
-          <NewsTicker />
+          <NewsTicker ads={ads} />
 
         </Col>
       </Row>

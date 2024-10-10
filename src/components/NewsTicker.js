@@ -1,18 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import "../css/Advertisement.css";
 
-const newsItems = [
-  'Breaking: Stock Market Hits Record High',
-  'Weather Update: Heavy Rain Expected Tomorrow',
-  'Tech News: New AI Breakthrough Announced',
-  'Sports: Local Team Wins Championship',
-  'World News: New International Trade Deal Signed',
-];
-
-const NewsTicker = () => {
+const NewsTicker = ({ ads }) => {
     const tickerRef = useRef(null);
     const newsContainerRef = useRef(null);
     const [duplicatedItems, setDuplicatedItems] = useState([]);
+    let scrollInterval; // Define scrollInterval here so it's accessible
+
+    // Only displays ads with News Text
+    const filteredNews = ads.filter(newsItem => newsItem.attributes.NewsText !== null);
 
     useEffect(() => {
         const ticker = tickerRef.current;
@@ -29,30 +25,43 @@ const NewsTicker = () => {
         const maxDuplicates = 20; // Safety limit (Meh if infinitely looped)
         while (newsContentHeight < tickerHeight * 2 && duplicateTimes < maxDuplicates) {
             duplicateTimes++;
-            setDuplicatedItems((prev) => [...prev, ...newsItems]);
+            setDuplicatedItems((prev) => [...prev, ...filteredNews]);
             newsContentHeight = newsContainer.scrollHeight;
         }
 
-        let scrollInterval;
+        // Function to start scrolling
         const startScroll = () => {
+            // Clear any existing intervals before starting a new one
+            if (scrollInterval) {
+                clearInterval(scrollInterval);
+            }
             scrollInterval = setInterval(() => {
                 ticker.scrollTop += 1;
 
                 if (ticker.scrollTop >= newsContainer.scrollHeight / 2) {
                     ticker.scrollTop = 0;
                 }
-            }, 50); // Adjust scrolling speed here~ (The larger the slower)
+            }, 50); // Adjust scrolling speed here (The larger the slower)
         };
 
-        startScroll();
+        startScroll(); // Start scrolling initially
 
         // Pause scrolling on hover
-        ticker.addEventListener('mouseover', () => clearInterval(scrollInterval));
-        ticker.addEventListener('mouseout', startScroll);
+        const pauseScroll = () => clearInterval(scrollInterval);
+
+        // Resume scrolling when mouse leaves
+        const resumeScroll = () => startScroll();
+
+        ticker.addEventListener('mouseover', pauseScroll);
+        ticker.addEventListener('mouseout', resumeScroll);
 
         // Cleanup on component unmount
-        return () => clearInterval(scrollInterval);
-    }, [duplicatedItems]);
+        return () => {
+            clearInterval(scrollInterval); // Clear interval on component unmount
+            ticker.removeEventListener('mouseover', pauseScroll);
+            ticker.removeEventListener('mouseout', resumeScroll);
+        };
+    }, [duplicatedItems, filteredNews]);
 
     return (
         <div className="news-ticker-wrapper">
@@ -61,7 +70,7 @@ const NewsTicker = () => {
                 <div className="news-ticker" ref={newsContainerRef}>
                     {duplicatedItems.concat(duplicatedItems).map((item, index) => (
                         <div className="news-item" key={index}>
-                            {item}
+                            {item.attributes.NewsText}
                         </div>
                     ))}
                 </div>
