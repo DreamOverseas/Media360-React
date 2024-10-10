@@ -110,6 +110,7 @@
   font-size: 18px;
   color: #333;
   border-bottom: 1px solid #ccc;
+  text-decoration: none;
 }
 
 .news-item:last-child {

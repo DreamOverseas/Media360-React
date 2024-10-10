@@ -35,6 +35,7 @@ const NewsTicker = ({ ads }) => {
             if (scrollInterval) {
                 clearInterval(scrollInterval);
             }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
             scrollInterval = setInterval(() => {
                 ticker.scrollTop += 1;
 
@@ -69,9 +70,15 @@ const NewsTicker = ({ ads }) => {
             <div className="news-ticker-container" ref={tickerRef}>
                 <div className="news-ticker" ref={newsContainerRef}>
                     {duplicatedItems.concat(duplicatedItems).map((item, index) => (
-                        <div className="news-item" key={index}>
+                        <a
+                            href={item.attributes.link || '#'}  // fallback if link is null or undefined
+                            className="news-item"
+                            key={index}
+                            target="_blank"
+                            rel="noopener noreferrer"  >
                             {item.attributes.NewsText}
-                        </div>
+                        </a>
+
                     ))}
                 </div>
             </div>
