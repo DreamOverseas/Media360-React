@@ -91,6 +91,7 @@ const resources = {
       brands: "Brands",
       recommended_product: "Trending Products",
       btn_more: "More >",
+      highlights: "Highlights",
 
       /* Miss Registration form components */
       "miss_reg_contest_title": "The 73rd Miss Universe China Competition Australia Division - Melbourne 2024",
@@ -210,6 +211,7 @@ const resources = {
       brands: "品牌",
       recommended_product: "推荐产品",
       btn_more: "更多 >",
+      highlights: "高光时刻",
 
       /* Miss Registration form components */
       "miss_reg_contest_title": "第73届环球小姐中国区大赛澳洲赛区-墨尔本2024",

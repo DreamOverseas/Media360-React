@@ -27,7 +27,7 @@
   color: #333;
 }
 
-.ad_kol-section,
+.ad_row-section,
 .kol-section {
   justify-content: center;
   align-items: center;
@@ -41,14 +41,15 @@
 
 .events-section {
   margin-bottom: 0;
-  /* Removed margin for the undermost section */
+  /* Removed high margin for the undermost section */
 }
 
 /* Carousel Section */
 .ads-section {
   width: 100%;
   padding-top: 1rem;
-  margin-bottom: 4rem;
+  padding-left: 0;
+  margin-bottom: 1rem;
 }
 
 .ads-carousel img {
@@ -59,6 +60,7 @@
 }
 
 .ads-carousel .carousel-caption {
+  display: flex;
   bottom: 10px;
   padding: 10px;
   border-radius: 4px;
@@ -202,6 +204,30 @@
   outline: none;
 }
 
+.btn-navigation {
+  background-color: rgba(128, 128, 128, 0.6);
+  color: white; 
+  border: 2px solid black;
+  width: 100%;
+  height: 50px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-navigation:hover {
+  background-color: transparent;
+  color: black; 
+}
+
+.btn-navigation:focus {
+  outline: none;
+}
+
+.home-news-ticker {
+  height: 28vw;
+  margin-top: 30px;
+}
+
 /* Responsive Design */
 
 /* Tablet Screens (768px - 1024px) */
@@ -257,5 +283,10 @@
     font-size: 0.75rem;
     -webkit-line-clamp: 2;
     /* Limit title to 2 lines */
+  }
+
+  .home-news-ticker {
+    padding: 0;
+    margin: 0 10px 25px 10px;
   }
 }

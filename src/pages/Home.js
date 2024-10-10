@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Image, Row } from "react-bootstrap";
+import { Card, Col, Container, Button, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Advertisement from "../components/Advertisement";
+import NewsTicker from "../components/NewsTicker";
 import "../css/Home.css";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
@@ -74,19 +75,16 @@ const HomePage = () => {
 
   return (
     <div className="homepage-background">
-      <Row className='ad_kol-section'>
-        <Col md={5} className='d-flex'>
+      <Container className='ad_row-section'>
+      <Row>
+        <Col className='d-flex'>
           {/* Carousel Section */}
           <Container className="ads-section">
             <Advertisement ads={ads} />
           </Container>
         </Col>
-        <Col md={3} className='d-flex'>
-          {/* KOL Section */}
-          <Container className='kol-section'>
-            <h2 className='section-title'>{t("kol")}</h2>
-            <Row>
-              {kols.length > 0 ? (
+        <Col className='home-news-ticker'>
+              {/* {kols.length > 0 ? (
                 kols.map(kol => (
                   <Col
                     xs={6}
@@ -107,11 +105,13 @@ const HomePage = () => {
                 ))
               ) : (
                 <p>{t("noKols")}</p>
-              )}
-            </Row>
-          </Container>
+              )} */}
+          
+          <NewsTicker />
+
         </Col>
       </Row>
+      </Container>
 
       {/* Products Section */}
       <Container className='products-section'>
