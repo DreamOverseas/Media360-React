@@ -4,7 +4,7 @@ import "../css/Advertisement.css";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
-const Advertisement = ({ ads }) => {
+const NewsSlider = ({ ads }) => {
 
   // Only displays ads with AdImage
   const filteredAds = ads.filter(adItem => 
@@ -43,4 +43,4 @@ const Advertisement = ({ ads }) => {
   );
 };
 
-export default Advertisement;
+export default NewsSlider;

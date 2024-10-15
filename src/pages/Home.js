@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import Advertisement from "../components/Advertisement";
+import NewsSlider from "../components/NewsSlider";
 import NewsTicker from "../components/NewsTicker";
 import "../css/Home.css";
 
@@ -80,7 +80,7 @@ const HomePage = () => {
         <Col className='d-flex'>
           {/* Carousel Section */}
           <Container className="ads-section">
-            <Advertisement ads={ads} />
+            <NewsSlider ads={ads} />
           </Container>
         </Col>
         <Col className='home-news-ticker'>
