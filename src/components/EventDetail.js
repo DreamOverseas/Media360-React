@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row, Image } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { useLocation } from "react-router-dom";
@@ -67,9 +67,9 @@ const EventDetail = () => {
     return endTime ? `${startTime} - ${endTime}` : startTime;
   };
 
-  // 使用防御性处理 event 数据，显示尽可能多的信息
+
   const eventAttributes = event[0]?.attributes || {};
-  const EventImage = eventAttributes.Image?.data?.attributes?.url || "https://placehold.co/1200x600"; // 默认图片
+  const EventImage = eventAttributes.Image?.data?.attributes?.url || "https://placehold.co/1200x600";
 
   const language = i18n.language;
   const Description = language === "zh" ? eventAttributes.Description_zh || "N/A" : eventAttributes.Description_en || "N/A";
@@ -79,12 +79,12 @@ const EventDetail = () => {
   const EventLocation = eventAttributes.Location || "N/A";
   const EventHost = eventAttributes.Host || "N/A";
 
-  // 时间判断逻辑：判断活动是否已结束
+
   const isEventEnded = () => {
     const currentTime = moment();
     const eventEndTime = eventAttributes.End_Date
       ? moment(eventAttributes.End_Date)
-      : moment(eventAttributes.Start_Date); // 如果没有 End_Date 则以 Start_Date 判断
+      : moment(eventAttributes.Start_Date);
     return currentTime.isAfter(eventEndTime);
   };
 
@@ -92,21 +92,21 @@ const EventDetail = () => {
     <div>
       {/* Event Banner Section */}
       <section className='event-detail-background-image-container'>
-        <div className='event-banner-wrapper'>
-          <img
+        <Container className='event-banner-wrapper'>
+          <Image
             src={`${BACKEND_HOST}${EventImage}`}
             alt='Event Banner'
             className='event-banner-image'
           />
-          <div className='banner-text'>
+          {/* <div className='banner-text'>
             <h1 className='event-title'>
               {language === "zh"
                 ? eventAttributes.Name_zh || "N/A"
                 : eventAttributes.Name_en || "N/A"}
             </h1>
             <h2 className='event-subtitle'>{t("The Lifetimes Tour")}</h2>
-          </div>
-        </div>
+          </div> */}
+        </Container>
       </section>
 
       <br />
@@ -126,24 +126,24 @@ const EventDetail = () => {
                 </Row>
 
                 <Row className='event-info'>
-                  <Col md={4}>
+                  <Row>
                     <p>
                       <FontAwesomeIcon icon={faClock} />{' '}
-                      <strong>{t("time")}:</strong> {EventTime}
+                      <strong>{t("time")}:</strong>&nbsp;{EventTime}
                     </p>
-                  </Col>
-                  <Col md={4}>
+                  </Row>
+                  <Row>
                     <p>
                       <FontAwesomeIcon icon={faMapMarkerAlt} />{' '}
-                      <strong>{t("location")}:</strong> {EventLocation}
+                      <strong>{t("location")}:</strong>&nbsp;{EventLocation}
                     </p>
-                  </Col>
-                  <Col md={4}>
+                  </Row>
+                  <Row>
                     <p>
                       <FontAwesomeIcon icon={faUserTie} />{' '}
-                      <strong>{t("host")}:</strong> {EventHost}
+                      <strong>{t("host")}:</strong>&nbsp;{EventHost}
                     </p>
-                  </Col>
+                  </Row>
                 </Row>
 
                 <Row>
@@ -184,7 +184,6 @@ const EventDetail = () => {
         </Container>
       </section>
 
-      {/* 悬浮窗：报名或已结束按钮 */}
       <div className="floating-register-btn">
         {isEventEnded() ? (
           <Button variant="secondary" disabled>{t("eventEnded")}</Button>
