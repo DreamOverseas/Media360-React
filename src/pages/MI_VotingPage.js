@@ -2,25 +2,43 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 
 const MIVoting = () => {
-    const [refreshInterval, setRefreshInterval] = useState(5000);
+    const [url, setUrl] = useState("https://www.missinternational.world/Index/votenow.html");
+    const [refreshInterval, setRefreshInterval] = useState(0);
     const [key, setKey] = useState(0);
+    const [refreshv, setRefreshv] = useState(0);
+    const [autoRefreshEnabled, setAutoRefreshEnabled] = useState(false);
 
     useEffect(() => {
+        if (!autoRefreshEnabled) return;
+
         const intervalId = setInterval(() => {
-            setKey(prevKey => prevKey + 1);
+            // setKey(prevKey => prevKey + 1);
+            setRefreshv(prevKey => prevKey + 1);
+            setUrl(`${url}?refresh=${key}`);
         }, refreshInterval);
 
         return () => clearInterval(intervalId);
-    }, [refreshInterval]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [refreshInterval, autoRefreshEnabled]);
 
     const handleRefreshIntervalChange = (event) => {
-        setRefreshInterval(Number(event.target.value));
+        const value = Number(event.target.value);
+        if (value === 0) {
+            setAutoRefreshEnabled(false);
+        } else {
+            setAutoRefreshEnabled(true);
+            setRefreshInterval(value);
+        }
+    };
+
+    const handleForceRefresh = () => {
+        setKey(prevKey => prevKey + 1);
     };
 
     return (
         <div style={styles.votingPage}>
             <iframe
-                src="https://www.missinternational.world/Index/votenow.html"
+                src={url}
                 title="Embedded Page"
                 key={key}
                 style={styles.miWebsite}
@@ -34,15 +52,19 @@ const MIVoting = () => {
                         value={refreshInterval}
                         onChange={handleRefreshIntervalChange}
                     >
-                        <option value={2000}>每2s</option>
+                        <option value={0}>手动刷新</option>
                         <option value={5000}>每5s</option>
                         <option value={10000}>每10s</option>
                         <option value={30000}>每30s</option>
                     </Form.Control>
                 </Form.Group>
-                {/* <Button onClick={}>
-                    现在刷新
-                </Button> */}
+                <Button 
+                    variant="primary" 
+                    style={styles.refreshButton} 
+                    onClick={handleForceRefresh}
+                >
+                    现在刷新！
+                </Button>
             </div>
         </div>
     );
@@ -76,6 +98,10 @@ const styles = {
         padding: '10px',
         borderRadius: '8px',
         boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.3)',
+    },
+    refreshButton: {
+        marginTop: '10px',
+        width: '90%',
     }
 };
 
