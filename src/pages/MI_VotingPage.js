@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 
 const MIVoting = () => {
     const url = "https://www.missinternational.world/Index/votenow.html";
@@ -8,6 +8,16 @@ const MIVoting = () => {
     const [autoRefreshEnabled, setAutoRefreshEnabled] = useState(false);
     const [isControlPanelVisible, setIsControlPanelVisible] = useState(true);
     const [hideTimeout, setHideTimeout] = useState(null);
+
+    // BETA Function: Test if user opened on WeChat
+    const [showModal, setShowModal] = useState(false);
+    const [secondModal, setSecondModal] = useState(false);
+    useEffect(() => {
+        const ua = navigator.userAgent.toLowerCase();
+        if (ua.includes('micromessenger')) {
+            setShowModal(true);
+        }
+    }, []);
 
     useEffect(() => {
         if (!autoRefreshEnabled) return;
@@ -85,6 +95,30 @@ const MIVoting = () => {
                     现在刷新！
                 </Button>
             </div>
+
+            {/* BETA: For WeChat browser FaNs */}
+            <Modal show={showModal} backdrop="static" keyboard={false} centered>
+                <Modal.Header>
+                    <Modal.Title>请使用浏览器打开</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    您正在使用微信内置浏览器打开此页面。请您点击右上角菜单并选择“在浏览器中打开”以获得完整的浏览体验。
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="alert" onClick={() => setSecondModal(true)}>
+                        不听不听，仍要进入
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={secondModal} keyboard={false} centered>
+                <Modal.Header>
+                    <Modal.Title>Nooooooope。</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                为什么一定要微信呢？相信我，它配不上您！请点击右上角菜单并选择“在浏览器中打开”。
+                </Modal.Body>
+            </Modal>
+
         </div>
     );
 };
