@@ -21,6 +21,7 @@ import ShoppingCart from "./pages/ShoppingCart";
 import RegisterMiss from "./pages/RegisterMiss";
 import BrandPage from "./pages/BrandPage";
 import Greeness from "./pages/Greeness";
+import MIVoting from "./pages/MI_VotingPage";
 
 function App() {
 
@@ -35,7 +36,9 @@ function App() {
       setHeader(<Header />);
       setFooter(<Footer />);
     }
-    if (location.pathname === "/miss-register" || location.pathname === "/sponsor/greeness") {
+    if (location.pathname === "/miss-register"        // Independent Pages without Header/Footer
+      || location.pathname === "/sponsor/greeness" 
+      || location.pathname === "/missinternational/vote") {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       document.body.style.marginTop = "0px";
       setFooter(<></>);
@@ -72,6 +75,7 @@ function App() {
           <Route path='/cart' element={<ShoppingCart />} />
           <Route path='/miss-register' element={<RegisterMiss />} />
           <Route path='/brands' element={<BrandPage />} />
+          <Route path='/missinternational/vote' element={<MIVoting />} />
           <Route path='/sponsor/greeness' element={<Greeness />} />
         </Routes>
       </div>
