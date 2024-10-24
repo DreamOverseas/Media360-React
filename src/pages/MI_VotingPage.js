@@ -2,23 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 
 const MIVoting = () => {
-    const [url, setUrl] = useState("https://www.missinternational.world/Index/votenow.html");
+    const url = "https://www.missinternational.world/Index/votenow.html";
     const [refreshInterval, setRefreshInterval] = useState(0);
     const [key, setKey] = useState(0);
-    const [refreshv, setRefreshv] = useState(0);
     const [autoRefreshEnabled, setAutoRefreshEnabled] = useState(false);
+    const [isControlPanelVisible, setIsControlPanelVisible] = useState(true);
+    const [hideTimeout, setHideTimeout] = useState(null);
 
     useEffect(() => {
         if (!autoRefreshEnabled) return;
 
         const intervalId = setInterval(() => {
-            // setKey(prevKey => prevKey + 1);
-            setRefreshv(prevKey => prevKey + 1);
-            setUrl(`${url}?refresh=${key}`);
+            setKey(prevKey => prevKey + 1);
         }, refreshInterval);
 
         return () => clearInterval(intervalId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [refreshInterval, autoRefreshEnabled]);
 
     const handleRefreshIntervalChange = (event) => {
@@ -27,14 +25,28 @@ const MIVoting = () => {
             setAutoRefreshEnabled(false);
         } else {
             setAutoRefreshEnabled(true);
-            setRefreshInterval(value);
         }
+        setRefreshInterval(value);
     };
 
     const handleForceRefresh = () => {
         setKey(prevKey => prevKey + 1);
     };
+    
+    const showControlPanel = () => {
+        setIsControlPanelVisible(true);
+        if (hideTimeout) {
+            clearTimeout(hideTimeout);
+            setHideTimeout(null);
+        }
+    };
 
+    const hideControlPanel = () => {
+        const timeout = setTimeout(() => {
+            setIsControlPanelVisible(false);
+        }, 2000);
+        setHideTimeout(timeout);
+    };
     return (
         <div style={styles.votingPage}>
             <iframe
@@ -44,7 +56,14 @@ const MIVoting = () => {
                 style={styles.miWebsite}
             ></iframe>
 
-            <div style={styles.refreshControlPanel}>
+            <div style={{
+                    ...styles.refreshControlPanel, 
+                    opacity: isControlPanelVisible ? 1 : 0,
+                    transition: 'opacity 0.5s',
+                }}
+                onMouseEnter={showControlPanel}
+                onMouseLeave={hideControlPanel}
+            >
                 <Form.Group controlId="refreshSpeed">
                     <Form.Label>刷新间隔：</Form.Label>
                     <Form.Control
