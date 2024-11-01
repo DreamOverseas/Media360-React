@@ -11,7 +11,7 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 const KolPage = () => {
   const [kols, setKols] = useState([]);
   const [error, setError] = useState(null);
-  const { t, i18n } = useTranslation();
+  const { t} = useTranslation();
 
   useEffect(() => {
     console.log(`${BACKEND_HOST}/api/kols?populate[0]=KolImage`);
@@ -53,7 +53,7 @@ const KolPage = () => {
               >
                 <Link to={`/kol/${kol.id}`} className="card-link-KolPage">
                   <Card className='kol-card'>
-                    {kol.attributes.KolImage && kol.attributes.KolImage.data ? (<Card.Img src={`${BACKEND_HOST}${kol.attributes.KolImage.data.attributes.url}`} alt={kol.attributes.Name} />) : 
+                    {kol.KolImage && kol.KolImage? (<Card.Img src={`${BACKEND_HOST}${kol.KolImage.url}`} alt={kol.Name} />) : 
                       (<Card.Img variant='top' src='https://placehold.co/250x350' fluid alt='Placeholder'/>)}
                       <Card.Body>
                         <Card.Title 
@@ -63,8 +63,8 @@ const KolPage = () => {
                                 textOverflow: 'ellipsis',
                                 fontSize: '18px'
                                 }}
-                            title={kol.attributes.Name}>
-                            {kol.attributes.Name}
+                            title={kol.Name}>
+                            {kol.Name}
                         </Card.Title>
                         <Card.Text style={{
                                 whiteSpace: 'nowrap',
@@ -72,8 +72,8 @@ const KolPage = () => {
                                 textOverflow: 'ellipsis',
                                 fontSize: '14px'
                                 }}
-                            title={kol.attributes.Title}>
-                            {kol.attributes.Title}
+                            title={kol.Title}>
+                            {kol.Title}
                         </Card.Text>
                     </Card.Body>
                   </Card>

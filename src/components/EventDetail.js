@@ -68,8 +68,8 @@ const EventDetail = () => {
   };
 
 
-  const eventAttributes = event[0]?.attributes || {};
-  const EventImage = eventAttributes.Image?.data?.attributes?.url || "https://placehold.co/1200x600";
+  const eventAttributes = event[0] || {};
+  const EventImage = eventAttributes.Image?.url || "https://placehold.co/1200x600";
 
   const language = i18n.language;
   const Description = language === "zh" ? eventAttributes.Description_zh || "N/A" : eventAttributes.Description_en || "N/A";
