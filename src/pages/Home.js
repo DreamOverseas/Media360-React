@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Card, Col, Container, Row, Image} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import NewsSlider from "../components/NewsSlider";
@@ -87,33 +87,41 @@ const HomePage = () => {
           </Container>
         </Col>
         <Col className='home-news-ticker'>
-              {/* {kols.length > 0 ? (
-                kols.map(kol => (
-                  <Col
-                    xs={6}
-                    sm={6}
-                    md={3}
-                    className='kol-col'
-                    key={kol.id}
-                  >
-                    <Link to={`/kol/${kol.id}`}>
-                      <Image
-                        src={`${BACKEND_HOST}${kol.attributes.KolImage?.data?.attributes?.url}`}
-                        roundedCircle
-                        className='kol-image'
-                        alt={kol.attributes.Name}
-                      />
-                    </Link>
-                  </Col>
-                ))
-              ) : (
-                <p>{t("noKols")}</p>
-              )} */}
-          
           <NewsTicker ads={ads} />
-
         </Col>
       </Row>
+      </Container>
+      <Container className='kol-section'>
+        <h2 className='section-title'>{t("kol")}</h2>
+        <Row>
+          {kols.length > 0 ? (
+            kols.map(kol => (
+                <Col
+                  xs={6}
+                  sm={6}
+                  md={3}
+                  className='kol-col'
+                  key={kol.id}
+                >
+                  <Link to={`/kol/${kol.id}`}>
+                    <Image
+                      src={`${BACKEND_HOST}${kol.KolImage?.url}`}
+                      roundedCircle
+                      className='kol-image'
+                      alt={kol.Name}
+                    />
+                  </Link>
+                </Col>
+              ))
+            ) : (
+              <p>{t("noKols")}</p>
+          )}
+
+          <Link to="/kolpage/">
+            <button class="btn-more"><b>{t("btn_more")}</b></button>
+          </Link>
+          
+        </Row>
       </Container>
 
       {/* Products Section */}
