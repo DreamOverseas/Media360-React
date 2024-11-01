@@ -30,8 +30,9 @@ const Recruitment = () => {
     axios.get(`${BACKEND_HOST}/api/recruitments`)
       .then(response => {
         // Filter Active === True 
-        const activeJobs = response.data.data.filter(job => job.attributes.Active);
-        const sortedJobs = activeJobs.sort((a, b) => a.attributes.Order - b.attributes.Order);
+        const activeJobs = response.data.data.filter(job => job.Active);
+        const sortedJobs = activeJobs.sort((a, b) => a.Order - b.Order);
+        console.log(sortedJobs);
         setJobs(sortedJobs);
       })
       .catch(error => {
@@ -137,8 +138,8 @@ const Recruitment = () => {
                       <div style={{ flex: 1 }}>
                         <div className="fw-bold" style={{ fontSize: 20 }}>
                           {i18n.language === "zh"
-                            ? (job.attributes.Job_Title_zh)
-                            : (job.attributes.Job_Title_en)}
+                            ? (job.Job_Title_zh)
+                            : (job.Job_Title_en)}
                         </div> <br />
                         <div>
                           {/* Second row：Type & Participation */}
@@ -147,13 +148,13 @@ const Recruitment = () => {
                               {isDesktop ? (
                                 <strong>{t("recruit_type")}</strong>
                               ) : (<></>)}
-                              {job.attributes.Type}
+                              {job.Type}
                             </Col>
                             <Col>
                               {isDesktop ? (
                                 <strong>{t("recruit_participation")}</strong>
                               ) : (<></>)}
-                              {job.attributes.Participation}
+                              {job.Participation}
                             </Col>
                           </Row>
                           {/* Third row：Location */}
@@ -162,18 +163,18 @@ const Recruitment = () => {
                               {isDesktop ? (
                                 <strong>{t("recruit_location")}</strong>
                               ) : (<></>)}
-                              {job.attributes.Location}
+                              {job.Location}
                             </Col>
                             <Col>
                               {isDesktop ? (
                                 <strong>{t("recruit_company")}</strong>
                               ) : (<></>)}
-                              {job.attributes.Company}
+                              {job.Company}
                             </Col>
                           </Row>
                           <div className="text-end">
                             <small>
-                              {calculateTimeAgo(job.attributes.Published)}
+                              {calculateTimeAgo(job.Published)}
                             </small>
                           </div>
                         </div>
@@ -185,8 +186,8 @@ const Recruitment = () => {
                       <strong>{t("recruit_intro")}</strong>
                       <ReactMarkdown>
                         {i18n.language === "zh"
-                          ? (job.attributes.Intro_zh)
-                          : (job.attributes.Intro_en)}
+                          ? (job.Intro_zh)
+                          : (job.Intro_en)}
                       </ReactMarkdown>
                       <div class="text-end">
                         <a href="mailto:john.du@do360.com" class="btn btn-primary w-25">{t("contact")}</a>
