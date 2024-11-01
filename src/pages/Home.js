@@ -22,7 +22,7 @@ const HomePage = () => {
       .get(`${BACKEND_HOST}/api/advertisements?populate=*`)
       .then(response => {
         if (response.data && response.data.data) {
-          setAds(response.data.data.sort((a, b) => a.attributes.Order - b.attributes.Order));
+          setAds(response.data.data.sort((a, b) => a.Order - b.Order));
         }
       })
       .catch(error => {
@@ -70,6 +70,9 @@ const HomePage = () => {
     fetchProducts();
     fetchEvents();
   }, []);
+
+  
+  // console.log(ads);
 
   const language = i18n.language;
 
@@ -121,8 +124,8 @@ const HomePage = () => {
             products.map(product => {
               const Name =
                 language === "zh"
-                  ? product.attributes.Name_zh
-                  : product.attributes.Name_en;
+                  ? product.Name_zh
+                  : product.Name_en;
               return (
                 <Col
                   xs={6}
@@ -131,11 +134,11 @@ const HomePage = () => {
                   className="mb-4"
                   key={product.id}
                 >
-                  <Link to={`/product/${product.attributes.url}`} className="home-product-card-link">
+                  <Link to={`/product/${product.url}`} className="home-product-card-link">
                     <Card className='product-card'>
                       <Card.Img
                         variant='top'
-                        src={`${BACKEND_HOST}${product.attributes.ProductImage?.data?.attributes?.url}`}
+                        src={`${BACKEND_HOST}${product.ProductImage?.url}`}
                         alt={Name}
                       />
                       <Card.Body className="card-body">
@@ -144,9 +147,9 @@ const HomePage = () => {
                         >
                           {Name}
                         </Card.Title>
-                        <p class="product-price">{product.attributes.Price === 0 ?
+                        <p class="product-price">{product.Price === 0 ?
                           (t("price_tbd")) :
-                          (`AU$ ${product.attributes.Price}`)}</p>
+                          (`AU$ ${product.Price}`)}</p>
                       </Card.Body>
                     </Card>
                   </Link>
@@ -171,15 +174,15 @@ const HomePage = () => {
           {events.length > 0 ? (
             events.map(event => (
               <Col xs={6} sm={6} md={3} key={event.id}>
-                <Link to={`/event/${event.attributes.url}`} className="home-event-card-link">
+                <Link to={`/event/${event.url}`} className="home-event-card-link">
                   <Card className='event-card'>
                     <Card.Img
                       variant='top'
-                      src={`${BACKEND_HOST}${event.attributes.Image.data.attributes.url}`}
-                      alt={event.attributes.Title}
+                      src={`${BACKEND_HOST}${event.Image.url}`}
+                      alt={event.Title}
                     />
                     <Card.Body>
-                      <Card.Title>{event.attributes.Name_zh}</Card.Title>
+                      <Card.Title>{event.Name_zh}</Card.Title>
                     </Card.Body>
                   </Card>
                 </Link>

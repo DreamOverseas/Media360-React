@@ -10,7 +10,7 @@ const NewsTicker = ({ ads }) => {
     let scrollInterval; // Define scrollInterval here so it's accessible
 
     // Only displays ads with News Text
-    const filteredNews = ads.filter(newsItem => newsItem.attributes.NewsText !== null);
+    const filteredNews = ads.filter(newsItem => newsItem.NewsText !== null);
 
     useEffect(() => {
         const ticker = tickerRef.current;
@@ -76,12 +76,12 @@ const NewsTicker = ({ ads }) => {
                 <div className="news-ticker" ref={newsContainerRef}>
                     {duplicatedItems.concat(duplicatedItems).map((item, index) => (
                         <a
-                            href={item.attributes.link || '#'}  // fallback if link is null or undefined
+                            href={item.link || '#'}  // fallback if link is null or undefined
                             className="news-item"
                             key={index}
                             target="_blank"
                             rel="noopener noreferrer"  >
-                            {item.attributes.NewsText}
+                            {item.NewsText}
                         </a>
 
                     ))}
