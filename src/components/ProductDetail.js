@@ -61,9 +61,9 @@ const ProductDetail = () => {
         const user_detail = await axios.get(`${BACKEND_HOST}/api/users/${user.id}?populate[cart]=*`);
         const cartid = user_detail.data.cart.id;
         const cart_items = await axios.get(`${BACKEND_HOST}/api/carts/${cartid}?populate[cart_items][populate][product]=*`);
-        const cart_items_data = cart_items.data.data.attributes.cart_items.data;
+        const cart_items_data = cart_items.data.cart_items;
 
-        const existingItem = cart_items_data.find(item => item.attributes.product.data.id === product.id);
+        const existingItem = cart_items_data.find(item => item.product.id === product.id);
 
         if (existingItem) {
           await axios.put(
@@ -99,14 +99,9 @@ const ProductDetail = () => {
   useEffect(() => {
     const path = location.pathname.replace('/product/', '');
     axios
-      .get(`${BACKEND_HOST}/api/products`, {
-        params: {
-          'filters[url]': path,
-          'populate': 'ProductImage',
-        },
-      })
+      .get(`${BACKEND_HOST}/api/products/?filters[url]=${path}&populate=*`)
       .then(response => {
-        if (response.data && response.data.data && response.data.data.length > 0) {
+        if (response.data && response.data.data) {
           setProduct(response.data.data[0]);
         } else {
           setError(t("noProductFound"));
@@ -116,9 +111,10 @@ const ProductDetail = () => {
         console.error("Error fetching data: ", error);
         setError(t("errorFetchingProductData"));
       });
-  }, [location.pathname, t]);
+      console.log(product)
+  }, [location.pathname]);
 
-  if (!product || !product.attributes) {
+  if (!product) {
     return (
       <div className="loading-container">
         <Spinner animation="border" role="status">
@@ -128,7 +124,7 @@ const ProductDetail = () => {
     );
   }
 
-  const { Price, ProductImage, Available, Sponsor } = product.attributes;
+  const { Price, ProductImage, Available, Sponsor } = product;
   const language = i18n.language;
 
   const display_price = Price === 0 ? 
@@ -137,18 +133,18 @@ const ProductDetail = () => {
 
   const Name =
     language === "zh"
-      ? product.attributes.Name_zh
-      : product.attributes.Name_en;
+      ? product.Name_zh
+      : product.Name_en;
 
   const Description =
     language === "zh"
-      ? product.attributes.Description_zh
-      : product.attributes.Description_en;
+      ? product.Description_zh[0]
+      : product.Description_en[0];
 
   const ShortDescription =
     language === "zh"
-      ? product.attributes.Short_zh
-      : product.attributes.Short_en;
+      ? product.Short_zh
+      : product.Short_en;
 
   return (
     <div>
@@ -156,9 +152,9 @@ const ProductDetail = () => {
         <Container>
           <Row className='product-detail-section'>
             <Col className='product-image-col'>
-              {ProductImage && ProductImage.data ? (
+              {ProductImage ? (
                 <Image
-                  src={`${BACKEND_HOST}${ProductImage.data.attributes.url}`}
+                  src={`${BACKEND_HOST}${ProductImage.url}`}
                   alt={Name}
                   className="product-img"
                 />
@@ -217,7 +213,7 @@ const ProductDetail = () => {
               <div>
                 <Row>
                   <h5>{t("productWebsite")}</h5>
-                  <Link to={`/sponsor/${product.attributes.url}`}>www.do360.com/sponsor/{product.attributes.url}</Link>
+                  <Link to={`/sponsor/${product.url}`}>www.do360.com/sponsor/{product.url}</Link>
                 </Row>
               </div>
             ) : (
