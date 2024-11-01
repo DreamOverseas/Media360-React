@@ -104,8 +104,8 @@ const ProductPage = () => {
           const isLastElement = index === products.length - 1; // Check if it's the last product
           const Name =
             language === "zh"
-              ? product.attributes.Name_zh
-              : product.attributes.Name_en;
+              ? product.Name_zh
+              : product.Name_en;
           return (
             <Col
               key={product.id}
@@ -115,12 +115,12 @@ const ProductPage = () => {
               className="mb-4"
               ref={isLastElement ? lastProductElementRef : null} // Attach ref to the last product
             >
-              <Link to={`/product/${product.attributes.url}`} className="card-link-ProductPage">
+              <Link to={`/product/${product.url}`} className="card-link-ProductPage">
                 <Card className="productpage-product-card">
-                  {product.attributes.ProductImage && product.attributes.ProductImage.data ? (
+                  {product.ProductImage? (
                     <Card.Img
                       variant='top'
-                      src={`${BACKEND_HOST}${product.attributes.ProductImage.data.attributes.url}`}
+                      src={`${BACKEND_HOST}${product.ProductImage.url}`}
                       alt={Name}
                     />
                   ) : (
@@ -137,9 +137,9 @@ const ProductPage = () => {
                     >
                       {Name}
                     </Card.Title>
-                    <p class="productpage-product-price">{product.attributes.Price === 0 ? 
-                                                          (t("price_tbd")) : 
-                                                          (`AU${product.attributes.Price}`)} </p>
+                    <p class="productpage-product-price">
+                      {product.Price === 0 ? (t("price_tbd")) : (`AU${product.Price}`)} 
+                    </p>
                   </Card.Body>
                 </Card>
               </Link>

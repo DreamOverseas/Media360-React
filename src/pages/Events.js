@@ -126,7 +126,7 @@ const Events = () => {
         <Row>
           {events.map((event, index) => {
             const isLastElement = index === events.length - 1; // Check if it's the last event
-            const eventName = language === "zh" ? event.attributes.Name_zh : event.attributes.Name_en;
+            const eventName = language === "zh" ? event.Name_zh : event.Name_en;
             
             return (
               <Col
@@ -137,12 +137,12 @@ const Events = () => {
                 className="mb-4"
                 ref={isLastElement ? lastEventElementRef : null} // Attach ref to the last event
               >
-                <Link to={`/event/${event.attributes.url}`} className="card-link-EventPage">
+                <Link to={`/event/${event.url}`} className="card-link-EventPage">
                   <Card className="eventpage-event-card">
-                    {event.attributes.Image?.data ? (
+                    {event.Image? (
                       <Card.Img
                         variant="top"
-                        src={`${BACKEND_HOST}${event.attributes.Image.data.attributes.url}`}
+                        src={`${BACKEND_HOST}${event.Image.url}`}
                         alt={eventName}
                       />
                     ) : (
@@ -155,12 +155,12 @@ const Events = () => {
                     )}
                     <Card.Body>
                       <Card.Title title={eventName}>{eventName}</Card.Title>
-                      {calculateTime(event.attributes.Start_Date, event.attributes.End_date) ? (
-                        <Card.Text className="eventpage-event-date">{calculateTime(event.attributes.Start_Date, event.attributes.End_Date)}</Card.Text>
+                      {calculateTime(event.Start_Date, event.End_date) ? (
+                        <Card.Text className="eventpage-event-date">{calculateTime(event.Start_Date, event.End_Date)}</Card.Text>
                       ) :(<></>)
                       }
-                      <Card.Text className="eventpage-event-location">{event.attributes.Location}</Card.Text>
-                      <Card.Text className="eventpage-event-host">{event.attributes.Host}</Card.Text>
+                      <Card.Text className="eventpage-event-location">{event.Location}</Card.Text>
+                      <Card.Text className="eventpage-event-host">{event.Host}</Card.Text>
                     </Card.Body>
                   </Card>
                 </Link>

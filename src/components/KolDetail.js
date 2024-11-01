@@ -50,7 +50,7 @@ const KolDetail = () => {
     return <div>{t("loading")}</div>;
   }
 
-  const { Name, KolImage, Products } = kol.attributes;
+  const { Name, KolImage, Products } = kol[0];
 
   const renderRichText = richText => {
     return richText.map((block, index) => {
@@ -84,13 +84,13 @@ const KolDetail = () => {
   const language = i18n.language;
   const Description =
     language === "zh"
-      ? kol.attributes.Description_zh
-      : kol.attributes.Description_en;
+      ? kol[0].Description_zh
+      : kol[0].Description_en;
   
   const Title =
     language === "zh"
-    ? kol.attributes.Title_zh
-    : kol.attributes.Title_en;
+    ? kol[0].Title_zh
+    : kol[0].Title_en;
 
   const handleContact = () => {
     setShowModal(true);
@@ -135,9 +135,9 @@ const KolDetail = () => {
               </Container>
             </Col>
             <Col className='kol-image-col'>
-              {KolImage && KolImage.data ? (
+              {KolImage ? (
                 <Image
-                  src={`${BACKEND_HOST}${KolImage.data.attributes.url}`}
+                  src={`${BACKEND_HOST}${KolImage.url}`}
                   alt={Name}
                 />
               ) : (
@@ -197,10 +197,10 @@ const KolDetail = () => {
                   className='card-link-highlight'
                 >
                   <Card className='kol-product-card'>
-                    {product.attributes && product.attributes.ProductImage ? (
+                    {product && product.ProductImage ? (
                       <Card.Img
                         variant='top'
-                        src={`${BACKEND_HOST}${product.attributes.ProductImage.data.attributes.url}`}
+                        src={`${BACKEND_HOST}${product.ProductImage.url}`}
                       />
                     ) : (
                       <Card.Img
@@ -216,13 +216,13 @@ const KolDetail = () => {
                           textOverflow: "ellipsis",
                           fontSize: "18px",
                         }}
-                        title={product.attributes.Name}
+                        title={product.Name}
                       >
-                        {product.attributes.Name}
+                        {product.Name}
                       </Card.Title>
                       <Card.Text 
-                        title={product.attributes.Price}>
-                        ${product.attributes.Price}
+                        title={product.Price}>
+                        ${product.Price}
 
                       </Card.Text>
                     </Card.Body>
