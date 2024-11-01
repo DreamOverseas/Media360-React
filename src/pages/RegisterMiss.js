@@ -30,7 +30,6 @@ const initialFormData = {
   Phone: '',
   WechatID: '',
   Email: '',
-  Company: '',
   SocialMediaAccounts: [],
   Gallery: []
 };
@@ -183,7 +182,6 @@ const RegisterMiss = () => {
       Phone: formData.Phone,
       WechatID: formData.WechatID,
       Email: formData.Email,
-      Company: formData.Company,
       MediaAccounts: formData.SocialMediaAccounts,
       Gallery: uploadedImageIds.map((id) => ({ Photo: id })),
       Location: formData.Location
@@ -201,10 +199,13 @@ const RegisterMiss = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${API_KEY_MI}`,
         },
-        body: JSON.stringify({ data: finalFormData }),
+        body: JSON.stringify({data: finalFormData}),
       });
 
+      // console.log(JSON.stringify(finalFormData));
+
       const result = await response.json();
+      console.log(result);
       if (response.ok) {
         notify_by_email();
         alert(t("miss_reg_success"));
