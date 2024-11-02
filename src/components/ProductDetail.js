@@ -18,7 +18,6 @@ import { Link, useLocation } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import rehypeRaw from 'rehype-raw';
 import { AuthContext } from "../context/AuthContext";
-
 import "../css/ProductDetail.css";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
@@ -258,13 +257,12 @@ const ProductDetail = () => {
             <h1><b>{t("productDescription")}</b></h1>
           </Row>
           <Row>
-            {Description != null || "" ? (
+            {Description ? (
               <div className="markdown-content">
                 <ReactMarkdown rehypePlugins={[rehypeRaw]}>{Description}</ReactMarkdown>
               </div>
             ) : (
-              <div dangerouslySetInnerHTML={{ __html: `${Detail}`}} 
-              />
+              <div className="ck-content" dangerouslySetInnerHTML={{ __html: Detail}} />
             )}
           </Row>
         </Container>
