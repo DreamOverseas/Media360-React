@@ -49,6 +49,7 @@ function App() {
       setFooter(<Footer />);
     }
   }, [location]);
+  
 
   // Check if is on desktop
   // const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });

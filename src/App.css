@@ -1,3 +1,58 @@
+@import url("https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/theme/classic.css");
+
+.ck-content {
+  margin: 0 auto;
+  padding: 1em;
+  max-width: 100%;
+}
+
+.ck-content h1, .ck-content h2, .ck-content p {
+  text-align: center;
+  margin: 1em 0;
+}
+
+.ck-content img {
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.ck-content .image_resized {
+  margin: 0 auto;
+  text-align: center;
+  display: block;
+}
+
+.ck-content figure {
+  display: flex;
+  justify-content: center;
+  margin: 1em auto;
+  width: 100%;
+  text-align: center;
+}
+
+.ck-content ul, .ck-content ol {
+  margin-left: 2em;
+}
+
+.ck-content p {
+  margin: 1em 0; 
+  line-height: 1.6;
+}
+
+.ck-content::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* image-style-side 样式，确保左右浮动一致 */
+.ck-content .image-style-side {
+  width: 30% !important;
+  margin: 0 1em;
+  display: inline-block;
+}
+
 @font-face {
   font-family: 'HomepageFont';
   src: url('./fonts/YSHST.ttf') format('truetype');
