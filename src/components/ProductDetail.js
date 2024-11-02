@@ -138,8 +138,15 @@ const ProductDetail = () => {
 
   const Description =
     language === "zh"
-      ? product.Description_zh[0]
-      : product.Description_en[0];
+      ? product.Description_zh
+      : product.Description_en;
+
+  const Detail =
+  language === "zh"
+    ? product.Detail_zh
+    : product.Detail_en;
+
+  console.log("Detail:", Detail);
 
   const ShortDescription =
     language === "zh"
@@ -251,13 +258,14 @@ const ProductDetail = () => {
             <h1><b>{t("productDescription")}</b></h1>
           </Row>
           <Row>
-            <div className="markdown-content">
-              {Description ? (
+            {Description != null || "" ? (
+              <div className="markdown-content">
                 <ReactMarkdown rehypePlugins={[rehypeRaw]}>{Description}</ReactMarkdown>
-              ) : (
-                t("noDescription")
-              )}
-            </div>
+              </div>
+            ) : (
+              <div dangerouslySetInnerHTML={{ __html: `${Detail}`}} 
+              />
+            )}
           </Row>
         </Container>
         <br />
