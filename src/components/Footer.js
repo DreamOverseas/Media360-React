@@ -22,14 +22,14 @@ const Footer = () => {
   const subscribMe = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(EMAIL_SUBSCRIPTION, {
-        email
+      await axios.post(EMAIL_SUBSCRIPTION, {
+        "email": email
       });
-      setMessage(response.data.message);
+      setMessage("Successfully subscribed!");
       setEmail('');
       setError('');
     } catch (error) {
-      setError(error.response.data.error);
+      setError("Oops... There's some problem with it. Please try it later or contact us for help.");
       setMessage('');
     }
   };
