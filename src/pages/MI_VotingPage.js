@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 
 const MIVoting = () => {
-    const url = "https://www.missinternational.world/Index/votelive.html";
+    const url = "https://www.missinternational.world/Index/votelive.html"; // page that changes lively
     const [refreshInterval, setRefreshInterval] = useState(0);
     const [key, setKey] = useState(0);
     const [autoRefreshEnabled, setAutoRefreshEnabled] = useState(false);
-    const [isControlPanelVisible, setIsControlPanelVisible] = useState(true);
+    const [isControlPanelVisible, setIsControlPanelVisible] = useState(false);
     const [hideTimeout, setHideTimeout] = useState(null);
 
     // BETA Function: Test if user opened on WeChat
@@ -54,7 +54,7 @@ const MIVoting = () => {
     const hideControlPanel = () => {
         const timeout = setTimeout(() => {
             setIsControlPanelVisible(false);
-        }, 2000);
+        }, 500);
         setHideTimeout(timeout);
     };
 
