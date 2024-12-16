@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 
 const MIVoting = () => {
-    const url = "https://www.missinternational.world/Index/votenow.html";
+    const url = "https://www.missinternational.world/Index/votelive.html";
     const [refreshInterval, setRefreshInterval] = useState(0);
     const [key, setKey] = useState(0);
     const [autoRefreshEnabled, setAutoRefreshEnabled] = useState(false);
