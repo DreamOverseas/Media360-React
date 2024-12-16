@@ -42,7 +42,7 @@ const MIVoting = () => {
     const handleForceRefresh = () => {
         setKey(prevKey => prevKey + 1);
     };
-    
+
     const showControlPanel = () => {
         setIsControlPanelVisible(true);
         if (hideTimeout) {
@@ -57,20 +57,25 @@ const MIVoting = () => {
         }, 2000);
         setHideTimeout(timeout);
     };
+
+
     return (
         <div style={styles.votingPage}>
-            <iframe
-                src={url}
-                title="Embedded Page"
-                key={key}
-                style={styles.miWebsite}
-            ></iframe>
+            <div style={styles.miPageContainer}>
+                <iframe
+                    id="miFrame" 
+                    src={url}
+                    title="Embedded Page"
+                    key={key}
+                    style={styles.miWebsite}
+                ></iframe>
+            </div>
 
             <div style={{
-                    ...styles.refreshControlPanel, 
-                    opacity: isControlPanelVisible ? 1 : 0,
-                    transition: 'opacity 0.5s',
-                }}
+                ...styles.refreshControlPanel,
+                opacity: isControlPanelVisible ? 1 : 0,
+                transition: 'opacity 0.5s',
+            }}
                 onMouseEnter={showControlPanel}
                 onMouseLeave={hideControlPanel}
             >
@@ -87,9 +92,9 @@ const MIVoting = () => {
                         <option value={30000}>每30s</option>
                     </Form.Control>
                 </Form.Group>
-                <Button 
-                    variant="primary" 
-                    style={styles.refreshButton} 
+                <Button
+                    variant="primary"
+                    style={styles.refreshButton}
                     onClick={handleForceRefresh}
                 >
                     现在刷新！
@@ -115,7 +120,7 @@ const MIVoting = () => {
                     <Modal.Title>Nooooooope。</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                为什么一定要微信呢？相信我，它配不上您！请点击右上角菜单并选择“在浏览器中打开”。
+                    为什么一定要微信呢？相信我，它配不上您！请点击右上角菜单并选择“在浏览器中打开”。
                 </Modal.Body>
             </Modal>
 
@@ -134,6 +139,14 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
     },
+    miPageContainer: {
+        position: 'relative',
+        width: '755px',
+        height: '755px',
+        overflow: 'hidden',
+        bordeRadius: '50%',
+        clipPath: 'circle(50% at 50% 50%)',
+    },
     miWebsite: {
         width: '40vw',
         height: '100vh',
@@ -142,6 +155,7 @@ const styles = {
         borderRadius: '10px',
         boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)',
         display: 'block',
+        transform: "translateY(-140px) translateX(-45px)",
     },
     refreshControlPanel: {
         position: 'fixed',
