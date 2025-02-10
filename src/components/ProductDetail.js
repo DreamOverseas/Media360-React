@@ -1,17 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  Image,
-  InputGroup,
-  Modal,
-  Row,
-  Spinner,
-} from "react-bootstrap";
+import { Button, Col, Accordion, Container, Form, Image, InputGroup, Modal, Row, Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { Link, useLocation } from "react-router-dom";
@@ -22,16 +12,131 @@ import "../css/ProductDetail.css";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
+
+
+
 const ProductDetail = () => {
+  const [activeAccordion, setActiveAccordion] = useState(null);
   const location = useLocation();
   const { user } = useContext(AuthContext);
   const { t, i18n } = useTranslation();
   const [product, setProduct] = useState(null);
+  const [people, setPeople] = useState(null);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [cartModal, setCartModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+
+
+
+
+  const DescriptionAccordion = ({ id, accordion_name, content, activeAccordion, setActiveAccordion }) => {
+    const toggleAccordion = () => {
+      setActiveAccordion(activeAccordion === id ? null : id);
+    };
+
+    return (
+      <Accordion activeKey={activeAccordion === id ? "0" : null} className="shopify-accordion">
+        <Accordion.Item eventKey="0">
+          <div className="shopify-accordion-header" onClick={toggleAccordion}>
+            {accordion_name}
+            {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
+          </div>
+          <Accordion.Body className="shopify-accordion-body">
+          {content ? (
+              <div className="markdown-content">
+                <ReactMarkdown rehypePlugins={[rehypeRaw]}>{content}</ReactMarkdown>
+              </div>
+            ) : (
+              <div className="ck-content" dangerouslySetInnerHTML={{ __html: Detail}} />
+            )}
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+    );
+  };
+  
+  const FounderAccordion = ({ id, accordion_name, content, activeAccordion, setActiveAccordion }) => {
+    const toggleAccordion = () => {
+      setActiveAccordion(activeAccordion === id ? null : id);
+    };
+
+    return (
+      <Accordion activeKey={activeAccordion === id ? "0" : null} className="shopify-accordion">
+        <Accordion.Item eventKey="0">
+          <div className="shopify-accordion-header" onClick={toggleAccordion}>
+            {accordion_name}
+            {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
+          </div>
+          <Accordion.Body className="shopify-accordion-body">
+            {content}
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+    );
+  };
+
+  const KolAccordion = ({ id, accordion_name, content, activeAccordion, setActiveAccordion }) => {
+    const toggleAccordion = () => {
+      setActiveAccordion(activeAccordion === id ? null : id);
+    };
+
+    return (
+      <Accordion activeKey={activeAccordion === id ? "0" : null} className="shopify-accordion">
+        <Accordion.Item eventKey="0">
+          <div className="shopify-accordion-header" onClick={toggleAccordion}>
+            {accordion_name}
+            {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
+          </div>
+          <Accordion.Body className="shopify-accordion-body">
+            {content}
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+    );
+  };
+
+  const SpokesAccordion = ({ id, accordion_name, content, activeAccordion, setActiveAccordion }) => {
+    const toggleAccordion = () => {
+      setActiveAccordion(activeAccordion === id ? null : id);
+    };
+
+    return (
+      <Accordion activeKey={activeAccordion === id ? "0" : null} className="shopify-accordion">
+        <Accordion.Item eventKey="0">
+          <div className="shopify-accordion-header" onClick={toggleAccordion}>
+            {accordion_name}
+            {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
+          </div>
+          <Accordion.Body className="shopify-accordion-body">
+            {content}
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+    );
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const handleLoginModalOpen = () => {
     setShowLoginModal(true);
@@ -95,22 +200,39 @@ const ProductDetail = () => {
     setShowModal(false);
   };
 
+
+
+
+  const fetchData = async (path, setProduct, setPeople, setError, t) => {
+    try {
+
+      const [productResponse, peopleResponse] = await Promise.all([
+        axios.get(`${BACKEND_HOST}/api/products/?filters[url]=${path}&populate=*`),
+        axios.get(`${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[people][populate]=Image`)
+      ]);
+  
+
+      const productData = productResponse.data?.data?.[0] || null;
+      if (!productData) {
+        setError(t("noProductFound"));
+        return;
+      }
+      setProduct(productData);
+  
+
+      const peopleData = peopleResponse.data?.data?.[0]?.people || [];
+      setPeople(peopleData);
+      console.log("People:", peopleData);
+  
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setError(t("errorFetchingProductData"));
+    }
+  };
+  
   useEffect(() => {
-    const path = location.pathname.replace('/product/', '');
-    axios
-      .get(`${BACKEND_HOST}/api/products/?filters[url]=${path}&populate=*`)
-      .then(response => {
-        if (response.data && response.data.data) {
-          setProduct(response.data.data[0]);
-        } else {
-          setError(t("noProductFound"));
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching data: ", error);
-        setError(t("errorFetchingProductData"));
-      });
-      console.log(product)
+    const path = location.pathname.replace("/product/", "");
+    fetchData(path, setProduct, setPeople, setError, t);
   }, [location.pathname]);
 
   if (!product) {
@@ -129,7 +251,6 @@ const ProductDetail = () => {
   const display_price = Price === 0 ? 
                               (t("price_tbd")) : 
                               (`AU$${Price}`);
-
   const Name =
     language === "zh"
       ? product.Name_zh
@@ -147,16 +268,40 @@ const ProductDetail = () => {
 
   console.log("Detail:", Detail);
 
-  const ShortDescription =
-    language === "zh"
-      ? product.Short_zh
-      : product.Short_en;
+  // const ShortDescription =
+  //   language === "zh"
+  //     ? product.Short_zh
+  //     : product.Short_en;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <div>
       <section>
         <Container>
           <Row className='product-detail-section'>
+
+
+
+
             <Col className='product-image-col'>
               {ProductImage ? (
                 <Image
@@ -168,30 +313,42 @@ const ProductDetail = () => {
                 <Image src='https://placehold.co/650x650' alt='Placeholder' />
               )}
             </Col>
+
+
             <Col className='product-detail-col'>
+
+
               <Container className='product-detail'>
+
                 <Row>
                   <h1>{Name}</h1>
                 </Row>
-                <Row className='product-short-description'>
-                  <div>{ShortDescription ? <p>{ShortDescription}</p> : t("noDescription")}</div>
+
+                <Row >
+                  <h4>{display_price}</h4>
                 </Row>
                 <Row className='product-price-quantity'>
                   <Col>
-                    <h4>{display_price}</h4>
+                    <Form.Group className='price-control'>
+                      <InputGroup className='d-flex justify-content-center align-items-left'>
+                        <Button variant='outline-secondary' onClick={handleDecrement}>-</Button>
+                        <InputGroup.Text readOnly>{quantity}</InputGroup.Text>
+                        <Button variant='outline-secondary' onClick={handleIncrement}>+</Button>
+                      </InputGroup>
+                    </Form.Group>
                   </Col>
-                  {Available && (
-                    <Col>
-                      <Form.Group className='price-control'>
-                        <InputGroup className='d-flex justify-content-center align-items-center'>
-                          <Button variant='outline-secondary' onClick={handleDecrement}>-</Button>
-                          <InputGroup.Text readOnly>{quantity}</InputGroup.Text>
-                          <Button variant='outline-secondary' onClick={handleIncrement}>+</Button>
-                        </InputGroup>
-                      </Form.Group>
-                    </Col>
-                  )}
                 </Row>
+
+                <Row>
+                  <DescriptionAccordion
+                    id="1"
+                    accordion_name="产品描述"
+                    content={Description}
+                    activeAccordion={activeAccordion}
+                    setActiveAccordion={setActiveAccordion}
+                  />
+                </Row>
+
                 <Row>
                   {(Price !== 0 || 1) && Available ? (
                     <>
@@ -206,8 +363,16 @@ const ProductDetail = () => {
                     <Button className='add-to-cart' onClick={handlePurchase}>{t("enquireNow")}</Button>
                   )}
                 </Row>
+
+
+
               </Container>
+
+
             </Col>
+
+
+
           </Row>
         </Container>
         <Modal show={showModal} onHide={handleCloseModal}>
@@ -251,7 +416,7 @@ const ProductDetail = () => {
       </section>
       <br />
       <br />
-      <section>
+      {/* <section>
         <Container>
           <Row>
             <h1><b>{t("productDescription")}</b></h1>
@@ -267,7 +432,7 @@ const ProductDetail = () => {
           </Row>
         </Container>
         <br />
-      </section>
+      </section> */}
     </div>
   );
 };
