@@ -1,0 +1,66 @@
+/* 新闻详情页整体布局 */
+.news-detail-container {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+/* 新闻卡片样式 */
+.news-detail-card {
+  background: #fff;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  border-radius: 10px;
+}
+
+/* 新闻标题 */
+.news-detail-card h1 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: center;
+}
+
+/* 发布时间 */
+.news-detail-date {
+  font-size: 14px;
+  color: #888;
+  text-align: center;
+}
+
+/* 分割线 */
+.news-detail-card hr {
+  margin: 20px 0;
+  border: 0;
+  height: 1px;
+  background: #ddd;
+}
+
+/* 文章内容 */
+.news-detail-content {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #444;
+  text-align: justify;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .news-detail-container {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  .news-detail-card {
+    padding: 20px;
+  }
+
+  .news-detail-card h1 {
+    font-size: 24px;
+  }
+
+  .news-detail-content {
+    font-size: 14px;
+  }
+}

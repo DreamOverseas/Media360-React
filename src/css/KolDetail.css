@@ -1,134 +1,180 @@
+/* 🎨 Shopify 设计风格 */
 .kol-detail-background-image-container {
-  background-image: url('/public/events/banner.png');
+  background-image: url("/public/events/banner.png");
   background-size: cover;
   background-position: center;
   text-align: center;
   width: 100%;
-  height: 200px;
+  height: 220px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-}
-
-.kol-detail {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.kol-description {
-  flex: 1;
+  background-color: #f8f9fa;
 }
 
 .kol-detail-banner-h1 {
-  color: white;
-}
-
-.kol-detail h5 {
-  padding-top: 1%;
-}
-
-.kol-detail p {
-  padding-top: 3%;
-}
-
-.kol-description {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.kol-product {
-  position: relative;
+  color: #333;
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 .kol-detail-section {
-  height: 600px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 2rem;
 }
 
+.kol-detail {
+  flex: 1;
+  max-width: 50%;
+}
+
+.kol-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #555;
+  padding-top: 1rem;
+}
+
+/* 🎨 Shopify 头像 */
 .kol-image-col {
-  height: 600px;
+  flex: 1;
+  max-width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .kol-image-col img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
+  max-height: 400px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ✉️ 联系按钮 */
+.kol-contact {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 .kol-contact button {
   height: 50px;
-  width: 100%;
+  width: 180px;
+  border-radius: 8px;
+  background-color: #5c6ac4;
+  color: white;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  border: none;
+}
+
+.kol-contact button:hover {
+  background-color: #4b5baf;
 }
 
 .contact-icon {
   font-size: 2rem;
-  padding-left: 10%;
+  color: #5c6ac4;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
+.contact-icon:hover {
+  transform: scale(1.1);
+}
+
+/* 🛍️ 产品卡片 */
 .kol-product-card {
-  background: #fff;
-  border: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
   cursor: pointer;
-  height: 450px;
+  height: 460px;
   display: flex;
   flex-direction: column;
   margin-bottom: 4%;
+  overflow: hidden;
 }
 
 .kol-product-card img {
-  height: 70%;
+  width: 100%;
+  height: 75%;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
 }
 
 .kol-product-card:hover {
-  transform: scale(1.04);
-  background-color: rgba(120, 120, 123, 0.5);
+  transform: scale(1.03);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
+/* 🛒 产品卡片标题 */
+.kol-product-card h5 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  padding: 0.5rem;
+}
+
+/* 🛍️ 产品价格 */
+.kol-product-card p {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #5c6ac4;
+  padding: 0 1rem 1rem;
+}
+
+/* 🔗 去除卡片链接默认样式 */
 .card-link-highlight {
   text-decoration: none;
 }
 
+/* 📱 移动端适配 */
 @media (max-width: 768px) {
   .kol-detail-section {
     flex-direction: column;
-    height: auto;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .kol-detail {
+    max-width: 100%;
   }
 
   .kol-image-col {
+    max-width: 100%;
     order: -1;
-    height: auto;
+    margin-bottom: 1rem;
   }
 
   .kol-image-col img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+    max-height: 300px;
   }
 
   .kol-contact {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .kol-contact button {
     width: 100%;
-    margin-bottom: 1rem;
   }
 
   .contact-icon {
     padding-left: 0;
     margin-top: 1rem;
-    align-self: center;
-  }
-
-  .product-col {
-    flex: 0 0 100%;
-    max-width: 100%;
-    padding: 0.5rem;
   }
 
   .kol-product-card {
