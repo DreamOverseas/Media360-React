@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Col, Accordion, Container, Form, Image, InputGroup, Modal, Row, Spinner } from "react-bootstrap";
+import { Button, Col, Accordion, Container, Form, Image, InputGroup, Modal, Row, Spinner, Tabs, Tab,} from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { Link, useLocation } from "react-router-dom";
@@ -16,7 +16,6 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 
 const ProductDetail = () => {
-  const [activeAccordion, setActiveAccordion] = useState(null);
   const location = useLocation();
   const { user } = useContext(AuthContext);
   const { t, i18n } = useTranslation();
@@ -27,13 +26,58 @@ const ProductDetail = () => {
   const [cartModal, setCartModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [founder, setFounder] = useState([]);
+  const [kol, setKol] = useState([]);
+  const [spokesperson, setSpokesperson] = useState([]);
 
 
 
+  const DynamicTabs = ({ tabId, data }) => {
+    const [activeTab, setActiveTab] = useState(data.length > 0 ? data[0].id : null);
+  
+    useEffect(() => {
+      if (data.length > 0) {
+        setActiveTab(data[0].id);
+      }
+    }, [data]);
+  
+    return (
+      <Container>
+        <Tabs 
+          id={`tabs-${tabId}`} 
+          activeKey={activeTab} 
+          onSelect={(k) => setActiveTab(k)} 
+          className="mb-3"
+        >
+          {data.map((item) => (
+            <Tab eventKey={item.id} title={item.Name} key={item.id}>
+              <Row className="align-items-center">
+                <Col md={6}>
+                  <Image src={`${BACKEND_HOST}${item.Image[0].url}`} alt={item.Name} fluid />
+                </Col>
+                <Col md={6}>
+                {item.Bio_zh ? (
+                    <div className="markdown-content">
+                      <ReactMarkdown rehypePlugins={[rehypeRaw]}>{item.Bio_zh}</ReactMarkdown>
+                    </div>
+                  ) : (
+                    <div className="ck-content" dangerouslySetInnerHTML={{ __html: item.Bio_zh}} />
+                )}
+                </Col>
+              </Row>
+            </Tab>
+          ))}
+        </Tabs>
+      </Container>
+    );
+  };
+  
 
-  const DescriptionAccordion = ({ id, accordion_name, content, activeAccordion, setActiveAccordion }) => {
+
+  const DescriptionAccordion = ({ id, accordion_name, content}) => {
+    const [activeAccordion, setActiveAccordion] = useState(null);
     const toggleAccordion = () => {
-      setActiveAccordion(activeAccordion === id ? null : id);
+      setActiveAccordion(id);
     };
 
     return (
@@ -57,9 +101,10 @@ const ProductDetail = () => {
     );
   };
   
-  const FounderAccordion = ({ id, accordion_name, content, activeAccordion, setActiveAccordion }) => {
+  const FounderAccordion = ({ id, accordion_name, content}) => {
+    const [activeAccordion, setActiveAccordion] = useState(null);
     const toggleAccordion = () => {
-      setActiveAccordion(activeAccordion === id ? null : id);
+      setActiveAccordion(id);
     };
 
     return (
@@ -70,16 +115,17 @@ const ProductDetail = () => {
             {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
           </div>
           <Accordion.Body className="shopify-accordion-body">
-            {content}
+           <DynamicTabs tabId="group1" data={content} />
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
     );
   };
 
-  const KolAccordion = ({ id, accordion_name, content, activeAccordion, setActiveAccordion }) => {
+  const KolAccordion = ({ id, accordion_name, content}) => {
+    const [activeAccordion, setActiveAccordion] = useState(null);
     const toggleAccordion = () => {
-      setActiveAccordion(activeAccordion === id ? null : id);
+      setActiveAccordion(id);
     };
 
     return (
@@ -90,16 +136,17 @@ const ProductDetail = () => {
             {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
           </div>
           <Accordion.Body className="shopify-accordion-body">
-            {content}
+            <DynamicTabs tabId="group2" data={content} />
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
     );
   };
 
-  const SpokesAccordion = ({ id, accordion_name, content, activeAccordion, setActiveAccordion }) => {
+  const SpokesAccordion = ({ id, accordion_name, content}) => {
+    const [activeAccordion, setActiveAccordion] = useState(null);
     const toggleAccordion = () => {
-      setActiveAccordion(activeAccordion === id ? null : id);
+      setActiveAccordion(id);
     };
 
     return (
@@ -110,32 +157,12 @@ const ProductDetail = () => {
             {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
           </div>
           <Accordion.Body className="shopify-accordion-body">
-            {content}
+            <DynamicTabs tabId="group3" data={content} />
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
     );
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   const handleLoginModalOpen = () => {
@@ -218,11 +245,10 @@ const ProductDetail = () => {
         return;
       }
       setProduct(productData);
-  
 
-      const peopleData = peopleResponse.data?.data?.[0]?.people || [];
+      const peopleData = peopleResponse.data?.data?.[0]?.people;
       setPeople(peopleData);
-      console.log("People:", peopleData);
+      console.log(peopleData)
   
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -234,6 +260,14 @@ const ProductDetail = () => {
     const path = location.pathname.replace("/product/", "");
     fetchData(path, setProduct, setPeople, setError, t);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (people) {
+      setFounder(people.filter(person => person.Role === "Founder"));
+      setKol(people.filter(person => person.Role === "Kol"));
+      setSpokesperson(people.filter(person => person.Role === "Spokesperson"));
+    }
+  }, [people]);
 
   if (!product) {
     return (
@@ -256,41 +290,20 @@ const ProductDetail = () => {
       ? product.Name_zh
       : product.Name_en;
 
-  const Description =
-    language === "zh"
-      ? product.Description_zh
-      : product.Description_en;
+  // const Description =
+  //   language === "zh"
+  //     ? product.Description_zh
+  //     : product.Description_en;
 
   const Detail =
   language === "zh"
     ? product.Detail_zh
     : product.Detail_en;
 
-  console.log("Detail:", Detail);
-
   // const ShortDescription =
   //   language === "zh"
   //     ? product.Short_zh
   //     : product.Short_en;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   return (
@@ -343,9 +356,31 @@ const ProductDetail = () => {
                   <DescriptionAccordion
                     id="1"
                     accordion_name="产品描述"
-                    content={Description}
-                    activeAccordion={activeAccordion}
-                    setActiveAccordion={setActiveAccordion}
+                    content={Detail}
+                  />
+                </Row>
+
+                <Row>
+                  <FounderAccordion
+                    id="2"
+                    accordion_name="产品创始人"
+                    content={founder}
+                  />
+                </Row>
+
+                <Row>
+                  <KolAccordion
+                    id="3"
+                    accordion_name="产品意见领袖"
+                    content={kol}
+                  />
+                </Row>
+
+                <Row>
+                  <SpokesAccordion
+                    id="4"
+                    accordion_name="产品代言人"
+                    content={spokesperson}
                   />
                 </Row>
 
