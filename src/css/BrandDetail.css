@@ -1,0 +1,37 @@
+.brand-detail-header {
+  background-color: #f8f9fa;
+  padding: 3rem 0;
+}
+
+.brand-logo {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-section,
+.news-section {
+  padding: 2rem 0;
+}
+
+.product-card,
+.news-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover,
+.news-card:hover {
+  transform: scale(1.03);
+}
+
+.product-card img,
+.news-card img {
+  border-radius: 12px 12px 0 0;
+}
+
+.product-card-link {
+  text-decoration: none;
+}

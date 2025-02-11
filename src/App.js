@@ -6,39 +6,42 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "./App.css";
+import BrandDetail from "./components/BrandDetail";
+import EventDetail from "./components/EventDetail";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import KolDetail from "./components/KolDetail";
+import NewsDetail from "./components/NewsDetail";
 import ProductDetail from "./components/ProductDetail";
-import EventDetail from "./components/EventDetail";
-import ProductPage from "./pages/ProductPage";
-import Recruitment from "./pages/Recruitment";
-import KolPage from "./pages/KolPage";
-import Events from "./pages/Events";
-import Home from "./pages/Home";
-import Profile from "./pages/Profile";
-import ShoppingCart from "./pages/ShoppingCart";
-import RegisterMiss from "./pages/RegisterMiss";
 import BrandPage from "./pages/BrandPage";
+import Events from "./pages/Events";
 import Greeness from "./pages/Greeness";
+import Home from "./pages/Home";
+import KolPage from "./pages/KolPage";
 import MIVoting from "./pages/MI_VotingPage";
+import ProductPage from "./pages/ProductPage";
+import Profile from "./pages/Profile";
+import Recruitment from "./pages/Recruitment";
+import RegisterMiss from "./pages/RegisterMiss";
+import ShoppingCart from "./pages/ShoppingCart";
 
 function App() {
-
   // Reserved for different needs of costomisation across pages
   const location = useLocation();
   const [header, setHeader] = useState(<Header />);
   const [footer, setFooter] = useState(<Footer />);
 
   useEffect(() => {
-    if (location.pathname === '/') {
+    if (location.pathname === "/") {
       document.body.style.marginTop = "0px";
       setHeader(<Header />);
       setFooter(<Footer />);
     }
-    if (location.pathname === "/miss-register"        // Independent Pages without Header/Footer
-      || location.pathname === "/sponsor/greeness" 
-      || location.pathname === "/missinternational/vote") {
+    if (
+      location.pathname === "/miss-register" || // Independent Pages without Header/Footer
+      location.pathname === "/sponsor/greeness" ||
+      location.pathname === "/missinternational/vote"
+    ) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       document.body.style.marginTop = "0px";
       setFooter(<></>);
@@ -49,7 +52,6 @@ function App() {
       setFooter(<Footer />);
     }
   }, [location]);
-  
 
   // Check if is on desktop
   // const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
@@ -57,7 +59,7 @@ function App() {
   return (
     <div className='App'>
       {header}
-      <div className="main-content">
+      <div className='main-content'>
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route path='/profile' element={<Profile />} />
@@ -78,6 +80,8 @@ function App() {
           <Route path='/brands' element={<BrandPage />} />
           <Route path='/missinternational/vote' element={<MIVoting />} />
           <Route path='/sponsor/greeness' element={<Greeness />} />
+          <Route path='/brand/:id' element={<BrandDetail />} />
+          <Route path='/news/:id' element={<NewsDetail />} />
         </Routes>
       </div>
       {footer}
