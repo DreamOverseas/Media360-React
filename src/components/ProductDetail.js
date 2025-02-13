@@ -13,8 +13,6 @@ import "../css/ProductDetail.css";
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 
-
-
 const ProductDetail = () => {
   const location = useLocation();
   const { user } = useContext(AuthContext);
@@ -33,15 +31,12 @@ const ProductDetail = () => {
   const [spokesperson, setSpokesperson] = useState([]);
 
 
-
   const RelatedProduct = ({ related_product, language }) => {
-     
-    const displayedProducts = related_product.slice(0, 6);
   
     return (
       <Container>
         <Row>
-          {displayedProducts.map((product) => {
+          {related_product.map((product) => {
             const Name =
             language === "zh"
               ? product.Name_zh
@@ -65,7 +60,7 @@ const ProductDetail = () => {
                       <Card.Img
                         variant="top"
                         src={`${BACKEND_HOST}${product.ProductImage.url}`}
-                        alt={product.Name}
+                        alt={Name}
                       />
                     ) : (
                       <Card.Img
@@ -76,11 +71,11 @@ const ProductDetail = () => {
                       />
                     )}
                     <Card.Body>
-                      <Card.Title title={product.Name}>
-                        {product.Name}
+                      <Card.Title title={Name}>
+                        {Name}
                       </Card.Title>
                       <p>
-                        {product.ShortDescription}
+                        {ShortDescription}
                       </p>
                       <p className="productpage-product-price"> {/* class 改为 className */}
                         {product.Price === 0 ? t("price_tbd") : `AU${product.Price}`}
@@ -342,10 +337,41 @@ const ProductDetail = () => {
 
 
   useEffect(() => {
-    if (productTag) {
-      console.log(productTag)
-    }
+    axios
+      .get(`${BACKEND_HOST}/api/products/?populate=*`)
+      .then((res) => {
+        const allProducts = res.data.data;
+        console.log(allProducts);
+        computeRecommendations(allProducts, productTag);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
   }, [productTag]);
+
+
+  const computeRecommendations = (allProducts, currentTags) => {
+    const rankedProducts = allProducts.map((product) => {
+      const productTags = product.product_tags?.map(tag => tag.Tag_en) ?? [];
+      console.log("per product:", productTags)
+      
+    const safeCurrentTags = currentTags ?? [];
+
+    const matchCount = (productTags.length > 0 && safeCurrentTags.length > 0)
+      ? productTags.filter(tag => safeCurrentTags.includes(tag)).length
+      : 0;
+
+      return {
+        ...product,
+        matchCount,
+      };
+    })
+    .filter((product) => product.matchCount > 0)
+    .sort((a, b) => b.matchCount - a.matchCount); 
+      
+    console.log("related:", rankedProducts.slice(0, 6))
+    setRelatedProduct(rankedProducts.slice(0, 6));
+  };
 
 
   const handleShare = () => {
@@ -553,7 +579,8 @@ const ProductDetail = () => {
       <br />
       <section>
         <Container>
-
+          <h1>相关产品及服务</h1>
+          <RelatedProduct related_product = {relatedProduct} language = {language} />
         </Container>
       </section>
       {/* <section>
