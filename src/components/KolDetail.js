@@ -47,9 +47,14 @@ const KolDetail = () => {
   if (!person) return <div>{t("loading")}</div>;
 
   // ✅ 解析数据，防止 `null` 值导致 UI 显示错误
-  const Name = person.Name || "未知";
-  const Role = person.Role || "无角色";
   const language = i18n.language;
+  
+  const Name =
+    language === "zh"
+      ? person.Name_zh || "无头衔"
+      : person.Name_en || "No Title";
+  const Role = person.Role || "无角色";
+  
   const Title =
     language === "zh"
       ? person.Title_zh || "无头衔"
