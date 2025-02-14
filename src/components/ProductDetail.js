@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Col, Accordion, Container, Form, Image, InputGroup, Modal, Row, Spinner, Tabs, Tab,} from "react-bootstrap";
+import { Button, Col, Accordion, Container, Form, Image, InputGroup, Modal, Row, Spinner, Tabs, Tab, Card} from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { Link, useLocation } from "react-router-dom";
@@ -13,14 +13,14 @@ import "../css/ProductDetail.css";
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 
-
-
 const ProductDetail = () => {
   const location = useLocation();
   const { user } = useContext(AuthContext);
   const { t, i18n } = useTranslation();
   const [product, setProduct] = useState(null);
   const [people, setPeople] = useState(null);
+  const [relatedProduct, setRelatedProduct] = useState(null);
+  const [productTag, setProductTag] = useState(null);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [cartModal, setCartModal] = useState(false);
@@ -31,6 +31,66 @@ const ProductDetail = () => {
   const [spokesperson, setSpokesperson] = useState([]);
 
 
+  const RelatedProduct = ({ related_product, language }) => {
+  
+    return (
+      <Container>
+        <Row>
+          {related_product.map((product) => {
+            const Name =
+            language === "zh"
+              ? product.Name_zh
+              : product.Name_en;
+        
+          const ShortDescription =
+            language === "zh"
+              ? product.Short_zh
+              : product.Short_en;
+            return (
+              <Col
+                key={product.id}
+                xs={12}
+                sm={6} 
+                md={4}
+                className="mb-4"
+              >
+                <Link to={`/product/${product.url}`} className="card-link-ProductPage">
+                  <Card className="productpage-product-card">
+                    {product.ProductImage ? (
+                      <Card.Img
+                        variant="top"
+                        src={`${BACKEND_HOST}${product.ProductImage.url}`}
+                        alt={Name}
+                      />
+                    ) : (
+                      <Card.Img
+                        variant="top"
+                        src="https://placehold.co/250x350"
+                        fluid
+                        alt="Placeholder"
+                      />
+                    )}
+                    <Card.Body>
+                      <Card.Title title={Name}>
+                        {Name}
+                      </Card.Title>
+                      <p>
+                        {ShortDescription}
+                      </p>
+                      <p className="productpage-product-price"> {/* class 改为 className */}
+                        {product.Price === 0 ? t("price_tbd") : `AU${product.Price}`}
+                      </p>
+                    </Card.Body>
+                  </Card>
+                </Link>
+              </Col>
+            );
+          })}
+        </Row>
+      </Container>
+    );
+  };
+  
 
   const DynamicTabs = ({ tabId, data }) => {
     const [activeTab, setActiveTab] = useState(data.length > 0 ? data[0].id : null);
@@ -229,9 +289,6 @@ const ProductDetail = () => {
   //   setShowModal(false);
   // };
 
-
-
-
   const fetchData = async (path, setProduct, setPeople, setError, t) => {
     try {
 
@@ -247,11 +304,18 @@ const ProductDetail = () => {
         return;
       }
       setProduct(productData);
+      console.log(productData)
 
       const peopleData = peopleResponse.data?.data?.[0]?.people;
       setPeople(peopleData);
       console.log(peopleData)
-  
+
+      const relatedData = productResponse.data?.data?.[0]?.product_tags;
+
+      if (relatedData) {
+        setProductTag(relatedData.map(tag => tag.Tag_en))
+      }
+
     } catch (error) {
       console.error("Error fetching data:", error);
       setError(t("errorFetchingProductData"));
@@ -270,6 +334,44 @@ const ProductDetail = () => {
       setSpokesperson(people.filter(person => person.Role === "Spokesperson"));
     }
   }, [people]);
+
+
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_HOST}/api/products/?populate=*`)
+      .then((res) => {
+        const allProducts = res.data.data;
+        console.log(allProducts);
+        computeRecommendations(allProducts, productTag);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+  }, [productTag]);
+
+
+  const computeRecommendations = (allProducts, currentTags) => {
+    const rankedProducts = allProducts.map((product) => {
+      const productTags = product.product_tags?.map(tag => tag.Tag_en) ?? [];
+      console.log("per product:", productTags)
+      
+    const safeCurrentTags = currentTags ?? [];
+
+    const matchCount = (productTags.length > 0 && safeCurrentTags.length > 0)
+      ? productTags.filter(tag => safeCurrentTags.includes(tag)).length
+      : 0;
+
+      return {
+        ...product,
+        matchCount,
+      };
+    })
+    .filter((product) => product.matchCount > 0)
+    .sort((a, b) => b.matchCount - a.matchCount); 
+      
+    console.log("related:", rankedProducts.slice(0, 6))
+    setRelatedProduct(rankedProducts.slice(0, 6));
+  };
 
 
   const handleShare = () => {
@@ -475,6 +577,12 @@ const ProductDetail = () => {
       </section>
       <br />
       <br />
+      <section>
+        <Container>
+          <h1>相关产品及服务</h1>
+          <RelatedProduct related_product = {relatedProduct} language = {language} />
+        </Container>
+      </section>
       {/* <section>
         <Container>
           <Row>

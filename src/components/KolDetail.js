@@ -59,10 +59,12 @@ const KolDetail = () => {
 
   // ✅ 解析数据，防止 `null` 值导致 UI 显示错误
   const language = i18n.language;
+
   const Name = language === "zh" ? person.Name_zh || "未知" : person.Name_en || "Unknown";
   const Role = person.Role || "无角色";
   const Title = language === "zh" ? person.Title_zh || "无头衔" : person.Title_en || "No Title";
   const Bio = language === "zh" ? person.Bio_zh || "暂无简介" : person.Bio_en || "No biography available";
+
 
   // ✅ 解析品牌信息
   const brands = person.brands || [];
