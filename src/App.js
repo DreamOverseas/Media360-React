@@ -73,7 +73,7 @@ function App() {
           <Route exact path='/event/:name' element={<EventDetail />} />
           <Route path='/join-us' element={<Recruitment />} />
           <Route path='/kolpage' element={<KolPage />} />
-          <Route path='/kol/:id' element={<KolDetail />} />
+          <Route path="/person/:id" element={<KolDetail />} />
           <Route path='/cart' element={<ShoppingCart />} />
           <Route path='/cart' element={<ShoppingCart />} />
           <Route path='/miss-register' element={<RegisterMiss />} />

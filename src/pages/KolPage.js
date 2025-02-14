@@ -10,20 +10,20 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 const KolPage = () => {
   const [kols, setKols] = useState([]);
   const [error, setError] = useState(null);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     console.log(`${BACKEND_HOST}/api/people?populate=Image`);
     axios
       .get(`${BACKEND_HOST}/api/people?populate=Image`)
-      .then(response => {
+      .then((response) => {
         if (response.data && response.data.data) {
-          setKols(response.data.data); // ✅ 变量名保持 `kols`
+          setKols(response.data.data);
         } else {
           setError("No data found");
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching data: ", error);
         setError("Error fetching data");
       });
@@ -35,66 +35,43 @@ const KolPage = () => {
 
   return (
     <div>
-      <section className='kol-page-background-image-container'>
-        <h1 className='kol-page-banner-h1'>
+      <section className="kol-page-background-image-container">
+        <h1 className="kol-page-banner-h1">
           <b>{t("kol")}</b>
         </h1>
       </section>
       <br />
       <section>
-        <Container className='kol-container'>
-          <Row>
-            {kols.map(kol => (
-              <Col
-                key={kol.id}
-                xs={6} // 移动端每行 2 个
-                sm={6} // 小屏幕每行 2 个
-                md={3} // 中等屏幕每行 4 个
-                className='mb-4'
-              >
-                <Link to={`/kol/${kol.id}`} className='card-link-KolPage'>
-                  <Card className='kol-card'>
-                    {kol.Image && kol.Image.length > 0 ? (
-                      <Card.Img
-                        src={`${BACKEND_HOST}${kol.Image[0].url}`}
-                        alt={kol.Name}
-                      />
-                    ) : (
-                      <Card.Img
-                        variant='top'
-                        src='https://placehold.co/250x350'
-                        fluid
-                        alt='Placeholder'
-                      />
-                    )}
-                    <Card.Body>
-                      <Card.Title
-                        style={{
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          fontSize: "18px",
-                        }}
-                        title={kol.Name}
-                      >
-                        {kol.Name}
-                      </Card.Title>
-                      <Card.Text
-                        style={{
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          fontSize: "14px",
-                        }}
-                        title={kol.Title_en || kol.Title_zh}
-                      >
-                        {kol.Title_en || kol.Title_zh || "No Title"}
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </Col>
-            ))}
+        <Container className="kol-container">
+          <Row className="justify-content-start">
+            {kols.map((kol) => {
+              // ✅ 语言切换逻辑
+              const language = i18n.language;
+              const Name = language === "zh" ? kol.Name_zh || "未知" : kol.Name_en || "Unknown";
+              const Title = language === "zh" ? kol.Title_zh || "无头衔" : kol.Title_en || "No Title";
+              const ImageUrl = kol.Image?.[0]?.url ? `${BACKEND_HOST}${kol.Image[0].url}` : "https://placehold.co/250x350";
+              const profileUrl = `/person/${kol.internal_url || kol.id}`; // ✅ 优先使用 `internal_url`
+
+              return (
+                <Col
+                  key={kol.id}
+                  xs={6} // 移动端每行 2 个
+                  sm={6} // 小屏幕每行 2 个
+                  md={3} // 中等屏幕每行 4 个
+                  className="mb-4 d-flex"
+                >
+                  <Link to={profileUrl} className="card-link-KolPage">
+                    <Card className="kol-card">
+                      <Card.Img src={ImageUrl} alt={Name} className="kol-card-img" />
+                      <Card.Body className="text-center">
+                        <Card.Title className="kol-card-title">{Name}</Card.Title>
+                        <Card.Text className="kol-card-text">{Title}</Card.Text>
+                      </Card.Body>
+                    </Card>
+                  </Link>
+                </Col>
+              );
+            })}
           </Row>
         </Container>
       </section>
