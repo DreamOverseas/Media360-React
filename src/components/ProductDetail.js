@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Button, Col, Accordion, Container, Form, Image, InputGroup, Modal, Row, Spinner, Tabs, Tab, Card} from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import rehypeRaw from 'rehype-raw';
 import { AuthContext } from "../context/AuthContext";
@@ -12,8 +12,8 @@ import "../css/ProductDetail.css";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
-
 const ProductDetail = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const { user } = useContext(AuthContext);
   const { t, i18n } = useTranslation();
@@ -54,7 +54,14 @@ const ProductDetail = () => {
                 md={4}
                 className="mb-4"
               >
-                <Link to={`/product/${product.url}`} className="card-link-ProductPage">
+                <Link to={`/product/${product.url}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate(`/product/${product.url}`);
+                    window.location.reload(); // 强制刷新
+                  }}
+                  className="card-link-ProductPage"
+                >
                   <Card className="productpage-product-card">
                     {product.ProductImage ? (
                       <Card.Img
@@ -226,7 +233,6 @@ const ProductDetail = () => {
     );
   };
 
-
   // const handleLoginModalOpen = () => {
   //   setShowLoginModal(true);
   //   setCartModal(false);
@@ -304,11 +310,11 @@ const ProductDetail = () => {
         return;
       }
       setProduct(productData);
-      console.log(productData)
+      // console.log(productData)
 
       const peopleData = peopleResponse.data?.data?.[0]?.people;
       setPeople(peopleData);
-      console.log(peopleData)
+      // console.log(peopleData)
 
       const relatedData = productResponse.data?.data?.[0]?.product_tags;
 
@@ -325,6 +331,7 @@ const ProductDetail = () => {
   useEffect(() => {
     const path = location.pathname.replace("/product/", "");
     fetchData(path, setProduct, setPeople, setError, t);
+
   }, [location.pathname]);
 
   useEffect(() => {
@@ -341,7 +348,7 @@ const ProductDetail = () => {
       .get(`${BACKEND_HOST}/api/products/?populate=*`)
       .then((res) => {
         const allProducts = res.data.data;
-        console.log(allProducts);
+        // console.log(allProducts);
         computeRecommendations(allProducts, productTag);
       })
       .catch((error) => {
@@ -353,7 +360,7 @@ const ProductDetail = () => {
   const computeRecommendations = (allProducts, currentTags) => {
     const rankedProducts = allProducts.map((product) => {
       const productTags = product.product_tags?.map(tag => tag.Tag_en) ?? [];
-      console.log("per product:", productTags)
+      // console.log("per product:", productTags)
       
     const safeCurrentTags = currentTags ?? [];
 
@@ -369,7 +376,6 @@ const ProductDetail = () => {
     .filter((product) => product.matchCount > 0)
     .sort((a, b) => b.matchCount - a.matchCount); 
       
-    console.log("related:", rankedProducts.slice(0, 6))
     setRelatedProduct(rankedProducts.slice(0, 6));
   };
 
@@ -580,7 +586,11 @@ const ProductDetail = () => {
       <section>
         <Container>
           <h1>相关产品及服务</h1>
-          <RelatedProduct related_product = {relatedProduct} language = {language} />
+          {relatedProduct ? (
+            <RelatedProduct related_product={relatedProduct} language={language} />
+          ) : (
+            <p>加载中...</p>
+          )}
         </Container>
       </section>
       {/* <section>
