@@ -8,6 +8,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import rehypeRaw from 'rehype-raw';
 import { AuthContext } from "../context/AuthContext";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 import "../css/ProductDetail.css";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
@@ -29,6 +31,85 @@ const ProductDetail = () => {
   const [founder, setFounder] = useState([]);
   const [kol, setKol] = useState([]);
   const [spokesperson, setSpokesperson] = useState([]);
+
+
+
+
+  const ProductGallery = ({ product }) => {
+    if (!product) return null; // 如果没有数据，返回空
+  
+    const BACKEND_HOST = "你的后端地址"; // 替换为实际的后端地址
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [lightboxOpen, setLightboxOpen] = useState(false);
+  
+    // 处理图片数据
+    const mainImage = product?.ProductImage
+      ? `${BACKEND_HOST}${product.ProductImage.url}`
+      : "https://placehold.co/650x650";
+  
+    const subImages = product?.SubImage?.length
+      ? product.SubImage.map((img) => `${BACKEND_HOST}${img.url}`)
+      : [];
+  
+    const allImages = [mainImage, ...subImages]; // 组合所有图片
+  
+    // 自动轮播，每 5 秒切换
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % allImages.length);
+      }, 5000);
+      return () => clearInterval(interval);
+    }, [allImages.length]);
+  
+    // 手动切换下一张
+    const nextImage = () => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % allImages.length);
+    };
+  
+    // 手动切换上一张
+    const prevImage = () => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === 0 ? allImages.length - 1 : prevIndex - 1
+      );
+    };
+  
+    return (
+      <div className="product-gallery">
+        {/* 主图展示 */}
+        <div className="main-image-container">
+          <button className="prev-button" onClick={prevImage}>❮</button>
+          <img
+            src={allImages[currentIndex]}
+            alt={`Product Image ${currentIndex}`}
+            className="main-img"
+            onClick={() => setLightboxOpen(true)} // 点击放大
+          />
+          <button className="next-button" onClick={nextImage}>❯</button>
+        </div>
+  
+        {/* 缩略图导航 */}
+        <div className="thumbnail-container">
+          {allImages.map((img, index) => (
+            <img
+              key={index}
+              src={img}
+              alt={`Thumbnail ${index}`}
+              className={`thumb-img ${index === currentIndex ? "active-thumb" : ""}`}
+              onClick={() => setCurrentIndex(index)} // 点击切换主图
+            />
+          ))}
+        </div>
+  
+        {/* 图片放大 Lightbox */}
+        <Lightbox
+          open={lightboxOpen}
+          close={() => setLightboxOpen(false)}
+          slides={allImages.map((img) => ({ src: img }))}
+          index={currentIndex} // 确保打开时显示当前的图片
+        />
+      </div>
+    );
+  };
 
 
   const RelatedProduct = ({ related_product, language }) => {
@@ -129,7 +210,7 @@ const ProductDetail = () => {
                     ) : (
                       <div className="ck-content" dangerouslySetInnerHTML={{ __html: item.Bio_zh}} />
                   )}
-                    <Link to={`/kol/${item.id}`} className="person-related-btn">查看更多</Link>
+                    <Link to={`/person/${item.internal_url}`} className="person-related-btn">查看更多</Link>
                     <Link to={`/`} className="person-related-btn">更新信息</Link>
                 </Col>
               </Row>
@@ -440,9 +521,6 @@ const ProductDetail = () => {
         <Container>
           <Row className='product-detail-section'>
 
-
-
-
             <Col className='product-image-col'>
               {ProductImage ? (
                 <Image
@@ -454,7 +532,6 @@ const ProductDetail = () => {
                 <Image src='https://placehold.co/650x650' alt='Placeholder' />
               )}
             </Col>
-
 
             <Col className='product-detail-col'>
 
