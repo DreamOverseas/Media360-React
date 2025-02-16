@@ -40,7 +40,6 @@ const ProductDetail = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
   
-    // 处理图片数据
     const mainImage = product?.ProductImage
       ? `${BACKEND_HOST}${product.ProductImage.url}`
       : "https://placehold.co/650x650";
@@ -73,19 +72,18 @@ const ProductDetail = () => {
   
     return (
       <Container className="product-gallery">
-        {/* 主图展示 */}
+
         <div className="main-image-container">
           <button className="prev-button" onClick={prevImage}>❮</button>
           <Image
             src={allImages[currentIndex]}
             alt={`Product Image ${currentIndex}`}
             className="product-img"
-            onClick={() => setLightboxOpen(true)} // 点击放大
+            onClick={() => setLightboxOpen(true)}
           />
           <button className="next-button" onClick={nextImage}>❯</button>
         </div>
   
-        {/* 缩略图导航 */}
         <div className="thumbnail-container">
           {allImages.map((img, index) => (
             <Image
@@ -93,17 +91,16 @@ const ProductDetail = () => {
               src={img}
               alt={`Thumbnail ${index}`}
               className={`thumb-img ${index === currentIndex ? "active-thumb" : ""}`}
-              onClick={() => setCurrentIndex(index)} // 点击切换主图
+              onClick={() => setCurrentIndex(index)}
             />
           ))}
         </div>
   
-        {/* 图片放大 Lightbox */}
         <Lightbox
           open={lightboxOpen}
           close={() => setLightboxOpen(false)}
           slides={allImages.map((img) => ({ src: img }))}
-          index={currentIndex} // 确保打开时显示当前的图片
+          index={currentIndex}
         />
       </Container>
     );
@@ -137,7 +134,7 @@ const ProductDetail = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     navigate(`/product/${product.url}`);
-                    window.location.reload(); // 强制刷新
+                    window.location.reload();
                   }}
                   className="card-link-ProductPage"
                 >
@@ -160,7 +157,7 @@ const ProductDetail = () => {
                       <Card.Title title={Name}>
                         {Name}
                       </Card.Title>
-                      <p>
+                      <p className="product-short-description">
                         {ShortDescription}
                       </p>
                       <p className="productpage-product-price"> {/* class 改为 className */}
@@ -497,20 +494,10 @@ const ProductDetail = () => {
       ? product.Name_zh
       : product.Name_en;
 
-  // const Description =
-  //   language === "zh"
-  //     ? product.Description_zh
-  //     : product.Description_en;
-
   const Detail =
   language === "zh"
     ? product.Detail_zh
     : product.Detail_en;
-
-  // const ShortDescription =
-  //   language === "zh"
-  //     ? product.Short_zh
-  //     : product.Short_en;
 
 
   return (
@@ -520,15 +507,6 @@ const ProductDetail = () => {
           <Row className='product-detail-section'>
 
             <Col className='product-image-col'>
-              {/* {ProductImage ? (
-                <Image
-                  src={`${BACKEND_HOST}${ProductImage.url}`}
-                  alt={Name}
-                  className="product-img"
-                />
-              ) : (
-                <Image src='https://placehold.co/650x650' alt='Placeholder' />
-              )} */}
               <ProductGallery product= {product}/>
             </Col>
 
@@ -539,20 +517,25 @@ const ProductDetail = () => {
 
                 <Row>
                   <h1>{Name}</h1>
-                </Row>
-
-                <Row >
                   <h4>{display_price}</h4>
                 </Row>
-                <Row className='product-price-quantity'>
-                  <Col>
-                    <Form.Group className='price-control'>
-                      <InputGroup className='d-flex justify-content-center align-items-left'>
-                        <Button variant='outline-secondary' onClick={handleDecrement}>-</Button>
-                        <InputGroup.Text readOnly>{quantity}</InputGroup.Text>
-                        <Button variant='outline-secondary' onClick={handleIncrement}>+</Button>
-                      </InputGroup>
-                    </Form.Group>
+
+                <Row className="product-price-quantity d-flex align-items-center">
+
+                  <Col md={4}>
+                    <div className="quantity-control">
+                      <Button className="quantity-btn" onClick={handleDecrement}>
+                        -
+                      </Button>
+                      <div className="quantity-text">{quantity}</div>
+                      <Button className="quantity-btn" onClick={handleIncrement}>
+                        +
+                      </Button>
+                    </div>
+                  </Col>
+
+                  <Col md={8} className="d-flex justify-content-center">
+                    <Button className="add-to-cart-btn">即刻咨询并购买</Button>
                   </Col>
                 </Row>
 

@@ -43,17 +43,6 @@
   padding-left: 20px;
 }
 
-/* Price and quantity selection styling */
-.product-price-quantity {
-  padding-bottom: 10%;
-}
-
-/* Short description styling */
-.product-short-description {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
 /* Purchase modal background */
 .purchase-modal-background {
@@ -61,6 +50,59 @@
   object-fit: fill;
 }
 
+.quantity-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 50px;
+  width: 100%;
+  height:50px
+}
+
+
+.quantity-btn {
+  border: none;
+  background: none;
+  border-radius: 30px;
+  font-size: 15px;
+  color: #555;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-btn:hover {
+  color: black;
+}
+
+/* 数量显示 */
+.quantity-text {
+  font-size: 16px;
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* 购物车按钮样式 */
+.add-to-cart-btn {
+  width: 100%;
+  height:50px;
+  border-radius: 50px;
+  border: 1px solid black;
+  background: white;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.add-to-cart-btn:hover {
+  background: black;
+  color: white;
+}
 /* React Markdown content styling */
 /* .markdown-content img {
   display: block;
@@ -351,6 +393,14 @@
   .product-detail p {
     white-space: normal; /* Forces text to wrap on mobile */
   }
+
+  .product-short-description {
+    font-size: 8px;
+  }
+
+  .quantity-control {
+    width:120px;
+  }
 }
 .responsive-iframe {
   position: absolute;
@@ -366,3 +416,4 @@
   padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
   height: 0;
 }
+
