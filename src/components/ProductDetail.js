@@ -652,6 +652,41 @@ const ProductDetail = () => {
           )}
         </Container>
       </section>
+
+
+      {/* <section>
+        <Container className='news-section'>
+          <h3>{t("latestNews")}</h3>
+          {brand.news && brand.news.length > 0 ? (
+            <Row>
+              {brand.news.map(newsItem => {
+                const newsTitle = newsItem.Title || "暂无标题";
+                const newsDate = newsItem.Published_time ? new Date(newsItem.Published_time).toLocaleString() : "暂无发布时间";
+                const newsImage = newsItem.Image?.url ? `${BACKEND_HOST}${newsItem.Image.url}` : "https://placehold.co/300x200";
+
+                return (
+                  <Col key={newsItem.id} md={4}>
+                    <Card className='news-card'>
+                      <Card.Img src={newsImage} alt={newsTitle} />
+                      <Card.Body>
+                        <Card.Title>{newsTitle}</Card.Title>
+                        <Card.Text>{newsDate}</Card.Text>
+                        <Link to={`/news/${newsItem.id}`}>
+                          <Button variant='dark'>{t("readMore")}</Button>
+                        </Link>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                );
+              })}
+            </Row>
+          ) : (
+            <p className="text-center text-muted">暂无相关新闻</p>
+          )}
+        </Container>
+      </section> */}
+
+
       {/* <section>
         <Container>
           <Row>
