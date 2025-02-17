@@ -8,6 +8,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import rehypeRaw from 'rehype-raw';
 import { AuthContext } from "../context/AuthContext";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 import "../css/ProductDetail.css";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
@@ -31,6 +33,80 @@ const ProductDetail = () => {
   const [spokesperson, setSpokesperson] = useState([]);
 
 
+
+
+  const ProductGallery = ({ product }) => {
+    
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [lightboxOpen, setLightboxOpen] = useState(false);
+  
+    const mainImage = product?.ProductImage
+      ? `${BACKEND_HOST}${product.ProductImage.url}`
+      : "https://placehold.co/650x650";
+  
+    const subImages = product?.SubImages?.length
+      ? product.SubImages.map((img) => `${BACKEND_HOST}${img.url}`)
+      : [];
+  
+    const allImages = [mainImage, ...subImages]; 
+  
+    
+    // useEffect(() => {
+    //   const interval = setInterval(() => {
+    //     setCurrentIndex((prevIndex) => (prevIndex + 1) % allImages.length);
+    //   }, 5000);
+    //   return () => clearInterval(interval);
+    // }, [allImages.length]);
+  
+    
+    const nextImage = () => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % allImages.length);
+    };
+  
+    
+    const prevImage = () => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === 0 ? allImages.length - 1 : prevIndex - 1
+      );
+    };
+  
+    return (
+      <Container className="product-gallery">
+
+        <div className="main-image-container">
+          <button className="prev-button" onClick={prevImage}>❮</button>
+          <Image
+            src={allImages[currentIndex]}
+            alt={`Product Image ${currentIndex}`}
+            className="product-img"
+            onClick={() => setLightboxOpen(true)}
+          />
+          <button className="next-button" onClick={nextImage}>❯</button>
+        </div>
+  
+        <div className="thumbnail-container">
+          {allImages.map((img, index) => (
+            <Image
+              key={index}
+              src={img}
+              alt={`Thumbnail ${index}`}
+              className={`thumb-img ${index === currentIndex ? "active-thumb" : ""}`}
+              onClick={() => setCurrentIndex(index)}
+            />
+          ))}
+        </div>
+  
+        <Lightbox
+          open={lightboxOpen}
+          close={() => setLightboxOpen(false)}
+          slides={allImages.map((img) => ({ src: img }))}
+          index={currentIndex}
+        />
+      </Container>
+    );
+  };
+
+
   const RelatedProduct = ({ related_product, language }) => {
   
     return (
@@ -49,7 +125,7 @@ const ProductDetail = () => {
             return (
               <Col
                 key={product.id}
-                xs={12}
+                xs={6}
                 sm={6} 
                 md={4}
                 className="mb-4"
@@ -58,7 +134,7 @@ const ProductDetail = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     navigate(`/product/${product.url}`);
-                    window.location.reload(); // 强制刷新
+                    window.location.reload();
                   }}
                   className="card-link-ProductPage"
                 >
@@ -81,7 +157,7 @@ const ProductDetail = () => {
                       <Card.Title title={Name}>
                         {Name}
                       </Card.Title>
-                      <p>
+                      <p className="product-short-description">
                         {ShortDescription}
                       </p>
                       <p className="productpage-product-price"> {/* class 改为 className */}
@@ -129,7 +205,7 @@ const ProductDetail = () => {
                     ) : (
                       <div className="ck-content" dangerouslySetInnerHTML={{ __html: item.Bio_zh}} />
                   )}
-                    <Link to={`/kol/${item.id}`} className="person-related-btn">查看更多</Link>
+                    <Link to={`/person/${item.internal_url}`} className="person-related-btn">查看更多</Link>
                     <Link to={`/`} className="person-related-btn">更新信息</Link>
                 </Col>
               </Row>
@@ -418,20 +494,10 @@ const ProductDetail = () => {
       ? product.Name_zh
       : product.Name_en;
 
-  // const Description =
-  //   language === "zh"
-  //     ? product.Description_zh
-  //     : product.Description_en;
-
   const Detail =
   language === "zh"
     ? product.Detail_zh
     : product.Detail_en;
-
-  // const ShortDescription =
-  //   language === "zh"
-  //     ? product.Short_zh
-  //     : product.Short_en;
 
 
   return (
@@ -440,21 +506,9 @@ const ProductDetail = () => {
         <Container>
           <Row className='product-detail-section'>
 
-
-
-
             <Col className='product-image-col'>
-              {ProductImage ? (
-                <Image
-                  src={`${BACKEND_HOST}${ProductImage.url}`}
-                  alt={Name}
-                  className="product-img"
-                />
-              ) : (
-                <Image src='https://placehold.co/650x650' alt='Placeholder' />
-              )}
+              <ProductGallery product= {product}/>
             </Col>
-
 
             <Col className='product-detail-col'>
 
@@ -463,20 +517,25 @@ const ProductDetail = () => {
 
                 <Row>
                   <h1>{Name}</h1>
-                </Row>
-
-                <Row >
                   <h4>{display_price}</h4>
                 </Row>
-                <Row className='product-price-quantity'>
-                  <Col>
-                    <Form.Group className='price-control'>
-                      <InputGroup className='d-flex justify-content-center align-items-left'>
-                        <Button variant='outline-secondary' onClick={handleDecrement}>-</Button>
-                        <InputGroup.Text readOnly>{quantity}</InputGroup.Text>
-                        <Button variant='outline-secondary' onClick={handleIncrement}>+</Button>
-                      </InputGroup>
-                    </Form.Group>
+
+                <Row className="product-price-quantity d-flex align-items-center">
+
+                  <Col md={4}>
+                    <div className="quantity-control">
+                      <Button className="quantity-btn" onClick={handleDecrement}>
+                        -
+                      </Button>
+                      <div className="quantity-text">{quantity}</div>
+                      <Button className="quantity-btn" onClick={handleIncrement}>
+                        +
+                      </Button>
+                    </div>
+                  </Col>
+
+                  <Col md={8} className="d-flex justify-content-center">
+                    <Button className="add-to-cart-btn">即刻咨询并购买</Button>
                   </Col>
                 </Row>
 
@@ -593,6 +652,41 @@ const ProductDetail = () => {
           )}
         </Container>
       </section>
+
+
+      {/* <section>
+        <Container className='news-section'>
+          <h3>{t("latestNews")}</h3>
+          {brand.news && brand.news.length > 0 ? (
+            <Row>
+              {brand.news.map(newsItem => {
+                const newsTitle = newsItem.Title || "暂无标题";
+                const newsDate = newsItem.Published_time ? new Date(newsItem.Published_time).toLocaleString() : "暂无发布时间";
+                const newsImage = newsItem.Image?.url ? `${BACKEND_HOST}${newsItem.Image.url}` : "https://placehold.co/300x200";
+
+                return (
+                  <Col key={newsItem.id} md={4}>
+                    <Card className='news-card'>
+                      <Card.Img src={newsImage} alt={newsTitle} />
+                      <Card.Body>
+                        <Card.Title>{newsTitle}</Card.Title>
+                        <Card.Text>{newsDate}</Card.Text>
+                        <Link to={`/news/${newsItem.id}`}>
+                          <Button variant='dark'>{t("readMore")}</Button>
+                        </Link>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                );
+              })}
+            </Row>
+          ) : (
+            <p className="text-center text-muted">暂无相关新闻</p>
+          )}
+        </Container>
+      </section> */}
+
+
       {/* <section>
         <Container>
           <Row>
