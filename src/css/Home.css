@@ -45,34 +45,6 @@
   /* Removed high margin for the undermost section */
 }
 
-/* Carousel Section */
-.ads-section {
-  width: 100%;
-  padding-top: 1rem;
-  padding-left: 0;
-  margin-bottom: 1rem;
-}
-
-.ads-carousel img {
-  object-fit: cover;
-  width: 100%;
-  border-radius: 8px;
-  /* Rounded corners for ad images */
-}
-
-.ads-carousel .carousel-caption {
-  display: flex;
-  bottom: 10px;
-  padding: 10px;
-  border-radius: 4px;
-  background: none;
-  /* Remove background color */
-  color: #fff;
-  /* Ensure the text color is visible on the ad image */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-  /* Add a slight shadow to ensure text readability */
-}
-
 /* KOL Section */
 /* Ensure enough space between rows */
 .kol-row {
