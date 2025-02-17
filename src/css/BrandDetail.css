@@ -1,37 +1,211 @@
-.brand-detail-header {
+/* 🎨 全局样式优化 */
+body {
+  font-family: "Arial", sans-serif;
+  line-height: 1.6;
   background-color: #f8f9fa;
-  padding: 3rem 0;
+}
+
+/* 🎨 容器对齐优化 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 🎨 品牌详情布局 */
+.brand-detail-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4rem 0;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ✅ 左侧品牌信息 */
+.brand-info {
+  flex: 1;
+  max-width: 55%;
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.brand-info h1 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.brand-info p {
+  font-size: 1.1rem;
+  margin-top: 1.5rem;
+}
+
+/* ✅ 右侧品牌 Logo */
+.brand-logo-container {
+  flex: 1;
+  max-width: 35%;
+  text-align: center;
 }
 
 .brand-logo {
-  max-width: 100%;
+  width: 100%;
+  max-width: 300px;
   height: auto;
+  object-fit: contain;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.product-section,
-.news-section {
-  padding: 2rem 0;
-}
-
-.product-card,
-.news-card {
+/* 🎨 相关新闻 & 相关人物 */
+.news-section,
+.person-section {
+  padding: 5rem 0; /* ✅ 增加上下间距 */
+  margin-top: 5rem; /* ✅ 增加顶部间距 */
+  background: inherit;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.product-card:hover,
-.news-card:hover {
-  transform: scale(1.03);
+.section-title {
+  text-align: center;
+  font-size: 1.9rem;
+  font-weight: bold;
+  margin: 3rem 0; /* ✅ 增加标题的上下间距 */
 }
 
-.product-card img,
-.news-card img {
-  border-radius: 12px 12px 0 0;
+/* 🎨 统一卡片样式 */
+.news-card,
+.person-card {
+  width: 100%;
+  text-align: center;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 400px;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
+  padding: 1rem;
 }
 
-.product-card-link {
+.news-card:hover,
+.person-card:hover {
+  transform: translateY(-5px);
+}
+
+/* ✅ 图片调整 */
+.news-card img,
+.person-card img {
+  width: 100%;
+  height: 80%; /* ✅ 让图片占 80% 高度 */
+  object-fit: contain; /* ✅ 确保完整显示 */
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+/* ✅ 让 Card.Body 内容紧凑 */
+.news-card .card-body,
+.person-card .card-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 0.5rem;
+  justify-content: center;
+  width: 100%;
+}
+
+/* ✅ 标题和文本紧凑 */
+.news-card .card-title,
+.person-card .card-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.news-card .card-text,
+.person-card .card-text {
+  font-size: 1rem;
+  color: #333;
   text-decoration: none;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+/* 🎨 Footer 全宽优化 */
+footer {
+  width: 100%;
+  background-color: #343a40;
+  color: #ffffff;
+  padding: 2.5rem 0;
+  text-align: center;
+}
+
+/* 📱 响应式优化 */
+@media (min-width: 1024px) {
+  .news-section .row,
+  .person-section .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .news-section .col-md-4,
+  .person-section .col-md-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container,
+  .brand-detail-header,
+  .news-section,
+  .person-section {
+    max-width: 100%;
+    padding: 0 5vw;
+  }
+
+  .brand-detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brand-info {
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .brand-logo-container {
+    max-width: 100%;
+    order: -1;
+    margin-bottom: 1.5rem;
+  }
+
+  .brand-logo {
+    max-width: 92%;
+  }
+
+  .news-card,
+  .person-card {
+    min-height: 400px;
+  }
+
+  .news-card img,
+  .person-card img {
+    width: 100%;
+    height: 80%;
+    object-fit: contain;
+  }
+
+  .news-section .col-md-4,
+  .person-section .col-md-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 }
