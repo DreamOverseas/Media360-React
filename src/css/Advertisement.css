@@ -90,46 +90,6 @@
   }
 }
 
-.product-container {
-  width: 100%;  /* 让容器填满整个 Col */
-  height: 400px; /* 统一高度 */
-  background-size: cover;  /* 确保背景图片完全填充 */
-  background-position: center;
-  background-repeat: no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: white;
-  position: relative;
-  border-radius: 10px; /* 可选 */
-}
-
-/* 每个 Col 里的背景图片 */
-.product-bg-1 {
-  background-image: url(/public/360_logo.png);
-}
-
-.product-bg-2 {
-  background-image: url(/public/360_logo.png);
-}
-
-.product-bg-3 {
-  background-image: url(/public/360_logo.png);
-}
-
-/* 文字区域，增加半透明背景提升可读性 */
-.product-content {
-  background: rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  border-radius: 10px;
-}
-
-
-
-
-
-
 .ads-carousel .carousel-caption {
   bottom: 10px;
   left: 20px;
