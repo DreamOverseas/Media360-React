@@ -30,7 +30,6 @@ const NewsSlider = ({ ads }) => {
                   ? `${BACKEND_HOST}${advertisement.Adimage[0].url}`
                   : "https://placehold.co/900x400"
               }
-              className='d-block w-100 ad-image'
               alt={advertisement.Name || "Advertisement"}
             />
           </a>
