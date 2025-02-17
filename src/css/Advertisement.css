@@ -20,9 +20,8 @@
 }
 
 .ads-carousel {
-  width: 42vw;
-  height: 28vw;
-  margin-top: 2%;
+  width: 100%;
+  height: 500px;
   display: flex;
   margin-bottom: 20px;
 }
@@ -34,22 +33,54 @@
 
 .carousel-item img {
   width: 100%;
-  height: auto;
+  height: 500px;
 }
 
 .ad-item img {
   max-width: 100%;
-  height: auto;
+  height: 500px;
   object-fit: cover;
   border-radius: 8px;
 }
 
+/* 让按钮的背景是白色的圆形 */
+.ads-carousel .carousel-control-prev,
+.ads-carousel .carousel-control-next {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background-color: white; /* 背景是白色 */
+  border-radius: 50%; /* 让背景变成圆形 */
+  opacity: 0.8; /* 适当透明，减少对广告的遮挡 */
+}
+
+/* 让箭头变成黑色 */
+.ads-carousel .carousel-control-prev-icon,
+.ads-carousel .carousel-control-next-icon {
+  filter: invert(1); /* 让 Bootstrap 自带的白色箭头变黑 */
+}
+
+/* 鼠标悬停时让按钮更明显 */
+.ads-carousel .carousel-control-prev:hover,
+.ads-carousel .carousel-control-next:hover {
+  opacity: 0.8;
+}
+
+.ads-carousel .carousel-control-prev {
+  left: 5%; /* 调整左侧按钮的位置 */
+}
+
+.ads-carousel .carousel-control-next {
+  right: 5%; /* 调整右侧按钮的位置 */
+}
+
+
 /* Mobile Adjustments */
 @media (max-width: 768px) {
   .ads-carousel {
-    width: 93vw;
+    width: 100%;
     height: 240px;
-    margin-top: 2%;
     display: flex;
     margin-bottom: 20px;
   }
@@ -58,6 +89,46 @@
     height: 240px;
   }
 }
+
+.product-container {
+  width: 100%;  /* 让容器填满整个 Col */
+  height: 400px; /* 统一高度 */
+  background-size: cover;  /* 确保背景图片完全填充 */
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  position: relative;
+  border-radius: 10px; /* 可选 */
+}
+
+/* 每个 Col 里的背景图片 */
+.product-bg-1 {
+  background-image: url(/public/360_logo.png);
+}
+
+.product-bg-2 {
+  background-image: url(/public/360_logo.png);
+}
+
+.product-bg-3 {
+  background-image: url(/public/360_logo.png);
+}
+
+/* 文字区域，增加半透明背景提升可读性 */
+.product-content {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+
+
+
+
 
 .ads-carousel .carousel-caption {
   bottom: 10px;
