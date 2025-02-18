@@ -24,6 +24,11 @@ import Profile from "./pages/Profile";
 import Recruitment from "./pages/Recruitment";
 import RegisterMiss from "./pages/RegisterMiss";
 import ShoppingCart from "./pages/ShoppingCart";
+import InfluenceHub from "./pages/InfluenceHub";
+import MediaCenter from "./pages/MediaCenter";
+import NewsPage from "./pages/NewsPage";
+import FounderPage from "./pages/FounderPage";
+import AmbassadorPage from "./pages/AmbassadorPage";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -68,13 +73,17 @@ function App() {
           <Route exact path='/productTravel' element={<ProductPage />} />
           <Route exact path='/productLife' element={<ProductPage />} /> */}
           <Route path='/product/:name' element={<ProductDetail />} />
-          <Route path='/eventpage' element={<Events />} />
           <Route exact path='/product/:name' element={<ProductDetail />} />
           <Route exact path='/event/:name' element={<EventDetail />} />
           <Route path='/join-us' element={<Recruitment />} />
-          <Route path='/kolpage' element={<KolPage />} />
+          <Route path='/influence-hub' element={<InfluenceHub />} />
+          <Route path='/media-center' element={<MediaCenter />} />
+          <Route path='/news' element={<NewsPage />} />
+          <Route path='/events' element={<Events />} />
+          <Route path='/founders' element={<FounderPage />} />
+          <Route path='/kols' element={<KolPage />} />
+          <Route path='/ambassadors' element={<AmbassadorPage />} />
           <Route path="/person/:id" element={<KolDetail />} />
-          <Route path='/cart' element={<ShoppingCart />} />
           <Route path='/cart' element={<ShoppingCart />} />
           <Route path='/miss-register' element={<RegisterMiss />} />
           <Route path='/brands' element={<BrandPage />} />
