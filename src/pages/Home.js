@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Row, Image} from "react-bootstrap";
+import { Card, Col, Container, Row} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import NewsSlider from "../components/NewsSlider";
@@ -93,7 +93,7 @@ const HomePage = () => {
                 <div className="product-content">
                   <h6 className="product-title">开创品牌愿景，引领卓越未来</h6>
                   <h3 className="product-subtitle">品牌创始人</h3>
-                  <Link to="/productpage/">
+                  <Link to="/founders/">
                     <button><b>查看更多</b></button>
                   </Link>
                 </div>
@@ -108,7 +108,7 @@ const HomePage = () => {
                 <div className="product-content">
                   <h6 className="product-title">赋予群众力量，启发潮流趋势</h6>
                   <h3 className="product-subtitle">意见领袖</h3>
-                  <Link to="/productpage/">
+                  <Link to="/kols/">
                     <button><b>查看更多</b></button>
                   </Link>
                 </div>
@@ -123,7 +123,7 @@ const HomePage = () => {
                 <div className="product-content">
                   <h6 className="product-title">引领潮流风向，定义时代风格</h6>
                   <h3 className="product-subtitle">品牌代言人</h3>
-                  <Link to="/productpage/">
+                  <Link to="/ambassadors/">
                     <button><b>查看更多</b></button>
                   </Link>
                 </div>
