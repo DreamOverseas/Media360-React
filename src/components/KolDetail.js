@@ -36,7 +36,7 @@ const KolDetail = () => {
         if (!response.data?.data.length) {
           console.log(`Internal URL failed, trying ID: ${paramId}`);
           response = await axios.get(
-            `${BACKEND_HOST}/api/people?filters[id][$eq]=${paramId}&populate=*`
+            `${BACKEND_HOST}/api/people?filters[id][$eq]==${paramId}&populate=*`
           );
         }
 
@@ -151,12 +151,12 @@ const KolDetail = () => {
           <h3 className='section-title'>{t("associatedBrands")}</h3>
           <Row className='justify-content-start'>
             {brands.map(brand => (
-              <Col key={brand.id} md={4} className='d-flex'>
+              <Col key={brand.id} md={3} className='d-flex'>
                 <Link
                   to={`/brand/${brand.internal_url || brand.id}`}
                   className='card-link'
                 >
-                  <Card className='custom-card'>
+                  <Card className='brand-card'>
                     <Card.Img
                       src={
                         brand.logo?.url
@@ -182,12 +182,12 @@ const KolDetail = () => {
           <h3 className='section-title'>{t("highlightedProduct")}</h3>
           <Row className='justify-content-start'>
             {products.map(product => (
-              <Col key={product.id} md={4} className='d-flex'>
+              <Col key={product.id} md={3} className='d-flex'>
                 <Link
                   to={`/product/${product.url || product.id}`}
                   className='card-link'
                 >
-                  <Card className='custom-card'>
+                  <Card className='product-card'>
                     <Card.Img
                       src={
                         product.ProductImage?.url

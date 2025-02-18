@@ -70,7 +70,6 @@ body {
   margin-top: 3rem;
   background: inherit; /* ✅ 让背景与整体一致 */
   border-radius: 12px;
-  /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05); */
   max-width: 1200px; /* ✅ 使卡片宽度对齐 */
   margin: 0 auto;
 }
@@ -85,13 +84,18 @@ body {
 /* 🎨 统一卡片样式 */
 .brand-card,
 .product-card {
-  width: 100%;
+  width: 280px; /* Fixed width for cards */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   text-align: center;
   border: none;
   border-radius: 12px;
-  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); */
   transition: transform 0.3s ease-in-out;
   min-height: 350px;
+  background: none; /* Remove background */
+  outline: none; /* Remove outline */
+  margin: 1%; /* Add margin for spacing */
 }
 
 .brand-card:hover,
@@ -101,30 +105,27 @@ body {
 
 .brand-card img,
 .product-card img {
-  width: 100%;
-  max-height: 180px;
-  object-fit: contain;
-  padding: 1rem;
+  width: 100%; /* Ensure image width fills the card */
+  height: 200px; /* Set a fixed height for the image container */
+  object-fit: contain; /* Ensure image covers the area while maintaining aspect ratio */
+  padding: 0; /* Remove padding */
 }
 
 .brand-card .card-body,
 .product-card .card-body {
-  padding: 1rem;
+  padding: 0.25rem 0.5rem; /* Reduce padding to shrink text area and move text up */
+  flex-grow: 1;
 }
 
 .brand-card .card-title,
 .product-card .card-title {
-  font-size: 1.1rem;
+  font-size: 1rem; /* Reduce font size */
   font-weight: bold;
 }
 
-/* 🎨 Footer 全宽优化 */
-footer {
-  width: 100%; /* ✅ Footer 保持全宽度 */
-  background-color: #343a40;
-  color: #ffffff;
-  padding: 2rem 0;
-  text-align: center;
+.card-link {
+  text-decoration: none; /* Remove underline from links */
+  color: inherit; /* Inherit text color */
 }
 
 /* 📱 响应式优化 */
