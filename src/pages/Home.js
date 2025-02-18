@@ -9,70 +9,78 @@ import "../css/Home.css";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
-const ProductCarousel = ({ products, language, t, BACKEND_HOST, cardsPerRow = 4 }) => {
-  const [startIndex, setStartIndex] = useState(0);
-  const totalProducts = products.length;
 
-  const nextSlide = () => {
-    setStartIndex((prevIndex) =>
-      prevIndex + cardsPerRow < totalProducts ? prevIndex + cardsPerRow : prevIndex
-    );
-  };
+const HomePage = ()=> {
+  const { t, i18n } = useTranslation();
+  const [ads, setAds] = useState([]);
+  const [kols, setKols] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [events, setEvents] = useState([]);
 
-  const prevSlide = () => {
-    setStartIndex((prevIndex) => (prevIndex - cardsPerRow >= 0 ? prevIndex - cardsPerRow : 0));
-  };
+  const ProductCarousel = ({ products, language, t, BACKEND_HOST, cardsPerRow = 4 }) => {
+    const [startIndex, setStartIndex] = useState(0);
+    const totalProducts = products.length;
 
-  return (
-    <Container className="products-section">
-      <h2 className="section-title">{t("recommended_product")}</h2>
+    const nextSlide = () => {
+      setStartIndex((prevIndex) =>
+        prevIndex + cardsPerRow < totalProducts ? prevIndex + cardsPerRow : prevIndex
+      );
+    };
 
-      {/* 轮播容器 */}
-      <div className="home-product-carousel-wrapper">
-        {/* 左侧按钮 */}
-        <Button onClick={prevSlide} disabled={startIndex === 0} className="home-product-carousel-btn left">
-          &#10094;
-        </Button>
+    const prevSlide = () => {
+      setStartIndex((prevIndex) => (prevIndex - cardsPerRow >= 0 ? prevIndex - cardsPerRow : 0));
+    };
 
-        {/* 产品区域 */}
-        <div className="home-product-carousel-container">
-          <Row
-            className="home-product-row"
-            style={{ transform: `translateX(-${(startIndex / cardsPerRow) * 100}%)` }}
-          >
-            {products.map((product) => {
-              const Name = language === "zh" ? product.Name_zh : product.Name_en;
-              return (
-                <Col xs={6} sm={4} md={12 / cardsPerRow} className="mb-4 home-product-col" key={product.id}>
-                  <Link to={`/product/${product.url}`} className="home-product-card-link">
-                    <Card className="product-card">
-                      <Card.Img variant="top" src={`${BACKEND_HOST}${product.ProductImage?.url}`} alt={Name} />
-                      <Card.Body className="card-body">
-                        <Card.Title title={Name}>{Name}</Card.Title>
-                        <p className="product-price">{product.Price === 0 ? t("price_tbd") : `AU$ ${product.Price}`}</p>
-                      </Card.Body>
-                    </Card>
-                  </Link>
-                </Col>
-              );
-            })}
-          </Row>
+    return (
+      <Container className="products-section">
+        <h2 className="section-title">{t("recommended_product")}</h2>
+
+        {/* 轮播容器 */}
+        <div className="home-product-carousel-wrapper">
+          {/* 左侧按钮 */}
+          <Button onClick={prevSlide} disabled={startIndex === 0} className="home-product-carousel-btn left">
+            &#10094;
+          </Button>
+
+          {/* 产品区域 */}
+          <div className="home-product-carousel-container">
+            <Row
+              className="home-product-row"
+              style={{ transform: `translateX(-${(startIndex / cardsPerRow) * 100}%)` }}
+            >
+              {products.map((product) => {
+                const Name = language === "zh" ? product.Name_zh : product.Name_en;
+                return (
+                  <Col xs={6} sm={4} md={12 / cardsPerRow} className="mb-4 home-product-col" key={product.id}>
+                    <Link to={`/product/${product.url}`} className="home-product-card-link">
+                      <Card className="product-card">
+                        <Card.Img variant="top" src={`${BACKEND_HOST}${product.ProductImage?.url}`} alt={Name} />
+                        <Card.Body className="card-body">
+                          <Card.Title title={Name}>{Name}</Card.Title>
+                          <p className="product-price">{product.Price === 0 ? t("price_tbd") : `AU$ ${product.Price}`}</p>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                );
+              })}
+            </Row>
+          </div>
+
+          {/* 右侧按钮 */}
+          <Button onClick={nextSlide} disabled={startIndex + cardsPerRow >= totalProducts} className="home-product-carousel-btn right">
+            &#10095;
+          </Button>
         </div>
 
-        {/* 右侧按钮 */}
-        <Button onClick={nextSlide} disabled={startIndex + cardsPerRow >= totalProducts} className="home-product-carousel-btn right">
-          &#10095;
-        </Button>
-      </div>
-
-      <Link to="/productpage/">
-        <button className="btn-more">
-          <b>{t("btn_more")}</b>
-        </button>
-      </Link>
-    </Container>
-  );
-};
+        <Link to="/productpage/">
+          <button className="btn-more">
+            <b>{t("btn_more")}</b>
+          </button>
+        </Link>
+      </Container>
+    );
+  };
 
   useEffect(() => {
     // Fetch Ads
@@ -230,7 +238,6 @@ const ProductCarousel = ({ products, language, t, BACKEND_HOST, cardsPerRow = 4 
       t = {t}
       BACKEND_HOST={BACKEND_HOST} 
       cardsPerRow = {3}
-      
       />
       {/* <Container className='products-section'>
         <h2 className='section-title'>{t("recommended_product")}</h2>
