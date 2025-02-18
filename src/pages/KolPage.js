@@ -61,9 +61,9 @@ const KolPage = () => {
                   className="mb-4 d-flex"
                 >
                   <Link to={profileUrl} className="card-link-KolPage">
-                    <Card className="kol-card">
+                    <Card className="kol-card d-flex flex-column">
                       <Card.Img src={ImageUrl} alt={Name} className="kol-card-img" />
-                      <Card.Body className="text-center">
+                      <Card.Body className="text-center d-flex flex-column justify-content-between">
                         <Card.Title className="kol-card-title">{Name}</Card.Title>
                         <Card.Text className="kol-card-text">{Title}</Card.Text>
                       </Card.Body>

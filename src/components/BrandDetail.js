@@ -181,7 +181,7 @@ const BrandDetail = () => {
                     <Card.Body>
                       <Card.Title>{newsTitle}</Card.Title>
                       <Card.Text>{newsDate}</Card.Text>
-                      <Link to={`/news/${newsItem.id}`}>
+                      <Link to={`/news/${newsItem.id}`} className='card-link'>
                         <Button variant='dark'>{t("readMore")}</Button>
                       </Link>
                     </Card.Body>
@@ -217,7 +217,7 @@ const BrandDetail = () => {
                 <Col key={person.id} xs={12} sm={6} md={4} lg={3}>
                   <Link
                     to={`/person/${person.internal_url || person.id}`}
-                    className='person-card-link'
+                    className='card-link'
                   >
                     <Card className='person-card h-100'>
                       <Card.Img
