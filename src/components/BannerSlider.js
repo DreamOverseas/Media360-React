@@ -1,10 +1,9 @@
 import React from "react";
 import { Carousel, Image } from "react-bootstrap";
 import "../css/Advertisement.css";
-
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
-const NewsSlider = ({ ads }) => {
+const BannerSlider = ({ ads }) => {
   // Only displays ads with AdImage
   const filteredAds = ads.filter(adItem => 
     adItem && adItem.Adimage !== null
@@ -43,4 +42,4 @@ const NewsSlider = ({ ads }) => {
   );
 };
 
-export default NewsSlider;
+export default BannerSlider;

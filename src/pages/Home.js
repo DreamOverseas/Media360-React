@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Row} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import NewsSlider from "../components/NewsSlider";
+import BannerSlider from "../components/BannerSlider";
 // import NewsTicker from "../components/NewsTicker";
 import "../css/Home.css";
 
@@ -78,7 +78,7 @@ const HomePage = () => {
 
   return (
     <div className="homepage-background">
-      <NewsSlider ads={ads} />
+      <BannerSlider ads={ads} />
       <Container className='influence-hub-section'>
         <Row className="d-flex text-center">
           <h6>我们有各领域专家及优质自媒体网红</h6>
