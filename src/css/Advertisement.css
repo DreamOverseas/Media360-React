@@ -20,9 +20,8 @@
 }
 
 .ads-carousel {
-  width: 42vw;
-  height: 28vw;
-  margin-top: 2%;
+  width: 100%;
+  height: 500px;
   display: flex;
   margin-bottom: 20px;
 }
@@ -34,22 +33,54 @@
 
 .carousel-item img {
   width: 100%;
-  height: auto;
+  height: 500px;
 }
 
 .ad-item img {
   max-width: 100%;
-  height: auto;
+  height: 500px;
   object-fit: cover;
   border-radius: 8px;
 }
 
+/* 让按钮的背景是白色的圆形 */
+.ads-carousel .carousel-control-prev,
+.ads-carousel .carousel-control-next {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background-color: white; /* 背景是白色 */
+  border-radius: 50%; /* 让背景变成圆形 */
+  opacity: 0.8; /* 适当透明，减少对广告的遮挡 */
+}
+
+/* 让箭头变成黑色 */
+.ads-carousel .carousel-control-prev-icon,
+.ads-carousel .carousel-control-next-icon {
+  filter: invert(1); /* 让 Bootstrap 自带的白色箭头变黑 */
+}
+
+/* 鼠标悬停时让按钮更明显 */
+.ads-carousel .carousel-control-prev:hover,
+.ads-carousel .carousel-control-next:hover {
+  opacity: 0.8;
+}
+
+.ads-carousel .carousel-control-prev {
+  left: 5%; /* 调整左侧按钮的位置 */
+}
+
+.ads-carousel .carousel-control-next {
+  right: 5%; /* 调整右侧按钮的位置 */
+}
+
+
 /* Mobile Adjustments */
 @media (max-width: 768px) {
   .ads-carousel {
-    width: 93vw;
+    width: 100%;
     height: 240px;
-    margin-top: 2%;
     display: flex;
     margin-bottom: 20px;
   }

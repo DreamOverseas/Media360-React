@@ -5,9 +5,6 @@ import "../css/Advertisement.css";
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const NewsSlider = ({ ads }) => {
-
-
-
   // Only displays ads with AdImage
   const filteredAds = ads.filter(adItem => 
     adItem && adItem.Adimage !== null
@@ -30,7 +27,6 @@ const NewsSlider = ({ ads }) => {
                   ? `${BACKEND_HOST}${advertisement.Adimage[0].url}`
                   : "https://placehold.co/900x400"
               }
-              className='d-block w-100 ad-image'
               alt={advertisement.Name || "Advertisement"}
             />
           </a>

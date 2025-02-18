@@ -33,6 +33,7 @@ const Header = () => {
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='ms-auto nav-custom'>
+            <Nav.Link href='/'>首页</Nav.Link>
             <Nav.Link href='/brands'>{t("brands")}</Nav.Link>
             <Nav.Link href='/productpage'>{t("product")}</Nav.Link>
             <Nav.Link href='/kolpage'>{t("kol")}</Nav.Link>

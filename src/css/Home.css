@@ -28,7 +28,7 @@
 }
 
 .ad_row-section,
-.kol-section {
+.influence-hub-section {
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -45,37 +45,8 @@
   /* Removed high margin for the undermost section */
 }
 
-/* Carousel Section */
-.ads-section {
-  width: 100%;
-  padding-top: 1rem;
-  padding-left: 0;
-  margin-bottom: 1rem;
-}
-
-.ads-carousel img {
-  object-fit: cover;
-  width: 100%;
-  border-radius: 8px;
-  /* Rounded corners for ad images */
-}
-
-.ads-carousel .carousel-caption {
-  display: flex;
-  bottom: 10px;
-  padding: 10px;
-  border-radius: 4px;
-  background: none;
-  /* Remove background color */
-  color: #fff;
-  /* Ensure the text color is visible on the ad image */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-  /* Add a slight shadow to ensure text readability */
-}
-
-/* KOL Section */
 /* Ensure enough space between rows */
-.kol-row {
+/* .kol-row {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -100,6 +71,40 @@
 
 .kol-col:hover .kol-image {
   transform: scale(1.1);
+} */
+
+
+.product-container {
+  width: 100%;
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  border-radius: 10px;
+}
+
+
+.product-bg-1 {
+  background-image: url(/public/homepage/home-founder-cover.jpg);
+}
+
+.product-bg-2 {
+  background-image: url(/public/homepage/home-kol-cover.webp);
+}
+
+.product-bg-3 {
+  background-image: url(/public/homepage/home-spokeperson-cover.webp);
+}
+
+/* 文字区域，增加半透明背景提升可读性 */
+.product-content {
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .home-product-card-link {

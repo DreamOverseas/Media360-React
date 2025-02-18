@@ -4,7 +4,7 @@ import { Card, Col, Container, Row, Image} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import NewsSlider from "../components/NewsSlider";
-import NewsTicker from "../components/NewsTicker";
+// import NewsTicker from "../components/NewsTicker";
 import "../css/Home.css";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
@@ -78,22 +78,62 @@ const HomePage = () => {
 
   return (
     <div className="homepage-background">
-      <Container className='ad_row-section'>
-      <Row>
-        <Col className='d-flex'>
-          {/* Carousel Section */}
-          <Container className="ads-section">
-            <NewsSlider ads={ads} />
-          </Container>
-        </Col>
-        <Col className='home-news-ticker'>
-          <NewsTicker ads={ads} />
-        </Col>
-      </Row>
-      </Container>
-      <Container className='kol-section'>
-        <h2 className='section-title'>{t("kol")}</h2>
+      <NewsSlider ads={ads} />
+      <Container className='influence-hub-section'>
+        <Row className="d-flex text-center">
+          <h6>我们有各领域专家及优质自媒体网红</h6>
+          <h2>星潮汇</h2>
+        </Row>
+        {/* Influence Hub Section */}
         <Row>
+          {/* 第一个背景块 */}
+          <Col md={4}>
+            <Link to={`/product/123`} className="home-product-card-link">
+              <div className="product-container product-bg-1">
+                <div className="product-content">
+                  <h6 className="product-title">开创品牌愿景，引领卓越未来</h6>
+                  <h3 className="product-subtitle">品牌创始人</h3>
+                  <Link to="/productpage/">
+                    <button><b>查看更多</b></button>
+                  </Link>
+                </div>
+              </div>
+            </Link>
+          </Col>
+
+          {/* 第二个背景块 */}
+          <Col md={4}>
+            <Link to={`/product/456`} className="home-product-card-link">
+              <div className="product-container product-bg-2">
+                <div className="product-content">
+                  <h6 className="product-title">赋予群众力量，启发潮流趋势</h6>
+                  <h3 className="product-subtitle">意见领袖</h3>
+                  <Link to="/productpage/">
+                    <button><b>查看更多</b></button>
+                  </Link>
+                </div>
+              </div>
+            </Link>
+          </Col>
+
+          {/* 第三个背景块 */}
+          <Col md={4}>
+            <Link to={`/product/789`} className="home-product-card-link">
+              <div className="product-container product-bg-3">
+                <div className="product-content">
+                  <h6 className="product-title">引领潮流风向，定义时代风格</h6>
+                  <h3 className="product-subtitle">品牌代言人</h3>
+                  <Link to="/productpage/">
+                    <button><b>查看更多</b></button>
+                  </Link>
+                </div>
+              </div>
+            </Link>
+          </Col>
+        </Row>
+
+
+        {/* <Row>
           {kols.length > 0 ? (
             kols.map(kol => (
                 <Col
@@ -121,7 +161,7 @@ const HomePage = () => {
             <button class="btn-more"><b>{t("btn_more")}</b></button>
           </Link>
           
-        </Row>
+        </Row> */}
       </Container>
 
       {/* Products Section */}
