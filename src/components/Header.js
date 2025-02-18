@@ -36,8 +36,28 @@ const Header = () => {
             <Nav.Link href='/'>首页</Nav.Link>
             <Nav.Link href='/brands'>{t("brands")}</Nav.Link>
             <Nav.Link href='/productpage'>{t("product")}</Nav.Link>
-            <Nav.Link href='/kolpage'>{t("kol")}</Nav.Link>
-            <Nav.Link href='/eventpage'>{t("event")}</Nav.Link>
+            <Nav.Item className="d-flex align-items-center">
+              <Nav.Link href="/influence-hub" className="me-2">
+                星潮汇
+              </Nav.Link>
+
+              <NavDropdown title="" className="d-inline">
+                <NavDropdown.Item href="/founders">品牌创始人</NavDropdown.Item>
+                <NavDropdown.Item href="/kols">产品意见领袖</NavDropdown.Item>
+                <NavDropdown.Item href="/ambassadors">产品代言人</NavDropdown.Item>
+              </NavDropdown>
+            </Nav.Item>
+
+            <Nav.Item className="d-flex align-items-center">
+              <Nav.Link href="/media-center" className="me-2">
+                媒体中心
+              </Nav.Link>
+              <NavDropdown title="" className="d-inline">
+                <NavDropdown.Item href="/news">新闻</NavDropdown.Item>
+                <NavDropdown.Item href="/events">活动</NavDropdown.Item>
+              </NavDropdown>
+            </Nav.Item>
+
             <Nav.Link href='/join-us'>{t("joinus")}</Nav.Link>
             <NavDropdown title={t("language")} id='language-dropdown'>
               <NavDropdown.Item onClick={() => changeLanguage("en")}>
