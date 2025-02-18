@@ -101,6 +101,9 @@ const resources = {
       associatedBrands: "Associated Brands",
       latestNews: "Latest News",
       relatedPersons: "Related People",
+      founder_slogan: "Building brand value with vision and creativity, co-creating infinite possibilities with the industry",
+      founder_title: "The driving soul behind brand development",
+      founder_content: "Brand founders are pioneers of their time, bridging brand values and consumer emotions. With unique perspectives, deep industry insights, and innovative spirits, they set benchmarks in their fields.\nWe recognize their vital role as shapers of core values and leaders in delivering brand vision to the market. Partnering with brand founders is central to our strategy.\nTheir vision and leadership amplify brand impact, inspire innovation, and inject new energy into industries like technology, fashion, and education. Together, we aim to share compelling brand stories, drive growth, and create a prosperous, collaborative future.",
 
       /* Miss Registration form components */
       miss_reg_contest_title:
@@ -231,6 +234,9 @@ const resources = {
       associatedBrands: "相关品牌",
       latestNews: "相关新闻",
       relatedPersons: "相关人物",
+      founder_slogan: "以远见与创意构筑品牌价值，与行业共创无限可能",
+      founder_title: "驱动品牌发展的灵魂力量",
+      founder_content: "品牌创始人是时代的开拓者，是品牌理念与消费者情感的连接桥梁。他们以独特的视角、深刻的行业理解和开创性的精神，在各自领域中树立了标杆。我们深刻认识到品牌创始人的重要性，他们不仅是品牌核心价值的塑造者，更是将品牌理念精准传递给市场的引领者。\n与品牌创始人合作，是我们战略发展的重要组成部分。无论是在科技、时尚还是教育领域，他们的愿景和领导力能够让品牌的价值更加深入人心，并为行业注入新的活力。我们坚信，与品牌创始人携手，不仅能够传递品牌的核心故事，还能在持续创新中开拓更多机遇与可能。通过与这些充满激情与智慧的创始人合作，我们希望共同推动品牌与行业的发展，为未来创造一个更加繁荣、共赢的局面。",
 
       /* Miss Registration form components */
       miss_reg_contest_title: "第73届环球小姐中国区大赛澳洲赛区-墨尔本2024",
