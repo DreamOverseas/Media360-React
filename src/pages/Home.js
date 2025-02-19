@@ -51,7 +51,7 @@ const HomePage = ()=> {
               {products.map((product) => {
                 const Name = language === "zh" ? product.Name_zh : product.Name_en;
                 return (
-                  <Col xs={6} sm={4} md={12 / cardsPerRow} className="mb-4 home-product-col" key={product.id}>
+                  <Col xs={6} sm={6} md={12 / cardsPerRow} key={product.id}>
                     <Link to={`/product/${product.url}`} className="home-product-card-link">
                       <Card className="product-card">
                         <Card.Img variant="top" src={`${BACKEND_HOST}${product.ProductImage?.url}`} alt={Name} />
@@ -74,10 +74,70 @@ const HomePage = ()=> {
         </div>
 
         <Link to="/productpage/">
-          <button className="btn-more">
-            <b>{t("btn_more")}</b>
-          </button>
+          <button><b>{t("btn_more")}</b></button>
         </Link>
+
+      </Container>
+    );
+  };
+
+
+  const EventCarousel = ({ events, language, t, BACKEND_HOST, cardsPerRow = 4 }) => {
+    const [startIndex, setStartIndex] = useState(0);
+    const totalEvents = events.length;
+
+    const nextSlide = () => {
+      setStartIndex((prevIndex) =>
+        prevIndex + cardsPerRow < totalEvents ? prevIndex + cardsPerRow : prevIndex
+      );
+    };
+
+    const prevSlide = () => {
+      setStartIndex((prevIndex) => (prevIndex - cardsPerRow >= 0 ? prevIndex - cardsPerRow : 0));
+    };
+
+    return (
+      <Container className='events-section'>
+        <h2 className='section-title'>{t("event")}</h2>
+        <div className="home-product-carousel-wrapper">
+          <Button onClick={prevSlide} disabled={startIndex === 0} className="home-event-carousel-btn left">
+              &#10094;
+          </Button>
+          <div className="home-event-carousel-container">
+            <Row className="home-event-row"
+                style={{ transform: `translateX(-${(startIndex / cardsPerRow) * 100}%)` }}>
+              {events.length > 0 ? (
+                events.map(event => (
+                  <Col xs={6} sm={6} md={12/cardsPerRow} key={event.id}>
+                    <Link to={`/event/${event.url}`} className="home-event-card-link">
+                      <Card className='event-card'>
+                        <Card.Img
+                          variant='top'
+                          src={`${BACKEND_HOST}${event.Image.url}`}
+                          alt={event.Title}
+                        />
+                        <Card.Body>
+                          <Card.Title>{event.Name_zh}</Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                ))
+              ) : (
+                <p>{t("noEvents")}</p>
+              )}
+              
+            </Row>
+          </div>
+          <Button onClick={nextSlide} disabled={startIndex + cardsPerRow >= totalEvents} className="home-event-carousel-btn right">
+            &#10095;
+          </Button> 
+        </div>
+
+        <Link to="/events/">
+          <button><b>{t("btn_more")}</b></button>
+        </Link>
+        
       </Container>
     );
   };
@@ -290,7 +350,15 @@ const HomePage = ()=> {
       </Container> */}
 
       {/* Events Section */}
-      <Container className='events-section'>
+
+      <EventCarousel
+      events={events}
+      language={language}
+      t = {t}
+      BACKEND_HOST={BACKEND_HOST} 
+      cardsPerRow = {3}
+      />
+      {/* <Container className='events-section'>
         <h2 className='section-title'>{t("event")}</h2>
         <Row className='events-row'>
           {events.length > 0 ? (
@@ -317,7 +385,7 @@ const HomePage = ()=> {
             <button class="btn-more"><b>{t("btn_more")}</b></button>
           </Link>
         </Row>
-      </Container>
+      </Container> */}
     </div>
   );
 };
