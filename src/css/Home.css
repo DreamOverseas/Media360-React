@@ -237,6 +237,116 @@
   padding-left: 0;
 }
 
+
+
+
+.home-product-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* 产品滚动容器 */
+.home-product-carousel-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+/* 让 Row 水平滚动 */
+.home-product-row {
+  display: flex;
+  flex-wrap: nowrap;
+  transition: transform 0.3s ease-in-out;
+  width: 100%;
+}
+
+/* 左右切换按钮 */
+.home-product-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.home-product-carousel-btn.left {
+  left: 0px;
+}
+
+.home-product-carousel-btn.right {
+  right: 0px;
+}
+
+/* 禁用按钮状态 */
+.home-product-carousel-btn:disabled {
+  background-color: rgba(0, 0, 0, 0.2);
+  cursor: not-allowed;
+}
+
+
+
+.home-event-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+}
+
+.home-event-carousel-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+/* 让 Row 水平滚动 */
+.home-event-row {
+  display: flex;
+  flex-wrap: nowrap;
+  transition: transform 0.3s ease-in-out;
+  width: 100%;
+}
+
+/* 左右切换按钮 */
+.home-event-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.home-event-carousel-btn.left {
+  left: 0px;
+}
+
+.home-event-carousel-btn.right {
+  right: 0px;
+}
+
+/* 禁用按钮状态 */
+.home-event-carousel-btn:disabled {
+  background-color: rgba(0, 0, 0, 0.2);
+  cursor: not-allowed;
+}
+
+
+
 /* Responsive Design */
 
 /* Tablet Screens (768px - 1024px) */

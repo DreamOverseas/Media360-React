@@ -29,6 +29,7 @@ import MediaCenter from "./pages/MediaCenter";
 import NewsPage from "./pages/NewsPage";
 import FounderPage from "./pages/FounderPage";
 import AmbassadorPage from "./pages/AmbassadorPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -63,6 +64,7 @@ function App() {
 
   return (
     <div className='App'>
+      <ScrollToTop />
       {header}
       <div className='main-content'>
         <Routes>
