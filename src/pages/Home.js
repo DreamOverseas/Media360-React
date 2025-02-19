@@ -13,7 +13,6 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 const HomePage = ()=> {
   const { t, i18n } = useTranslation();
   const [ads, setAds] = useState([]);
-  const [kols, setKols] = useState([]);
   const [products, setProducts] = useState([]);
   const [events, setEvents] = useState([]);
 
@@ -160,16 +159,6 @@ const HomePage = ()=> {
         console.error("Error fetching ads:", error);
       });
 
-    // Fetch KOL data
-    const fetchKOLs = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_HOST}/api/kols?populate=*`);
-        setKols(response.data.data);
-      } catch (error) {
-        console.error("Error fetching KOL data:", error);
-      }
-    };
-
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
@@ -196,8 +185,6 @@ const HomePage = ()=> {
         console.error("Error fetching events:", error);
       }
     };
-
-    fetchKOLs();
     fetchProducts();
     fetchEvents();
   }, []);
