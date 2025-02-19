@@ -649,7 +649,7 @@ const ProductDetail = () => {
           {relatedProduct ? (
             <RelatedProduct related_product={relatedProduct} language={language} />
           ) : (
-            <p>加载中...</p>
+            <p>暂无推荐</p>
           )}
         </Container>
       </section>

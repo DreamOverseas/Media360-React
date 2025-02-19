@@ -33,8 +33,10 @@ const HomePage = ()=> {
 
     return (
       <Container className="products-section">
-        <h2 className="section-title">{t("recommended_product")}</h2>
-
+        <Row className="d-flex text-center">
+          <h6>我们为您提供优质产品以及服务</h6>
+          <h2>热门产品</h2>
+        </Row>
         {/* 轮播容器 */}
         <div className="home-product-carousel-wrapper">
           {/* 左侧按钮 */}
@@ -98,7 +100,10 @@ const HomePage = ()=> {
 
     return (
       <Container className='events-section'>
-        <h2 className='section-title'>{t("event")}</h2>
+        <Row className="d-flex text-center">
+          <h6>探索“我们”的力量</h6>
+          <h2>热门活动</h2>
+        </Row>
         <div className="home-product-carousel-wrapper">
           <Button onClick={prevSlide} disabled={startIndex === 0} className="home-event-carousel-btn left">
               &#10094;
@@ -137,7 +142,7 @@ const HomePage = ()=> {
         <Link to="/events/">
           <button><b>{t("btn_more")}</b></button>
         </Link>
-        
+
       </Container>
     );
   };
@@ -257,135 +262,25 @@ const HomePage = ()=> {
             </Link>
           </Col>
         </Row>
-
-
-        {/* <Row>
-          {kols.length > 0 ? (
-            kols.map(kol => (
-                <Col
-                  xs={6}
-                  sm={6}
-                  md={3}
-                  className='kol-col'
-                  key={kol.id}
-                >
-                  <Link to={`/kol/${kol.id}`}>
-                    <Image
-                      src={`${BACKEND_HOST}${kol.KolImage?.url}`}
-                      roundedCircle
-                      className='kol-image'
-                      alt={kol.Name}
-                    />
-                  </Link>
-                </Col>
-              ))
-            ) : (
-              <p>{t("noKols")}</p>
-          )}
-
-          <Link to="/kolpage/">
-            <button class="btn-more"><b>{t("btn_more")}</b></button>
-          </Link>
-          
-        </Row> */}
       </Container>
 
       {/* Products Section */}
-
       <ProductCarousel
       products={products}
       language={language}
       t = {t}
       BACKEND_HOST={BACKEND_HOST} 
-      cardsPerRow = {3}
+      cardsPerRow = {4}
       />
-      {/* <Container className='products-section'>
-        <h2 className='section-title'>{t("recommended_product")}</h2>
-        <Row>
-          {products.length > 0 ? (
-            products.map(product => {
-              const Name =
-                language === "zh"
-                  ? product.Name_zh
-                  : product.Name_en;
-              return (
-                <Col
-                  xs={6}
-                  sm={4}
-                  md={3}
-                  className="mb-4"
-                  key={product.id}
-                >
-                  <Link to={`/product/${product.url}`} className="home-product-card-link">
-                    <Card className='product-card'>
-                      <Card.Img
-                        variant='top'
-                        src={`${BACKEND_HOST}${product.ProductImage?.url}`}
-                        alt={Name}
-                      />
-                      <Card.Body className="card-body">
-                        <Card.Title
-                          title={Name}
-                        >
-                          {Name}
-                        </Card.Title>
-                        <p class="product-price">{product.Price === 0 ?
-                          (t("price_tbd")) :
-                          (`AU$ ${product.Price}`)}</p>
-                      </Card.Body>
-                    </Card>
-                  </Link>
-                </Col>
-              )
-            })
-          )
-            : (
-              <p>{t("noProducts")}</p>
-            )
-          }
-          <Link to="/productpage/">
-            <button class="btn-more"><b>{t("btn_more")}</b></button>
-          </Link>
-        </Row>
-      </Container> */}
-
+    
       {/* Events Section */}
-
       <EventCarousel
       events={events}
       language={language}
       t = {t}
       BACKEND_HOST={BACKEND_HOST} 
-      cardsPerRow = {3}
+      cardsPerRow = {4}
       />
-      {/* <Container className='events-section'>
-        <h2 className='section-title'>{t("event")}</h2>
-        <Row className='events-row'>
-          {events.length > 0 ? (
-            events.map(event => (
-              <Col xs={6} sm={6} md={3} key={event.id}>
-                <Link to={`/event/${event.url}`} className="home-event-card-link">
-                  <Card className='event-card'>
-                    <Card.Img
-                      variant='top'
-                      src={`${BACKEND_HOST}${event.Image.url}`}
-                      alt={event.Title}
-                    />
-                    <Card.Body>
-                      <Card.Title>{event.Name_zh}</Card.Title>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </Col>
-            ))
-          ) : (
-            <p>{t("noEvents")}</p>
-          )}
-          <Link to="/eventpage/">
-            <button class="btn-more"><b>{t("btn_more")}</b></button>
-          </Link>
-        </Row>
-      </Container> */}
     </div>
   );
 };
