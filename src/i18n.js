@@ -139,6 +139,7 @@ const resources = {
         "Oops, something not right... Please check all the fields and try again.",
       miss_reg_please_fill: "Please fill this",
       miss_reg_please_upload: "We'll need at least one photo of you.",
+      home: "Home",
     },
   },
   zh: {
@@ -270,6 +271,7 @@ const resources = {
       miss_reg_fail: "哎呀，咋提交失败了呢...请稍后重试",
       miss_reg_please_fill: "请填写此项",
       miss_reg_please_upload: "请您上传至少一张图片",
+      home: "首页",
     },
   },
 };

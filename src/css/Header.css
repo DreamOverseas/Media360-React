@@ -1,47 +1,134 @@
+/* 修复导航栏顶部多余空白 */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* 让 body 不会滚动影响视觉 */
+body.menu-open {
+  overflow: hidden;
+}
+
+/* 导航栏基础样式 */
 .navbar-custom {
-  background-color: rgba(255, 255, 255, 0.8) !important;
-  padding: 0 15px;
-}
-
-.nav-icon {
-  font-size: 1.5rem;
-}
-
-.navbar-brand {
-  color: #000;
-  font-size: 20px;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.navbar-nav {
+  background-color: white !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 5px 15px;
+  height: 55px;
   display: flex;
   align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1050;
 }
 
-.nav-link {
-  color: #000;
-  font-size: 16px;
-  font-weight: bold;
-  text-decoration: none;
-  margin-right: 30px;
-}
-
-.nav-link:hover {
-  color: #555 !important;
-}
-
-button {
-  margin: 10px;
-}
-
-button:focus {
-  outline: none;
-  box-shadow: none;
-}
-
+/* Logo 样式 */
 .nav-logo {
-  height: 2rem;
+  height: 40px;
   width: auto;
-  margin: 11px;
+}
+
+/* 确保导航项水平对齐 */
+.nav-custom .nav-link,
+.nav-custom .nav-item,
+.nav-custom .dropdown-container {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.3s ease-in-out;
+  background-color: white; /* 添加背景色，确保可见 */
+}
+
+/* 文字 Hover 颜色 */
+.nav-custom .nav-link:hover {
+  color: #007bff;
+}
+
+/* 购物车 & 用户图标 */
+.nav-custom .bi-person,
+.nav-custom .bi-cart {
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+  margin-left: 10px;
+}
+
+.nav-custom .bi-person:hover,
+.nav-custom .bi-cart:hover {
+  color: #007bff;
+}
+
+/* 桌面端 Hover 下拉菜单 */
+.dropdown-container {
+  position: relative;
+}
+
+.dropdown-container .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  min-width: 180px;
+  z-index: 1000;
+}
+
+.dropdown-container:hover .dropdown-menu {
+  display: block;
+}
+
+/* ============== 移动端适配 ============== */
+@media (max-width: 768px) {
+  .nav-custom {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* 让上一级菜单在移动端保持背景色 */
+  .nav-custom .nav-link,
+  .nav-custom .dropdown-container {
+    background-color: white !important; /* 强制背景色 */
+    width: 100%;
+  }
+
+  /* 移动端抽屉式下拉菜单 */
+  .drawer-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 250px;
+    height: 50vh;
+    background: rgba(40, 27, 27, 0.98);
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
+    border-left: 1px solid #ddd;
+    padding: 0px;
+    transition: right 0.3s ease-in-out;
+    z-index: 1100;
+    overflow-y: auto;
+  }
+
+  /* 打开状态 */
+  .drawer-menu.show {
+    right: 0;
+  }
+
+  /* 修正移动端下拉菜单的子项背景 */
+  .drawer-menu .dropdown-item {
+    background-color: white !important; /* 确保子菜单也有背景 */
+    color: #333;
+    padding: 15px;
+    font-size: 16px;
+  }
+
+  .drawer-menu .dropdown-item:hover {
+    background-color: #f8f9fa !important;
+  }
 }
