@@ -425,7 +425,7 @@ const ProductDetail = () => {
       .then((res) => {
         const allProducts = res.data.data;
         // console.log(allProducts);
-        computeRecommendations(allProducts, productTag);
+        computeRecommendations(allProducts, product, productTag);
       })
       .catch((error) => {
         console.error("Error fetching products:", error);
@@ -433,7 +433,8 @@ const ProductDetail = () => {
   }, [productTag]);
 
 
-  const computeRecommendations = (allProducts, currentTags) => {
+  const computeRecommendations = (allProducts, product, currentTags) => {
+    const currentProduct = product;
     const rankedProducts = allProducts.map((product) => {
       const productTags = product.product_tags?.map(tag => tag.Tag_en) ?? [];
       // console.log("per product:", productTags)
@@ -449,11 +450,13 @@ const ProductDetail = () => {
         matchCount,
       };
     })
-    .filter((product) => product.matchCount > 0)
-    .sort((a, b) => b.matchCount - a.matchCount); 
+    .filter((product) => product.matchCount > 0 && product.Name_en !== currentProduct.Name_en)
+    .sort((a, b) => b.matchCount - a.matchCount);
       
     setRelatedProduct(rankedProducts.slice(0, 6));
   };
+  
+  
 
 
   const handleShare = () => {
@@ -498,7 +501,6 @@ const ProductDetail = () => {
   language === "zh"
     ? product.Detail_zh
     : product.Detail_en;
-
 
   return (
     <div>
@@ -594,7 +596,6 @@ const ProductDetail = () => {
                     <span className="share-title">分享链接</span>
                   </a>
                 </Row>
-          
               </Container>
 
             </Col>
