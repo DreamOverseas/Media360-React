@@ -140,7 +140,7 @@ const HomePage = ()=> {
           </Button>
         </div>
 
-        <Link to="/events/">
+        <Link to="/news/">
           <button><b>{t("btn_more")}</b></button>
         </Link>
 
