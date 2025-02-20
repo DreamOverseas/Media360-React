@@ -73,7 +73,6 @@
   transform: scale(1.1);
 } */
 
-
 .product-container {
   width: 100%;
   height: 400px;
@@ -87,7 +86,6 @@
   color: white;
   border-radius: 10px;
 }
-
 
 .product-bg-1 {
   background-image: url(/public/homepage/home-founder-cover.jpg);
@@ -213,7 +211,7 @@
 
 .btn-navigation {
   background-color: rgba(128, 128, 128, 0.6);
-  color: white; 
+  color: white;
   border: 2px solid black;
   width: 100%;
   height: 50px;
@@ -223,7 +221,7 @@
 
 .btn-navigation:hover {
   background-color: transparent;
-  color: black; 
+  color: black;
 }
 
 .btn-navigation:focus {
@@ -236,9 +234,6 @@
   padding-right: 12px;
   padding-left: 0;
 }
-
-
-
 
 .home-product-carousel-wrapper {
   position: relative;
@@ -292,8 +287,6 @@
   cursor: not-allowed;
 }
 
-
-
 .home-event-carousel-wrapper {
   position: relative;
   display: flex;
@@ -345,13 +338,10 @@
   cursor: not-allowed;
 }
 
-
-
 /* Responsive Design */
 
 /* Tablet Screens (768px - 1024px) */
 @media (min-width: 768px) and (max-width: 1024px) {
-
   .product-card .card-title,
   .event-card .card-title {
     font-size: 0.85rem;
@@ -369,7 +359,6 @@
 
 /* Mobile Screens (Max Width: 768px) */
 @media (max-width: 768px) {
-
   .section-title {
     font-size: 1.8rem;
     /* Smaller font for mobile */

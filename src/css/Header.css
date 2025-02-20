@@ -1,5 +1,6 @@
 /* 修复导航栏顶部多余空白 */
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -32,6 +33,13 @@ body.menu-open {
 }
 
 /* 确保导航项水平对齐 */
+.nav-custom {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* 确保菜单项靠右对齐 */
+  width: 100%;
+}
+
 .nav-custom .nav-link,
 .nav-custom .nav-item,
 .nav-custom .dropdown-container {
@@ -79,17 +87,33 @@ body.menu-open {
   border-radius: 5px;
   min-width: 180px;
   z-index: 1000;
+  padding: 0; /* 移除默认的 padding */
+  margin: 0; /* 移除默认的 margin */
 }
 
 .dropdown-container:hover .dropdown-menu {
   display: block;
 }
 
+/* 下拉菜单项的样式 */
+.dropdown-menu .dropdown-item {
+  padding: 10px 15px; /* 设置统一的 padding */
+  font-size: 14px; /* 设置字体大小 */
+  color: #333; /* 设置字体颜色 */
+  background-color: white; /* 设置背景色 */
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #f8f9fa; /* 设置 hover 背景色 */
+}
+
 /* ============== 移动端适配 ============== */
 @media (max-width: 768px) {
   .nav-custom {
     flex-direction: column;
-    width: 100%;
+    width: 100vw; /* 占满整个视口宽度 */
+    padding: 0;
+    margin: 0;
   }
 
   /* 让上一级菜单在移动端保持背景色 */
@@ -99,36 +123,29 @@ body.menu-open {
     width: 100%;
   }
 
-  /* 移动端抽屉式下拉菜单 */
-  .drawer-menu {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 250px;
-    height: 50vh;
-    background: rgba(40, 27, 27, 0.98);
-    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
-    border-left: 1px solid #ddd;
-    padding: 0px;
-    transition: right 0.3s ease-in-out;
-    z-index: 1100;
-    overflow-y: auto;
+  /* 移动端下拉菜单 */
+  .dropdown-menu {
+    position: relative;
+    width: 100vw;
+    left: 0;
+    right: 0;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  /* 打开状态 */
-  .drawer-menu.show {
-    right: 0;
+  .dropdown-menu.show {
+    display: block;
   }
 
   /* 修正移动端下拉菜单的子项背景 */
-  .drawer-menu .dropdown-item {
+  .dropdown-menu .dropdown-item {
     background-color: white !important; /* 确保子菜单也有背景 */
     color: #333;
     padding: 15px;
     font-size: 16px;
   }
 
-  .drawer-menu .dropdown-item:hover {
+  .dropdown-menu .dropdown-item:hover {
     background-color: #f8f9fa !important;
   }
 }

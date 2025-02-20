@@ -8,62 +8,94 @@ import "../css/NewsDetail.css";
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const NewsDetail = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // ✅ `id` 可能是 `URL` 或 `ID`
   const { t, i18n } = useTranslation();
   const [news, setNews] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log(`Fetching News ID: ${id}`);
-    axios
-      .get(`${BACKEND_HOST}/api/news?filters[id][$eq]=${id}`)
-      .then(response => {
-        console.log("News API Response:", response.data);
-        if (response.data && response.data.data.length > 0) {
-          setNews(response.data.data[0]); // ✅ 取第一篇新闻
-        } else {
-          setError("No data found");
+    if (!id) {
+      setError("Invalid news identifier");
+      setLoading(false);
+      return;
+    }
+
+    const fetchNewsDetail = async () => {
+      try {
+        console.log(`Fetching News for ID/URL: ${id}`);
+
+        // ✅ 先尝试使用 URL 查询新闻
+        let response = await axios.get(
+          `${BACKEND_HOST}/api/news?filters[url][$eq]=${id}&populate=*`
+        );
+
+        // ✅ 如果 `url` 查询失败，尝试使用 `id` 查询
+        if (!response.data?.data.length) {
+          console.log(`URL not found, trying ID: ${id}`);
+          response = await axios.get(
+            `${BACKEND_HOST}/api/news?filters[id][$eq]=${id}&populate=*`
+          );
         }
-      })
-      .catch(error => {
-        console.error("Error fetching data:", error);
-        setError("Error fetching data");
-      })
-      .finally(() => {
+
+        if (response.data?.data.length > 0) {
+          setNews(response.data.data[0]); // ✅ 取第一条数据
+          console.log("Fetched News Data:", response.data.data[0]);
+        } else {
+          setError("News not found");
+        }
+      } catch (error) {
+        console.error("Error fetching news:", error);
+        setError("Error fetching news data");
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchNewsDetail();
   }, [id]);
 
   if (loading) return <div>{t("loading")}</div>;
   if (error) return <div>{error}</div>;
+  if (!news) return <div>{t("noDataAvailable")}</div>;
 
-  if (!news) {
-    return <div>{t("noDataAvailable")}</div>; // ✅ 确保 `news` 存在
-  }
-
-  // ✅ 确保所有字段有默认值，防止 undefined
+  // ✅ 解析新闻数据
   const Title = news.Title || "未知标题";
-  const Content =
-    i18n.language === "zh"
-      ? news.Content || "暂无内容"
-      : news.Content || "No content available";
   const PublishedTime = news.Published_time
     ? new Date(news.Published_time).toLocaleString()
     : "暂无发布时间";
+  const Content =
+    i18n.language === "zh"
+      ? news.Content || "<p>暂无内容</p>"
+      : news.Content || "<p>No content available</p>";
+
+  // ✅ 解析图片，确保有默认图片
+  const NewsImage = news.Image?.[0]?.url
+    ? `${BACKEND_HOST}${news.Image[0].url}`
+    : "https://placehold.co/600x400";
 
   return (
     <Container className='news-detail-container'>
       <Row>
         <Col md={{ span: 8, offset: 2 }}>
           <Card className='news-detail-card'>
+            <Card.Img
+              variant='top'
+              src={NewsImage}
+              alt={Title}
+              className='news-detail-img'
+            />
             <Card.Body>
-              <h1>{Title}</h1>
+              <h1 className='news-detail-title'>{Title}</h1>
               <p className='news-detail-date'>
                 <strong>{t("publishedAt")}:</strong> {PublishedTime}
               </p>
               <hr />
-              <p className='news-detail-content'>{Content}</p>
+              {/* ✅ 确保 `Content` 正确解析 HTML */}
+              <div
+                className='news-detail-content'
+                dangerouslySetInnerHTML={{ __html: Content }}
+              ></div>
             </Card.Body>
           </Card>
         </Col>
