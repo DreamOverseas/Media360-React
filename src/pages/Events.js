@@ -9,6 +9,31 @@ import "../css/EventPage.css";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
+
+export const formatDateTime = (datetime) => {
+  if (!datetime) return null;
+  
+  // Convert to your desired timezone (e.g., 'Australia/Sydney')
+  const timezone = 'Australia/Sydney'; // Adjust this to your desired timezone
+  
+  // Format as 'Thu, 10 Oct, 12:00 am AEDT'
+  return moment(datetime).tz(timezone).format('ddd, DD MMM, h:mm a z');
+}
+
+export const calculateTime = (start, end) => {
+  if (start && end) {
+    const head = formatDateTime(start);
+    const tail = formatDateTime(end);
+    return `${head} - ${tail}`;
+  }
+
+  if (start != null && end == null) {
+    return formatDateTime(start);
+  }
+
+  return null;
+}
+
 const Events = () => {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [inProgressEvents, setInProgressEvents] = useState([]);
@@ -86,29 +111,7 @@ const Events = () => {
   };
 
 
-  const formatDateTime = (datetime) => {
-    if (!datetime) return null;
-    
-    // Convert to your desired timezone (e.g., 'Australia/Sydney')
-    const timezone = 'Australia/Sydney'; // Adjust this to your desired timezone
-    
-    // Format as 'Thu, 10 Oct, 12:00 am AEDT'
-    return moment(datetime).tz(timezone).format('ddd, DD MMM, h:mm a z');
-  }
-
-  const calculateTime = (start, end) => {
-    if (start && end) {
-      const head = formatDateTime(start);
-      const tail = formatDateTime(end);
-      return `${head} - ${tail}`;
-    }
-
-    if (start != null && end == null) {
-      return formatDateTime(start);
-    }
-
-    return null;
-  }
+  
 
   useEffect(() => {
     fetchPastEvents(page);
