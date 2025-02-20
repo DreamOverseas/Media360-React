@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 import "../css/NewsDetail.css";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
@@ -60,14 +63,17 @@ const NewsDetail = () => {
   if (!news) return <div>{t("noDataAvailable")}</div>;
 
   // ✅ 解析新闻数据
-  const Title = news.Title || "未知标题";
+  const Title =
+    i18n.language === "zh"
+      ? news.Title_zh || "暂无内容"
+      : news.Title_en || "No content available";
   const PublishedTime = news.Published_time
     ? new Date(news.Published_time).toLocaleString()
     : "暂无发布时间";
   const Content =
     i18n.language === "zh"
-      ? news.Content || "<p>暂无内容</p>"
-      : news.Content || "<p>No content available</p>";
+      ? news.Content || "暂无内容"
+      : news.Content || "No content available";
 
   // ✅ 解析图片，确保有默认图片
   const NewsImage = news.Image?.[0]?.url
@@ -91,11 +97,15 @@ const NewsDetail = () => {
                 <strong>{t("publishedAt")}:</strong> {PublishedTime}
               </p>
               <hr />
-              {/* ✅ 确保 `Content` 正确解析 HTML */}
-              <div
-                className='news-detail-content'
-                dangerouslySetInnerHTML={{ __html: Content }}
-              ></div>
+              {/* ✅ 使用 ReactMarkdown 解析和渲染 Markdown 内容 */}
+              <div className='news-detail-content'>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeRaw]}
+                >
+                  {Content}
+                </ReactMarkdown>
+              </div>
             </Card.Body>
           </Card>
         </Col>

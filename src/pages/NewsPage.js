@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import moment from "moment-timezone";
-import "../css/EventPage.css";
+import "../css/NewsPage.css";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
@@ -77,8 +77,8 @@ const NewsPage = () => {
   return (
     <div>
       {/* ✅ 新闻页面 Banner */}
-      <section className='event-page-background-image-container'>
-        <h1 className='event-page-banner-h1'>
+      <section className='news-page-background-image-container'>
+        <h1 className='news-page-banner-h1'>
           <b>{t("news")}</b>
         </h1>
       </section>
@@ -97,7 +97,7 @@ const NewsPage = () => {
                 language === "zh"
                   ? newsItem.Title_zh || "未知新闻"
                   : newsItem.Title_en || "Unknown News";
-              const newsContent = newsItem.Content || "暂无内容";
+              const newsContent = newsItem.Description_zh || "暂无内容";
               const newsUrl = `/news/${newsItem.url}`;
 
               return (
@@ -105,24 +105,24 @@ const NewsPage = () => {
                   key={newsItem.id}
                   xs={12}
                   sm={6}
-                  md={3}
+                  md={4} // 修改为 4 以在一行显示 3 个卡片
                   className='mb-4 d-flex'
                 >
                   <Link to={newsUrl} className='card-link-NewsPage'>
-                    <Card className='news-card d-flex flex-column'>
+                    <Card className='newspage-news-card d-flex flex-column'>
                       <Card.Img
                         src={newsItem.imageUrl}
                         alt={newsTitle}
-                        className='news-card-img'
+                        className='newspage-news-card-img'
                       />
                       <Card.Body className='text-center d-flex flex-column justify-content-between'>
-                        <Card.Title className='news-card-title'>
+                        <Card.Title className='newspage-news-card-title'>
                           {newsTitle}
                         </Card.Title>
-                        <Card.Text className='news-card-text'>
+                        <Card.Text className='newspage-news-card-date'>
                           {formatDateTime(newsItem.Published_time)}
                         </Card.Text>
-                        <Card.Text className='news-card-text'>
+                        <Card.Text className='newspage-news-card-content'>
                           {newsContent}
                         </Card.Text>
                       </Card.Body>
