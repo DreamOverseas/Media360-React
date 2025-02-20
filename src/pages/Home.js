@@ -4,6 +4,7 @@ import { Card, Col, Container, Row, Button} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import BannerSlider from "../components/BannerSlider";
+import {formatDateTime, calculateTime} from "./Events"
 // import NewsTicker from "../components/NewsTicker";
 import "../css/Home.css";
 
@@ -14,6 +15,7 @@ const HomePage = ()=> {
   const { t, i18n } = useTranslation();
   const [ads, setAds] = useState([]);
   const [products, setProducts] = useState([]);
+  const [news, setNews] = useState([]);
   const [events, setEvents] = useState([]);
 
   const ProductCarousel = ({ products, language, t, BACKEND_HOST, cardsPerRow = 4 }) => {
@@ -83,6 +85,70 @@ const HomePage = ()=> {
   };
 
 
+  const NewCarousel = ({ news, language, t, BACKEND_HOST, cardsPerRow = 4 }) => {
+    const [startIndex, setStartIndex] = useState(0);
+    const totalNews = news.length;
+
+    const nextSlide = () => {
+      setStartIndex((prevIndex) =>
+        prevIndex + cardsPerRow < totalNews ? prevIndex + cardsPerRow : prevIndex
+      );
+    };
+
+    const prevSlide = () => {
+      setStartIndex((prevIndex) => (prevIndex - cardsPerRow >= 0 ? prevIndex - cardsPerRow : 0));
+    };
+
+    return (
+      <Container className='events-section'>
+        <Row className="d-flex text-center">
+          <h6>即时资讯</h6>
+          <h2>新闻</h2>
+        </Row>
+        <div className="home-product-carousel-wrapper">
+          <Button onClick={prevSlide} disabled={startIndex === 0} className="home-event-carousel-btn left">
+              &#10094;
+          </Button>
+          <div className="home-event-carousel-container">
+            <Row className="home-event-row"
+                style={{ transform: `translateX(-${(startIndex / cardsPerRow) * 100}%)` }}>
+              {news.length > 0 ? (
+                news.map(post => (
+                  <Col xs={6} sm={6} md={12/cardsPerRow} key={post.id}>
+                    <Link to={`/new/${post.url}`} className="home-event-card-link">
+                      <Card className='event-card'>
+                        <Card.Img
+                          variant='top'
+                          src={`${BACKEND_HOST}${post.Image.url}`}
+                          alt={post.Title}
+                        />
+                        <Card.Body>
+                          <Card.Title>{post.Name_zh}</Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                ))
+              ) : (
+                <p>{t("noNews")}</p>
+              )}
+              
+            </Row>
+          </div>
+          <Button onClick={nextSlide} disabled={startIndex + cardsPerRow >= totalNews} className="home-event-carousel-btn right">
+            &#10095;
+          </Button>
+        </div>
+
+        <Link to="/events/">
+          <button><b>{t("btn_more")}</b></button>
+        </Link>
+
+      </Container>
+    );
+  };
+
+
   const EventCarousel = ({ events, language, t, BACKEND_HOST, cardsPerRow = 4 }) => {
     const [startIndex, setStartIndex] = useState(0);
     const totalEvents = events.length;
@@ -101,7 +167,7 @@ const HomePage = ()=> {
       <Container className='events-section'>
         <Row className="d-flex text-center">
           <h6>探索“我们”的力量</h6>
-          <h2>热门活动</h2>
+          <h2>活动</h2>
         </Row>
         <div className="home-product-carousel-wrapper">
           <Button onClick={prevSlide} disabled={startIndex === 0} className="home-event-carousel-btn left">
@@ -113,15 +179,21 @@ const HomePage = ()=> {
               {events.length > 0 ? (
                 events.map(event => (
                   <Col xs={6} sm={6} md={12/cardsPerRow} key={event.id}>
-                    <Link to={`/event/${event.url}`} className="home-event-card-link">
-                      <Card className='event-card'>
-                        <Card.Img
-                          variant='top'
-                          src={`${BACKEND_HOST}${event.Image.url}`}
-                          alt={event.Title}
-                        />
+                    <Link to={`/event/${event.url}`} className="card-link-EventPage">
+                      <Card className="eventpage-event-card">
+                        {event.Image ? (
+                          <Card.Img variant="top" src={`${BACKEND_HOST}${event.Image.url}`} alt={event.Name_en} />
+                        ) : (
+                          <Card.Img variant="top" src="https://placehold.co/250x350" alt="Placeholder" />
+                        )}
                         <Card.Body>
-                          <Card.Title>{event.Name_zh}</Card.Title>
+                          <Card.Title>{event.Name_en}</Card.Title>
+                          {calculateTime(event.Start_Date, event.End_date) ? (
+                            <Card.Text className="eventpage-event-date">{calculateTime(event.Start_Date, event.End_Date)}</Card.Text>
+                          ) :(<></>)
+                          }
+                          <Card.Text className="eventpage-event-location">{event.Location}</Card.Text>
+                          <Card.Text className="eventpage-event-host">{event.Host}</Card.Text>
                         </Card.Body>
                       </Card>
                     </Link>
@@ -185,7 +257,23 @@ const HomePage = ()=> {
         console.error("Error fetching events:", error);
       }
     };
+
+    const fetchNews = async () => {
+      try {
+        const response = await
+          axios.get(`${BACKEND_HOST}/api/news`, {
+            params: {
+              "sort": "Order:desc",
+              "populate": "*",
+            },
+          });
+        setNews(response.data.data.slice(0, 8));
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
     fetchProducts();
+    fetchNews();
     fetchEvents();
   }, []);
 
@@ -254,6 +342,15 @@ const HomePage = ()=> {
       {/* Products Section */}
       <ProductCarousel
       products={products}
+      language={language}
+      t = {t}
+      BACKEND_HOST={BACKEND_HOST} 
+      cardsPerRow = {4}
+      />
+
+      {/* News Section */}
+      <NewCarousel
+      news={news}
       language={language}
       t = {t}
       BACKEND_HOST={BACKEND_HOST} 
