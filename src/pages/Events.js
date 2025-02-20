@@ -10,47 +10,80 @@ import "../css/EventPage.css";
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const Events = () => {
-  const [events, setEvents] = useState([]); // List of events
-  const [error, setError] = useState(null); // Error state
-  const [loading, setLoading] = useState(false); // Loading state
-  const [page, setPage] = useState(1); // Current page number for pagination
-  const [hasMore, setHasMore] = useState(true); // Whether more events can be loaded
-  const observer = useRef(); // Ref for observing the last event element
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [inProgressEvents, setInProgressEvents] = useState([]);
+  const [pastEvents, setPastEvents] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const observer = useRef();
+  const lastEventElementRef = useRef();
   const { t, i18n } = useTranslation();
   const language = i18n.language;
 
-  // Function to fetch events
-  const fetchEvents = (pageNum) => {
+  // Fetch Upcoming & In Progress events
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .all([
+        axios.get(`${BACKEND_HOST}/api/events`, 
+          { params: 
+            { "filters[TimeLine][$eq]": "Upcoming",
+              "sort": "Order:desc",
+               "populate": "*" 
+            } 
+          }
+        ),
+        axios.get(`${BACKEND_HOST}/api/events`, 
+          { params: 
+            { "filters[TimeLine][$eq]": "In Progress", 
+              "sort": "Order:desc",
+              "populate": "*" 
+            } 
+          }
+        )
+      ])
+      .then(
+        axios.spread((upcomingRes, inProgressRes) => {
+          setUpcomingEvents(upcomingRes.data.data || []);
+          setInProgressEvents(inProgressRes.data.data || []);
+        })
+      )
+      .catch((error) => {
+        console.error("Error fetching Upcoming/In Progress events:", error);
+        setError("Error fetching events");
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  // Fetch Past Review events with pagination (scroll loading)
+  const fetchPastEvents = (pageNum) => {
     setLoading(true);
     axios
       .get(`${BACKEND_HOST}/api/events`, {
         params: {
-          "filters[Active][$eq]": true,
+          "filters[TimeLine][$eq]": "Past Review",
           "pagination[page]": pageNum,
-          "pagination[pageSize]": 8, // Load 8 events per page
+          "pagination[pageSize]": 8,
           "sort": "Order:desc",
           "populate": "*",
         },
       })
       .then((response) => {
         if (response.data && response.data.data) {
-          setEvents((prevEvents) => [...prevEvents, ...response.data.data]);
-          setHasMore(response.data.meta.pagination.page < response.data.meta.pagination.pageCount); // Check if more events are available
+          setPastEvents((prevEvents) => [...prevEvents, ...response.data.data]);
+          setHasMore(response.data.meta.pagination.page < response.data.meta.pagination.pageCount);
         } else {
-          setHasMore(false); // If no more events, set to false
+          setHasMore(false);
         }
       })
       .catch((error) => {
-        console.error("Error fetching data: ", error);
-        setError("Error fetching data");
+        console.error("Error fetching Past Review events:", error);
+        setError("Error fetching past events");
       })
       .finally(() => setLoading(false));
   };
-
-  // Fetch data when the page number changes
-  useEffect(() => {
-    fetchEvents(page); // Load the first page of events
-  }, [page]);
 
 
   const formatDateTime = (datetime) => {
@@ -77,35 +110,28 @@ const Events = () => {
     return null;
   }
 
-  // Ref to track the last event in the list
-  const lastEventElementRef = useRef();
-
-  // Use IntersectionObserver to detect when the user scrolls to the last event
   useEffect(() => {
-    if (loading) return; // Skip if currently loading
-    if (!hasMore) return; // Stop if no more events to load
+    fetchPastEvents(page);
+  }, [page]);
+
+  useEffect(() => {
+    if (loading || !hasMore) return;
 
     const observerCallback = (entries) => {
       if (entries[0].isIntersecting) {
-        setPage((prevPage) => prevPage + 1); // Increment page when the last event comes into view
+        setPage((prevPage) => prevPage + 1);
       }
     };
 
-    const observerOptions = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 1.0, // Trigger when the last event is fully visible
-    };
-
-    observer.current = new IntersectionObserver(observerCallback, observerOptions);
+    observer.current = new IntersectionObserver(observerCallback, { root: null, rootMargin: "100px", threshold: 0.5 });
 
     if (lastEventElementRef.current) {
-      observer.current.observe(lastEventElementRef.current); // Observe the last event
+      observer.current.observe(lastEventElementRef.current);
     }
 
     return () => {
       if (observer.current && lastEventElementRef.current) {
-        observer.current.unobserve(lastEventElementRef.current); // Cleanup the observer
+        observer.current.unobserve(lastEventElementRef.current);
       }
     };
   }, [loading, hasMore]);
@@ -117,60 +143,67 @@ const Events = () => {
   return (
     <div>
       <section className='event-page-background-image-container'>
-        <h1 className='event-page-banner-h1'>
-          <b>{t("event")}</b>
-        </h1>
+        <h1 className='event-page-banner-h1'><b>{t("event")}</b></h1>
       </section>
       <br />
       <Container>
+
         <Row>
-          {events.map((event, index) => {
-            const isLastElement = index === events.length - 1; // Check if it's the last event
-            const eventName = language === "zh" ? event.Name_zh : event.Name_en;
-            
-            return (
-              <Col
-                key={event.id}
-                xs={6} // 2 items per row on extra small devices (optional)
-                sm={4} // 3 items per row on small devices
-                md={4} // 3 items per row on medium devices and above
-                className="mb-4"
-                ref={isLastElement ? lastEventElementRef : null} // Attach ref to the last event
-              >
-                <Link to={`/event/${event.url}`} className="card-link-EventPage">
-                  <Card className="eventpage-event-card">
-                    {event.Image? (
-                      <Card.Img
-                        variant="top"
-                        src={`${BACKEND_HOST}${event.Image.url}`}
-                        alt={eventName}
-                      />
-                    ) : (
-                      <Card.Img
-                        variant="top"
-                        src="https://placehold.co/250x350"
-                        fluid
-                        alt="Placeholder"
-                      />
-                    )}
-                    <Card.Body>
-                      <Card.Title title={eventName}>{eventName}</Card.Title>
-                      {calculateTime(event.Start_Date, event.End_date) ? (
-                        <Card.Text className="eventpage-event-date">{calculateTime(event.Start_Date, event.End_Date)}</Card.Text>
-                      ) :(<></>)
-                      }
-                      <Card.Text className="eventpage-event-location">{event.Location}</Card.Text>
-                      <Card.Text className="eventpage-event-host">{event.Host}</Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </Col>
-            );
-          })}
+          <h2>Upcoming Events</h2>
+          {upcomingEvents.length > 0 ? (
+            upcomingEvents.map(event => renderEventCard(event, calculateTime))
+          ) : (
+            <p>暂时无活动</p>
+          )}
         </Row>
-        {loading && <div>Loading more events...</div>} {/* Show loading text when fetching more events */}
+        
+        <Row>
+          <h2>In Progress Events</h2>
+          {inProgressEvents.length > 0 ? (
+            inProgressEvents.map(event => renderEventCard(event, calculateTime))
+          ) : (
+            <p>暂时无活动</p>
+          )}
+        </Row>
+
+        <Row>
+          <h2>Past Review</h2>
+          {pastEvents.map((event, index) => (
+            <Col key={event.id} ref={index === pastEvents.length - 1 ? lastEventElementRef : null}>
+              {renderEventCard(event,calculateTime)}
+            </Col>
+          ))}
+        </Row>
+        {loading && <div>Loading more past events...</div>}
       </Container>
     </div>
+  );
+};
+
+const renderEventCard = (event,calculateTime) => {
+  const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
+  const eventName = event.Name_en;
+  return (
+    <Col xs={6} sm={4} md={4} className="mb-4">
+      <Link to={`/event/${event.url}`} className="card-link-EventPage">
+        <Card className="eventpage-event-card">
+          {event.Image ? (
+            <Card.Img variant="top" src={`${BACKEND_HOST}${event.Image.url}`} alt={eventName} />
+          ) : (
+            <Card.Img variant="top" src="https://placehold.co/250x350" alt="Placeholder" />
+          )}
+          <Card.Body>
+            <Card.Title>{eventName}</Card.Title>
+            {calculateTime(event.Start_Date, event.End_date) ? (
+              <Card.Text className="eventpage-event-date">{calculateTime(event.Start_Date, event.End_Date)}</Card.Text>
+            ) :(<></>)
+            }
+            <Card.Text className="eventpage-event-location">{event.Location}</Card.Text>
+            <Card.Text className="eventpage-event-host">{event.Host}</Card.Text>
+          </Card.Body>
+        </Card>
+      </Link>
+    </Col>
   );
 };
 
