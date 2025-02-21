@@ -337,6 +337,56 @@
   flex: 1;
 }
 
+.video-wrapper {
+  position: relative;  /* 让子元素（按钮）可以使用绝对定位 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: auto;
+}
+
+.product-video-container {
+  width: 100%;
+  height: 500px;
+  position: relative; /* 让按钮可以相对于此定位 */
+}
+
+.product-video-container iframe {
+  width: 100%;
+  height: 500px; /* 适应屏幕大小 */
+  border-radius: 10px; /* 圆角美化 */
+}
+
+.video-prev-button,
+.video-next-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
+  padding: 10px 15px;
+  background: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 10; /* 确保按钮浮在视频上 */
+  transition: background 0.3s ease;
+}
+
+.video-prev-button:hover,
+.video-next-button:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.video-prev-button {
+  left: 15px; /* 靠左 */
+}
+
+.video-next-button {
+  right: 15px; /* 靠右 */
+}
+
+
 /* Responsive design for mobile devices */
 @media (max-width: 768px) {
   .product-detail h1 {

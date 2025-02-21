@@ -21,6 +21,7 @@ const ProductDetail = () => {
   const { t, i18n } = useTranslation();
   const [product, setProduct] = useState(null);
   const [people, setPeople] = useState(null);
+  const [videos, setVideo] = useState([]);
   const [relatedProduct, setRelatedProduct] = useState(null);
   const [productTag, setProductTag] = useState(null);
   const [error, setError] = useState(null);
@@ -309,6 +310,44 @@ const ProductDetail = () => {
     );
   };
 
+  const VideoCarousel = ({ videos }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+  
+    // 切换到上一个视频
+    const prevVideo = () => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === 0 ? videos.length - 1 : prevIndex - 1
+      );
+    };
+  
+    // 切换到下一个视频
+    const nextVideo = () => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === videos.length - 1 ? 0 : prevIndex + 1
+      );
+    };
+  
+    return (
+      <Container>
+        <h1>相关视频</h1>
+        <div className="video-wrapper">
+          <Button variant="dark" className="video-prev-button" onClick={prevVideo}>
+            &#10094;
+          </Button>
+
+          <div
+            className="product-video-container"
+            dangerouslySetInnerHTML={{ __html: videos[currentIndex].videoEmbed }}
+          ></div>
+
+          <Button variant="dark" className="video-next-button" onClick={nextVideo}>
+            &#10095;
+          </Button>
+        </div>
+      </Container>
+    );
+  };
+
   // const handleLoginModalOpen = () => {
   //   setShowLoginModal(true);
   //   setCartModal(false);
@@ -397,6 +436,10 @@ const ProductDetail = () => {
       if (relatedData) {
         setProductTag(relatedData.map(tag => tag.Tag_en))
       }
+
+      const videoEmbed = productResponse.data?.data?.[0]?.videos?.data || [];
+      console.log(videoEmbed)
+      setVideo(videoEmbed)
 
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -602,6 +645,13 @@ const ProductDetail = () => {
 
           </Row>
         </Container>
+          
+        {videos && (
+          <VideoCarousel 
+            videos = { videos }
+          />
+        )}
+
         {/* <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
             <Modal.Title>{Name}</Modal.Title>
