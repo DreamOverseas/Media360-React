@@ -192,36 +192,58 @@ const HomePage = ()=> {
               &#10094;
           </Button>
           <div className="home-event-carousel-container">
-            <Row className="home-event-row"
-                style={{ transform: `translateX(-${(startIndex / cardsPerRow) * 100}%)` }}>
-              {events.length > 0 ? (
-                events.map(event => (
-                  <Col xs={6} sm={6} md={12/cardsPerRow} key={event.id}>
+          <Row
+            className="home-event-row"
+            style={{ transform: `translateX(-${(startIndex / cardsPerRow) * 100}%)` }}
+          >
+            {events.length > 0 ? (
+              events.map((event) => {
+                const eventName =
+                  language === "zh"
+                    ? event.Name_zh || "未知活动"
+                    : event.Name_en || "Unknown Events";
+
+                return (
+                  <Col xs={6} sm={6} md={12 / cardsPerRow} key={event.id}>
                     <Link to={`/event/${event.url}`} className="card-link-EventPage">
                       <Card className="eventpage-event-card">
                         {event.Image ? (
-                          <Card.Img variant="top" src={`${BACKEND_HOST}${event.Image.url}`} alt={event.Name_en} />
+                          <Card.Img
+                            variant="top"
+                            src={`${BACKEND_HOST}${event.Image.url}`}
+                            alt={event.Name_en}
+                          />
                         ) : (
-                          <Card.Img variant="top" src="https://placehold.co/250x350" alt="Placeholder" />
+                          <Card.Img
+                            variant="top"
+                            src="https://placehold.co/250x350"
+                            alt="Placeholder"
+                          />
                         )}
                         <Card.Body>
-                          <Card.Title>{event.Name_en}</Card.Title>
-                          {calculateTime(event.Start_Date, event.End_date) ? (
-                            <Card.Text className="eventpage-event-date">{calculateTime(event.Start_Date, event.End_Date)}</Card.Text>
-                          ) :(<></>)
-                          }
-                          <Card.Text className="eventpage-event-location">{event.Location}</Card.Text>
-                          <Card.Text className="eventpage-event-host">{event.Host}</Card.Text>
+                          <Card.Title>{eventName}</Card.Title>
+                          {calculateTime(event.Start_Date, event.End_Date) && (
+                            <Card.Text className="eventpage-event-date">
+                              {calculateTime(event.Start_Date, event.End_Date)}
+                            </Card.Text>
+                          )}
+                          <Card.Text className="eventpage-event-location">
+                            {event.Location}
+                          </Card.Text>
+                          <Card.Text className="eventpage-event-host">
+                            {event.Host}
+                          </Card.Text>
                         </Card.Body>
                       </Card>
                     </Link>
                   </Col>
-                ))
-              ) : (
-                <p>{t("noEvents")}</p>
-              )}
-              
-            </Row>
+                );
+              })
+            ) : (
+              <p>{t("noEvents")}</p>
+            )}
+          </Row>
+
           </div>
           <Button onClick={nextSlide} disabled={startIndex + cardsPerRow >= totalEvents} className="home-event-carousel-btn right">
             &#10095;
