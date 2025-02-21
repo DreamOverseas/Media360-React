@@ -7,6 +7,7 @@ import ReactMarkdown from "react-markdown";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import rehypeRaw from 'rehype-raw';
+import moment from "moment-timezone";
 import { AuthContext } from "../context/AuthContext";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
@@ -22,6 +23,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [people, setPeople] = useState(null);
   const [videos, setVideo] = useState([]);
+  const [news, setNews] = useState([]);
   const [relatedProduct, setRelatedProduct] = useState(null);
   const [productTag, setProductTag] = useState(null);
   const [error, setError] = useState(null);
@@ -129,7 +131,6 @@ const ProductDetail = () => {
                 xs={6}
                 sm={6} 
                 md={4}
-                className="mb-4"
               >
                 <Link to={`/product/${product.url}`}
                   onClick={(e) => {
@@ -413,9 +414,10 @@ const ProductDetail = () => {
   const fetchData = async (path, setProduct, setPeople, setError, t) => {
     try {
 
-      const [productResponse, peopleResponse] = await Promise.all([
+      const [productResponse, peopleResponse, newsResponse] = await Promise.all([
         axios.get(`${BACKEND_HOST}/api/products/?filters[url]=${path}&populate=*`),
-        axios.get(`${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[people][populate]=Image`)
+        axios.get(`${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[people][populate]=Image`),
+        axios.get(`${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[news][populate]=Image`)
       ]);
   
 
@@ -434,12 +436,15 @@ const ProductDetail = () => {
       const relatedData = productResponse.data?.data?.[0]?.product_tags;
 
       if (relatedData) {
-        setProductTag(relatedData.map(tag => tag.Tag_en))
+        setProductTag(relatedData.map(tag => tag.Tag_en));
       }
 
       const videoEmbed = productResponse.data?.data?.[0]?.videos?.data || [];
-      console.log(videoEmbed)
-      setVideo(videoEmbed)
+      setVideo(videoEmbed);
+      const newsList = newsResponse.data?.data?.[0]?.news|| [];
+      console.log(newsResponse)
+      setNews(newsList);
+      
 
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -500,7 +505,13 @@ const ProductDetail = () => {
   };
   
   
-
+  const formatDateTime = datetime => {
+      if (!datetime) return "未知时间";
+      return moment(datetime)
+        .tz("Australia/Sydney")
+        .format("ddd, DD MMM, h:mm a z");
+    };
+  
 
   const handleShare = () => {
     const shareData = {
@@ -704,57 +715,54 @@ const ProductDetail = () => {
         </Container>
       </section>
 
+      <section>
+        <Container className='news-container'>
+          <Row>
+            <h1>相关新闻</h1>
+          </Row>
+          <Row className='justify-content-start'>
+            {news.map(newsItem => {
+              const language = i18n.language;
+              const newsTitle =
+                language === "zh"
+                  ? newsItem.Title_zh || "未知新闻"
+                  : newsItem.Title_en || "Unknown News";
+              const newsContent = newsItem.Description_zh || "暂无内容";
+              const newsUrl = `/news/${newsItem.url}`;
 
-      {/* <section>
-        <Container className='news-section'>
-          <h3>{t("latestNews")}</h3>
-          {brand.news && brand.news.length > 0 ? (
-            <Row>
-              {brand.news.map(newsItem => {
-                const newsTitle = newsItem.Title || "暂无标题";
-                const newsDate = newsItem.Published_time ? new Date(newsItem.Published_time).toLocaleString() : "暂无发布时间";
-                const newsImage = newsItem.Image?.url ? `${BACKEND_HOST}${newsItem.Image.url}` : "https://placehold.co/300x200";
-
-                return (
-                  <Col key={newsItem.id} md={4}>
-                    <Card className='news-card'>
-                      <Card.Img src={newsImage} alt={newsTitle} />
-                      <Card.Body>
-                        <Card.Title>{newsTitle}</Card.Title>
-                        <Card.Text>{newsDate}</Card.Text>
-                        <Link to={`/news/${newsItem.id}`}>
-                          <Button variant='dark'>{t("readMore")}</Button>
-                        </Link>
+              return (
+                <Col
+                  key={newsItem.id}
+                  xs={12}
+                  sm={6}
+                  md={4} // 修改为 4 以在一行显示 3 个卡片
+                >
+                  <Link to={newsUrl} className='card-link-NewsPage'>
+                    <Card className='newspage-news-card d-flex flex-column'>
+                      <Card.Img
+                        src={`${BACKEND_HOST}${newsItem.Image[0].url}`}
+                        alt={newsTitle}
+                        className='newspage-news-card-img'
+                      />
+                      <Card.Body className='text-center d-flex flex-column justify-content-between'>
+                        <Card.Title className='newspage-news-card-title'>
+                          {newsTitle}
+                        </Card.Title>
+                        <Card.Text className='newspage-news-card-date'>
+                          {formatDateTime(newsItem.Published_time)}
+                        </Card.Text>
+                        <Card.Text className='newspage-news-card-content'>
+                          {newsContent}
+                        </Card.Text>
                       </Card.Body>
                     </Card>
-                  </Col>
-                );
-              })}
-            </Row>
-          ) : (
-            <p className="text-center text-muted">暂无相关新闻</p>
-          )}
-        </Container>
-      </section> */}
-
-
-      {/* <section>
-        <Container>
-          <Row>
-            <h1><b>{t("productDescription")}</b></h1>
-          </Row>
-          <Row>
-            {Description ? (
-              <div className="markdown-content">
-                <ReactMarkdown rehypePlugins={[rehypeRaw]}>{Description}</ReactMarkdown>
-              </div>
-            ) : (
-              <div className="ck-content" dangerouslySetInnerHTML={{ __html: Detail}} />
-            )}
+                  </Link>
+                </Col>
+              );
+            })}
           </Row>
         </Container>
-        <br />
-      </section> */}
+      </section>
     </div>
   );
 };
