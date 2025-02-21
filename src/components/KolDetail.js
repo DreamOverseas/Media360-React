@@ -159,6 +159,7 @@ const KolDetail = () => {
       )}
 
       {/* 关联品牌 */}
+      {brands.length > 0 && (
       <section className='brand-section'>
         <Container>
           <h3 className='section-title'>{t("associatedBrands")}</h3>
@@ -188,6 +189,7 @@ const KolDetail = () => {
           </Row>
         </Container>
       </section>
+      )}
 
       {/* 关联产品 */}
       {products.length > 0 && (
