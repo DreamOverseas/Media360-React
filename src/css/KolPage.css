@@ -28,6 +28,7 @@
   height: 100%; /* 确保所有卡片等高 */
   display: flex;
   flex-direction: column;
+  width: 270px; /* 确保卡片宽度一致 */
   flex-basis: 23%; /* 确保卡片宽度一致 */
   margin: 1%; /* 添加间距 */
 }
@@ -47,7 +48,7 @@
   justify-content: center; /* 让文字居中 */
   align-items: center;
   text-align: center;
-  min-height: 80px; /* 统一卡片文字区域的高度 */
+  min-height: 50px; /* 统一卡片文字区域的高度 */
 }
 
 /* 个人名称 */
@@ -72,11 +73,11 @@
   display: -webkit-box;
   -webkit-line-clamp: 2; 
   -webkit-box-orient: vertical;
-  min-height: 45px; /* ✅ 统一高度，防止换行导致卡片变长 */
+  min-height: 30px; /* ✅ 统一高度，防止换行导致卡片变长 */
 }
 
 .card-link-KolPage {
-  text-decoration: none;
+  text-decoration: none; /* 确保链接没有下划线 */
   color: inherit; /* 确保链接颜色与文本颜色一致 */
 }
 

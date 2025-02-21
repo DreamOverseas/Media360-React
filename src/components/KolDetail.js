@@ -145,6 +145,19 @@ const KolDetail = () => {
         </Col>
       </Row>
 
+      {/* 视频部分 */}
+      {person.video && (
+        <section className='video-section'>
+          <Container>
+            
+            <div
+              className='video-container'
+              dangerouslySetInnerHTML={{ __html: person.video }}
+            ></div>
+          </Container>
+        </section>
+      )}
+
       {/* 关联品牌 */}
       <section className='brand-section'>
         <Container>
@@ -177,38 +190,40 @@ const KolDetail = () => {
       </section>
 
       {/* 关联产品 */}
-      <section className='product-section'>
-        <Container>
-          <h3 className='section-title'>{t("highlightedProduct")}</h3>
-          <Row className='justify-content-start'>
-            {products.map(product => (
-              <Col key={product.id} md={3} className='d-flex'>
-                <Link
-                  to={`/product/${product.url || product.id}`}
-                  className='card-link'
-                >
-                  <Card className='product-card'>
-                    <Card.Img
-                      src={
-                        product.ProductImage?.url
-                          ? `${BACKEND_HOST}${product.ProductImage.url}`
-                          : "https://placehold.co/300x200"
-                      }
-                      alt={product.Name_en || "Product"}
-                    />
-                    <Card.Body>
-                      <Card.Title>
-                        {product.Name_zh || product.Name_en}
-                      </Card.Title>
-                      <Card.Text>${product.Price || "N/A"}</Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </section>
+      {products.length > 0 && (
+        <section className='product-section'>
+          <Container>
+            <h3 className='section-title'>{t("highlightedProduct")}</h3>
+            <Row className='justify-content-start'>
+              {products.map(product => (
+                <Col key={product.id} md={3} className='d-flex'>
+                  <Link
+                    to={`/product/${product.url || product.id}`}
+                    className='card-link'
+                  >
+                    <Card className='product-card'>
+                      <Card.Img
+                        src={
+                          product.ProductImage?.url
+                            ? `${BACKEND_HOST}${product.ProductImage.url}`
+                            : "https://placehold.co/300x200"
+                        }
+                        alt={product.Name_en || "Product"}
+                      />
+                      <Card.Body>
+                        <Card.Title>
+                          {product.Name_zh || product.Name_en}
+                        </Card.Title>
+                        <Card.Text>${product.Price || "N/A"}</Card.Text>
+                      </Card.Body>
+                    </Card>
+                  </Link>
+                </Col>
+              ))}
+            </Row>
+          </Container>
+        </section>
+      )}
     </div>
   );
 };

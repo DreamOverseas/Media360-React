@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Image } from "react-bootstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
+import "../css/KolPage.css"; // 确保引入了正确的 CSS 文件
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 const FounderPage = () => {
