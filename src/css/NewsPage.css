@@ -83,6 +83,17 @@
   margin-bottom: 6px;
 }
 
+.newspage-news-card-content {
+  font-size: 14px;  /* 调小字体 */
+  height: 60px;     /* 设置固定高度 */
+  line-height: 1.4; /* 控制行高 */
+  overflow: hidden; /* 超出部分隐藏 */
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* 限制最多显示3行 */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis; /* 超出部分显示省略号 */
+}
+
 /* Adjust Link Styling */
 .card-link-NewsPage {
   text-decoration: none;
@@ -91,12 +102,12 @@
 }
 
 /* Responsive Design */
-@media (max-width: 992px) {
+/* @media (max-width: 992px) {
   .newspage-news-card {
-    flex: 0 0 33.3333%; /* Three cards per row */
+    flex: 0 0 33.3333%;
     max-width: 33.3333%;
   }
-}
+} */
 
 @media (max-width: 768px) {
   .news-page-background-image-container {

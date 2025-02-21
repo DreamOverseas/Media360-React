@@ -106,7 +106,6 @@ const NewsPage = () => {
                   xs={12}
                   sm={6}
                   md={4} // 修改为 4 以在一行显示 3 个卡片
-                  className='mb-4 d-flex'
                 >
                   <Link to={newsUrl} className='card-link-NewsPage'>
                     <Card className='newspage-news-card d-flex flex-column'>
