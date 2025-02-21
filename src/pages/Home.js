@@ -110,29 +110,47 @@ const HomePage = ()=> {
               &#10094;
           </Button>
           <div className="home-event-carousel-container">
-            <Row className="home-event-row"
-                style={{ transform: `translateX(-${(startIndex / cardsPerRow) * 100}%)` }}>
+            <Row
+              className="home-event-row"
+              style={{ transform: `translateX(-${(startIndex / cardsPerRow) * 100}%)` }}
+            >
               {news.length > 0 ? (
-                news.map(post => (
-                  <Col xs={6} sm={6} md={12/cardsPerRow} key={post.id}>
-                    <Link to={`/new/${post.url}`} className="home-event-card-link">
-                      <Card className='event-card'>
-                        <Card.Img
-                          variant='top'
-                          src={`${BACKEND_HOST}${post.Image.url}`}
-                          alt={post.Title}
-                        />
-                        <Card.Body>
-                          <Card.Title>{post.Name_zh}</Card.Title>
-                        </Card.Body>
-                      </Card>
-                    </Link>
-                  </Col>
-                ))
+                news.map((newsItem) => {
+                  const newsTitle =
+                    language === "zh"
+                      ? newsItem.Title_zh || "未知新闻"
+                      : newsItem.Title_en || "Unknown News";
+                  const newsContent = newsItem.Description_zh || "暂无内容";
+                  const newsUrl = `/news/${newsItem.url}`;
+
+                  return (
+                    <Col xs={6} sm={6} md={12 / cardsPerRow} key={newsItem.id}>
+                      <Link to={newsUrl} className="card-link-NewsPage">
+                        <Card className="newspage-news-card d-flex flex-column">
+                          <Card.Img
+                            src={`${BACKEND_HOST}${newsItem.Image[0].url}`}
+                            alt={newsTitle}
+                            className="newspage-news-card-img"
+                          />
+                          <Card.Body className="text-center d-flex flex-column justify-content-between">
+                            <Card.Title className="newspage-news-card-title">
+                              {newsTitle}
+                            </Card.Title>
+                            <Card.Text className="newspage-news-card-date">
+                              {formatDateTime(newsItem.Published_time)}
+                            </Card.Text>
+                            <Card.Text className="newspage-news-card-content">
+                              {newsContent}
+                            </Card.Text>
+                          </Card.Body>
+                        </Card>
+                      </Link>
+                    </Col>
+                  );
+                })
               ) : (
                 <p>{t("noNews")}</p>
               )}
-              
             </Row>
           </div>
           <Button onClick={nextSlide} disabled={startIndex + cardsPerRow >= totalNews} className="home-event-carousel-btn right">
@@ -174,36 +192,58 @@ const HomePage = ()=> {
               &#10094;
           </Button>
           <div className="home-event-carousel-container">
-            <Row className="home-event-row"
-                style={{ transform: `translateX(-${(startIndex / cardsPerRow) * 100}%)` }}>
-              {events.length > 0 ? (
-                events.map(event => (
-                  <Col xs={6} sm={6} md={12/cardsPerRow} key={event.id}>
+          <Row
+            className="home-event-row"
+            style={{ transform: `translateX(-${(startIndex / cardsPerRow) * 100}%)` }}
+          >
+            {events.length > 0 ? (
+              events.map((event) => {
+                const eventName =
+                  language === "zh"
+                    ? event.Name_zh || "未知活动"
+                    : event.Name_en || "Unknown Events";
+
+                return (
+                  <Col xs={6} sm={6} md={12 / cardsPerRow} key={event.id}>
                     <Link to={`/event/${event.url}`} className="card-link-EventPage">
                       <Card className="eventpage-event-card">
                         {event.Image ? (
-                          <Card.Img variant="top" src={`${BACKEND_HOST}${event.Image.url}`} alt={event.Name_en} />
+                          <Card.Img
+                            variant="top"
+                            src={`${BACKEND_HOST}${event.Image.url}`}
+                            alt={event.Name_en}
+                          />
                         ) : (
-                          <Card.Img variant="top" src="https://placehold.co/250x350" alt="Placeholder" />
+                          <Card.Img
+                            variant="top"
+                            src="https://placehold.co/250x350"
+                            alt="Placeholder"
+                          />
                         )}
                         <Card.Body>
-                          <Card.Title>{event.Name_en}</Card.Title>
-                          {calculateTime(event.Start_Date, event.End_date) ? (
-                            <Card.Text className="eventpage-event-date">{calculateTime(event.Start_Date, event.End_Date)}</Card.Text>
-                          ) :(<></>)
-                          }
-                          <Card.Text className="eventpage-event-location">{event.Location}</Card.Text>
-                          <Card.Text className="eventpage-event-host">{event.Host}</Card.Text>
+                          <Card.Title>{eventName}</Card.Title>
+                          {calculateTime(event.Start_Date, event.End_Date) && (
+                            <Card.Text className="eventpage-event-date">
+                              {calculateTime(event.Start_Date, event.End_Date)}
+                            </Card.Text>
+                          )}
+                          <Card.Text className="eventpage-event-location">
+                            {event.Location}
+                          </Card.Text>
+                          <Card.Text className="eventpage-event-host">
+                            {event.Host}
+                          </Card.Text>
                         </Card.Body>
                       </Card>
                     </Link>
                   </Col>
-                ))
-              ) : (
-                <p>{t("noEvents")}</p>
-              )}
-              
-            </Row>
+                );
+              })
+            ) : (
+              <p>{t("noEvents")}</p>
+            )}
+          </Row>
+
           </div>
           <Button onClick={nextSlide} disabled={startIndex + cardsPerRow >= totalEvents} className="home-event-carousel-btn right">
             &#10095;
@@ -268,6 +308,7 @@ const HomePage = ()=> {
             },
           });
         setNews(response.data.data.slice(0, 8));
+        console.log(response.data.data)
       } catch (error) {
         console.error("Error fetching events:", error);
       }
