@@ -657,7 +657,7 @@ const ProductDetail = () => {
           </Row>
         </Container>
           
-        {videos && (
+        {videos.length !== 0 && (
           <VideoCarousel 
             videos = { videos }
           />
@@ -716,52 +716,57 @@ const ProductDetail = () => {
       </section>
 
       <section>
-        <Container className='news-container'>
-          <Row>
-            <h1>相关新闻</h1>
-          </Row>
-          <Row className='justify-content-start'>
-            {news.map(newsItem => {
-              const language = i18n.language;
-              const newsTitle =
-                language === "zh"
-                  ? newsItem.Title_zh || "未知新闻"
-                  : newsItem.Title_en || "Unknown News";
-              const newsContent = newsItem.Description_zh || "暂无内容";
-              const newsUrl = `/news/${newsItem.url}`;
+        {news.length > 0 && (
+          <Container className="news-container">
+            <Row>
+              <h1>相关新闻</h1>
+            </Row>
+            <Row className="justify-content-start">
+              {news.map((newsItem) => {
+                const language = i18n.language;
+                const newsTitle =
+                  language === "zh"
+                    ? newsItem.Title_zh || "未知新闻"
+                    : newsItem.Title_en || "Unknown News";
+                const newsContent = newsItem.Description_zh || "暂无内容";
+                const newsUrl = `/news/${newsItem.url}`;
 
-              return (
-                <Col
-                  key={newsItem.id}
-                  xs={12}
-                  sm={6}
-                  md={4} // 修改为 4 以在一行显示 3 个卡片
-                >
-                  <Link to={newsUrl} className='card-link-NewsPage'>
-                    <Card className='newspage-news-card d-flex flex-column'>
-                      <Card.Img
-                        src={`${BACKEND_HOST}${newsItem.Image[0].url}`}
-                        alt={newsTitle}
-                        className='newspage-news-card-img'
-                      />
-                      <Card.Body className='text-center d-flex flex-column justify-content-between'>
-                        <Card.Title className='newspage-news-card-title'>
-                          {newsTitle}
-                        </Card.Title>
-                        <Card.Text className='newspage-news-card-date'>
-                          {formatDateTime(newsItem.Published_time)}
-                        </Card.Text>
-                        <Card.Text className='newspage-news-card-content'>
-                          {newsContent}
-                        </Card.Text>
-                      </Card.Body>
-                    </Card>
-                  </Link>
-                </Col>
-              );
-            })}
-          </Row>
-        </Container>
+                return (
+                  <Col key={newsItem.id} xs={12} sm={6} md={4}>
+                    <Link to={newsUrl} className="card-link-NewsPage">
+                      <Card className="newspage-news-card d-flex flex-column">
+                        {newsItem.Image && newsItem.Image.length > 0 ? (
+                          <Card.Img
+                            src={`${BACKEND_HOST}${newsItem.Image[0].url}`}
+                            alt={newsTitle}
+                            className="newspage-news-card-img"
+                          />
+                        ) : (
+                          <Card.Img
+                            src="https://placehold.co/300x200"
+                            alt="Placeholder"
+                            className="newspage-news-card-img"
+                          />
+                        )}
+                        <Card.Body className="text-center d-flex flex-column justify-content-between">
+                          <Card.Title className="newspage-news-card-title">
+                            {newsTitle}
+                          </Card.Title>
+                          <Card.Text className="newspage-news-card-date">
+                            {formatDateTime(newsItem.Published_time)}
+                          </Card.Text>
+                          <Card.Text className="newspage-news-card-content">
+                            {newsContent}
+                          </Card.Text>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                );
+              })}
+            </Row>
+          </Container>
+        )}
       </section>
     </div>
   );
