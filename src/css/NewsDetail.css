@@ -45,6 +45,14 @@
   text-align: justify;
 }
 
+/* 图片样式 */
+.news-detail-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
 /* 移动端适配 */
 @media (max-width: 768px) {
   .news-detail-container {

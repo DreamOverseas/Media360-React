@@ -78,15 +78,15 @@ const KolPage = () => {
               const profileUrl = `/person/${kol.internal_url || kol.id}`;
 
               return (
-                <Col key={kol.id} xs={12} sm={6} md={4} className='mb-4 d-flex'>
+                <Col key={kol.id} xs={12} sm={6} md={4} className='mb-4 '>
                   <Link to={profileUrl} className='kol-page-card-link'>
-                    <Card className='kol-page-card d-flex flex-column'>
+                    <Card className='kol-page-card'>
                       <Card.Img
                         src={ImageUrl}
                         alt={Name}
                         className='kol-page-card-img'
                       />
-                      <Card.Body className='kol-page-card-body text-center d-flex flex-column justify-content-between'>
+                      <Card.Body className='kol-page-card-body'>
                         <Card.Title className='kol-page-card-title'>
                           {Name}
                         </Card.Title>

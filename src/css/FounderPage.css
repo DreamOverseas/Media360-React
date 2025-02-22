@@ -92,6 +92,6 @@
   }
 
   .founder-page-card-img {
-    height: 320px; /* ✅ 移动端适当减少图片高度 */
+    height: 360px; /* ✅ 移动端适当减少图片高度 */
   }
 }

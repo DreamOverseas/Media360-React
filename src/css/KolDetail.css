@@ -3,174 +3,72 @@ body {
   font-family: "Arial", sans-serif;
   line-height: 1.6;
   background-color: #f8f9fa;
-  /* padding: 0 10vw; ✅ 为桌面端添加两边的页面间距 */
 }
 
-/* 🎨 容器对齐优化 */
-.container {
-  max-width: 1200px; /* ✅ 使内容宽度一致 */
-  margin: 0 auto;
+/* 🎨 页面布局 */
+.kol-detail-page {
+  padding: 2rem 0;
 }
 
-/* 🎨 人物详情布局 */
-.person-detail-section {
+/* 🎨 详细信息部分 */
+.kol-detail-section {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   padding: 3rem 0;
-  gap: 2rem;
-  max-width: 1200px; /* ✅ 保持宽度一致 */
+  max-width: 1200px;
   margin: 0 auto;
+  gap: 2rem;
 }
 
-/* ✅ 左侧人物信息 */
-.person-info {
+/* 🎨 左侧人物信息 */
+.kol-info {
   flex: 1;
   max-width: 55%;
   padding: 1rem;
-  text-align: left; /* ✅ 移动端保持人物介绍居左 */
+  text-align: left;
 }
 
-.person-info h1 {
+.kol-info h1 {
   font-size: 2rem;
   font-weight: bold;
 }
 
-.person-info h5 {
+.kol-info h5 {
   font-size: 1.2rem;
   color: #6c757d;
 }
 
-.person-info p {
+.kol-info p {
   font-size: 1rem;
   margin-top: 1rem;
 }
 
-/* ✅ 右侧人物头像 */
-.person-image-container {
+/* 🎨 右侧人物头像 */
+.kol-image-container {
   flex: 1;
   max-width: 35%;
   text-align: center;
 }
 
-.person-image {
+.kol-image {
   width: 100%;
   max-width: 280px;
   height: auto;
   object-fit: cover;
   border-radius: 12px;
-  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); */
 }
 
-/* 🎨 相关品牌 & 相关产品 */
-.brand-section,
-.product-section {
-  padding: 3rem 0;
+/* 🎥 视频部分 */
+.video-section {
   margin-top: 3rem;
-  background: inherit; /* ✅ 让背景与整体一致 */
-  border-radius: 12px;
-  max-width: 1200px; /* ✅ 使卡片宽度对齐 */
-  margin: 0 auto;
-}
-
-.section-title {
   text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
 }
 
-/* 🎨 统一卡片样式 */
-.brand-card,
-.product-card {
-  width: 280px; /* Fixed width for cards */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: center;
-  border: none;
-  border-radius: 12px;
-  transition: transform 0.3s ease-in-out;
-  min-height: 350px;
-  background: none; /* Remove background */
-  outline: none; /* Remove outline */
-  margin: 1%; /* Add margin for spacing */
-}
-
-.brand-card:hover,
-.product-card:hover {
-  transform: translateY(-5px);
-}
-
-.brand-card img,
-.product-card img {
-  width: 100%; /* Ensure image width fills the card */
-  height: 200px; /* Set a fixed height for the image container */
-  object-fit: contain; /* Ensure image covers the area while maintaining aspect ratio */
-  padding: 0; /* Remove padding */
-}
-
-.brand-card .card-body,
-.product-card .card-body {
-  padding: 0.25rem 0.5rem; /* Reduce padding to shrink text area and move text up */
-  flex-grow: 1;
-}
-
-.brand-card .card-title,
-.product-card .card-title {
-  font-size: 1rem; /* Reduce font size */
-  font-weight: bold;
-}
-
-.card-link {
-  text-decoration: none; /* Remove underline from links */
-  color: inherit; /* Inherit text color */
-}
-
-/* 📱 响应式优化 */
-@media (max-width: 768px) {
-  body {
-    /* padding: 0 5vw; ✅ 移动端减少页面间距 */
-  }
-
-  .container,
-  .person-detail-section,
-  .brand-section,
-  .product-section {
-    max-width: 100%; /* ✅ 移动端全宽 */
-    padding: 0 5vw;
-  }
-
-  .person-detail-section {
-    flex-direction: column;
-    align-items: flex-start; /* ✅ 使人物介绍居左 */
-  }
-
-  .person-info {
-    max-width: 100%;
-    text-align: left; /* ✅ 确保文字内容在移动端左对齐 */
-  }
-
-  .person-image-container {
-    max-width: 100%;
-    order: -1;
-    margin-bottom: 1rem;
-  }
-
-  .person-image {
-    max-width: 90%;
-  }
-
-  .brand-card,
-  .product-card {
-    margin-bottom: 1rem;
-    width: 100%; /* ✅ 让每个卡片在移动端占满一行 */
-  }
-}
 .video-container {
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 */
+  padding-bottom: 56.25%;
   height: 0;
   overflow: hidden;
   max-width: 100%;
@@ -184,4 +82,127 @@ body {
   width: 100%;
   height: 100%;
   border: 0;
+}
+
+/* 🎨 相关品牌 & 相关产品 */
+.kol-brand-section,
+.kol-product-section {
+  padding: 3rem 0;
+  margin-top: 3rem;
+  background: inherit;
+  border-radius: 12px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+/* 🎨 统一卡片样式 */
+.kol-brand-card,
+.kol-product-card {
+  width: 100%;
+  max-width: 300px;
+  border: none;
+  border-radius: 12px;
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 400px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.kol-brand-card:hover,
+.kol-product-card:hover {
+  transform: translateY(-5px);
+}
+
+/* 🎨 让图片填满顶部，防止留白 */
+.kol-brand-card img,
+.kol-product-card img {
+  width: 100%;
+  /* height: 220px; 固定高度，防止图片大小不一 */
+  object-fit: cover; /* 确保图片覆盖整个区域 */
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* 🎨 让卡片内容居中 */
+.kol-brand-card .card-body,
+.kol-product-card .card-body {
+  flex-grow: 1;
+  text-align: center;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 🎨 文字样式 */
+.kol-card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 0.5rem;
+}
+
+.kol-card-price {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* 🎨 卡片链接样式 */
+.kol-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: all 0.3s ease-in-out;
+}
+
+.kol-card-link:hover {
+  text-decoration: none !important;
+  opacity: 0.9;
+}
+
+/* 📱 响应式优化 */
+@media (max-width: 768px) {
+  .kol-detail-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .kol-info {
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .kol-image-container {
+    max-width: 100%;
+    order: -1;
+    margin-bottom: 1rem;
+  }
+
+  .kol-image {
+    max-width: 90%;
+  }
+
+  .kol-brand-card,
+  .kol-product-card {
+    width: 100%;
+    max-width: 100%;
+    min-height: auto;
+    margin-bottom: 1rem;
+  }
+
+  .kol-brand-card img,
+  .kol-product-card img {
+    /* height: 250px; */
+  }
 }

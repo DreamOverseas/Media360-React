@@ -1,14 +1,8 @@
 /* 🎨 全局样式优化 */
-body {
+.brand-detail-page {
   font-family: "Arial", sans-serif;
   line-height: 1.6;
   background-color: #f8f9fa;
-}
-
-/* 🎨 容器对齐优化 */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 /* 🎨 品牌详情布局 */
@@ -18,7 +12,6 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 4rem 0;
-  gap: 3rem;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -60,19 +53,20 @@ body {
 /* 🎨 相关新闻 & 相关人物 */
 .news-section,
 .person-section {
-  padding: 5rem 0; /* ✅ 增加上下间距 */
-  margin-top: 5rem; /* ✅ 增加顶部间距 */
+  padding: 4rem 0;
+  margin-top: 3rem;
   background: inherit;
   border-radius: 12px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/* 🎨 标题样式 */
 .section-title {
   text-align: center;
   font-size: 1.9rem;
   font-weight: bold;
-  margin: 3rem 0; /* ✅ 增加标题的上下间距 */
+  margin-bottom: 2rem;
 }
 
 /* 🎨 统一卡片样式 */
@@ -80,58 +74,34 @@ body {
 .person-card {
   width: 100%;
   text-align: center;
-  border: none; /* Remove border */
+  border: none;
   border-radius: 12px;
   transition: transform 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 400px;
+  min-height: 420px;
   justify-content: flex-start;
+  background: #fff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
   padding: 1rem;
-  background: none; /* Remove background */
-}
-
-.brand-card,
-.product-card {
-  width: 280px; /* Fixed width for cards */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: center;
-  border: none; /* Remove border */
-  border-radius: 12px;
-  transition: transform 0.3s ease-in-out;
-  min-height: 350px;
-  background: none; /* Remove background */
-  outline: none; /* Remove outline */
-  margin: 1%; /* Add margin for spacing */
 }
 
 .news-card:hover,
-.person-card:hover,
-.brand-card:hover,
-.product-card:hover {
+.person-card:hover {
   transform: translateY(-5px);
 }
 
-/* ✅ 图片调整 */
+/* ✅ 让图片填充卡片顶部，无留白 */
 .news-card img,
 .person-card img {
   width: 100%;
-  height: 300px; /* 固定高度 */
-  object-fit: cover; /* 确保图片覆盖容器 */
-  padding: 0.5rem;
-  border-radius: 8px;
-}
-
-.brand-card img,
-.product-card img {
-  width: 100%; /* Ensure image width fills the card */
-  height: 200px; /* Set a fixed height for the image container */
-  object-fit: cover; /* Ensure image covers the area while maintaining aspect ratio */
-  padding: 0; /* Remove padding */
+  height: 350px; /* 设定固定高度 */
+  object-fit: cover; /* ✅ 让图片完全填充卡片顶部 */
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  display: block; /* ✅ 避免 inline-block 产生空白 */
 }
 
 /* ✅ 让 Card.Body 内容紧凑 */
@@ -140,15 +110,8 @@ body {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  padding: 0.5rem;
   justify-content: center;
   width: 100%;
-}
-
-.brand-card .card-body,
-.product-card .card-body {
-  padding: 0.25rem 0.5rem; /* Reduce padding to shrink text area and move text up */
-  flex-grow: 1;
 }
 
 /* ✅ 标题和文本紧凑 */
@@ -156,30 +119,24 @@ body {
 .person-card .card-title {
   font-size: 1.3rem;
   font-weight: bold;
-  margin-bottom: 0.1rem;
-}
-
-.brand-card .card-title,
-.product-card .card-title {
-  font-size: 1rem; /* Reduce font size */
-  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 .news-card .card-text,
 .person-card .card-text {
   font-size: 1rem;
   color: #333;
-  text-decoration: none;
   line-height: 1.4;
   margin-bottom: 0.5rem;
 }
 
+/* ✅ 链接样式 */
 .card-link {
-  text-decoration: none; /* Remove underline from links */
-  color: inherit; /* Inherit text color */
+  text-decoration: none;
+  color: inherit;
 }
 
-/* 🎨 Footer 全宽优化 */
+/* 🎨 Footer 样式优化 */
 footer {
   width: 100%;
   background-color: #343a40;
@@ -189,52 +146,35 @@ footer {
 }
 
 /* 📱 响应式优化 */
-@media (min-width: 1024px) {
-  .news-section .row,
-  .person-section .row {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .news-section .col-md-4,
-  .person-section .col-md-3 {
-    flex: 0 0 25%;
-    max-width: 25%;
-  }
-}
-
-@media (max-width: 768px) {
-  body {
-    /* padding: 0 5vw; ✅ 移动端减少页面间距 */
-  }
-
-  .container,
-  .brand-detail-header,
-  .news-section,
-  .person-section {
-    max-width: 100%;
-    padding: 0 5vw;
-  }
-
+@media (max-width: 1024px) {
   .brand-detail-header {
     flex-direction: column;
-    align-items: flex-start;
-    padding-top: 6rem; /* 增加顶部间距，避免被导航栏挡住 */
+    text-align: center;
   }
 
   .brand-info {
     max-width: 100%;
-    text-align: left;
+    padding: 2rem;
   }
 
   .brand-logo-container {
     max-width: 100%;
-    order: -1;
-    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .news-section,
+  .person-section {
+    padding: 3rem 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .brand-detail-header {
+    padding-top: 6rem;
   }
 
   .brand-logo {
-    max-width: 92%;
+    max-width: 100%;
   }
 
   .news-card,
@@ -244,9 +184,7 @@ footer {
 
   .news-card img,
   .person-card img {
-    width: 100%;
-    height: 300px; /* 固定高度 */
-    object-fit: cover; /* 确保图片覆盖容器 */
+    height: 300px;
   }
 
   .news-section .col-md-4,
@@ -256,11 +194,6 @@ footer {
   }
 
   .section-title {
-    margin-top: 2rem; /* 增加标题上方的间距 */
-  }
-
-  .news-section,
-  .person-section {
-    padding: 6rem 0; /* 增加上下间距 */
+    margin-top: 2rem;
   }
 }

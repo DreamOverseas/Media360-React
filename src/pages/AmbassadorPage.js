@@ -91,13 +91,13 @@ const AmbassadorPage = () => {
                   className='mb-4 d-flex'
                 >
                   <Link to={profileUrl} className='ambassador-page-card-link'>
-                    <Card className='ambassador-page-card d-flex flex-column'>
+                    <Card className='ambassador-page-card'>
                       <Card.Img
                         src={ImageUrl}
                         alt={Name}
                         className='ambassador-page-card-img'
                       />
-                      <Card.Body className='ambassador-page-card-body text-center d-flex flex-column justify-content-between'>
+                      <Card.Body className='ambassador-page-card-body'>
                         <Card.Title className='ambassador-page-card-title'>
                           {Name}
                         </Card.Title>

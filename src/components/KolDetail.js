@@ -1,7 +1,7 @@
 import axios from "axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
+import { Card, Col, Container, Image, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import "../css/KolDetail.css";
@@ -15,7 +15,6 @@ const KolDetail = () => {
   const [brands, setBrands] = useState([]);
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,7 +35,7 @@ const KolDetail = () => {
         if (!response.data?.data.length) {
           console.log(`Internal URL failed, trying ID: ${paramId}`);
           response = await axios.get(
-            `${BACKEND_HOST}/api/people?filters[id][$eq]==${paramId}&populate=*`
+            `${BACKEND_HOST}/api/people?filters[id][$eq]=${paramId}&populate=*`
           );
         }
 
@@ -123,77 +122,60 @@ const KolDetail = () => {
     ? `${BACKEND_HOST}${person.Image[0].url}`
     : "https://placehold.co/280x280";
 
-  const handleContact = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
   return (
-    <div>
-      <Row className='person-detail-section'>
+    <div className='kol-detail-page'>
+      <Row className='kol-detail-section'>
         {/* 人物信息 */}
-        <Col md={7} className='person-info'>
+        <Col md={7} className='kol-info'>
           <h1>{displayName}</h1>
           <h5>{displayTitle}</h5>
           <p dangerouslySetInnerHTML={{ __html: displayBio }}></p>
-          <Button variant='dark' onClick={handleContact}>
-            {t("contactNow")}
-          </Button>
         </Col>
 
         {/* 人物头像 */}
-        <Col md={5} className='text-center person-image-container'>
-          <Image src={personImage} alt={displayName} className='person-image' />
+        <Col md={5} className='text-center kol-image-container'>
+          <Image src={personImage} alt={displayName} className='kol-image' />
         </Col>
       </Row>
 
-      {/* 视频部分 */}
-      {person.video && (
-        <section className='video-section'>
+      {/* 关联品牌 */}
+      {brands.length > 0 && (
+        <section className='kol-brand-section'>
           <Container>
-            
-            <div
-              className='video-container'
-              dangerouslySetInnerHTML={{ __html: person.video }}
-            ></div>
+            <h3 className='section-title'>{t("associatedBrands")}</h3>
+            <Row className='justify-content-start'>
+              {brands.map(brand => (
+                <Col key={brand.id} md={3} className='d-flex'>
+                  <Link
+                    to={`/brand/${brand.internal_url || brand.id}`}
+                    className='kol-card-link'
+                  >
+                    <Card className='kol-brand-card'>
+                      <Card.Img
+                        src={
+                          brand.logo?.url
+                            ? `${BACKEND_HOST}${brand.logo.url}`
+                            : "https://placehold.co/250x150"
+                        }
+                        alt={brand.name_en}
+                      />
+                      <Card.Body>
+                        <Card.Title className='kol-card-title'>
+                          {brand.name_zh || brand.name_en}
+                        </Card.Title>
+                      </Card.Body>
+                    </Card>
+                  </Link>
+                </Col>
+              ))}
+            </Row>
           </Container>
         </section>
       )}
 
-      {/* 关联品牌 */}
-      {brands.length > 0 && (
-      <section className='brand-section'>
-        <Container>
-          <h3 className='section-title'>{t("associatedBrands")}</h3>
-          <Row className='justify-content-start'>
-            {brands.map(brand => (
-              <Col key={brand.id} md={3} className='d-flex'>
-                <Link
-                  to={`/brand/${brand.internal_url || brand.id}`}
-                  className='card-link'
-                >
-                  <Card className='brand-card'>
-                    <Card.Img
-                      src={
-                        brand.logo?.url
-                          ? `${BACKEND_HOST}${brand.logo.url}`
-                          : "https://placehold.co/250x150"
-                      }
-                      alt={brand.name_en}
-                    />
-                    <Card.Body>
-                      <Card.Title>{brand.name_zh || brand.name_en}</Card.Title>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </section>
-      )}
-
       {/* 关联产品 */}
       {products.length > 0 && (
-        <section className='product-section'>
+        <section className='kol-product-section'>
           <Container>
             <h3 className='section-title'>{t("highlightedProduct")}</h3>
             <Row className='justify-content-start'>
@@ -201,9 +183,9 @@ const KolDetail = () => {
                 <Col key={product.id} md={3} className='d-flex'>
                   <Link
                     to={`/product/${product.url || product.id}`}
-                    className='card-link'
+                    className='kol-card-link'
                   >
-                    <Card className='product-card'>
+                    <Card className='kol-product-card'>
                       <Card.Img
                         src={
                           product.ProductImage?.url
@@ -213,10 +195,12 @@ const KolDetail = () => {
                         alt={product.Name_en || "Product"}
                       />
                       <Card.Body>
-                        <Card.Title>
+                        <Card.Title className='kol-card-title'>
                           {product.Name_zh || product.Name_en}
                         </Card.Title>
-                        <Card.Text>${product.Price || "N/A"}</Card.Text>
+                        <Card.Text className='kol-card-price'>
+                          ${product.Price || "N/A"}
+                        </Card.Text>
                       </Card.Body>
                     </Card>
                   </Link>
