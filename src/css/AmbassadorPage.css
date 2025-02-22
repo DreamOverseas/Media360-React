@@ -1,16 +1,16 @@
-/* 🎨 统一卡片样式 */
-.founder-page-container {
+/* 🎨 统一 Ambassador 页面容器 */
+.ambassador-page-container {
   padding: 2rem 0;
 }
 
 /* 🎨 标题样式 */
-.founder-page-container h6 {
+.ambassador-page-container h6 {
   font-weight: bold;
   color: #666;
   text-align: center;
 }
 
-.founder-page-container h2 {
+.ambassador-page-container h2 {
   font-size: 2rem;
   font-weight: bold;
   color: #333;
@@ -19,7 +19,7 @@
 }
 
 /* 🎨 统一卡片布局 */
-.founder-page-card {
+.ambassador-page-card {
   width: 100%;
   max-width: 350px; /* ✅ 限制最大宽度，保证一致 */
   border: none;
@@ -33,15 +33,18 @@
   height: 100%; /* ✅ 让卡片高度一致 */
 }
 
-.founder-page-card:hover {
+.ambassador-page-card:hover {
   transform: translateY(-5px);
 }
-.founder-page-card-link {
+
+/* 🎨 确保链接样式一致 */
+.ambassador-page-card-link {
   text-decoration: none; /* 确保链接没有下划线 */
   color: inherit; /* 确保链接颜色与文本颜色一致 */
 }
+
 /* 🎨 图片填充卡片顶部，防止留白 */
-.founder-page-card-img {
+.ambassador-page-card-img {
   width: 100%;
   height: 350px; /* ✅ 固定图片高度，防止变形 */
   object-fit: cover; /* ✅ 让图片填充整个区域，不留空白 */
@@ -50,7 +53,7 @@
 }
 
 /* 🎨 让卡片内容居中 */
-.founder-page-card-body {
+.ambassador-page-card-body {
   flex-grow: 1;
   text-align: center;
   padding: 1rem;
@@ -60,38 +63,38 @@
 }
 
 /* 🎨 文字样式 */
-.founder-page-card-title {
+.ambassador-page-card-title {
   font-size: 1.2rem;
   font-weight: bold;
   color: #222;
   margin-bottom: 0.5rem;
 }
 
-.founder-page-card-text {
+.ambassador-page-card-text {
   font-size: 1rem;
   color: #555;
 }
 
 /* 🎨 让卡片在不同设备上自适应 */
 @media (min-width: 992px) {
-  .founder-page-container .row {
+  .ambassador-page-container .row {
     justify-content: center; /* ✅ 让卡片在桌面端居中排列 */
   }
 }
 
 @media (max-width: 768px) {
-  .founder-page-container {
+  .ambassador-page-container {
     padding: 1rem;
   }
 
-  .founder-page-card {
+  .ambassador-page-card {
     width: 100%; /* ✅ 移动端让卡片占满整行 */
     max-width: 100%;
     height: auto;
     margin: 1rem 0;
   }
 
-  .founder-page-card-img {
+  .ambassador-page-card-img {
     height: 320px; /* ✅ 移动端适当减少图片高度 */
   }
 }
