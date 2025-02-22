@@ -14,6 +14,7 @@
   padding: 4rem 0;
   max-width: 1200px;
   margin: 0 auto;
+  text-align: left;
 }
 
 /* ✅ 左侧品牌信息 */
@@ -28,11 +29,13 @@
   font-size: 2.2rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
+  text-align: left;
 }
 
 .brand-info p {
   font-size: 1.1rem;
   margin-top: 1.5rem;
+  text-align: left;
 }
 
 /* ✅ 右侧品牌 Logo */
@@ -155,6 +158,7 @@ footer {
   .brand-info {
     max-width: 100%;
     padding: 2rem;
+    text-align: left;
   }
 
   .brand-logo-container {
@@ -171,6 +175,7 @@ footer {
 @media (max-width: 768px) {
   .brand-detail-header {
     padding-top: 6rem;
+    text-align: left;
   }
 
   .brand-logo {
