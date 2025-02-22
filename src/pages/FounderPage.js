@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Image } from "react-bootstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import "../css/KolPage.css"; // 确保引入了正确的 CSS 文件
+import "../css/FounderPage.css"; // 确保引入了正确的 CSS 文件
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 const FounderPage = () => {
@@ -55,7 +55,7 @@ const FounderPage = () => {
         </section>
 
         <section>
-          <Container className="kol-container">
+          <Container className="founder-page-container">
             <Row>
               <h6>品牌、企业灵魂人物</h6>
               <h2>品牌创始人</h2>
@@ -69,19 +69,13 @@ const FounderPage = () => {
                 const profileUrl = `/person/${founder.internal_url || founder.id}`;
 
                 return (
-                  <Col
-                    key={founder.id}
-                    xs={6}
-                    sm={6}
-                    md={3}
-                    className="mb-4 d-flex"
-                  >
-                    <Link to={profileUrl} className="card-link-KolPage">
-                      <Card className="kol-card d-flex flex-column">
-                        <Card.Img src={ImageUrl} alt={Name} className="kol-card-img" />
-                        <Card.Body className="text-center d-flex flex-column justify-content-between">
-                          <Card.Title className="kol-card-title">{Name}</Card.Title>
-                          <Card.Text className="kol-card-text">{Title}</Card.Text>
+                  <Col key={founder.id} xs={6} sm={6} md={3}>
+                    <Link to={profileUrl} className="founder-page-card-link">
+                      <Card className="founder-page-card">
+                        <Card.Img src={ImageUrl} alt={Name} className="founder-page-card-img" />
+                        <Card.Body className="founder-page-card-body text-center d-flex flex-column justify-content-between">
+                          <Card.Title className="founder-page-card-title">{Name}</Card.Title>
+                          <Card.Text className="founder-page-card-text">{Title}</Card.Text>
                         </Card.Body>
                       </Card>
                     </Link>
