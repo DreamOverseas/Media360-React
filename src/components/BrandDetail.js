@@ -142,7 +142,15 @@ const BrandDetail = () => {
           </Row>
         </Container>
       </section>
-
+      {/* 视频部分 */}
+      {brand.video && (
+        <section className='video-section'>
+          <div
+            className='video-container'
+            dangerouslySetInnerHTML={{ __html: brand.video }}
+          ></div>
+        </section>
+      )}
       <Container className='news-section'>
         <h2 className='section-title'>{t("latestNews")}</h2>
         <Row>
