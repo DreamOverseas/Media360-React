@@ -329,23 +329,19 @@ const ProductDetail = () => {
     };
   
     return (
-      <Container>
-        <h1>相关视频</h1>
-        <div className="video-wrapper">
-          <Button variant="dark" className="video-prev-button" onClick={prevVideo}>
-            &#10094;
-          </Button>
+      <Container className="video-wrapper">
+        <Button variant="dark" className="video-prev-button" onClick={prevVideo}>
+          &#10094;
+        </Button>
 
-          <div
-            className="product-video-container"
-            dangerouslySetInnerHTML={{ __html: videos[currentIndex].videoEmbed }}
-          ></div>
-
-          <Button variant="dark" className="video-next-button" onClick={nextVideo}>
-            &#10095;
-          </Button>
+        <div className="product-video-container">
+          <div dangerouslySetInnerHTML={{ __html: videos[currentIndex].videoEmbed }} />
         </div>
-      </Container>
+
+        <Button variant="dark" className="video-next-button" onClick={nextVideo}>
+          &#10095;
+        </Button>
+    </Container>
     );
   };
 
@@ -656,11 +652,14 @@ const ProductDetail = () => {
 
           </Row>
         </Container>
-          
+        
         {videos.length !== 0 && (
-          <VideoCarousel 
-            videos = { videos }
-          />
+          <Container>
+            <h1>相关视频</h1>
+            <VideoCarousel 
+              videos = { videos }
+            />
+          </Container>
         )}
 
         {/* <Modal show={showModal} onHide={handleCloseModal}>
