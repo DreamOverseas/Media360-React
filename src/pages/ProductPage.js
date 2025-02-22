@@ -27,6 +27,7 @@ const ProductPage = () => {
         params: {
           "pagination[page]": pageNum,
           "pagination[pageSize]": 8, // Load 8 products per page
+          "sort": "Order:desc",
           "populate": "*",
         },
       })

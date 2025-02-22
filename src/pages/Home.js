@@ -274,7 +274,12 @@ const HomePage = ()=> {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `${BACKEND_HOST}/api/products?populate=*`
+          `${BACKEND_HOST}/api/products`, {
+            params: {
+              "sort": "Order:desc",
+              "populate": "*",
+            },
+          }
         );
         setProducts(response.data.data.slice(0, 8)); // Limit to 8 products
       } catch (error) {
