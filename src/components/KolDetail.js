@@ -137,6 +137,15 @@ const KolDetail = () => {
           <Image src={personImage} alt={displayName} className='kol-image' />
         </Col>
       </Row>
+      {/* 视频部分 */}
+      {person.video && (
+        <section className='video-section'>
+          <div
+            className='video-container'
+            dangerouslySetInnerHTML={{ __html: person.video }}
+          ></div>
+        </section>
+      )}
 
       {/* 关联品牌 */}
       {brands.length > 0 && (
