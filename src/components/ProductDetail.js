@@ -549,29 +549,19 @@ const ProductDetail = () => {
 
   const computeRecommendations = (allProducts, product, currentTags) => {
     const currentProduct = product;
+    const safeCurrentTags = currentTags ?? [];
+    const tagSet = new Set(safeCurrentTags); // 提高查找效率
+  
     const rankedProducts = allProducts
-      .map(product => {
-        const productTags = product.product_tags?.map(tag => tag.Tag_en) ?? [];
-        // console.log("per product:", productTags)
-
-        const safeCurrentTags = currentTags ?? [];
-
-        const matchCount =
-          productTags.length > 0 && safeCurrentTags.length > 0
-            ? productTags.filter(tag => safeCurrentTags.includes(tag)).length
-            : 0;
-
-        return {
-          ...product,
-          matchCount,
-        };
+      .map(prod => {
+        const productTags = prod.product_tags?.map(tag => tag.Tag_en) ?? [];
+        // 计算当前产品标签与其他产品标签的交集数量
+        const matchCount = productTags.filter(tag => tagSet.has(tag)).length;
+        return { ...prod, matchCount };
       })
-      .filter(
-        product =>
-          product.matchCount > 0 && product.Name_en !== currentProduct.Name_en
-      )
+      .filter(prod => prod.matchCount > 0 && prod.Name_en !== currentProduct.Name_en)
       .sort((a, b) => b.matchCount - a.matchCount);
-
+  
     setRelatedProduct(rankedProducts.slice(0, 6));
   };
 
