@@ -147,7 +147,7 @@
 
 
 
-.shopify-accordion {
+/* .shopify-accordion {
   width: 100%;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -171,8 +171,8 @@
 }
 
 .shopify-accordion-body {
-  max-height: 400px; /* 限制最大高度 */
-  overflow: auto; /* 超出部分滚动 */
+  max-height: 400px;
+  overflow: auto;
   padding: 20px;
   background: #fff;
 }
@@ -190,14 +190,14 @@
   background: #f1f1f1;
 }
 
-/* 图片和文字布局 */
+
 .shopify-accordion-body .row {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-/* 左侧图片样式 */
+
 .shopify-accordion-body .col-md-4 img {
   max-width: 200px;
   max-height: 200px;
@@ -207,12 +207,30 @@
   border-radius: 8px;
 }
 
-/* 右侧文本样式 */
+
 .shopify-accordion-body .col-md-8 {
   flex: 1;
   font-weight: 400;
   font-size: 12px;
   line-height: 1.2;
+} */
+
+.detail-container {
+  max-height: 300px; /* 设置最大高度 */
+  overflow-y: auto; /* 超出部分出现滚动条 */
+  padding: 10px;
+  border: 1px solid #ddd; /* 可选，增加边框 */
+  background-color: #f9f9f9; /* 可选，背景颜色 */
+  border-radius: 5px; /* 可选，圆角 */
+}
+
+.detail-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.detail-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
 }
 
 .person-related-btn {
