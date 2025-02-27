@@ -33,7 +33,6 @@ const ProductDetail = () => {
   const [people, setPeople] = useState(null);
   const [videos, setVideo] = useState([]);
   const [news, setNews] = useState([]);
-  const [relatedProduct, setRelatedProduct] = useState(null);
   const [productTag, setProductTag] = useState(null);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -60,21 +59,18 @@ const ProductDetail = () => {
   
     const videoIframes = Array.isArray(product?.videos?.data) ? product.videos.data : [];
   
-    // **仅当有视频时更新 `videoThumbnails`**
     useEffect(() => {
       if (videoIframes.length > 0) {
         const thumbnails = videoIframes.map(video => video?.pic ?? "https://placehold.co/650x400");
 
-        // **确保 `videoThumbnails` 真的变化后再更新**
         if (JSON.stringify(thumbnails) !== JSON.stringify(videoThumbnails)) {
           setVideoThumbnails(thumbnails);
         }
       } else {
-        setVideoThumbnails([]); // **如果没有视频，确保 `videoThumbnails` 是空数组**
+        setVideoThumbnails([]);
       }
     }, [videoIframes]);
   
-    // **合并 `allMedia`，确保 `videoThumbnails` 变化后再更新**
     useEffect(() => {
       setAllMedia([mainImage, ...subImages, ...videoThumbnails])
     }, [videoThumbnails]);
@@ -94,7 +90,6 @@ const ProductDetail = () => {
         <div className="main-image-container">
           <button className="prev-button" onClick={prevMedia}>❮</button>
   
-          {/* **如果当前索引是视频，则显示 Bilibili iframe，否则显示图片** */}
           {currentIndex >= subImages.length + 1 && videoIframes.length > 0 ? (
             <div
               className="product-video"
@@ -114,7 +109,6 @@ const ProductDetail = () => {
           <button className="next-button" onClick={nextMedia}>❯</button>
         </div>
   
-        {/* **缩略图部分** */}
         <div className="thumbnail-container">
           {allMedia.map((media, index) => (
             <div
@@ -131,76 +125,17 @@ const ProductDetail = () => {
           ))}
         </div>
   
-        {/* **Lightbox 里显示视频封面，点击后替换为 Bilibili iframe** */}
         <Lightbox
           open={lightboxOpen}
           close={() => setLightboxOpen(false)}
           slides={allMedia.map((media, index) => ({
-            src: media, // 这里是封面图
+            src: media,
             html: index >= subImages.length + 1 && videoIframes.length > 0
               ? videoIframes[index - (subImages.length + 1)]?.videoEmbed
               : undefined
           }))}
           index={currentIndex}
         />
-      </Container>
-    );
-  };
-
-  const RelatedProduct = ({ related_product, language }) => {
-    return (
-      <Container>
-        <Row>
-          {related_product.map(product => {
-            const Name = language === "zh" ? product.Name_zh : product.Name_en;
-
-            const ShortDescription =
-              language === "zh" ? product.Short_zh : product.Short_en;
-            return (
-              <Col key={product.id} xs={6} sm={6} md={4}>
-                <Link
-                  to={`/product/${product.url}`}
-                  onClick={e => {
-                    e.preventDefault();
-                    navigate(`/product/${product.url}`);
-                    window.location.reload();
-                  }}
-                  className='card-link-ProductPage'
-                >
-                  <Card className='productpage-product-card'>
-                    {product.ProductImage ? (
-                      <Card.Img
-                        variant='top'
-                        src={`${BACKEND_HOST}${product.ProductImage.url}`}
-                        alt={Name}
-                      />
-                    ) : (
-                      <Card.Img
-                        variant='top'
-                        src='https://placehold.co/250x350'
-                        fluid
-                        alt='Placeholder'
-                      />
-                    )}
-                    <Card.Body>
-                      <Card.Title title={Name}>{Name}</Card.Title>
-                      <p className='product-short-description'>
-                        {ShortDescription}
-                      </p>
-                      <p className='productpage-product-price'>
-                        {" "}
-                        {/* class 改为 className */}
-                        {product.Price === 0
-                          ? t("price_tbd")
-                          : `AU${product.Price}`}
-                      </p>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </Col>
-            );
-          })}
-        </Row>
       </Container>
     );
   };
@@ -371,51 +306,51 @@ const ProductDetail = () => {
   //   );
   // };
 
-  const VideoCarousel = ({ videos }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+  // const VideoCarousel = ({ videos }) => {
+  //   const [currentIndex, setCurrentIndex] = useState(0);
 
-    // 切换到上一个视频
-    const prevVideo = () => {
-      setCurrentIndex(prevIndex =>
-        prevIndex === 0 ? videos.length - 1 : prevIndex - 1
-      );
-    };
+  //   // 切换到上一个视频
+  //   const prevVideo = () => {
+  //     setCurrentIndex(prevIndex =>
+  //       prevIndex === 0 ? videos.length - 1 : prevIndex - 1
+  //     );
+  //   };
 
-    // 切换到下一个视频
-    const nextVideo = () => {
-      setCurrentIndex(prevIndex =>
-        prevIndex === videos.length - 1 ? 0 : prevIndex + 1
-      );
-    };
+  //   // 切换到下一个视频
+  //   const nextVideo = () => {
+  //     setCurrentIndex(prevIndex =>
+  //       prevIndex === videos.length - 1 ? 0 : prevIndex + 1
+  //     );
+  //   };
 
-    return (
-      <Container className='video-wrapper'>
-        <Button
-          variant='dark'
-          className='video-prev-button'
-          onClick={prevVideo}
-        >
-          &#10094;
-        </Button>
+  //   return (
+  //     <Container className='video-wrapper'>
+  //       <Button
+  //         variant='dark'
+  //         className='video-prev-button'
+  //         onClick={prevVideo}
+  //       >
+  //         &#10094;
+  //       </Button>
 
-        <div className='product-video-container'>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: videos[currentIndex].videoEmbed,
-            }}
-          />
-        </div>
+  //       <div className='product-video-container'>
+  //         <div
+  //           dangerouslySetInnerHTML={{
+  //             __html: videos[currentIndex].videoEmbed,
+  //           }}
+  //         />
+  //       </div>
 
-        <Button
-          variant='dark'
-          className='video-next-button'
-          onClick={nextVideo}
-        >
-          &#10095;
-        </Button>
-      </Container>
-    );
-  };
+  //       <Button
+  //         variant='dark'
+  //         className='video-next-button'
+  //         onClick={nextVideo}
+  //       >
+  //         &#10095;
+  //       </Button>
+  //     </Container>
+  //   );
+  // };
 
   // const handleLoginModalOpen = () => {
   //   setShowLoginModal(true);
@@ -550,58 +485,26 @@ const ProductDetail = () => {
           person.Role.roles.includes("Spokesperson")
       );
 
-      console.log("🔍 筛选出的 Founder:", founders);
-      console.log("🔍 筛选出的 Kol:", kols);
-      console.log("🔍 筛选出的 Spokesperson:", spokespersons);
+      // console.log("🔍 筛选出的 Founder:", founders);
+      // console.log("🔍 筛选出的 Kol:", kols);
+      // console.log("🔍 筛选出的 Spokesperson:", spokespersons);
 
       setFounder(founders);
       setKol(kols);
       setSpokesperson(spokespersons);
     } else {
-      console.log("⚠️ people 数据为空或不是数组");
       setFounder([]);
       setKol([]);
       setSpokesperson([]);
     }
   }, [people]);
 
-  useEffect(() => {
-    axios
-      .get(`${BACKEND_HOST}/api/products/?populate=*`)
-      .then(res => {
-        const allProducts = res.data.data;
-        // console.log(allProducts);
-        computeRecommendations(allProducts, product, productTag);
-      })
-      .catch(error => {
-        console.error("Error fetching products:", error);
-      });
-  }, [productTag]);
-
-  const computeRecommendations = (allProducts, product, currentTags) => {
-    const currentProduct = product;
-    const safeCurrentTags = currentTags ?? [];
-    const tagSet = new Set(safeCurrentTags); // 提高查找效率
-  
-    const rankedProducts = allProducts
-      .map(prod => {
-        const productTags = prod.product_tags?.map(tag => tag.Tag_en) ?? [];
-        // 计算当前产品标签与其他产品标签的交集数量
-        const matchCount = productTags.filter(tag => tagSet.has(tag)).length;
-        return { ...prod, matchCount };
-      })
-      .filter(prod => prod.matchCount > 0 && prod.Name_en !== currentProduct.Name_en)
-      .sort((a, b) => b.matchCount - a.matchCount);
-  
-    setRelatedProduct(rankedProducts.slice(0, 6));
-  };
-
-  const formatDateTime = datetime => {
-    if (!datetime) return "未知时间";
-    return moment(datetime)
-      .tz("Australia/Sydney")
-      .format("ddd, DD MMM, h:mm a z");
-  };
+  // const formatDateTime = datetime => {
+  //   if (!datetime) return "未知时间";
+  //   return moment(datetime)
+  //     .tz("Australia/Sydney")
+  //     .format("ddd, DD MMM, h:mm a z");
+  // };
 
   const handleShare = () => {
     const shareData = {
@@ -700,10 +603,12 @@ const ProductDetail = () => {
                 </Row>
 
                 <Row>
-                  <h4>查看产品相关人物</h4>
+                  <h4>查看相关产品以及相关人物</h4>
                   <Row>
                     <Col xs={4}>
-                      <Button variant="primary" className="related-btn">按钮1</Button>
+                      <Link to={`/product/${product.url}/related-product`} state={{ product }}>
+                        <Button variant="primary" className="related-btn">相关产品</Button>
+                      </Link>
                     </Col>
                     <Col xs={4}>
                       <Button variant="primary" className="related-btn">按钮2</Button>
@@ -730,11 +635,6 @@ const ProductDetail = () => {
                 
 
                 <Row>
-                  {/* <DescriptionAccordion
-                    id='1'
-                    accordion_name='产品描述'
-                    content={Detail}
-                  /> */}
                   <h4>产品描述</h4>
                   {Detail ? (
                     <div className="detail-container">
@@ -752,30 +652,6 @@ const ProductDetail = () => {
                   <h4>产品信息有误？</h4>
                   <Button variant="primary" className="related-btn">按钮2</Button>
                 </Row>
-
-                {/* <Row>
-                  <FounderAccordion
-                    id='2'
-                    accordion_name='产品创始人'
-                    content={founder}
-                  />
-                </Row>
-
-                <Row>
-                  <KolAccordion
-                    id='3'
-                    accordion_name='产品意见领袖'
-                    content={kol}
-                  />
-                </Row>
-
-                <Row>
-                  <SpokesAccordion
-                    id='4'
-                    accordion_name='产品代言人'
-                    content={spokesperson}
-                  />
-                </Row> */}
                 {/* <Row>
                   {(Price !== 0 || 1) && Available ? (
                     <>
