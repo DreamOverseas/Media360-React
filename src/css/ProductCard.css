@@ -1,0 +1,46 @@
+.general-product-card-link-decoration {
+    text-decoration: none;
+}
+
+.general-product-card-tag-label {
+    width: 100%;
+    border-radius: 50px;
+    border: 1px solid black;
+    background: white;
+    color: black;
+    font-size: 10px;
+}
+  
+.general-product-card-tag-col {
+    margin-bottom: 10px;
+}
+
+.general-product-card {
+    height:450px;
+    margin-bottom:4%
+}
+
+.general-product-card img {
+    max-width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px; /* Rounded corners */
+}
+
+.general-product-card .card-title {
+    font-size: 1.1rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2; /* Limit title to 3 lines */
+}
+
+.general-product-card .card-text {
+    font-size: 0.7rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3; /* Limit description to 3 lines */
+}

@@ -79,7 +79,6 @@
   color: black;
 }
 
-/* 数量显示 */
 .quantity-text {
   font-size: 16px;
   font-weight: bold;
@@ -87,7 +86,7 @@
   text-align: center;
 }
 
-/* 购物车按钮样式 */
+
 .add-to-cart-btn {
   width: 100%;
   height:50px;
@@ -103,116 +102,54 @@
   background: black;
   color: white;
 }
-/* React Markdown content styling */
-/* .markdown-content img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 100%; 
-  height: auto;
-}
-
-.markdown-content h1, .markdown-content h2, .markdown-content h3 {
-  color: #2c3e50;
-  margin-top: 1.5em;
-  margin-bottom: 0.5em;
-}
-
-.markdown-content p {
-  line-height: 1.8;
-  margin-bottom: 1em;
-  color: #34495e;
-}
-
-.markdown-content ul {
-  padding-left: 20px;
-  margin-bottom: 1.5em;
-}
-
-.markdown-content blockquote {
-  border-left: 5px solid #ecf0f1;
-  padding-left: 1em;
-  color: #7f8c8d;
-  margin-left: 0;
-  margin-right: 0;
-  font-style: italic;
-}
-
-.markdown-content code {
-  background-color: #f0f0f0;
-  padding: 0.2em 0.4em;
-  border-radius: 3px;
-  font-family: 'Courier New', Courier, monospace;
-} */
 
 
-
-.shopify-accordion {
+.tag-label {
   width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.shopify-accordion-header {
-  background: #f8f9fa;
-  padding: 15px 20px;
-  font-size: 18px;
+  border-radius: 50px;
+  border: 1px solid black;
+  background: white;
+  color: black;
+  font-size: 10px;
   font-weight: bold;
-  cursor: pointer;
-  border-bottom: 1px solid #ddd;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
-.shopify-accordion-header:hover {
-  background: #e9ecef;
+.tag-col {
+  margin-bottom: 10px;
 }
 
-.shopify-accordion-body {
-  max-height: 400px; /* 限制最大高度 */
-  overflow: auto; /* 超出部分滚动 */
-  padding: 20px;
-  background: #fff;
+.product-detail-funtion-btn {
+  width: 100%;
+  border-radius: 50px;
+  border: 1px solid black;
+  background: white;
+  color: black;
+  font-size: 10px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-.shopify-accordion-body::-webkit-scrollbar {
+.product-detail-funtion-btn:hover {
+  background: black;
+  color: white;
+}
+
+.detail-container {
+  max-height: 300px; /* 设置最大高度 */
+  overflow-y: auto; /* 超出部分出现滚动条 */
+  padding: 10px;
+  border: 1px solid #ddd; /* 可选，增加边框 */
+  background-color: #f9f9f9; /* 可选，背景颜色 */
+  border-radius: 5px; /* 可选，圆角 */
+}
+
+.detail-container::-webkit-scrollbar {
   width: 8px;
 }
 
-.shopify-accordion-body::-webkit-scrollbar-thumb {
+.detail-container::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
-}
-
-.shopify-accordion-body::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-/* 图片和文字布局 */
-.shopify-accordion-body .row {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-/* 左侧图片样式 */
-.shopify-accordion-body .col-md-4 img {
-  max-width: 200px;
-  max-height: 200px;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  border-radius: 8px;
-}
-
-/* 右侧文本样式 */
-.shopify-accordion-body .col-md-8 {
-  flex: 1;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 1.2;
 }
 
 .person-related-btn {
@@ -400,12 +337,81 @@
   z-index: 2; /* 确保 iframe 在视频容器内部 */
 }
 
+.amount-price-cart-bar {
+  margin-top: 1%;
+  margin-bottom: 5%;
+}
+
+
+
+.product-detail h1 {
+  margin-top: 5%;
+  margin-bottom: 2%;
+}
+
+.product-detail h4 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-size:14px
+}
+
+.product-detail h2 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+
+.update-function-btn {
+  width: auto;
+  border-radius: 50px;
+  border: 1px solid black;
+  background: white;
+  color: black;
+  font-size: 10px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.update-function-btn:hover {
+  background: black;
+  color: white;
+}
+
 
 /* Responsive design for mobile devices */
 @media (max-width: 768px) {
-  .product-detail h1 {
-    margin-top: 4%;
+
+  .amount-price-bar {
+    margin-bottom: 5%;
   }
+
+  .main-image-container {
+    position: relative;
+    width: 100%; /* Adjust to fit within the column */
+    height: 400px; /* Set a fixed height to maintain aspect ratio */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: cover;
+    overflow: hidden; /* Ensures images do not stretch */
+  }
+
+  .product-detail h1 {
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+
+  .product-detail h4 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size:14px
+  }
+
+  .product-detail h2 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
   /* Adjusts product detail layout to vertical direction */
   .product-detail-section {
     flex-direction: column;

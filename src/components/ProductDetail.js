@@ -1,21 +1,10 @@
 import axios from "axios";
 import moment from "moment-timezone";
-import React, { useContext, useEffect, useState } from "react";
-import {
-  Accordion,
-  Button,
-  Card,
-  Col,
-  Container,
-  Image,
-  Row,
-  Spinner,
-  Tab,
-  Tabs,
-} from "react-bootstrap";
+import React, { useContext, useEffect, useState} from "react";
+import {Button, Col, Container, Image, Row, Spinner} from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation} from "react-router-dom";
 import rehypeRaw from "rehype-raw";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
@@ -25,7 +14,6 @@ import "../css/ProductDetail.css";
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const ProductDetail = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const { user } = useContext(AuthContext);
   const { t, i18n } = useTranslation();
@@ -33,7 +21,6 @@ const ProductDetail = () => {
   const [people, setPeople] = useState(null);
   const [videos, setVideo] = useState([]);
   const [news, setNews] = useState([]);
-  const [relatedProduct, setRelatedProduct] = useState(null);
   const [productTag, setProductTag] = useState(null);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -47,344 +34,311 @@ const ProductDetail = () => {
   const ProductGallery = ({ product }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
-
+    const [videoThumbnails, setVideoThumbnails] = useState([]);
+    const [allMedia, setAllMedia] = useState([]);
+  
     const mainImage = product?.ProductImage
       ? `${BACKEND_HOST}${product.ProductImage.url}`
       : "https://placehold.co/650x650";
-
+  
     const subImages = product?.SubImages?.length
       ? product.SubImages.map(img => `${BACKEND_HOST}${img.url}`)
       : [];
+  
+    const videoIframes = Array.isArray(product?.videos?.data) ? product.videos.data : [];
+  
+    useEffect(() => {
+      if (videoIframes.length > 0) {
+        const thumbnails = videoIframes.map(video => video?.pic ?? "https://placehold.co/650x400");
 
-    const allImages = [mainImage, ...subImages];
-
-    // useEffect(() => {
-    //   const interval = setInterval(() => {
-    //     setCurrentIndex((prevIndex) => (prevIndex + 1) % allImages.length);
-    //   }, 5000);
-    //   return () => clearInterval(interval);
-    // }, [allImages.length]);
-
-    const nextImage = () => {
-      setCurrentIndex(prevIndex => (prevIndex + 1) % allImages.length);
+        if (JSON.stringify(thumbnails) !== JSON.stringify(videoThumbnails)) {
+          setVideoThumbnails(thumbnails);
+        }
+      } else {
+        setVideoThumbnails([]);
+      }
+    }, [videoIframes]);
+  
+    useEffect(() => {
+      setAllMedia([mainImage, ...subImages, ...videoThumbnails])
+    }, [videoThumbnails]);
+  
+    const nextMedia = () => {
+      setCurrentIndex(prevIndex => (prevIndex + 1) % allMedia.length);
     };
-
-    const prevImage = () => {
+  
+    const prevMedia = () => {
       setCurrentIndex(prevIndex =>
-        prevIndex === 0 ? allImages.length - 1 : prevIndex - 1
+        prevIndex === 0 ? allMedia.length - 1 : prevIndex - 1
       );
     };
-
+  
     return (
-      <Container className='product-gallery'>
-        <div className='main-image-container'>
-          <button className='prev-button' onClick={prevImage}>
-            ❮
-          </button>
-          <Image
-            src={allImages[currentIndex]}
-            alt={`Product Image ${currentIndex}`}
-            className='product-img'
-            onClick={() => setLightboxOpen(true)}
-          />
-          <button className='next-button' onClick={nextImage}>
-            ❯
-          </button>
-        </div>
-
-        <div className='thumbnail-container'>
-          {allImages.map((img, index) => (
-            <Image
-              key={index}
-              src={img}
-              alt={`Thumbnail ${index}`}
-              className={`thumb-img ${
-                index === currentIndex ? "active-thumb" : ""
-              }`}
-              onClick={() => setCurrentIndex(index)}
+      <Container className="product-gallery">
+        <div className="main-image-container">
+          <button className="prev-button" onClick={prevMedia}>❮</button>
+  
+          {currentIndex >= subImages.length + 1 && videoIframes.length > 0 ? (
+            <div
+              className="product-video"
+              dangerouslySetInnerHTML={{
+                __html: videoIframes[currentIndex - (subImages.length + 1)]?.videoEmbed || ""
+              }}
             />
+          ) : (
+            <Image
+              src={allMedia[currentIndex]}
+              alt={`Product Media ${currentIndex}`}
+              className="product-img"
+              onClick={() => setLightboxOpen(true)}
+            />
+          )}
+  
+          <button className="next-button" onClick={nextMedia}>❯</button>
+        </div>
+  
+        <div className="thumbnail-container">
+          {allMedia.map((media, index) => (
+            <div
+              key={index}
+              className={`thumb-container ${index === currentIndex ? "active-thumb" : ""}`}
+              onClick={() => setCurrentIndex(index)}
+            >
+              <Image
+                src={media}
+                alt={`Thumbnail ${index}`}
+                className="thumb-img"
+              />
+            </div>
           ))}
         </div>
-
+  
         <Lightbox
           open={lightboxOpen}
           close={() => setLightboxOpen(false)}
-          slides={allImages.map(img => ({ src: img }))}
+          slides={allMedia.map((media, index) => ({
+            src: media,
+            html: index >= subImages.length + 1 && videoIframes.length > 0
+              ? videoIframes[index - (subImages.length + 1)]?.videoEmbed
+              : undefined
+          }))}
           index={currentIndex}
         />
       </Container>
     );
   };
 
-  const RelatedProduct = ({ related_product, language }) => {
-    return (
-      <Container>
-        <Row>
-          {related_product.map(product => {
-            const Name = language === "zh" ? product.Name_zh : product.Name_en;
+  // const DynamicTabs = ({ tabId, data }) => {
+  //   const [activeTab, setActiveTab] = useState(
+  //     data.length > 0 ? data[0].id : null
+  //   );
 
-            const ShortDescription =
-              language === "zh" ? product.Short_zh : product.Short_en;
-            return (
-              <Col key={product.id} xs={6} sm={6} md={4}>
-                <Link
-                  to={`/product/${product.url}`}
-                  onClick={e => {
-                    e.preventDefault();
-                    navigate(`/product/${product.url}`);
-                    window.location.reload();
-                  }}
-                  className='card-link-ProductPage'
-                >
-                  <Card className='productpage-product-card'>
-                    {product.ProductImage ? (
-                      <Card.Img
-                        variant='top'
-                        src={`${BACKEND_HOST}${product.ProductImage.url}`}
-                        alt={Name}
-                      />
-                    ) : (
-                      <Card.Img
-                        variant='top'
-                        src='https://placehold.co/250x350'
-                        fluid
-                        alt='Placeholder'
-                      />
-                    )}
-                    <Card.Body>
-                      <Card.Title title={Name}>{Name}</Card.Title>
-                      <p className='product-short-description'>
-                        {ShortDescription}
-                      </p>
-                      <p className='productpage-product-price'>
-                        {" "}
-                        {/* class 改为 className */}
-                        {product.Price === 0
-                          ? t("price_tbd")
-                          : `AU${product.Price}`}
-                      </p>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </Col>
-            );
-          })}
-        </Row>
-      </Container>
-    );
-  };
+  //   useEffect(() => {
+  //     if (data.length > 0) {
+  //       setActiveTab(data[0].id);
+  //     }
+  //   }, [data]);
 
-  const DynamicTabs = ({ tabId, data }) => {
-    const [activeTab, setActiveTab] = useState(
-      data.length > 0 ? data[0].id : null
-    );
+  //   return (
+  //     <Container>
+  //       <Tabs
+  //         id={`tabs-${tabId}`}
+  //         activeKey={activeTab}
+  //         onSelect={k => setActiveTab(k)}
+  //         className='mb-3'
+  //       >
+  //         {data.map(item => (
+  //           <Tab eventKey={item.id} title={item.Name_zh} key={item.id}>
+  //             <Row className='person-detail'>
+  //               <Col md={4}>
+  //                 <Image
+  //                   src={`${BACKEND_HOST}${item.Image[0].url}`}
+  //                   alt={item.Name}
+  //                   fluid
+  //                 />
+  //               </Col>
+  //               <Col md={8}>
+  //                 <p>{item.Name_zh}</p>
+  //                 {item.Bio_zh ? (
+  //                   <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+  //                     {item.Bio_zh}
+  //                   </ReactMarkdown>
+  //                 ) : (
+  //                   <div
+  //                     className='ck-content'
+  //                     dangerouslySetInnerHTML={{ __html: item.Bio_zh }}
+  //                   />
+  //                 )}
+  //                 <Link
+  //                   to={`/person/${item.internal_url}`}
+  //                   className='person-related-btn'
+  //                 >
+  //                   查看更多
+  //                 </Link>
+  //                 <Link to={`/`} className='person-related-btn'>
+  //                   更新信息
+  //                 </Link>
+  //               </Col>
+  //             </Row>
+  //           </Tab>
+  //         ))}
+  //       </Tabs>
+  //     </Container>
+  //   );
+  // };
 
-    useEffect(() => {
-      if (data.length > 0) {
-        setActiveTab(data[0].id);
-      }
-    }, [data]);
+  // const DescriptionAccordion = ({ id, accordion_name, content }) => {
+  //   const [activeAccordion, setActiveAccordion] = useState(null);
+  //   const toggleAccordion = () => {
+  //     setActiveAccordion(activeAccordion === id ? null : id);
+  //   };
 
-    return (
-      <Container>
-        <Tabs
-          id={`tabs-${tabId}`}
-          activeKey={activeTab}
-          onSelect={k => setActiveTab(k)}
-          className='mb-3'
-        >
-          {data.map(item => (
-            <Tab eventKey={item.id} title={item.Name_zh} key={item.id}>
-              <Row className='person-detail'>
-                <Col md={4}>
-                  <Image
-                    src={`${BACKEND_HOST}${item.Image[0].url}`}
-                    alt={item.Name}
-                    fluid
-                  />
-                </Col>
-                <Col md={8}>
-                  <p>{item.Name_zh}</p>
-                  {item.Bio_zh ? (
-                    <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                      {item.Bio_zh}
-                    </ReactMarkdown>
-                  ) : (
-                    <div
-                      className='ck-content'
-                      dangerouslySetInnerHTML={{ __html: item.Bio_zh }}
-                    />
-                  )}
-                  <Link
-                    to={`/person/${item.internal_url}`}
-                    className='person-related-btn'
-                  >
-                    查看更多
-                  </Link>
-                  <Link to={`/`} className='person-related-btn'>
-                    更新信息
-                  </Link>
-                </Col>
-              </Row>
-            </Tab>
-          ))}
-        </Tabs>
-      </Container>
-    );
-  };
+  //   return (
+  //     <Accordion
+  //       activeKey={activeAccordion === id ? "0" : null}
+  //       className='shopify-accordion'
+  //     >
+  //       <Accordion.Item eventKey='0'>
+  //         <div className='shopify-accordion-header' onClick={toggleAccordion}>
+  //           {accordion_name}
+  //           {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
+  //         </div>
+  //         <Accordion.Body className='shopify-accordion-body'>
+  //           {content ? (
+  //             <div className='markdown-content'>
+  //               <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+  //                 {content}
+  //               </ReactMarkdown>
+  //             </div>
+  //           ) : (
+  //             <div
+  //               className='ck-content'
+  //               dangerouslySetInnerHTML={{ __html: Detail }}
+  //             />
+  //           )}
+  //         </Accordion.Body>
+  //       </Accordion.Item>
+  //     </Accordion>
+  //   );
+  // };
 
-  const DescriptionAccordion = ({ id, accordion_name, content }) => {
-    const [activeAccordion, setActiveAccordion] = useState(null);
-    const toggleAccordion = () => {
-      setActiveAccordion(activeAccordion === id ? null : id);
-    };
+  // const FounderAccordion = ({ id, accordion_name, content }) => {
+  //   const [activeAccordion, setActiveAccordion] = useState(null);
+  //   const toggleAccordion = () => {
+  //     setActiveAccordion(activeAccordion === id ? null : id);
+  //   };
 
-    return (
-      <Accordion
-        activeKey={activeAccordion === id ? "0" : null}
-        className='shopify-accordion'
-      >
-        <Accordion.Item eventKey='0'>
-          <div className='shopify-accordion-header' onClick={toggleAccordion}>
-            {accordion_name}
-            {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
-          </div>
-          <Accordion.Body className='shopify-accordion-body'>
-            {content ? (
-              <div className='markdown-content'>
-                <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                  {content}
-                </ReactMarkdown>
-              </div>
-            ) : (
-              <div
-                className='ck-content'
-                dangerouslySetInnerHTML={{ __html: Detail }}
-              />
-            )}
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
-    );
-  };
+  //   return (
+  //     <Accordion
+  //       activeKey={activeAccordion === id ? "0" : null}
+  //       className='shopify-accordion'
+  //     >
+  //       <Accordion.Item eventKey='0'>
+  //         <div className='shopify-accordion-header' onClick={toggleAccordion}>
+  //           {accordion_name}
+  //           {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
+  //         </div>
+  //         <Accordion.Body className='shopify-accordion-body'>
+  //           <DynamicTabs tabId='group1' data={content} />
+  //         </Accordion.Body>
+  //       </Accordion.Item>
+  //     </Accordion>
+  //   );
+  // };
 
-  const FounderAccordion = ({ id, accordion_name, content }) => {
-    const [activeAccordion, setActiveAccordion] = useState(null);
-    const toggleAccordion = () => {
-      setActiveAccordion(activeAccordion === id ? null : id);
-    };
+  // const KolAccordion = ({ id, accordion_name, content }) => {
+  //   const [activeAccordion, setActiveAccordion] = useState(null);
+  //   const toggleAccordion = () => {
+  //     setActiveAccordion(activeAccordion === id ? null : id);
+  //   };
 
-    return (
-      <Accordion
-        activeKey={activeAccordion === id ? "0" : null}
-        className='shopify-accordion'
-      >
-        <Accordion.Item eventKey='0'>
-          <div className='shopify-accordion-header' onClick={toggleAccordion}>
-            {accordion_name}
-            {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
-          </div>
-          <Accordion.Body className='shopify-accordion-body'>
-            <DynamicTabs tabId='group1' data={content} />
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
-    );
-  };
+  //   return (
+  //     <Accordion
+  //       activeKey={activeAccordion === id ? "0" : null}
+  //       className='shopify-accordion'
+  //     >
+  //       <Accordion.Item eventKey='0'>
+  //         <div className='shopify-accordion-header' onClick={toggleAccordion}>
+  //           {accordion_name}
+  //           {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
+  //         </div>
+  //         <Accordion.Body className='shopify-accordion-body'>
+  //           <DynamicTabs tabId='group2' data={content} />
+  //         </Accordion.Body>
+  //       </Accordion.Item>
+  //     </Accordion>
+  //   );
+  // };
 
-  const KolAccordion = ({ id, accordion_name, content }) => {
-    const [activeAccordion, setActiveAccordion] = useState(null);
-    const toggleAccordion = () => {
-      setActiveAccordion(activeAccordion === id ? null : id);
-    };
+  // const SpokesAccordion = ({ id, accordion_name, content }) => {
+  //   const [activeAccordion, setActiveAccordion] = useState(null);
+  //   const toggleAccordion = () => {
+  //     setActiveAccordion(activeAccordion === id ? null : id);
+  //   };
 
-    return (
-      <Accordion
-        activeKey={activeAccordion === id ? "0" : null}
-        className='shopify-accordion'
-      >
-        <Accordion.Item eventKey='0'>
-          <div className='shopify-accordion-header' onClick={toggleAccordion}>
-            {accordion_name}
-            {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
-          </div>
-          <Accordion.Body className='shopify-accordion-body'>
-            <DynamicTabs tabId='group2' data={content} />
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
-    );
-  };
+  //   return (
+  //     <Accordion
+  //       activeKey={activeAccordion === id ? "0" : null}
+  //       className='shopify-accordion'
+  //     >
+  //       <Accordion.Item eventKey='0'>
+  //         <div className='shopify-accordion-header' onClick={toggleAccordion}>
+  //           {accordion_name}
+  //           {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
+  //         </div>
+  //         <Accordion.Body className='shopify-accordion-body'>
+  //           <DynamicTabs tabId='group3' data={content} />
+  //         </Accordion.Body>
+  //       </Accordion.Item>
+  //     </Accordion>
+  //   );
+  // };
 
-  const SpokesAccordion = ({ id, accordion_name, content }) => {
-    const [activeAccordion, setActiveAccordion] = useState(null);
-    const toggleAccordion = () => {
-      setActiveAccordion(activeAccordion === id ? null : id);
-    };
+  // const VideoCarousel = ({ videos }) => {
+  //   const [currentIndex, setCurrentIndex] = useState(0);
 
-    return (
-      <Accordion
-        activeKey={activeAccordion === id ? "0" : null}
-        className='shopify-accordion'
-      >
-        <Accordion.Item eventKey='0'>
-          <div className='shopify-accordion-header' onClick={toggleAccordion}>
-            {accordion_name}
-            {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
-          </div>
-          <Accordion.Body className='shopify-accordion-body'>
-            <DynamicTabs tabId='group3' data={content} />
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
-    );
-  };
+  //   // 切换到上一个视频
+  //   const prevVideo = () => {
+  //     setCurrentIndex(prevIndex =>
+  //       prevIndex === 0 ? videos.length - 1 : prevIndex - 1
+  //     );
+  //   };
 
-  const VideoCarousel = ({ videos }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+  //   // 切换到下一个视频
+  //   const nextVideo = () => {
+  //     setCurrentIndex(prevIndex =>
+  //       prevIndex === videos.length - 1 ? 0 : prevIndex + 1
+  //     );
+  //   };
 
-    // 切换到上一个视频
-    const prevVideo = () => {
-      setCurrentIndex(prevIndex =>
-        prevIndex === 0 ? videos.length - 1 : prevIndex - 1
-      );
-    };
+  //   return (
+  //     <Container className='video-wrapper'>
+  //       <Button
+  //         variant='dark'
+  //         className='video-prev-button'
+  //         onClick={prevVideo}
+  //       >
+  //         &#10094;
+  //       </Button>
 
-    // 切换到下一个视频
-    const nextVideo = () => {
-      setCurrentIndex(prevIndex =>
-        prevIndex === videos.length - 1 ? 0 : prevIndex + 1
-      );
-    };
+  //       <div className='product-video-container'>
+  //         <div
+  //           dangerouslySetInnerHTML={{
+  //             __html: videos[currentIndex].videoEmbed,
+  //           }}
+  //         />
+  //       </div>
 
-    return (
-      <Container className='video-wrapper'>
-        <Button
-          variant='dark'
-          className='video-prev-button'
-          onClick={prevVideo}
-        >
-          &#10094;
-        </Button>
-
-        <div className='product-video-container'>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: videos[currentIndex].videoEmbed,
-            }}
-          />
-        </div>
-
-        <Button
-          variant='dark'
-          className='video-next-button'
-          onClick={nextVideo}
-        >
-          &#10095;
-        </Button>
-      </Container>
-    );
-  };
+  //       <Button
+  //         variant='dark'
+  //         className='video-next-button'
+  //         onClick={nextVideo}
+  //       >
+  //         &#10095;
+  //       </Button>
+  //     </Container>
+  //   );
+  // };
 
   // const handleLoginModalOpen = () => {
   //   setShowLoginModal(true);
@@ -479,7 +433,7 @@ const ProductDetail = () => {
       const relatedData = productResponse.data?.data?.[0]?.product_tags;
 
       if (relatedData) {
-        setProductTag(relatedData.map(tag => tag.Tag_en));
+        setProductTag(relatedData);
       }
 
       const videoEmbed = productResponse.data?.data?.[0]?.videos?.data || [];
@@ -519,68 +473,26 @@ const ProductDetail = () => {
           person.Role.roles.includes("Spokesperson")
       );
 
-      console.log("🔍 筛选出的 Founder:", founders);
-      console.log("🔍 筛选出的 Kol:", kols);
-      console.log("🔍 筛选出的 Spokesperson:", spokespersons);
+      // console.log("🔍 筛选出的 Founder:", founders);
+      // console.log("🔍 筛选出的 Kol:", kols);
+      // console.log("🔍 筛选出的 Spokesperson:", spokespersons);
 
       setFounder(founders);
       setKol(kols);
       setSpokesperson(spokespersons);
     } else {
-      console.log("⚠️ people 数据为空或不是数组");
       setFounder([]);
       setKol([]);
       setSpokesperson([]);
     }
   }, [people]);
 
-  useEffect(() => {
-    axios
-      .get(`${BACKEND_HOST}/api/products/?populate=*`)
-      .then(res => {
-        const allProducts = res.data.data;
-        // console.log(allProducts);
-        computeRecommendations(allProducts, product, productTag);
-      })
-      .catch(error => {
-        console.error("Error fetching products:", error);
-      });
-  }, [productTag]);
-
-  const computeRecommendations = (allProducts, product, currentTags) => {
-    const currentProduct = product;
-    const rankedProducts = allProducts
-      .map(product => {
-        const productTags = product.product_tags?.map(tag => tag.Tag_en) ?? [];
-        // console.log("per product:", productTags)
-
-        const safeCurrentTags = currentTags ?? [];
-
-        const matchCount =
-          productTags.length > 0 && safeCurrentTags.length > 0
-            ? productTags.filter(tag => safeCurrentTags.includes(tag)).length
-            : 0;
-
-        return {
-          ...product,
-          matchCount,
-        };
-      })
-      .filter(
-        product =>
-          product.matchCount > 0 && product.Name_en !== currentProduct.Name_en
-      )
-      .sort((a, b) => b.matchCount - a.matchCount);
-
-    setRelatedProduct(rankedProducts.slice(0, 6));
-  };
-
-  const formatDateTime = datetime => {
-    if (!datetime) return "未知时间";
-    return moment(datetime)
-      .tz("Australia/Sydney")
-      .format("ddd, DD MMM, h:mm a z");
-  };
+  // const formatDateTime = datetime => {
+  //   if (!datetime) return "未知时间";
+  //   return moment(datetime)
+  //     .tz("Australia/Sydney")
+  //     .format("ddd, DD MMM, h:mm a z");
+  // };
 
   const handleShare = () => {
     const shareData = {
@@ -616,6 +528,7 @@ const ProductDetail = () => {
   const Name = language === "zh" ? product.Name_zh : product.Name_en;
 
   const Detail = language === "zh" ? product.Detail_zh : product.Detail_en;
+  console.log(productTag)
 
   return (
     <div>
@@ -630,11 +543,23 @@ const ProductDetail = () => {
               <Container className='product-detail'>
                 <Row>
                   <h1>{Name}</h1>
-                  <h4>{display_price}</h4>
+                  <Row className="d-md-none">
+                    {productTag && productTag.length > 0 ? (
+                      productTag.map((tag, index) => {
+                        const Name = language === "zh" ? tag.Tag_zh : tag.Tag_en;
+                        return (
+                          <Col xs={4} sm={3} md={3} key={index} className="tag-col">
+                            <button className="tag-label">{Name}</button>
+                          </Col>
+                        );
+                      })
+                    ) : null}
+                  </Row>
+                  <h2>{display_price}</h2>
                 </Row>
 
-                <Row className='product-price-quantity d-flex align-items-center'>
-                  <Col md={4}>
+                <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
+                  <Col md={4} className="amount-price-bar">
                     <div className='quantity-control'>
                       <Button
                         className='quantity-btn'
@@ -658,51 +583,6 @@ const ProductDetail = () => {
                 </Row>
 
                 <Row>
-                  <DescriptionAccordion
-                    id='1'
-                    accordion_name='产品描述'
-                    content={Detail}
-                  />
-                </Row>
-
-                <Row>
-                  <FounderAccordion
-                    id='2'
-                    accordion_name='产品创始人'
-                    content={founder}
-                  />
-                </Row>
-
-                <Row>
-                  <KolAccordion
-                    id='3'
-                    accordion_name='产品意见领袖'
-                    content={kol}
-                  />
-                </Row>
-
-                <Row>
-                  <SpokesAccordion
-                    id='4'
-                    accordion_name='产品代言人'
-                    content={spokesperson}
-                  />
-                </Row>
-                {/* <Row>
-                  {(Price !== 0 || 1) && Available ? (
-                    <>
-                      <Col>
-                        <Button className='add-to-cart' onClick={handlePurchase}>{t("enquireNow")}</Button>
-                      </Col>
-                      <Col>
-                        <Button className='add-to-cart' onClick={handleAddToCart}>{t("addToCart")}</Button>
-                      </Col>
-                    </>
-                  ) : (
-                    <Button className='add-to-cart' onClick={handlePurchase}>{t("enquireNow")}</Button>
-                  )}
-                </Row> */}
-                <Row>
                   <a
                     href='#'
                     onClick={handleShare}
@@ -719,20 +599,86 @@ const ProductDetail = () => {
                         <path d='M400 255.4l0-15.4 0-32c0-8.8-7.2-16-16-16l-32 0-16 0-46.5 0c-50.9 0-93.9 33.5-108.3 79.6c-3.3-9.4-5.2-19.8-5.2-31.6c0-61.9 50.1-112 112-112l48 0 16 0 32 0c8.8 0 16-7.2 16-16l0-32 0-15.4L506 160 400 255.4zM336 240l16 0 0 48c0 17.7 14.3 32 32 32l3.7 0c7.9 0 15.5-2.9 21.4-8.2l139-125.1c7.6-6.8 11.9-16.5 11.9-26.7s-4.3-19.9-11.9-26.7L409.9 8.9C403.5 3.2 395.3 0 386.7 0C367.5 0 352 15.5 352 34.7L352 80l-16 0-32 0-16 0c-88.4 0-160 71.6-160 160c0 60.4 34.6 99.1 63.9 120.9c5.9 4.4 11.5 8.1 16.7 11.2c4.4 2.7 8.5 4.9 11.9 6.6c3.4 1.7 6.2 3 8.2 3.9c2.2 1 4.6 1.4 7.1 1.4l2.5 0c9.8 0 17.8-8 17.8-17.8c0-7.8-5.3-14.7-11.6-19.5c0 0 0 0 0 0c-.4-.3-.7-.5-1.1-.8c-1.7-1.1-3.4-2.5-5-4.1c-.8-.8-1.7-1.6-2.5-2.6s-1.6-1.9-2.4-2.9c-1.8-2.5-3.5-5.3-5-8.5c-2.6-6-4.3-13.3-4.3-22.4c0-36.1 29.3-65.5 65.5-65.5l14.5 0 32 0zM72 32C32.2 32 0 64.2 0 104L0 440c0 39.8 32.2 72 72 72l336 0c39.8 0 72-32.2 72-72l0-64c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 64c0 13.3-10.7 24-24 24L72 464c-13.3 0-24-10.7-24-24l0-336c0-13.3 10.7-24 24-24l64 0c13.3 0 24-10.7 24-24s-10.7-24-24-24L72 32z' />
                       </svg>
                     </i>
-                    <span className='share-title'>分享链接</span>
+                    <span className='share-title'>分享此产品</span>
                   </a>
                 </Row>
+
+                <Row>
+                  <h4>查看相关人物</h4>
+                  <Row>
+                    <Col xs={4}>
+                      <Button className="product-detail-funtion-btn">品牌创始人</Button>
+                    </Col>
+                    <Col xs={4}>
+                      <Button className="product-detail-funtion-btn">产品意见领袖</Button>
+                    </Col>
+                    <Col xs={4}>
+                      <Button className="product-detail-funtion-btn">产品代言人</Button>
+                    </Col>
+                  </Row>
+                </Row>
+
+                <Row>
+                  <h4>查看相关产品及相关新闻</h4>
+                  <Row>
+                    <Col xs={4}>
+                      <Link to={`/product/${product.url}/related-product`} state={{ product }}>
+                        <Button className="product-detail-funtion-btn">相关产品</Button>
+                      </Link>
+                    </Col>
+                    <Col xs={4}>
+                      <Button className="product-detail-funtion-btn">相关新闻</Button>
+                    </Col>
+                  </Row>
+                  
+                </Row>
+
+                
+
+                <Row>
+                  <h4>产品描述</h4>
+                  {Detail ? (
+                    <div className="detail-container">
+                      <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                        {Detail}
+                      </ReactMarkdown>
+                    </div>
+                  ) : (
+                    <div className="detail-container">暂无产品信息</div>
+                  )}
+
+                </Row>
+
+                <Row className="d-flex justify-content-center">
+                  <h4 style={{ textAlign: "center" }}>产品信息有误？</h4>
+                  <Button className="update-function-btn">完善信息</Button>
+                </Row>
+                {/* <Row>
+                  {(Price !== 0 || 1) && Available ? (
+                    <>
+                      <Col>
+                        <Button className='add-to-cart' onClick={handlePurchase}>{t("enquireNow")}</Button>
+                      </Col>
+                      <Col>
+                        <Button className='add-to-cart' onClick={handleAddToCart}>{t("addToCart")}</Button>
+                      </Col>
+                    </>
+                  ) : (
+                    <Button className='add-to-cart' onClick={handlePurchase}>{t("enquireNow")}</Button>
+                  )}
+                </Row> */}
+                
               </Container>
             </Col>
           </Row>
         </Container>
 
-        {videos.length !== 0 && (
+        {/* {videos.length !== 0 && (
           <Container>
             <h1>相关视频</h1>
             <VideoCarousel videos={videos} />
           </Container>
-        )}
+        )} */}
 
         {/* <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
@@ -775,7 +721,7 @@ const ProductDetail = () => {
       </section>
       <br />
       <br />
-      <section>
+      {/* <section>
         <Container>
           <h1>相关产品及服务</h1>
           {relatedProduct ? (
@@ -841,7 +787,7 @@ const ProductDetail = () => {
             </Row>
           </Container>
         )}
-      </section>
+      </section> */}
     </div>
   );
 };

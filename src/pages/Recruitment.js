@@ -265,7 +265,7 @@ const Recruitment = () => {
                       required
                     />
                   </div>
-                  <button type='submit'>{t("contact.send")}</button>
+                  <button className="custom-button" type='submit'>{t("contact.send")}</button>
                   {responseMessage && <Alert variant="danger">{responseMessage}</Alert>}
                   {successMsg && <Alert variant="success">{successMsg}</Alert>}
                 </form>
