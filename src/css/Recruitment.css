@@ -81,7 +81,7 @@ header nav ul li a {
   border-radius: 4px;
 }
 
-button {
+.custom-button {
   padding: 0.5rem 1rem;
   border: none;
   background-color: #333;
