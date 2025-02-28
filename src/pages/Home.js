@@ -55,7 +55,7 @@ const HomePage = ()=> {
                 const Name = language === "zh" ? product.Name_zh : product.Name_en;
                 return (
                   <Col xs={6} sm={6} md={12 / cardsPerRow} key={product.id}>
-                    <Link to={`/product/${product.url}`} className="home-product-card-link">
+                    <Link to={`/products/${product.url}`} className="home-product-card-link">
                       <Card className="product-card">
                         <Card.Img variant="top" src={`${BACKEND_HOST}${product.ProductImage?.url}`} alt={Name} />
                         <Card.Body className="card-body">
@@ -76,7 +76,7 @@ const HomePage = ()=> {
           </Button>
         </div>
 
-        <Link to="/productpage/">
+        <Link to="/products/">
           <button><b>{t("btn_more")}</b></button>
         </Link>
 
@@ -205,7 +205,7 @@ const HomePage = ()=> {
 
                 return (
                   <Col xs={6} sm={6} md={12 / cardsPerRow} key={event.id}>
-                    <Link to={`/event/${event.url}`} className="card-link-EventPage">
+                    <Link to={`/events/${event.url}`} className="card-link-EventPage">
                       <Card className="eventpage-event-card">
                         {event.Image ? (
                           <Card.Img
@@ -340,12 +340,12 @@ const HomePage = ()=> {
         <Row>
           {/* 第一个背景块 */}
           <Col md={4}>
-            <Link to={`/product/123`} className="home-product-card-link">
+            <Link to={`/founders`} className="home-product-card-link">
               <div className="product-container product-bg-1">
                 <div className="product-content">
                   <h6 className="product-title">开创品牌愿景，引领卓越未来</h6>
                   <h3 className="product-subtitle">品牌创始人</h3>
-                  <Link to="/founders/">
+                  <Link to="/founders">
                     <button><b>查看更多</b></button>
                   </Link>
                 </div>
@@ -355,7 +355,7 @@ const HomePage = ()=> {
 
           {/* 第二个背景块 */}
           <Col md={4}>
-            <Link to={`/product/456`} className="home-product-card-link">
+            <Link to={`/kols`} className="home-product-card-link">
               <div className="product-container product-bg-2">
                 <div className="product-content">
                   <h6 className="product-title">赋予群众力量，启发潮流趋势</h6>
@@ -370,7 +370,7 @@ const HomePage = ()=> {
 
           {/* 第三个背景块 */}
           <Col md={4}>
-            <Link to={`/product/789`} className="home-product-card-link">
+            <Link to={`/ambassadors`} className="home-product-card-link">
               <div className="product-container product-bg-3">
                 <div className="product-content">
                   <h6 className="product-title">引领潮流风向，定义时代风格</h6>

@@ -448,7 +448,7 @@ const ProductDetail = () => {
   };
 
   useEffect(() => {
-    const path = location.pathname.replace("/product/", "");
+    const path = location.pathname.replace("/products/", "");
     fetchData(path, setProduct, setPeople, setError, t);
   }, [location.pathname]);
 
@@ -622,7 +622,7 @@ const ProductDetail = () => {
                   <h4>查看相关产品及相关新闻</h4>
                   <Row>
                     <Col xs={4}>
-                      <Link to={`/product/${product.url}/related-product`} state={{ product }}>
+                      <Link to={`/products/${product.url}/related-product`} state={{ product }}>
                         <Button className="product-detail-funtion-btn">相关产品</Button>
                       </Link>
                     </Col>

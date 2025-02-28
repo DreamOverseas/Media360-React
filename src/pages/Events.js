@@ -188,7 +188,7 @@ const renderEventCard = (event,calculateTime) => {
   const eventName = event.Name_en;
   return (
     <Col xs={6} sm={4} md={4} className="mb-4">
-      <Link to={`/event/${event.url}`} className="card-link-EventPage">
+      <Link to={`/events/${event.url}`} className="card-link-EventPage">
         <Card className="eventpage-event-card">
           {event.Image ? (
             <Card.Img variant="top" src={`${BACKEND_HOST}${event.Image.url}`} alt={eventName} />

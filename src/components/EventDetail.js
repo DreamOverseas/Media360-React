@@ -20,7 +20,7 @@ const EventDetail = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const path = location.pathname.replace('/event/', '');
+    const path = location.pathname.replace('/events/', '');
     axios
       .get(`${BACKEND_HOST}/api/events`, {
         params: {

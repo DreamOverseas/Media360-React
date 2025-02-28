@@ -26,9 +26,9 @@ const BrandPage = () => {
   // ✅ 处理点击事件，优先使用 `internal_url`，否则回退到 `id`
   const handleBrandClick = brand => {
     if (brand.internal_url) {
-      navigate(`/brand/${brand.internal_url}`);
+      navigate(`/brands/${brand.internal_url}`);
     } else {
-      navigate(`/brand/${brand.id}`);
+      navigate(`/brands/${brand.id}`);
     }
   };
 
