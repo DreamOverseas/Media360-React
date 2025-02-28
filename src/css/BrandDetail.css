@@ -1,204 +1,150 @@
-/* 🎨 全局样式优化 */
+/* 🎨 让品牌详情更加整洁 */
 .brand-detail-page {
-  font-family: "Arial", sans-serif;
-  line-height: 1.6;
-  background-color: #f8f9fa;
+  padding: 20px;
 }
 
-/* 🎨 品牌详情布局 */
+/* 🎨 品牌头部信息 */
 .brand-detail-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  padding: 4rem 0;
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: left;
-}
-
-/* ✅ 左侧品牌信息 */
-.brand-info {
-  flex: 1;
-  max-width: 55%;
-  padding: 1.5rem;
-  text-align: left;
-}
-
-.brand-info h1 {
-  font-size: 2.2rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  text-align: left;
-}
-
-.brand-info p {
-  font-size: 1.1rem;
-  margin-top: 1.5rem;
-  text-align: left;
-}
-
-/* ✅ 右侧品牌 Logo */
-.brand-logo-container {
-  flex: 1;
-  max-width: 35%;
   text-align: center;
+  margin-bottom: 30px;
 }
 
 .brand-logo {
   width: 100%;
   max-width: 300px;
-  height: auto;
-  object-fit: contain;
-  border-radius: 12px;
+  margin-bottom: 20px;
 }
 
-/* 🎨 相关新闻 & 相关人物 */
-.news-section,
-.person-section {
-  padding: 4rem 0;
-  margin-top: 3rem;
-  background: inherit;
-  border-radius: 12px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* 🎨 标题样式 */
-.section-title {
-  text-align: center;
-  font-size: 1.9rem;
+.brand-title {
+  font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 2rem;
-}
-
-/* 🎨 统一卡片样式 */
-.news-card,
-.person-card {
-  width: 100%;
-  text-align: center;
-  border: none;
-  border-radius: 12px;
-  transition: transform 0.3s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 420px;
-  justify-content: flex-start;
-  background: #fff;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
-  padding: 1rem;
-}
-
-.news-card:hover,
-.person-card:hover {
-  transform: translateY(-5px);
-}
-
-/* ✅ 让图片填充卡片顶部，无留白 */
-.news-card img,
-.person-card img {
-  width: 100%;
-  height: 350px; /* 设定固定高度 */
-  object-fit: cover; /* ✅ 让图片完全填充卡片顶部 */
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  display: block; /* ✅ 避免 inline-block 产生空白 */
-}
-
-/* ✅ 让 Card.Body 内容紧凑 */
-.news-card .card-body,
-.person-card .card-body {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  justify-content: center;
-  width: 100%;
-}
-
-/* ✅ 标题和文本紧凑 */
-.news-card .card-title,
-.person-card .card-title {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.news-card .card-text,
-.person-card .card-text {
-  font-size: 1rem;
   color: #333;
-  line-height: 1.4;
-  margin-bottom: 0.5rem;
+  margin-bottom: 10px;
 }
 
-/* ✅ 链接样式 */
-.card-link {
-  text-decoration: none;
-  color: inherit;
+.brand-description {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 20px;
 }
 
-/* 🎨 Footer 样式优化 */
-footer {
-  width: 100%;
-  background-color: #343a40;
-  color: #ffffff;
-  padding: 2.5rem 0;
+/* 🎨 统一按钮样式：黑色边框 + 白色背景 */
+.btn-outline-black {
+  display: inline-block;
+  padding: 12px 20px;
+  border: 2px solid #000; /* 黑色边框 */
+  border-radius: 5px;
+  background: #fff; /* 白色背景 */
+  color: #000; /* 黑色文字 */
+  font-size: 1rem;
+  font-weight: bold;
   text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+/* 🎨 鼠标悬停效果 */
+.btn-outline-black:hover {
+  background: #000; /* 变为黑色背景 */
+  color: #fff; /* 文字变白 */
+}
+
+/* 🎨 链接按钮 */
+.btn-link-black {
+  display: inline-block;
+  padding: 10px 15px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  background: transparent;
+  color: #000;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  width: 100%;
+}
+
+/* 🎨 链接按钮鼠标悬停效果 */
+.btn-link-black:hover {
+  background: #000;
+  color: #fff;
+}
+
+/* 🎨 统一按钮排布 */
+.brand-actions,
+.brand-contact,
+.brand-related-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* 🎨 在移动端 (max-width: 768px) 调整为单列排列 */
+@media (max-width: 768px) {
+  .brand-actions,
+  .brand-contact,
+  .brand-related-section {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+/* 🎥 视频部分 */
+.video-section {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+}
+
+.video-container iframe,
+.video-container object,
+.video-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ✅ 相关信息按钮 */
+.brand-related-section {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.related-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  transition: background 0.3s ease-in-out;
+}
+
+.related-button:hover {
+  background: #0056b3;
 }
 
 /* 📱 响应式优化 */
-@media (max-width: 1024px) {
-  .brand-detail-header {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .brand-info {
-    max-width: 100%;
-    padding: 2rem;
-    text-align: left;
-  }
-
-  .brand-logo-container {
-    max-width: 100%;
-    margin-top: 1.5rem;
-  }
-
-  .news-section,
-  .person-section {
-    padding: 3rem 0;
-  }
-}
-
 @media (max-width: 768px) {
-  .brand-detail-header {
-    padding-top: 6rem;
-    text-align: left;
-  }
-
-  .brand-logo {
-    max-width: 100%;
-  }
-
-  .news-card,
-  .person-card {
-    min-height: 400px;
-  }
-
-  .news-card img,
-  .person-card img {
-    height: 300px;
-  }
-
-  .news-section .col-md-4,
-  .person-section .col-md-12 {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-
-  .section-title {
-    margin-top: 2rem;
+  .related-button {
+    width: 100%;
+    font-size: 1rem;
   }
 }
