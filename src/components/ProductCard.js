@@ -13,12 +13,12 @@ const ProductCard = ({ product, tag, BACKEND_HOST, i18n, t }) => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    navigate(`/product/${product.url}`);
+    navigate(`/products/${product.url}`);
     window.location.reload();
   };
 
   return (
-    <Link to={`/product/${product.url}`} onClick={handleClick} className="general-product-card-link-decoration">
+    <Link to={`/products/${product.url}`} onClick={handleClick} className="general-product-card-link-decoration">
       <Card className="general-product-card">
         <Card.Img variant="top" src={imageUrl} alt={Name} />
         <Card.Body>

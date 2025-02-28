@@ -119,7 +119,7 @@ const ProductPage = () => {
                 ref={isLastElement ? lastProductElementRef : null} // Attach ref to the last product
               >
                 <Link
-                  to={`/product/${product.url}`}
+                  to={`/products/${product.url}`}
                   className='card-link-ProductPage'
                 >
                   <Card className='productpage-product-card'>

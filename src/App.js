@@ -73,14 +73,14 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route path='/profile' element={<Profile />} />
-          <Route exact path='/productpage' element={<ProductPage />} />
+          <Route exact path='/products' element={<ProductPage />} />
           {/* <Route exact path='/productFinance' element={<ProductPage />} />
           <Route exact path='/productTravel' element={<ProductPage />} />
           <Route exact path='/productLife' element={<ProductPage />} /> */}
-          <Route path='/product/:name' element={<ProductDetail />} />
-          <Route path='/product/:name/related-product' element={<RelatedProductPage />} />
-          <Route exact path='/product/:name' element={<ProductDetail />} />
-          <Route exact path='/event/:name' element={<EventDetail />} />
+          <Route path='/products/:name' element={<ProductDetail />} />
+          <Route path='/products/:name/related-product' element={<RelatedProductPage />} />
+          <Route exact path='/products/:name' element={<ProductDetail />} />
+          <Route exact path='/events/:name' element={<EventDetail />} />
           <Route path='/join-us' element={<Recruitment />} />
           <Route path='/influence-hub' element={<InfluenceHub />} />
           <Route path='/media-center' element={<MediaCenter />} />
@@ -95,7 +95,7 @@ function App() {
           <Route path='/brands' element={<BrandPage />} />
           <Route path='/missinternational/vote' element={<MIVoting />} />
           <Route path='/sponsor/greeness' element={<Greeness />} />
-          <Route path='/brand/:id' element={<BrandDetail />} />
+          <Route path='/brands/:id' element={<BrandDetail />} />
           <Route path='/news/:id' element={<NewsDetail />} />
         </Routes>
       </div>

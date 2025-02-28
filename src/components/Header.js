@@ -27,7 +27,7 @@ const Header = () => {
           <Nav className='ms-auto nav-custom'>
             <Nav.Link href='/'>{t("home")}</Nav.Link>
             <Nav.Link href='/brands'>{t("brands")}</Nav.Link>
-            <Nav.Link href='/productpage'>{t("product")}</Nav.Link>
+            <Nav.Link href='/products'>{t("product")}</Nav.Link>
 
             {/* 星潮汇 - 桌面端 Hover，移动端 Click */}
             <NavDropdown
