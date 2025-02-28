@@ -31,6 +31,7 @@ import FounderPage from "./pages/FounderPage";
 import AmbassadorPage from "./pages/AmbassadorPage";
 import ScrollToTop from "./components/ScrollToTop";
 import RelatedProductPage from "./pages/RelatedProductPage";
+import Breadcrumbs from "./components/Breadcrumbs";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -68,6 +69,7 @@ function App() {
       <ScrollToTop />
       {header}
       <div className='main-content'>
+        <Breadcrumbs />
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route path='/profile' element={<Profile />} />
