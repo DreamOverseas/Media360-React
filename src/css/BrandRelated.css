@@ -1,0 +1,41 @@
+/* 页面整体样式 */
+.related-page {
+  padding: 30px 0;
+}
+
+/* 标题样式 */
+.section-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* 相关卡片样式 */
+.related-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.related-card:hover {
+  transform: translateY(-5px);
+}
+
+/* 相关卡片图片 */
+.related-card-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .related-card-img {
+    height: 200px;
+  }
+}

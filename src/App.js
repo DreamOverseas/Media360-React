@@ -7,31 +7,34 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "./App.css";
 import BrandDetail from "./components/BrandDetail";
+import Breadcrumbs from "./components/Breadcrumbs";
 import EventDetail from "./components/EventDetail";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import KolDetail from "./components/KolDetail";
 import NewsDetail from "./components/NewsDetail";
 import ProductDetail from "./components/ProductDetail";
+import ScrollToTop from "./components/ScrollToTop";
+import AmbassadorPage from "./pages/AmbassadorPage";
 import BrandPage from "./pages/BrandPage";
+import BrandRelatedNewsPage from "./pages/BrandRelatedNewsPage";
+import BrandRelatedPersonsPage from "./pages/BrandRelatedPersonsPage";
+import BrandRelatedProductsPage from "./pages/BrandRelatedProductsPage";
 import Events from "./pages/Events";
+import FounderPage from "./pages/FounderPage";
 import Greeness from "./pages/Greeness";
 import Home from "./pages/Home";
+import InfluenceHub from "./pages/InfluenceHub";
 import KolPage from "./pages/KolPage";
+import MediaCenter from "./pages/MediaCenter";
 import MIVoting from "./pages/MI_VotingPage";
+import NewsPage from "./pages/NewsPage";
 import ProductPage from "./pages/ProductPage";
 import Profile from "./pages/Profile";
 import Recruitment from "./pages/Recruitment";
 import RegisterMiss from "./pages/RegisterMiss";
-import ShoppingCart from "./pages/ShoppingCart";
-import InfluenceHub from "./pages/InfluenceHub";
-import MediaCenter from "./pages/MediaCenter";
-import NewsPage from "./pages/NewsPage";
-import FounderPage from "./pages/FounderPage";
-import AmbassadorPage from "./pages/AmbassadorPage";
-import ScrollToTop from "./components/ScrollToTop";
 import RelatedProductPage from "./pages/RelatedProductPage";
-import Breadcrumbs from "./components/Breadcrumbs";
+import ShoppingCart from "./pages/ShoppingCart";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -78,7 +81,10 @@ function App() {
           <Route exact path='/productTravel' element={<ProductPage />} />
           <Route exact path='/productLife' element={<ProductPage />} /> */}
           <Route path='/products/:name' element={<ProductDetail />} />
-          <Route path='/products/:name/related-product' element={<RelatedProductPage />} />
+          <Route
+            path='/products/:name/related-product'
+            element={<RelatedProductPage />}
+          />
           <Route exact path='/products/:name' element={<ProductDetail />} />
           <Route exact path='/events/:name' element={<EventDetail />} />
           <Route path='/join-us' element={<Recruitment />} />
@@ -89,7 +95,7 @@ function App() {
           <Route path='/founders' element={<FounderPage />} />
           <Route path='/kols' element={<KolPage />} />
           <Route path='/ambassadors' element={<AmbassadorPage />} />
-          <Route path="/person/:id" element={<KolDetail />} />
+          <Route path='/person/:id' element={<KolDetail />} />
           <Route path='/cart' element={<ShoppingCart />} />
           <Route path='/miss-register' element={<RegisterMiss />} />
           <Route path='/brands' element={<BrandPage />} />
@@ -97,6 +103,18 @@ function App() {
           <Route path='/sponsor/greeness' element={<Greeness />} />
           <Route path='/brands/:id' element={<BrandDetail />} />
           <Route path='/news/:id' element={<NewsDetail />} />
+          <Route
+            path='/brands/:id/related-news'
+            element={<BrandRelatedNewsPage />}
+          />
+          <Route
+            path='/brands/:id/related-persons'
+            element={<BrandRelatedPersonsPage />}
+          />
+          <Route
+            path='/brands/:id/related-products'
+            element={<BrandRelatedProductsPage />}
+          />
         </Routes>
       </div>
       {footer}

@@ -1,150 +1,85 @@
-/* 🎨 让品牌详情更加整洁 */
-.brand-detail-page {
-  padding: 20px;
+/* 🎨 标签按钮区域 (Tags) */
+.brand-tags {
+  display: flex;
+  justify-content: flex-start; /* ✅ 从左对齐 */
+  flex-wrap: wrap;
+  gap: 10px; /* ✅ 适当增加间距 */
+  margin: 20px 0 10px; /* ✅ 保证上下间距与下方按钮对齐 */
+  max-width: 600px; /* ✅ 限制宽度，防止按钮铺满整行 */
 }
 
-/* 🎨 品牌头部信息 */
-.brand-detail-header {
+/* 🎨 小按钮样式 - 适用于 Tags */
+.btn-tag {
+  display: inline-block;
+  padding: 5px 12px; /* ✅ 适当调整大小 */
+  border: 1.5px solid black;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: black;
+  background: white;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  min-width: 80px; /* ✅ 适当调整 */
   text-align: center;
-  margin-bottom: 30px;
 }
 
-.brand-logo {
-  width: 100%;
-  max-width: 300px;
-  margin-bottom: 20px;
+.btn-tag:hover {
+  background: black;
+  color: white;
 }
 
-.brand-title {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
+/* 🎨 官网 & 邮箱 按钮 */
+.brand-contact {
+  display: flex;
+  justify-content: flex-start; /* ✅ 保持对齐 */
+  gap: 15px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+  max-width: 600px; /* ✅ 限制宽度，与 tag & 相关信息对齐 */
 }
 
-.brand-description {
-  font-size: 1.1rem;
-  color: #666;
-  margin-bottom: 20px;
-}
-
-/* 🎨 统一按钮样式：黑色边框 + 白色背景 */
+/* 🎨 黑色轮廓线的白色按钮 */
 .btn-outline-black {
   display: inline-block;
-  padding: 12px 20px;
-  border: 2px solid #000; /* 黑色边框 */
-  border-radius: 5px;
-  background: #fff; /* 白色背景 */
-  color: #000; /* 黑色文字 */
-  font-size: 1rem;
-  font-weight: bold;
-  text-align: center;
+  padding: 8px 15px;
+  border: 2px solid black;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: black;
+  background: white;
   text-decoration: none;
   transition: all 0.3s ease-in-out;
-  cursor: pointer;
+  min-width: 120px;
+  text-align: center;
 }
 
-/* 🎨 鼠标悬停效果 */
 .btn-outline-black:hover {
-  background: #000; /* 变为黑色背景 */
-  color: #fff; /* 文字变白 */
-}
-
-/* 🎨 链接按钮 */
-.btn-link-black {
-  display: inline-block;
-  padding: 10px 15px;
-  border: 2px solid #000;
-  border-radius: 5px;
-  background: transparent;
-  color: #000;
-  font-size: 1rem;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-  transition: all 0.3s ease-in-out;
-  width: 100%;
-}
-
-/* 🎨 链接按钮鼠标悬停效果 */
-.btn-link-black:hover {
-  background: #000;
-  color: #fff;
-}
-
-/* 🎨 统一按钮排布 */
-.brand-actions,
-.brand-contact,
-.brand-related-section {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-/* 🎨 在移动端 (max-width: 768px) 调整为单列排列 */
-@media (max-width: 768px) {
-  .brand-actions,
-  .brand-contact,
-  .brand-related-section {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-}
-/* 🎥 视频部分 */
-.video-section {
-  margin-top: 3rem;
-  text-align: center;
-}
-
-.video-container {
-  position: relative;
-  padding-bottom: 56.25%;
-  height: 0;
-  overflow: hidden;
-  width: 100%;
-  max-width: 800px;
-  margin: auto;
-}
-
-.video-container iframe,
-.video-container object,
-.video-container embed {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* ✅ 相关信息按钮 */
-.brand-related-section {
-  margin-top: 40px;
-  text-align: center;
-}
-
-.related-button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  background: #007bff;
+  background: black;
   color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-  transition: background 0.3s ease-in-out;
 }
 
-.related-button:hover {
-  background: #0056b3;
+/* 🎨 相关信息按钮 */
+.brand-related-section {
+  display: flex;
+  justify-content: flex-start; /* ✅ 保持与 tag 对齐 */
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px; /* ✅ 保证上下间距一致 */
+  max-width: 600px; /* ✅ 限制宽度，与 tag 按钮对齐 */
 }
 
-/* 📱 响应式优化 */
+/* 📱 移动端优化 */
 @media (max-width: 768px) {
-  .related-button {
-    width: 100%;
-    font-size: 1rem;
+  .brand-tags,
+  .brand-related-section,
+  .brand-contact {
+    max-width: 100%; /* ✅ 在小屏幕上，允许按钮自适应 */
+    justify-content: flex-start;
+  }
+
+  .btn-tag {
+    font-size: 0.7rem;
+    min-width: 70px;
+    padding: 4px 8px;
   }
 }
