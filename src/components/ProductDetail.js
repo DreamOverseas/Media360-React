@@ -1,21 +1,10 @@
 import axios from "axios";
 import moment from "moment-timezone";
-import React, { useContext, useEffect, useState, useMemo } from "react";
-import {
-  Accordion,
-  Button,
-  Card,
-  Col,
-  Container,
-  Image,
-  Row,
-  Spinner,
-  Tab,
-  Tabs,
-} from "react-bootstrap";
+import React, { useContext, useEffect, useState} from "react";
+import {Button, Col, Container, Image, Row, Spinner} from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation} from "react-router-dom";
 import rehypeRaw from "rehype-raw";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
@@ -25,7 +14,6 @@ import "../css/ProductDetail.css";
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const ProductDetail = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const { user } = useContext(AuthContext);
   const { t, i18n } = useTranslation();
@@ -445,7 +433,7 @@ const ProductDetail = () => {
       const relatedData = productResponse.data?.data?.[0]?.product_tags;
 
       if (relatedData) {
-        setProductTag(relatedData.map(tag => tag.Tag_en));
+        setProductTag(relatedData);
       }
 
       const videoEmbed = productResponse.data?.data?.[0]?.videos?.data || [];
@@ -540,6 +528,7 @@ const ProductDetail = () => {
   const Name = language === "zh" ? product.Name_zh : product.Name_en;
 
   const Detail = language === "zh" ? product.Detail_zh : product.Detail_en;
+  console.log(productTag)
 
   return (
     <div>
@@ -554,11 +543,23 @@ const ProductDetail = () => {
               <Container className='product-detail'>
                 <Row>
                   <h1>{Name}</h1>
-                  <h4>{display_price}</h4>
+                  <Row className="d-md-none">
+                    {productTag && productTag.length > 0 ? (
+                      productTag.map((tag, index) => {
+                        const Name = language === "zh" ? tag.Tag_zh : tag.Tag_en;
+                        return (
+                          <Col xs={4} sm={3} md={3} key={index} className="tag-col">
+                            <button className="tag-label">{Name}</button>
+                          </Col>
+                        );
+                      })
+                    ) : null}
+                  </Row>
+                  <h2>{display_price}</h2>
                 </Row>
 
-                <Row className='product-price-quantity d-flex align-items-center'>
-                  <Col md={4}>
+                <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
+                  <Col md={4} className="amount-price-bar">
                     <div className='quantity-control'>
                       <Button
                         className='quantity-btn'
@@ -603,30 +604,30 @@ const ProductDetail = () => {
                 </Row>
 
                 <Row>
-                  <h4>查看相关产品以及相关人物</h4>
+                  <h4>查看相关人物</h4>
                   <Row>
                     <Col xs={4}>
-                      <Link to={`/product/${product.url}/related-product`} state={{ product }}>
-                        <Button variant="primary" className="related-btn">相关产品</Button>
-                      </Link>
+                      <Button className="product-detail-funtion-btn">品牌创始人</Button>
                     </Col>
                     <Col xs={4}>
-                      <Button variant="primary" className="related-btn">按钮2</Button>
+                      <Button className="product-detail-funtion-btn">产品意见领袖</Button>
                     </Col>
                     <Col xs={4}>
-                      <Button variant="primary" className="related-btn">按钮3</Button>
+                      <Button className="product-detail-funtion-btn">产品代言人</Button>
                     </Col>
                   </Row>
                 </Row>
 
                 <Row>
-                  <h4>查看相关产品及新闻</h4>
+                  <h4>查看相关产品及相关新闻</h4>
                   <Row>
                     <Col xs={4}>
-                      <Button variant="primary" className="related-btn">按钮1</Button>
+                      <Link to={`/product/${product.url}/related-product`} state={{ product }}>
+                        <Button className="product-detail-funtion-btn">相关产品</Button>
+                      </Link>
                     </Col>
                     <Col xs={4}>
-                      <Button variant="primary" className="related-btn">按钮2</Button>
+                      <Button className="product-detail-funtion-btn">相关新闻</Button>
                     </Col>
                   </Row>
                   
@@ -648,9 +649,9 @@ const ProductDetail = () => {
 
                 </Row>
 
-                <Row>
-                  <h4>产品信息有误？</h4>
-                  <Button variant="primary" className="related-btn">按钮2</Button>
+                <Row className="d-flex justify-content-center">
+                  <h4 style={{ textAlign: "center" }}>产品信息有误？</h4>
+                  <Button className="update-function-btn">完善信息</Button>
                 </Row>
                 {/* <Row>
                   {(Price !== 0 || 1) && Available ? (
