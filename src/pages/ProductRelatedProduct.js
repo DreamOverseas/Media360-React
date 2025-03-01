@@ -4,10 +4,11 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
+import "../css/ProductRelatedProduct.css"
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
-const RelatedProductPage = () => {
+const ProductRelatedProduct = () => {
   const location = useLocation();
   const [relatedProduct, setRelatedProduct] = useState([]); 
   const { t, i18n } = useTranslation();
@@ -49,7 +50,8 @@ const RelatedProductPage = () => {
   };
 
   return (
-    <Container>
+    <Container className="related-product-container">
+      <h2 >{t("relatedProducts")}</h2>
       <Row>
         {relatedProduct.length > 0 ? (
           relatedProduct.map(product => {
@@ -74,4 +76,4 @@ const RelatedProductPage = () => {
   );
 };
 
-export default RelatedProductPage;
+export default ProductRelatedProduct;

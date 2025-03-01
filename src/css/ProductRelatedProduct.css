@@ -1,0 +1,10 @@
+.related-product-container {
+    margin-top:1%;
+}
+
+@media (max-width: 768px) {
+    .related-product-container {
+      margin-top:5%;
+    }
+  
+  }

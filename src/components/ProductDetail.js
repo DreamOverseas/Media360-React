@@ -54,8 +54,6 @@ const ProductDetail = () => {
         if (JSON.stringify(thumbnails) !== JSON.stringify(videoThumbnails)) {
           setVideoThumbnails(thumbnails);
         }
-      } else {
-        setVideoThumbnails([]);
       }
     }, [videoIframes]);
   
@@ -127,172 +125,6 @@ const ProductDetail = () => {
       </Container>
     );
   };
-
-  // const DynamicTabs = ({ tabId, data }) => {
-  //   const [activeTab, setActiveTab] = useState(
-  //     data.length > 0 ? data[0].id : null
-  //   );
-
-  //   useEffect(() => {
-  //     if (data.length > 0) {
-  //       setActiveTab(data[0].id);
-  //     }
-  //   }, [data]);
-
-  //   return (
-  //     <Container>
-  //       <Tabs
-  //         id={`tabs-${tabId}`}
-  //         activeKey={activeTab}
-  //         onSelect={k => setActiveTab(k)}
-  //         className='mb-3'
-  //       >
-  //         {data.map(item => (
-  //           <Tab eventKey={item.id} title={item.Name_zh} key={item.id}>
-  //             <Row className='person-detail'>
-  //               <Col md={4}>
-  //                 <Image
-  //                   src={`${BACKEND_HOST}${item.Image[0].url}`}
-  //                   alt={item.Name}
-  //                   fluid
-  //                 />
-  //               </Col>
-  //               <Col md={8}>
-  //                 <p>{item.Name_zh}</p>
-  //                 {item.Bio_zh ? (
-  //                   <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-  //                     {item.Bio_zh}
-  //                   </ReactMarkdown>
-  //                 ) : (
-  //                   <div
-  //                     className='ck-content'
-  //                     dangerouslySetInnerHTML={{ __html: item.Bio_zh }}
-  //                   />
-  //                 )}
-  //                 <Link
-  //                   to={`/person/${item.internal_url}`}
-  //                   className='person-related-btn'
-  //                 >
-  //                   查看更多
-  //                 </Link>
-  //                 <Link to={`/`} className='person-related-btn'>
-  //                   更新信息
-  //                 </Link>
-  //               </Col>
-  //             </Row>
-  //           </Tab>
-  //         ))}
-  //       </Tabs>
-  //     </Container>
-  //   );
-  // };
-
-  // const DescriptionAccordion = ({ id, accordion_name, content }) => {
-  //   const [activeAccordion, setActiveAccordion] = useState(null);
-  //   const toggleAccordion = () => {
-  //     setActiveAccordion(activeAccordion === id ? null : id);
-  //   };
-
-  //   return (
-  //     <Accordion
-  //       activeKey={activeAccordion === id ? "0" : null}
-  //       className='shopify-accordion'
-  //     >
-  //       <Accordion.Item eventKey='0'>
-  //         <div className='shopify-accordion-header' onClick={toggleAccordion}>
-  //           {accordion_name}
-  //           {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
-  //         </div>
-  //         <Accordion.Body className='shopify-accordion-body'>
-  //           {content ? (
-  //             <div className='markdown-content'>
-  //               <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-  //                 {content}
-  //               </ReactMarkdown>
-  //             </div>
-  //           ) : (
-  //             <div
-  //               className='ck-content'
-  //               dangerouslySetInnerHTML={{ __html: Detail }}
-  //             />
-  //           )}
-  //         </Accordion.Body>
-  //       </Accordion.Item>
-  //     </Accordion>
-  //   );
-  // };
-
-  // const FounderAccordion = ({ id, accordion_name, content }) => {
-  //   const [activeAccordion, setActiveAccordion] = useState(null);
-  //   const toggleAccordion = () => {
-  //     setActiveAccordion(activeAccordion === id ? null : id);
-  //   };
-
-  //   return (
-  //     <Accordion
-  //       activeKey={activeAccordion === id ? "0" : null}
-  //       className='shopify-accordion'
-  //     >
-  //       <Accordion.Item eventKey='0'>
-  //         <div className='shopify-accordion-header' onClick={toggleAccordion}>
-  //           {accordion_name}
-  //           {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
-  //         </div>
-  //         <Accordion.Body className='shopify-accordion-body'>
-  //           <DynamicTabs tabId='group1' data={content} />
-  //         </Accordion.Body>
-  //       </Accordion.Item>
-  //     </Accordion>
-  //   );
-  // };
-
-  // const KolAccordion = ({ id, accordion_name, content }) => {
-  //   const [activeAccordion, setActiveAccordion] = useState(null);
-  //   const toggleAccordion = () => {
-  //     setActiveAccordion(activeAccordion === id ? null : id);
-  //   };
-
-  //   return (
-  //     <Accordion
-  //       activeKey={activeAccordion === id ? "0" : null}
-  //       className='shopify-accordion'
-  //     >
-  //       <Accordion.Item eventKey='0'>
-  //         <div className='shopify-accordion-header' onClick={toggleAccordion}>
-  //           {accordion_name}
-  //           {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
-  //         </div>
-  //         <Accordion.Body className='shopify-accordion-body'>
-  //           <DynamicTabs tabId='group2' data={content} />
-  //         </Accordion.Body>
-  //       </Accordion.Item>
-  //     </Accordion>
-  //   );
-  // };
-
-  // const SpokesAccordion = ({ id, accordion_name, content }) => {
-  //   const [activeAccordion, setActiveAccordion] = useState(null);
-  //   const toggleAccordion = () => {
-  //     setActiveAccordion(activeAccordion === id ? null : id);
-  //   };
-
-  //   return (
-  //     <Accordion
-  //       activeKey={activeAccordion === id ? "0" : null}
-  //       className='shopify-accordion'
-  //     >
-  //       <Accordion.Item eventKey='0'>
-  //         <div className='shopify-accordion-header' onClick={toggleAccordion}>
-  //           {accordion_name}
-  //           {/* <span className={`accordion-icon ${activeAccordion === id ? "open" : ""}`}>&#9662;</span> */}
-  //         </div>
-  //         <Accordion.Body className='shopify-accordion-body'>
-  //           <DynamicTabs tabId='group3' data={content} />
-  //         </Accordion.Body>
-  //       </Accordion.Item>
-  //     </Accordion>
-  //   );
-  // };
 
   // const VideoCarousel = ({ videos }) => {
   //   const [currentIndex, setCurrentIndex] = useState(0);
@@ -439,7 +271,7 @@ const ProductDetail = () => {
       const videoEmbed = productResponse.data?.data?.[0]?.videos?.data || [];
       setVideo(videoEmbed);
       const newsList = newsResponse.data?.data?.[0]?.news || [];
-      console.log(newsResponse);
+      console.log("news",newsList);
       setNews(newsList);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -480,10 +312,6 @@ const ProductDetail = () => {
       setFounder(founders);
       setKol(kols);
       setSpokesperson(spokespersons);
-    } else {
-      setFounder([]);
-      setKol([]);
-      setSpokesperson([]);
     }
   }, [people]);
 
@@ -607,13 +435,19 @@ const ProductDetail = () => {
                   <h4>查看相关人物</h4>
                   <Row>
                     <Col xs={4}>
-                      <Button className="product-detail-funtion-btn">品牌创始人</Button>
+                      <Link to={`/products/${product.url}/related-founder`} state={{ founder }}>
+                        <Button className="product-detail-funtion-btn">品牌创始人</Button>
+                      </Link>
                     </Col>
                     <Col xs={4}>
-                      <Button className="product-detail-funtion-btn">产品意见领袖</Button>
+                      <Link to={`/products/${product.url}/related-kol`} state={{ kol }}>
+                        <Button className="product-detail-funtion-btn">产品意见领袖</Button>
+                      </Link>
                     </Col>
                     <Col xs={4}>
-                      <Button className="product-detail-funtion-btn">产品代言人</Button>
+                      <Link to={`/products/${product.url}/related-ambassador`} state={{ spokesperson }}>
+                        <Button className="product-detail-funtion-btn">产品代言人</Button>
+                      </Link>
                     </Col>
                   </Row>
                 </Row>
@@ -627,7 +461,9 @@ const ProductDetail = () => {
                       </Link>
                     </Col>
                     <Col xs={4}>
-                      <Button className="product-detail-funtion-btn">相关新闻</Button>
+                      <Link to={`/products/${product.url}/related-news`} state={{ news }}>
+                        <Button className="product-detail-funtion-btn">相关新闻</Button>
+                      </Link>
                     </Col>
                   </Row>
                   

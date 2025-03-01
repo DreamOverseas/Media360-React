@@ -1,26 +1,5 @@
-/* ✅ 移除 Bullet Points */
-.breadcrumbs {
-    list-style: none;  /* 关键：移除默认黑点 */
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;  /* 让面包屑在移动端自动换行 */
-    align-items: center;
-  }
-  
-  /* ✅ Breadcrumbs 容器 */
-  .breadcrumbs-container {
-    margin: 10px 0;
-    padding: 10px 15px;
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 500;
-  }
-  
-  /* ✅ Breadcrumbs 链接 */
+
+    /* ✅ Breadcrumbs 链接 */
   .breadcrumb-link {
     text-decoration: none;
     color: #007bff;
@@ -38,12 +17,15 @@
     color: #6c757d;
     margin: 0 5px;
   }
+
+  .breadcrumbs-container {
+    margin-top:2%;
+  }
   
   /* ✅ 适配移动端 */
   @media (max-width: 768px) {
     .breadcrumbs-container {
-      font-size: 12px; /* 调整移动端字体大小 */
-      padding: 8px 10px;
+      margin-top:5%;
     }
   
     .breadcrumb-link {

@@ -1,6 +1,7 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
+import { Container } from "react-bootstrap";
 // import { useMediaQuery } from "react-responsive";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
@@ -37,8 +38,10 @@ import ProductPage from "./pages/ProductPage";
 import Profile from "./pages/Profile";
 import Recruitment from "./pages/Recruitment";
 import RegisterMiss from "./pages/RegisterMiss";
-import RelatedProductPage from "./pages/RelatedProductPage";
+import ProductRelatedProduct from "./pages/ProductRelatedProduct";
 import ShoppingCart from "./pages/ShoppingCart";
+import ProductRelatedPerson from "./pages/ProductRelatedPerson";
+import ProductRelatedNews from "./pages/ProductRelatedNews";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -76,7 +79,9 @@ function App() {
       <ScrollToTop />
       {header}
       <div className='main-content'>
-        <Breadcrumbs />
+        <Container className="custom-breadcrumb">
+          <Breadcrumbs />
+        </Container>
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route path='/profile' element={<Profile />} />
@@ -85,10 +90,11 @@ function App() {
           <Route exact path='/productTravel' element={<ProductPage />} />
           <Route exact path='/productLife' element={<ProductPage />} /> */}
           <Route path='/products/:name' element={<ProductDetail />} />
-          <Route
-            path='/products/:name/related-product'
-            element={<RelatedProductPage />}
-          />
+          <Route path='/products/:name/related-product'element={<ProductRelatedProduct/>}/>
+          <Route path='/products/:name/related-founder'element={<ProductRelatedPerson />}/>
+          <Route path='/products/:name/related-kol'element={<ProductRelatedPerson />}/>
+          <Route path='/products/:name/related-ambassador'element={<ProductRelatedPerson />}/>
+          \<Route path='/products/:name/related-news'element={<ProductRelatedNews />}/>
           <Route exact path='/products/:name' element={<ProductDetail />} />
           <Route exact path='/events/:name' element={<EventDetail />} />
           <Route path='/join-us' element={<Recruitment />} />
