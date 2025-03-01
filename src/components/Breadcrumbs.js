@@ -1,37 +1,7 @@
-// import React from "react";
-// import { Link, useLocation } from "react-router-dom";
-
-// const Breadcrumbs = () => {
-//   const location = useLocation();
-//   const pathnames = location.pathname.split("/").filter((x) => x);
-
-//   return (
-//     <nav className="breadcrumbs-container">
-//       <div className="breadcrumbs">
-//         <span>
-//           <Link to="/" className="breadcrumb-link">Home</Link>
-//           {pathnames.length > 0 && <span className="breadcrumb-separator"> / </span>}
-//         </span>
-//         {pathnames.map((name, index) => {
-//           const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
-//           return (
-//             <span key={name}>
-//               <Link to={routeTo} className="breadcrumb-link">{name}</Link>
-//               {index < pathnames.length - 1 && <span className="breadcrumb-separator"> / </span>}
-//             </span>
-//           );
-//         })}
-//       </div>
-//     </nav>
-//   );
-// };
-
-// export default Breadcrumbs;
-
-
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import "../css/Breadcrumbs.css";
 
 const Breadcrumbs = () => {
   const { i18n } = useTranslation();
@@ -52,7 +22,11 @@ const Breadcrumbs = () => {
     "founders": { zh: "品牌创始人", en: "Founders" },
     "kols": { zh: "产品意见领袖", en: "Kols" },
     "ambassadors": { zh: "产品代言人", en: "Ambassadors" },
-    "related-product":{zh: "相关产品", en: "Related Products"}
+    "related-news":{zh: "相关新闻", en: "Related News"},
+    "related-product":{zh: "相关产品", en: "Related Product"},
+    "related-founder":{zh: "品牌创始人", en: "Related Founder"},
+    "related-kol":{zh: "产品意见领袖", en: "Related Kol"},
+    "related-ambassador":{zh: "产品代言人", en: "Related Ambassador"}
   };
 
   // ✅ 定义 API 查询字段
@@ -62,10 +36,10 @@ const Breadcrumbs = () => {
       events: { endpoint: "events", urlField: "url", zh: "Name_zh", en: "Name_en" },
       products: { endpoint: "products", urlField: "url", zh: "Name_zh", en: "Name_en" },
       brands: { endpoint: "brands", urlField: "internal_url", zh: "name_zh", en: "name_en" },
-      person: { endpoint: "persons", urlField: "internal_url", zh: "Name_zh", en: "Name_en" },
-      founders: { endpoint: "persons", urlField: "person_url", zh: "Name_zh", en: "Name_en" },
-      kols: { endpoint: "persons", urlField: "person_url", zh: "Name_zh", en: "Name_en" },
-      ambassadors: { endpoint: "persons", urlField: "person_url", zh: "Name_zh", en: "Name_en" },
+      person: { endpoint: "people", urlField: "internal_url", zh: "Name_zh", en: "Name_en" },
+      founders: { endpoint: "people", urlField: "internal_url", zh: "Name_zh", en: "Name_en" },
+      kols: { endpoint: "people", urlField: "internal_url", zh: "Name_zh", en: "Name_en" },
+      ambassadors: { endpoint: "people", urlField: "internal_url", zh: "Name_zh", en: "Name_en" },
     };
     return apiMap[contentType] || null;
   };
@@ -132,7 +106,11 @@ const Breadcrumbs = () => {
 
           return (
             <span key={path}>
-              <Link to={routeTo} className="breadcrumb-link">{displayName}</Link>
+              {index === pathnames.length - 1 ? (
+                <span className="breadcrumb-current">{displayName}</span>
+              ) : (
+                <Link to={routeTo} className="breadcrumb-link">{displayName}</Link>
+              )}
               {index < pathnames.length - 1 && <span className="breadcrumb-separator"> / </span>}
             </span>
           );
