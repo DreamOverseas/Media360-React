@@ -160,3 +160,12 @@ footer {
   padding: 0 !important;
   min-height: calc(100vh - 347px);
 }
+
+
+@media (max-width: 768px) {
+  .custom-breadcrumb {
+    margin-top:2%;
+    font-size: 12px;
+  }
+
+}
