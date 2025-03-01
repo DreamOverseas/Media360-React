@@ -9,6 +9,7 @@ import "./App.css";
 import BrandDetail from "./components/BrandDetail";
 import Breadcrumbs from "./components/Breadcrumbs";
 import EventDetail from "./components/EventDetail";
+import FloatingHomeButton from "./components/FloatingHomeButton";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import KolDetail from "./components/KolDetail";
@@ -29,6 +30,9 @@ import KolPage from "./pages/KolPage";
 import MediaCenter from "./pages/MediaCenter";
 import MIVoting from "./pages/MI_VotingPage";
 import NewsPage from "./pages/NewsPage";
+import PersonRelatedBrands from "./pages/PersonRelatedBrands";
+import PersonRelatedNews from "./pages/PersonRelatedNews";
+import PersonRelatedProducts from "./pages/PersonRelatedProducts";
 import ProductPage from "./pages/ProductPage";
 import Profile from "./pages/Profile";
 import Recruitment from "./pages/Recruitment";
@@ -104,6 +108,18 @@ function App() {
           <Route path='/brands/:id' element={<BrandDetail />} />
           <Route path='/news/:id' element={<NewsDetail />} />
           <Route
+            path='/person/:id/related-brands'
+            element={<PersonRelatedBrands />}
+          />
+          <Route
+            path='/person/:id/related-products'
+            element={<PersonRelatedProducts />}
+          />
+          <Route
+            path='/person/:id/related-news'
+            element={<PersonRelatedNews />}
+          />
+          <Route
             path='/brands/:id/related-news'
             element={<BrandRelatedNewsPage />}
           />
@@ -116,7 +132,10 @@ function App() {
             element={<BrandRelatedProductsPage />}
           />
         </Routes>
+        {/* 全局悬浮按钮 */}
+        <FloatingHomeButton />
       </div>
+
       {footer}
     </div>
   );

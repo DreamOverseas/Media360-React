@@ -265,9 +265,47 @@ body {
     /* height: 250px; */
   }
 }
+
 @media (max-width: 768px) {
   .video-container {
     max-width: 100%;
     aspect-ratio: 16 / 9; /* 确保在小屏幕上仍保持 16:9 */
   }
+}
+
+/* 🎨 标签按钮区域 (Tags) */
+.person-tags {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* 🎨 官网 & 邮箱 按钮 */
+.person-contact {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* 🎨 简介部分 */
+.person-intro {
+  padding: 20px;
+  text-align: left;
+}
+
+.person-intro-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-bottom: 2px solid black;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+/* 🎨 相关信息按钮 */
+.person-related-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
 }
