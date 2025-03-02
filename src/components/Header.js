@@ -26,11 +26,11 @@ const Header = () => {
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='ms-auto nav-custom'>
             <Nav.Link href='/'>{t("home")}</Nav.Link>
-            <Nav.Link href='/brands'>{t("brands")}</Nav.Link>
+            {/*<Nav.Link href='/brands'>{t("brands")}</Nav.Link> */}
             <Nav.Link href='/products'>{t("product")}</Nav.Link>
 
             {/* 星潮汇 - 桌面端 Hover，移动端 Click */}
-            <NavDropdown
+            {/*<NavDropdown
               title='星潮汇'
               id='star-dropdown'
               className='dropdown-container'
@@ -40,17 +40,17 @@ const Header = () => {
               <NavDropdown.Item href='/ambassadors'>
                 产品代言人
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
 
             {/* 媒体中心 - 桌面端 Hover，移动端 Click */}
-            <NavDropdown
+            {/*<NavDropdown
               title='媒体中心'
               id='media-dropdown'
               className='dropdown-container'
             >
               <NavDropdown.Item href='/news'>新闻</NavDropdown.Item>
               <NavDropdown.Item href='/events'>活动</NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
 
             <Nav.Link href='/join-us'>{t("joinus")}</Nav.Link>
 

@@ -45,7 +45,6 @@ const KolDetail = () => {
           setPerson(personData);
           console.log("✅ Fetched Person Data:", personData);
 
-          // 处理相关品牌、产品、新闻
           if (personData.brands?.length > 0) {
             fetchBrandLogos(personData.brands.map(brand => brand.id));
           }
@@ -71,13 +70,11 @@ const KolDetail = () => {
     fetchPersonData();
   }, [paramId]);
 
-  // ✅ 获取品牌数据
   const fetchBrandLogos = async brandIds => {
     if (!brandIds.length) return;
     try {
       console.log("🔍 Fetching Brands for IDs:", brandIds);
 
-      // 🚀 改用逐个请求，避免 API 不支持 $in
       const brandResponses = await Promise.all(
         brandIds.map(id =>
           axios.get(
@@ -94,13 +91,11 @@ const KolDetail = () => {
     }
   };
 
-  // ✅ 获取产品数据
   const fetchProducts = async productIds => {
     if (!productIds.length) return;
     try {
       console.log("🔍 Fetching Products for IDs:", productIds);
 
-      // 🚀 改用逐个请求，避免 API 不支持 $in
       const productResponses = await Promise.all(
         productIds.map(id =>
           axios.get(
@@ -117,13 +112,11 @@ const KolDetail = () => {
     }
   };
 
-  // ✅ 获取新闻数据
   const fetchNews = async newsIds => {
     if (!newsIds.length) return;
     try {
       console.log("🔍 Fetching News for IDs:", newsIds);
 
-      // 🚀 改用逐个请求，避免 API 不支持 $in
       const newsResponses = await Promise.all(
         newsIds.map(id =>
           axios.get(
@@ -160,55 +153,38 @@ const KolDetail = () => {
     : "https://placehold.co/280x280";
 
   return (
-    <div className='person-detail-page'>
+    <div className='kol-detail-page'>
       <Container>
-        {/* 人物信息 */}
-        <Row className='person-detail-section align-items-center'>
+        <Row className='kol-detail-section align-items-center'>
           <Col xs={12} md={5} className='text-center'>
-            <Image
-              src={personImage}
-              alt={displayName}
-              className='person-image'
-            />
+            <Image src={personImage} alt={displayName} className='kol-image' />
           </Col>
 
-          <Col xs={12} md={7} className='person-info'>
+          <Col xs={12} md={7} className='kol-info'>
             <h1>{displayName}</h1>
             <h5>{displayTitle}</h5>
 
-            {/* 相关标签 */}
-            <div className='person-tags'>
-              <Button className='btn-small-outline'>{t("品牌的创始人")}</Button>
-              <Button className='btn-small-outline'>{t("产品意见领袖")}</Button>
-              <Button className='btn-small-outline'>{t("产品代言人")}</Button>
+            <div className='tag-buttons'>
+              <Button className='btn-tag'>{t("品牌的创始人")}</Button>
+              <Button className='btn-tag'>{t("产品意见领袖")}</Button>
+              <Button className='btn-tag'>{t("产品代言人")}</Button>
             </div>
 
-            {/* 联系方式 */}
-            <div className='person-contact'>
+            <div className='kol-contact'>
               <Button className='btn-outline-black'>{t("电话")}</Button>
               <Button className='btn-outline-black'>{t("邮箱")}</Button>
             </div>
           </Col>
         </Row>
 
-        {/* 人物简介 */}
-        <div className='person-intro'>
-          <h3 className='person-intro-title'>{t("人物简介")}</h3>
+        <div className='kol-intro'>
+          <h3 className='kol-intro-title'>{t("人物简介")}</h3>
           <p dangerouslySetInnerHTML={{ __html: displayBio }}></p>
         </div>
 
-        {/* 相关信息错误报告 */}
-        <div className='person-report'>
-          <p>{t("人物信息有误？")}</p>
-          <Button className='btn-outline-black'>
-            {t("更新并完善人物信息")}
-          </Button>
-        </div>
-
-        {/* 相关页面跳转 */}
-        <div className='person-related-section'>
+        <div className='kol-related-section'>
           <h3>{t("查看相关产品及新闻")}</h3>
-          <div className='person-related-buttons'>
+          <div className='related-buttons'>
             {brands.length > 0 && (
               <Link
                 to={`/person/${paramId}/related-brands`}
@@ -237,11 +213,6 @@ const KolDetail = () => {
               </Link>
             )}
           </div>
-        </div>
-
-        {/* 回到顶部按钮 */}
-        <div className='person-back-top'>
-          <Button variant='link'>{t("回到顶部")}</Button>
         </div>
       </Container>
     </div>

@@ -14,34 +14,43 @@ const RelatedPersonsPage = () => {
   const persons = state?.persons ?? [];
 
   return (
-    <div className='related-persons-page'>
+    <div className='related-page'>
       <Container>
-        <h2 className='page-title'>{t("relatedPersons")}</h2>
+        <h2 className='section-title'>{t("relatedPersons")}</h2>
         {persons.length > 0 ? (
-          <Row>
+          <Row className='related-container'>
             {persons.map(person => (
-              <Col key={person.id} xs={12} sm={6} md={4} lg={3}>
+              <Col key={person.id} xs={12}>
                 <Link
                   to={`/person/${person.internal_url || person.id}`}
-                  className='person-card-link'
+                  className='related-card-link'
                 >
-                  <Card className='person-card'>
+                  <Card className='related-card'>
                     <Card.Img
                       src={
                         person.Image?.[0]?.url
                           ? `${BACKEND_HOST}${person.Image[0].url}`
-                          : "https://placehold.co/200x200"
+                          : "https://placehold.co/150x150"
                       }
                       alt={person.Name_zh || "Person"}
-                      className='person-card-img'
+                      className='related-card-img'
                     />
-                    <Card.Body>
-                      <Card.Title className='person-card-title'>
+                    <Card.Body className='related-card-body'>
+                      <Card.Title className='related-card-title'>
                         {person.Name_zh || person.Name_en}
                       </Card.Title>
-                      <Card.Text className='person-card-role'>
-                        {person.Title_zh || person.Title_en || "No Title"}
+                      <Card.Text className='related-card-text'>
+                        {person.Bio_zh || person.Bio_en || t("noBioAvailable")}
                       </Card.Text>
+                      <Card.Text className='related-card-role'>
+                        {person.Title_zh || person.Title_en || t("noTitle")}
+                      </Card.Text>
+                      <Link
+                        to={`/person/${person.internal_url || person.id}`}
+                        className='read-more-btn'
+                      >
+                        {t("readMore")}
+                      </Link>
                     </Card.Body>
                   </Card>
                 </Link>

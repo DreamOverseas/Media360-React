@@ -35,13 +35,13 @@ import PersonRelatedBrands from "./pages/PersonRelatedBrands";
 import PersonRelatedNews from "./pages/PersonRelatedNews";
 import PersonRelatedProducts from "./pages/PersonRelatedProducts";
 import ProductPage from "./pages/ProductPage";
+import ProductRelatedNews from "./pages/ProductRelatedNews";
+import ProductRelatedPerson from "./pages/ProductRelatedPerson";
+import ProductRelatedProduct from "./pages/ProductRelatedProduct";
 import Profile from "./pages/Profile";
 import Recruitment from "./pages/Recruitment";
 import RegisterMiss from "./pages/RegisterMiss";
-import ProductRelatedProduct from "./pages/ProductRelatedProduct";
 import ShoppingCart from "./pages/ShoppingCart";
-import ProductRelatedPerson from "./pages/ProductRelatedPerson";
-import ProductRelatedNews from "./pages/ProductRelatedNews";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -79,7 +79,7 @@ function App() {
       <ScrollToTop />
       {header}
       <div className='main-content'>
-        <Container className="custom-breadcrumb">
+        <Container className='custom-breadcrumb'>
           <Breadcrumbs />
         </Container>
         <Routes>
@@ -90,11 +90,27 @@ function App() {
           <Route exact path='/productTravel' element={<ProductPage />} />
           <Route exact path='/productLife' element={<ProductPage />} /> */}
           <Route path='/products/:name' element={<ProductDetail />} />
-          <Route path='/products/:name/related-product'element={<ProductRelatedProduct/>}/>
-          <Route path='/products/:name/related-founder'element={<ProductRelatedPerson />}/>
-          <Route path='/products/:name/related-kol'element={<ProductRelatedPerson />}/>
-          <Route path='/products/:name/related-ambassador'element={<ProductRelatedPerson />}/>
-          \<Route path='/products/:name/related-news'element={<ProductRelatedNews />}/>
+          <Route
+            path='/products/:name/related-product'
+            element={<ProductRelatedProduct />}
+          />
+          <Route
+            path='/products/:name/related-founder'
+            element={<ProductRelatedPerson />}
+          />
+          <Route
+            path='/products/:name/related-kol'
+            element={<ProductRelatedPerson />}
+          />
+          <Route
+            path='/products/:name/related-ambassador'
+            element={<ProductRelatedPerson />}
+          />
+          \
+          <Route
+            path='/products/:name/related-news'
+            element={<ProductRelatedNews />}
+          />
           <Route exact path='/products/:name' element={<ProductDetail />} />
           <Route exact path='/events/:name' element={<EventDetail />} />
           <Route path='/join-us' element={<Recruitment />} />
@@ -112,6 +128,7 @@ function App() {
           <Route path='/missinternational/vote' element={<MIVoting />} />
           <Route path='/sponsor/greeness' element={<Greeness />} />
           <Route path='/brands/:id' element={<BrandDetail />} />
+          <Route path='/brand/:id' element={<BrandDetail />} />
           <Route path='/news/:id' element={<NewsDetail />} />
           <Route
             path='/person/:id/related-brands'

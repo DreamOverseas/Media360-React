@@ -14,39 +14,48 @@ const BrandRelatedProductPage = () => {
   const products = state?.products ?? [];
 
   return (
-    <div className='brand-related-products-page'>
+    <div className='related-page'>
       <Container>
-        <h2 className='page-title'>{t("relatedProducts")}</h2>
+        <h2 className='section-title'>{t("relatedProducts")}</h2>
         {products.length > 0 ? (
-          <Row>
-            {products.map(product => (
-              <Col key={product.id} xs={12} sm={6} md={4} lg={3}>
-                <Link
-                  to={`/product/${product.id}`}
-                  className='product-card-link'
-                >
-                  <Card className='product-card'>
-                    <Card.Img
-                      src={
-                        product.ProductImage?.url
-                          ? `${BACKEND_HOST}${product.ProductImage.url}`
-                          : "https://placehold.co/300x200"
-                      }
-                      alt={product.Name_zh || "Product"}
-                      className='product-card-img'
-                    />
-                    <Card.Body>
-                      <Card.Title className='product-card-title'>
-                        {product.Name_zh || product.Name_en}
-                      </Card.Title>
-                      <Card.Text className='product-card-price'>
-                        ${product.Price_Display || product.Price || "N/A"}
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </Col>
-            ))}
+          <Row className='related-container'>
+            {products.map(product => {
+              const productPath = `/products/${product.url || product.id}`;
+
+              return (
+                <Col key={product.id} xs={12}>
+                  <Link to={productPath} className='related-card-link'>
+                    <Card className='related-card'>
+                      <Card.Img
+                        src={
+                          product.ProductImage?.url
+                            ? `${BACKEND_HOST}${product.ProductImage.url}`
+                            : "https://placehold.co/150x150"
+                        }
+                        alt={product.Name_zh || "Product"}
+                        className='related-card-img'
+                      />
+                      <Card.Body className='related-card-body'>
+                        <Card.Title className='related-card-title'>
+                          {product.Name_zh || product.Name_en}
+                        </Card.Title>
+                        <Card.Text className='related-card-text'>
+                          {product.Description_zh ||
+                            product.Description_en ||
+                            t("noDescriptionAvailable")}
+                        </Card.Text>
+                        <Card.Text className='related-card-price'>
+                          ${product.Price_Display || product.Price || "N/A"}
+                        </Card.Text>
+                        <Link to={productPath} className='read-more-btn'>
+                          {t("readMore")}
+                        </Link>
+                      </Card.Body>
+                    </Card>
+                  </Link>
+                </Col>
+              );
+            })}
           </Row>
         ) : (
           <p className='no-products-text'>{t("noProductsAvailable")}</p>

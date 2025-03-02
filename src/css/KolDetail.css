@@ -1,13 +1,15 @@
-/* 🎨 全局样式优化 */
+/* 🎨 全局样式 */
 body {
   font-family: "Arial", sans-serif;
   line-height: 1.6;
   background-color: #f8f9fa;
 }
 
-/* 🎨 页面布局 */
+/* 🎨 页面整体布局 */
 .kol-detail-page {
   padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* 🎨 详细信息部分 */
@@ -16,9 +18,7 @@ body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  padding: 3rem 0;
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 2rem 0;
   gap: 2rem;
   margin-bottom: 40px;
 }
@@ -27,7 +27,6 @@ body {
 .kol-info {
   flex: 1;
   max-width: 55%;
-  padding: 1rem;
   text-align: left;
 }
 
@@ -45,9 +44,11 @@ body {
 
 .kol-info p {
   font-size: 1rem;
-  margin-top: 1rem;
-  line-height: 1.6;
   color: #444;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* ✅ 仅显示 3 行 */
+  -webkit-box-orient: vertical;
 }
 
 /* 🎨 右侧人物头像 */
@@ -55,33 +56,21 @@ body {
   flex: 1;
   max-width: 35%;
   text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .kol-image {
   width: 100%;
   max-width: 280px;
-  height: auto;
   object-fit: cover;
   border-radius: 10px;
 }
 
 /* 🎥 视频部分 */
-.video-section {
-  margin-top: 3rem;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-}
-
-/* ✅ 让视频区域锁定 16:9，确保无黑边 */
 .video-container {
   position: relative;
   width: 100%;
-  max-width: 800px; /* 限制最大宽度 */
-  aspect-ratio: 16 / 9; /* 强制 16:9 */
+  max-width: 800px;
+  aspect-ratio: 16 / 9;
   background: #000;
   overflow: hidden;
 }
@@ -93,141 +82,137 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* ✅ 让视频填充整个容器 */
+  object-fit: cover;
   border: 0;
 }
 
-/* 🎨 相关品牌 & 相关产品 */
-.kol-brand-section {
-  padding: 3rem 0;
+/* 🎨 相关信息 */
+.kol-related-section {
   margin-top: 3rem;
-  background: inherit;
-  border-radius: 12px;
-  max-width: 1200px;
-  margin: 0 auto;
-  margin-bottom: 40px;
-}
-
-.kol-product-section {
-  padding: 3rem 0;
-  margin-top: 3rem;
-  background: inherit;
-  border-radius: 12px;
-  max-width: 1200px;
-  margin: 0 auto;
-  margin-bottom: 40px;
-}
-
-.section-title {
   text-align: center;
+}
+
+.kol-related-section h3 {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
-/* 🎨 统一卡片样式 */
-.kol-brand-card {
-  width: 100%;
-  max-width: 300px;
-  border: none;
-  border-radius: 10px;
-  transition: transform 0.3s ease-in-out;
+/* 🎨 统一按钮样式 */
+.btn-outline-black {
+  display: inline-block;
+  padding: 8px 15px;
+  border: 2px solid black;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: black;
+  background: white;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  min-width: 130px;
+  text-align: center;
+}
+
+.btn-outline-black:hover {
+  background: black;
+  color: white;
+}
+
+/* 🎨 标签按钮 */
+.tag-buttons {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 400px;
-  background: #fff;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
+.btn-tag {
+  padding: 5px 12px;
+  border: 1.5px solid black;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: black;
+  background: white;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  min-width: 80px;
+  text-align: center;
+}
+
+.btn-tag:hover {
+  background: black;
+  color: white;
+}
+
+/* 🎨 相关信息按钮 */
+.related-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* 🎨 相关品牌 & 相关产品卡片 */
+.kol-brand-card,
 .kol-product-card {
-  width: 100%;
-  max-width: 300px;
-  border: none;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 15px;
+  background: #fff;
   border-radius: 10px;
   transition: transform 0.3s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 400px;
-  background: #fff;
-  overflow: hidden;
+  min-height: 150px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.kol-brand-card:hover {
-  transform: translateY(-5px);
-}
-
+.kol-brand-card:hover,
 .kol-product-card:hover {
   transform: translateY(-5px);
 }
 
-/* 🎨 让图片填满顶部，防止留白 */
+/* 🎨 卡片图片 */
 .kol-brand-card img,
 .kol-product-card img {
-  width: 100%;
-  /* height: 220px; 固定高度，防止图片大小不一 */
-  object-fit: cover; /* 确保图片覆盖整个区域 */
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
-/* 🎨 让卡片内容居中 */
-.kol-brand-card .card-body,
-.kol-product-card .card-body {
-  flex-grow: 1;
-  text-align: center;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+/* 🎨 卡片内容 */
+.kol-card-body {
+  flex: 1;
+  text-align: left;
 }
 
-/* 🎨 文字样式 */
+/* 🎨 卡片标题 */
 .kol-card-title {
   font-size: 1rem;
   font-weight: bold;
-  color: #333;
-  text-align: center;
-  margin-top: 10px;
-}
-
-.kol-card-price {
-  font-size: 1rem;
-  color: #666;
-  text-align: center;
-  margin-top: 10px;
-}
-
-/* 🎨 卡片链接样式 */
-.kol-card-link {
+  color: black;
   text-decoration: none;
-  color: inherit;
-  display: block;
-  transition: all 0.3s ease-in-out;
 }
 
-.kol-card-link:hover {
-  text-decoration: none !important;
-  opacity: 0.9;
+/* 🎨 卡片描述（最多显示 3 行） */
+.kol-card-text {
+  font-size: 0.9rem;
+  color: #666;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
-/* 📱 响应式优化 */
+/* 📱 移动端优化 */
 @media (max-width: 768px) {
   .kol-detail-section {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .kol-detail-page {
-    padding: 10px;
-  }
-
   .kol-info {
     max-width: 100%;
-    text-align: left;
   }
 
   .kol-info h1 {
@@ -244,7 +229,6 @@ body {
 
   .kol-image-container {
     max-width: 100%;
-    order: -1;
     margin-bottom: 1rem;
   }
 
@@ -254,58 +238,24 @@ body {
 
   .kol-brand-card,
   .kol-product-card {
-    width: 100%;
-    max-width: 100%;
+    flex-direction: column;
+    text-align: center;
     min-height: auto;
-    margin-bottom: 20px;
   }
 
   .kol-brand-card img,
   .kol-product-card img {
-    /* height: 250px; */
+    width: 100%;
+    max-width: 150px;
   }
-}
 
-@media (max-width: 768px) {
-  .video-container {
-    max-width: 100%;
-    aspect-ratio: 16 / 9; /* 确保在小屏幕上仍保持 16:9 */
+  .kol-card-body {
+    text-align: center;
   }
-}
 
-/* 🎨 标签按钮区域 (Tags) */
-.person-tags {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-/* 🎨 官网 & 邮箱 按钮 */
-.person-contact {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-/* 🎨 简介部分 */
-.person-intro {
-  padding: 20px;
-  text-align: left;
-}
-
-.person-intro-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  border-bottom: 2px solid black;
-  display: inline-block;
-  padding-bottom: 5px;
-}
-
-/* 🎨 相关信息按钮 */
-.person-related-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  flex-wrap: wrap;
+  .btn-outline-black {
+    font-size: 0.85rem;
+    min-width: 120px;
+    padding: 9px 16px;
+  }
 }

@@ -3,23 +3,23 @@
   display: flex;
   justify-content: flex-start; /* ✅ 从左对齐 */
   flex-wrap: wrap;
-  gap: 10px; /* ✅ 适当增加间距 */
-  margin: 20px 0 10px; /* ✅ 保证上下间距与下方按钮对齐 */
-  max-width: 600px; /* ✅ 限制宽度，防止按钮铺满整行 */
+  gap: 10px; /* ✅ 增加间距 */
+  margin: 20px 0 10px; /* ✅ 保证上下间距一致 */
+  max-width: 620px; /* ✅ 限制宽度，与其他按钮区域对齐 */
 }
 
 /* 🎨 小按钮样式 - 适用于 Tags */
 .btn-tag {
   display: inline-block;
-  padding: 5px 12px; /* ✅ 适当调整大小 */
+  padding: 6px 14px; /* ✅ 适当调整大小 */
   border: 1.5px solid black;
   border-radius: 12px;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: black;
   background: white;
   text-decoration: none;
   transition: all 0.3s ease-in-out;
-  min-width: 80px; /* ✅ 适当调整 */
+  min-width: 85px; /* ✅ 适当调整 */
   text-align: center;
 }
 
@@ -35,13 +35,13 @@
   gap: 15px;
   margin: 20px 0;
   flex-wrap: wrap;
-  max-width: 600px; /* ✅ 限制宽度，与 tag & 相关信息对齐 */
+  max-width: 620px; /* ✅ 限制宽度，与 tag & 相关信息对齐 */
 }
 
 /* 🎨 黑色轮廓线的白色按钮 */
 .btn-outline-black {
   display: inline-block;
-  padding: 8px 15px;
+  padding: 10px 18px;
   border: 2px solid black;
   border-radius: 20px;
   font-size: 0.9rem;
@@ -49,7 +49,7 @@
   background: white;
   text-decoration: none;
   transition: all 0.3s ease-in-out;
-  min-width: 120px;
+  min-width: 130px; /* ✅ 适当调整 */
   text-align: center;
 }
 
@@ -63,9 +63,90 @@
   display: flex;
   justify-content: flex-start; /* ✅ 保持与 tag 对齐 */
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px; /* ✅ 保证上下间距一致 */
-  max-width: 600px; /* ✅ 限制宽度，与 tag 按钮对齐 */
+  gap: 12px; /* ✅ 调整间距 */
+  margin-top: 12px; /* ✅ 保证上下间距一致 */
+  max-width: 620px; /* ✅ 限制宽度，与 tag 按钮对齐 */
+}
+
+/* ✅ 让所有按钮间距一致 */
+.brand-tags,
+.brand-contact,
+.brand-related-section {
+  display: flex;
+  align-items: center;
+}
+
+/* 🎨 品牌 Logo 图片 */
+.brand-logo {
+  display: block;
+  max-width: 200px; /* ✅ 限制最大宽度 */
+  height: auto;
+  margin: 0 auto; /* ✅ 居中对齐 */
+  object-fit: contain; /* ✅ 确保图片不会被裁剪 */
+}
+
+/* 🎨 卡片中的图片 */
+.related-card-img {
+  width: 100%;
+  height: auto;
+  max-width: 150px; /* ✅ 限制卡片图片大小 */
+  object-fit: cover; /* ✅ 保持比例填充 */
+  border-radius: 8px; /* ✅ 轻微圆角，避免生硬 */
+}
+
+/* 🎨 让图片始终在左边 */
+.related-card {
+  display: flex;
+  flex-direction: row; /* ✅ 确保图片在左侧，文本在右侧 */
+  align-items: center;
+  gap: 15px; /* ✅ 适当增加间距 */
+  border: none;
+  background: none;
+  box-shadow: none;
+  padding: 10px;
+}
+
+/* 🎨 相关卡片内容 */
+.related-card-body {
+  flex: 1; /* ✅ 让文本内容自动填充 */
+  text-align: left;
+  padding: 10px 0;
+}
+
+/* 🎨 相关卡片标题 */
+.related-card-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* ✅ 确保标题不会超出 */
+}
+
+/* 🎨 相关卡片描述（仅显示 3 行） */
+.related-card-text {
+  font-size: 0.9rem;
+  color: #666;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* ✅ 限制最多显示 3 行 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 🎨 "查看更多" 链接 */
+.related-card-link {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: black;
+  text-decoration: none !important;
+  margin-top: 8px;
+}
+
+.related-card-link:hover {
+  opacity: 0.8;
 }
 
 /* 📱 移动端优化 */
@@ -73,13 +154,45 @@
   .brand-tags,
   .brand-related-section,
   .brand-contact {
-    max-width: 100%; /* ✅ 在小屏幕上，允许按钮自适应 */
+    max-width: 100%; /* ✅ 允许在小屏幕自适应 */
     justify-content: flex-start;
   }
 
   .btn-tag {
-    font-size: 0.7rem;
-    min-width: 70px;
-    padding: 4px 8px;
+    font-size: 0.75rem;
+    min-width: 75px;
+    padding: 5px 10px;
+  }
+
+  .btn-outline-black {
+    font-size: 0.85rem;
+    min-width: 120px;
+    padding: 9px 16px;
+  }
+
+  .related-card {
+    flex-direction: column; /* ✅ 在小屏幕上改为垂直排列 */
+    text-align: center;
+  }
+
+  .related-card-img {
+    max-width: 120px; /* ✅ 限制在小屏幕上的大小 */
+  }
+
+  .related-card-body {
+    text-align: center;
+  }
+
+  .related-card-title {
+    font-size: 0.95rem;
+  }
+
+  .related-card-text {
+    font-size: 0.85rem;
+  }
+
+  .brand-logo {
+    margin-top: 20px; /* ✅ 增加上边距 */
+    max-width: 300px; /* ✅ 在小屏幕上调整品牌 Logo 的大小 */
   }
 }
