@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Image, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 import "../css/KolDetail.css";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
@@ -24,38 +26,41 @@ const KolDetail = () => {
       setLoading(false);
       return;
     }
-
+  
     const fetchPersonData = async () => {
       try {
         console.log(`🔍 Fetching Person Data for: ${paramId}`);
-
+  
         let response = await axios.get(
           `${BACKEND_HOST}/api/people?filters[internal_url][$eq]=${paramId}&populate=*`
         );
-
+  
         if (!response.data?.data.length) {
           console.log(`❌ Internal URL failed, trying ID: ${paramId}`);
           response = await axios.get(
             `${BACKEND_HOST}/api/people?filters[id][$eq]=${paramId}&populate=*`
           );
         }
-
+  
         if (response.data?.data.length > 0) {
           const personData = response.data.data[0];
           setPerson(personData);
           console.log("✅ Fetched Person Data:", personData);
-
-          if (personData.brands?.length > 0) {
-            fetchBrandLogos(personData.brands.map(brand => brand.id));
-          }
-
-          if (personData.products?.length > 0) {
-            fetchProducts(personData.products.map(product => product.id));
-          }
-
-          if (personData.news?.length > 0) {
-            fetchNews(personData.news.map(news => news.id));
-          }
+  
+          const brandIds = personData.brands?.map(brand => brand.id) || [];
+          const productIds = personData.products?.map(product => product.id) || [];
+          const newsIds = personData.news?.map(news => news.id) || [];
+  
+          // 并行请求品牌、产品和新闻数据
+          const [brands, products, news] = await Promise.all([
+            fetchItems("brands", brandIds),
+            fetchItems("products", productIds),
+            fetchItems("news", newsIds),
+          ]);
+  
+          if (brands) setBrands(brands);
+          if (products) setProducts(products);
+          if (news) setNews(news);
         } else {
           setError("Person not found");
         }
@@ -66,71 +71,124 @@ const KolDetail = () => {
         setLoading(false);
       }
     };
-
+  
     fetchPersonData();
   }, [paramId]);
 
-  const fetchBrandLogos = async brandIds => {
-    if (!brandIds.length) return;
+  
+  const fetchItems = async (type, ids) => {
+    if (!ids.length) return [];
     try {
-      console.log("🔍 Fetching Brands for IDs:", brandIds);
-
-      const brandResponses = await Promise.all(
-        brandIds.map(id =>
-          axios.get(
-            `${BACKEND_HOST}/api/brands?filters[id][$eq]=${id}&populate=*`
-          )
+      console.log(`🔍 Fetching ${type} for IDs:`, ids);
+  
+      const responses = await Promise.all(
+        ids.map(id =>
+          axios.get(`${BACKEND_HOST}/api/${type}?filters[id][$eq]=${id}&populate=*`)
         )
       );
-
-      const brandData = brandResponses.flatMap(res => res.data.data);
-      console.log("✅ Fetched Brands:", brandData);
-      setBrands(brandData);
+  
+      const data = responses.flatMap(res => res.data.data);
+      console.log(`✅ Fetched ${type}:`, data);
+      return data;
     } catch (error) {
-      console.error("❌ Error fetching brands:", error);
+      console.error(`❌ Error fetching ${type}:`, error);
+      return [];
     }
   };
 
-  const fetchProducts = async productIds => {
-    if (!productIds.length) return;
-    try {
-      console.log("🔍 Fetching Products for IDs:", productIds);
+  const PersonGallery = ({ person }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [videoThumbnails, setVideoThumbnails] = useState([]);
+    const [allMedia, setAllMedia] = useState([]);
+  
+    const mainImage = person?.Image
+      ? `${BACKEND_HOST}${person.Image[0].url}`
+      : "https://placehold.co/650x650";
+  
+    const subImages = person?.SubImage?.length
+      ? person.SubImage.map(img => `${BACKEND_HOST}${img.url}`)
+      : [];
+  
+    const videoIframes = Array.isArray(person?.videos?.data) ? person.videos.data : [];
+  
+    useEffect(() => {
+      if (videoIframes.length > 0) {
+        const thumbnails = videoIframes.map(video => video?.pic ?? "https://placehold.co/650x400");
 
-      const productResponses = await Promise.all(
-        productIds.map(id =>
-          axios.get(
-            `${BACKEND_HOST}/api/products?filters[id][$eq]=${id}&populate=*`
-          )
-        )
+        if (JSON.stringify(thumbnails) !== JSON.stringify(videoThumbnails)) {
+          setVideoThumbnails(thumbnails);
+        }
+      }
+    }, [videoIframes]);
+  
+    useEffect(() => {
+      setAllMedia([mainImage, ...subImages, ...videoThumbnails])
+    }, [videoThumbnails]);
+  
+    const nextMedia = () => {
+      setCurrentIndex(prevIndex => (prevIndex + 1) % allMedia.length);
+    };
+  
+    const prevMedia = () => {
+      setCurrentIndex(prevIndex =>
+        prevIndex === 0 ? allMedia.length - 1 : prevIndex - 1
       );
-
-      const productData = productResponses.flatMap(res => res.data.data);
-      console.log("✅ Fetched Products:", productData);
-      setProducts(productData);
-    } catch (error) {
-      console.error("❌ Error fetching products:", error);
-    }
-  };
-
-  const fetchNews = async newsIds => {
-    if (!newsIds.length) return;
-    try {
-      console.log("🔍 Fetching News for IDs:", newsIds);
-
-      const newsResponses = await Promise.all(
-        newsIds.map(id =>
-          axios.get(
-            `${BACKEND_HOST}/api/news?filters[id][$eq]=${id}&populate=*`
-          )
-        )
-      );
-
-      const newsData = newsResponses.flatMap(res => res.data.data);
-      console.log("✅ Fetched News:", newsData);
-      setNews(newsData);
-    } catch (error) {
-      console.error("❌ Error fetching news:", error);
-    }
+    };
+  
+    return (
+      <Container className="person-gallery">
+        <div className="person-main-image-container">
+          <button className="person-prev-button" onClick={prevMedia}>❮</button>
+  
+          {currentIndex >= subImages.length + 1 && videoIframes.length > 0 ? (
+            <div
+              className="person-video"
+              dangerouslySetInnerHTML={{
+                __html: videoIframes[currentIndex - (subImages.length + 1)]?.videoEmbed || ""
+              }}
+            />
+          ) : (
+            <Image
+              src={allMedia[currentIndex]}
+              alt={`Person Media ${currentIndex}`}
+              className="person-img"
+              onClick={() => setLightboxOpen(true)}
+            />
+          )}
+  
+          <button className="person-next-button" onClick={nextMedia}>❯</button>
+        </div>
+  
+        <div className="person-thumbnail-container">
+          {allMedia.map((media, index) => (
+            <div
+              key={index}
+              className={`person-thumb-container ${index === currentIndex ? "active-thumb" : ""}`}
+              onClick={() => setCurrentIndex(index)}
+            >
+              <Image
+                src={media}
+                alt={`Thumbnail ${index}`}
+                className="person-thumb-img"
+              />
+            </div>
+          ))}
+        </div>
+  
+        <Lightbox
+          open={lightboxOpen}
+          close={() => setLightboxOpen(false)}
+          slides={allMedia.map((media, index) => ({
+            src: media,
+            html: index >= subImages.length + 1 && videoIframes.length > 0
+              ? videoIframes[index - (subImages.length + 1)]?.videoEmbed
+              : undefined
+          }))}
+          index={currentIndex}
+        />
+      </Container>
+    );
   };
 
   if (loading) return <div className='loading'>{t("loading")}</div>;
@@ -157,18 +215,18 @@ const KolDetail = () => {
       <Container>
         <Row className='kol-detail-section align-items-center'>
           <Col xs={12} md={5} className='text-center'>
-            <Image src={personImage} alt={displayName} className='kol-image' />
+            <PersonGallery person={person} />
           </Col>
 
           <Col xs={12} md={7} className='kol-info'>
             <h1>{displayName}</h1>
             <h5>{displayTitle}</h5>
 
-            <div className='tag-buttons'>
+            {/* <div className='tag-buttons'>
               <Button className='btn-tag'>{t("品牌的创始人")}</Button>
               <Button className='btn-tag'>{t("产品意见领袖")}</Button>
               <Button className='btn-tag'>{t("产品代言人")}</Button>
-            </div>
+            </div> */}
 
             <div className='kol-contact'>
               <Button className='btn-outline-black'>{t("电话")}</Button>
@@ -184,7 +242,7 @@ const KolDetail = () => {
 
         <div className='kol-related-section'>
           <h3>{t("查看相关产品及新闻")}</h3>
-          <div className='related-buttons'>
+          <div className='person-related-buttons'>
             {brands.length > 0 && (
               <Link
                 to={`/person/${paramId}/related-brands`}

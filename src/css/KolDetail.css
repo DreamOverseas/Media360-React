@@ -151,7 +151,7 @@ body {
 }
 
 /* 🎨 相关信息按钮 */
-.related-buttons {
+.person-related-buttons {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
@@ -211,6 +211,87 @@ body {
   -webkit-box-orient: vertical;
 }
 
+
+/* productGallery */
+.person-gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Ensure it stays within the column */
+  max-width: 100%; /* Prevent it from overflowing */
+}
+
+.person-main-image-container {
+  position: relative;
+  width: 100%; /* Adjust to fit within the column */
+  height: 500px; /* Set a fixed height to maintain aspect ratio */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: cover;
+  overflow: hidden; /* Ensures images do not stretch */
+}
+
+.person-img {
+  width: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.person-prev-button,
+.person-next-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 10px;
+  z-index: 2;
+}
+
+.person-prev-button {
+  left: 10px;
+}
+
+.person-next-button {
+  right: 10px;
+}
+
+.person-thumbnail-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content:flex-start;
+  width: 100%;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.person-thumb-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.person-thumb-img:hover,
+.active-thumb {
+  border-color: #000;
+}
+
+.person-video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  z-index: 2; /* 确保 iframe 在视频容器内部 */
+}
+
 /* 📱 移动端优化 */
 @media (max-width: 768px) {
   .kol-detail-section {
@@ -264,5 +345,10 @@ body {
     font-size: 0.85rem;
     min-width: 120px;
     padding: 9px 16px;
+  }
+  .person-img {
+    width: 100%;
+    height: auto; /* Height adjusts based on width */
+    object-fit: contain; /* Maintains image aspect ratio */
   }
 }
