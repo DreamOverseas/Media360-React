@@ -104,16 +104,18 @@ const Breadcrumbs = () => {
               : titles[path].en
             : path;
 
-          return (
-            <span key={path}>
-              {index === pathnames.length - 1 ? (
-                <span className="breadcrumb-current">{displayName}</span>
-              ) : (
-                <Link to={routeTo} className="breadcrumb-link">{displayName}</Link>
-              )}
-              {index < pathnames.length - 1 && <span className="breadcrumb-separator"> / </span>}
-            </span>
-          );
+            return (
+              <span key={path}>
+                {path === "person" ? ( 
+                  <span className="breadcrumb-disabled">{displayName}</span> // 不可点击
+                ) : index === pathnames.length - 1 ? (
+                  <span className="breadcrumb-current">{displayName}</span>
+                ) : (
+                  <Link to={routeTo} className="breadcrumb-link">{displayName}</Link>
+                )}
+                {index < pathnames.length - 1 && <span className="breadcrumb-separator"> / </span>}
+              </span>
+            );
         })}
       </div>
     </nav>
