@@ -194,6 +194,7 @@ const KolDetail = () => {
   if (loading) return <div className='loading'>{t("loading")}</div>;
   if (error) return <div className='error-message'>{error}</div>;
   if (!person) return <div className='error-message'>No Data Available</div>;
+  const role = person.Role.roles[0];
 
   const language = i18n.language;
   const displayName =
@@ -227,11 +228,30 @@ const KolDetail = () => {
               <Button className='btn-tag'>{t("产品意见领袖")}</Button>
               <Button className='btn-tag'>{t("产品代言人")}</Button>
             </div> */}
-
-            <div className='kol-contact'>
+            {role === "Founder"?(
+              <div className='founder-contact'>
               <Button className='btn-outline-black'>{t("电话")}</Button>
               <Button className='btn-outline-black'>{t("邮箱")}</Button>
             </div>
+            ):(<></>)
+            }
+
+            {role === "Kol"?(
+              <div className='kol-contact'>
+                <Button className='btn-outline-black'>{t("联系意见领袖")}</Button>
+              </div>
+              
+              ):(<></>)
+            }
+
+
+            {role === "Ambassador"?(
+              <div className='ambassador-contact'>
+                <Button className='btn-outline-black'>{t("联系产品代言人")}</Button>
+              </div>
+              ):(<></>)
+            }
+            
           </Col>
         </Row>
 

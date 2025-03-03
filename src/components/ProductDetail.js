@@ -302,7 +302,7 @@ const ProductDetail = () => {
       const spokespersons = people.filter(
         person =>
           Array.isArray(person.Role?.roles) &&
-          person.Role.roles.includes("Spokesperson")
+          person.Role.roles.includes("Ambassador")
       );
 
       // console.log("🔍 筛选出的 Founder:", founders);
