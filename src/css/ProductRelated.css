@@ -1,0 +1,80 @@
+.related-person-link-decoration {
+    text-decoration: none;
+}
+
+.product-related-bio-text {
+    font-size: 12px
+}
+
+.product-related-person-title {
+    margin-top:1%;
+    font-size: 13px
+}
+
+.product-related-bio-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+.product-related-more-link {
+    display: inline-block;
+    color: grey; /* 初始文字颜色 */
+    text-decoration: none;
+    font-weight: bold;
+    position: relative;
+    margin-top: 10px;
+}
+
+
+.product-related-more-link:hover,
+.product-related-more-link:active {
+    color: black;
+}
+
+.product-related-more-link::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: grey; 
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+}
+
+
+.product-related-more-link:hover::after,
+.product-related-more-link:active::after {
+    background-color: black;
+}
+
+.product-related-container{
+    height:200px
+}
+
+
+/* 小屏幕优化 */
+@media (max-width: 768px) {
+    .product-related-container{
+        height:auto
+    }
+    .product-related-person-title {
+        font-size: 11px
+    }
+    .product-related-bio-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        font-size: 8px;
+    }
+    .product-related-more-link {
+        font-size: 9px;
+    }
+}
