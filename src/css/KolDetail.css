@@ -16,7 +16,6 @@ body {
 .kol-detail-section {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: space-between;
   padding: 2rem 0;
   gap: 2rem;
@@ -89,7 +88,7 @@ body {
 /* 🎨 相关信息 */
 .kol-related-section {
   margin-top: 3rem;
-  text-align: center;
+  text-align: left;
 }
 
 .kol-related-section h3 {
@@ -111,11 +110,18 @@ body {
   transition: all 0.3s ease-in-out;
   min-width: 130px;
   text-align: center;
+  margin-right: 20px;
 }
 
 .btn-outline-black:hover {
   background: black;
   color: white;
+}
+
+/* 🎨 按钮容器样式 */
+.button-container {
+  display: flex;
+  gap: 15px; /* 增加按钮间距 */
 }
 
 /* 🎨 标签按钮 */
@@ -149,7 +155,8 @@ body {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-right: 20px;
 }
 
 /* 🎨 相关品牌 & 相关产品卡片 */

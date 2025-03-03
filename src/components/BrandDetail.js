@@ -176,9 +176,9 @@ const BrandDetail = () => {
                 {tagsArray.length > 0 && (
                   <div className='brand-tags'>
                     {tagsArray.map((tag, index) => (
-                      <Link to={`/tags/${tag}`} key={index} className='btn-tag'>
+                      <span key={index} className='btn-tag'>
                         {t(tag)}
-                      </Link>
+                      </span>
                     ))}
                   </div>
                 )}
@@ -187,31 +187,6 @@ const BrandDetail = () => {
                 <div className='brand-contact-row'>
                   {Website}
                   <Button className='btn-outline-black'>{t("email")}</Button>
-                </div>
-
-                {/* 相关人物、新闻、产品按钮 */}
-                <div className='brand-related-section'>
-                  <Link
-                    to={`/brands/${brand.internal_url}/related-persons`}
-                    className='btn-outline-black'
-                    state={{ persons }}
-                  >
-                    {t("relatedPersons")}
-                  </Link>
-                  <Link
-                    to={`/brands/${brand.internal_url}/related-news`}
-                    className='btn-outline-black'
-                    state={{ news }}
-                  >
-                    {t("relatedNews")}
-                  </Link>
-                  <Link
-                    to={`/brands/${brand.internal_url}/related-products`}
-                    className='btn-outline-black'
-                    state={{ products }}
-                  >
-                    {t("relatedProducts")}
-                  </Link>
                 </div>
               </div>
             </Col>
@@ -224,6 +199,36 @@ const BrandDetail = () => {
         <div className='brand-intro'>
           <span className='brand-intro-title'>{t("introduction")}</span>
           <p className='brand-intro-content'>{Description}</p>
+        </div>
+      </Container>
+
+      {/* ✅ 相关信息按钮放在简介下方 */}
+      <Container>
+        <div className='brand-related-section'>
+          <h3>{t("relatedInformation")}</h3>
+          <div className='brand-related-buttons'>
+            <Link
+              to={`/brands/${brand.internal_url}/related-persons`}
+              className='btn-outline-black'
+              state={{ persons }}
+            >
+              {t("relatedPersons")}
+            </Link>
+            <Link
+              to={`/brands/${brand.internal_url}/related-news`}
+              className='btn-outline-black'
+              state={{ news }}
+            >
+              {t("relatedNews")}
+            </Link>
+            <Link
+              to={`/brands/${brand.internal_url}/related-products`}
+              className='btn-outline-black'
+              state={{ products }}
+            >
+              {t("relatedProducts")}
+            </Link>
+          </div>
         </div>
       </Container>
     </div>

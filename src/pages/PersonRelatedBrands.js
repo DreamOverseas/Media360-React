@@ -27,7 +27,7 @@ const PersonRelatedBrands = () => {
                 <Col key={brand.id} xs={12}> {/* ✅ 让卡片显示 3 列布局 */}
                   <Link to={brandUrl} className='related-card-link'>
                     <Card className='related-card'>
-                      {/* ✅ 左侧图片，限制大小，防止塌陷 */}
+                     
                       <Card.Img
                         src={brandImage}
                         alt={brand.name_en || "Brand"}

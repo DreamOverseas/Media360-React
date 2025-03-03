@@ -152,6 +152,16 @@ const resources = {
       noProductsAvailable: "No products available",
       noDescriptionAvailable: "No description available",
       noDate: "No date available",
+      introduction:"Introduction",
+      officalWebsite:"Offical Website",
+      email:"Email",
+      officialWebsite:"Official Website",
+      relatedInformation:"Related Information",
+      closetonature:"Close to Nature",
+      wildlife:"Wildlife",
+      resourceIntegration:"Resource Integration",
+      innovationSupport:"Innovation Support",
+      publicWelfare:"Public Welfare",
     },
   },
   zh: {
@@ -303,6 +313,15 @@ const resources = {
       noProductsAvailable: "当前无产品",
       noDescriptionAvailable: "当前无详情",
       noDate: "当前无日期",
+      introduction:"简介",
+      
+      officialWebsite:"官网",
+      closetonature:"贴近自然",
+      wildlife:"野生动物",
+      resourceIntegration:"资源整合",
+      innovationSupport:"创新支持",
+      publicWelfare:"公益",
+  
     },
   },
 };
