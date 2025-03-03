@@ -117,7 +117,7 @@
 @media (min-width: 769px) {
   .related-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* ✅ PC 端每行 3 个 */
+    grid-template-columns: repeat(2, 1fr); /* ✅ PC 端每行 3 个 */
     gap: 20px;
   }
 }

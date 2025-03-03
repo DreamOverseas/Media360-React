@@ -20,3 +20,29 @@
 .floating-home-button:hover {
   background: black;
 }
+
+/* ✅ 新增悬浮按钮容器样式 */
+.floating-button-container {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  gap: 10px; /* ✅ 按钮间距 */
+}
+
+.floating-button {
+  width: 48px;
+  height: 48px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.floating-button:hover {
+  background: #f0f0f0;
+}

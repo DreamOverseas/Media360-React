@@ -39,11 +39,11 @@ const RelatedPersonsPage = () => {
                       <Card.Title className='related-card-title'>
                         {person.Name_zh || person.Name_en}
                       </Card.Title>
-                      <Card.Text className='related-card-text'>
-                        {person.Bio_zh || person.Bio_en || t("noBioAvailable")}
-                      </Card.Text>
                       <Card.Text className='related-card-role'>
                         {person.Title_zh || person.Title_en || t("noTitle")}
+                      </Card.Text>
+                      <Card.Text className='related-card-text'>
+                        {person.Bio_zh || person.Bio_en || t("noBioAvailable")}
                       </Card.Text>
                       <Link
                         to={`/person/${person.internal_url || person.id}`}

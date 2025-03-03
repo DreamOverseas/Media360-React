@@ -13,9 +13,9 @@
 
 /* 🎨 相关卡片布局 */
 .related-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* ✅ PC 端每行 2 个 */
+  gap: 20px;
 }
 
 /* 🎨 相关卡片 */
@@ -33,6 +33,7 @@
   padding: 15px;
   border-bottom: 1px solid #ddd;
   transition: transform 0.3s ease-in-out;
+  height: 200px; /* ✅ 统一卡片高度 */
 }
 
 .related-card:hover {
@@ -53,6 +54,7 @@
   flex-grow: 1;
   padding: 10px 15px;
   text-align: left;
+  width: calc(100% - 135px); /* ✅ 增加文字部分宽度 */
 }
 
 /* 🎨 相关卡片标题 */
@@ -112,6 +114,7 @@
   .related-card {
     flex-direction: column;
     align-items: flex-start;
+    height: auto; /* 移动端取消固定高度 */
   }
 
   .related-card-img {
@@ -122,13 +125,10 @@
   .related-card-body {
     padding: 10px 0;
     text-align: left;
+    width: 100%; /* 移动端文字部分宽度 */
   }
-}
 
-@media (min-width: 769px) {
   .related-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* ✅ PC 端每行 3 个 */
-    gap: 20px;
+    grid-template-columns: 1fr; /* 移动端每行 1 个 */
   }
 }
