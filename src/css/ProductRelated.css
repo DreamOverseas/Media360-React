@@ -52,14 +52,14 @@
     background-color: black;
 }
 
-.product-related-container{
+.product-related-person-container{
     height:200px
 }
 
 
 /* 小屏幕优化 */
 @media (max-width: 768px) {
-    .product-related-container{
+    .product-related-person-container{
         height:auto
     }
     .product-related-person-title {
@@ -78,3 +78,147 @@
         font-size: 9px;
     }
 }
+
+
+
+
+
+
+
+
+
+/* news-card */
+
+.product-related-page {
+    padding: 30px;
+  }
+  
+  /* 🎨 标题样式 */
+  .product-section-title {
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* 🎨 相关卡片布局 */
+  .product-related-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* ✅ PC 端每行 2 个 */
+    gap: 20px;
+  }
+  
+  /* 🎨 相关卡片 */
+  .product-related-card {
+    display: flex;
+    flex-direction: row; /* ✅ 图片左，文本右 */
+    align-items: center;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: hidden;
+    text-align: left;
+    width: 100%;
+    gap: 15px;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    transition: transform 0.3s ease-in-out;
+    height: 200px; /* ✅ 统一卡片高度 */
+  }
+  
+  .product-related-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  /* 🎨 相关卡片图片 */
+  .product-related-card-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border-radius: 8px;
+  }
+  
+  /* 🎨 相关卡片内容 */
+  .product-related-card-body {
+    flex-grow: 1;
+    padding: 10px 15px;
+    text-align: left;
+    width: calc(100% - 135px); /* ✅ 增加文字部分宽度 */
+  }
+  
+  /* 🎨 相关卡片标题 */
+  .product-related-card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5px;
+    text-decoration: none !important;
+  }
+  
+  /* 🎨 相关卡片简介（最多 3 行） */
+  .product-related-card-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 5px;
+    line-height: 1.5;
+    max-height: 4.5em; /* ✅ 限制三行 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+  
+  /* 🎨 相关卡片角色 */
+  .product-related-card-role {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 5px;
+  }
+  
+  /* 🎨 “查看更多” 按钮 */
+  .product-related-read-more-btn {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: black;
+    display: inline-block;
+    text-decoration: none;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .product-related-read-more-btn:hover {
+    opacity: 0.7;
+  }
+  
+  /* 🎨 相关卡片链接 */
+  .product-related-card-link {
+    text-decoration: none !important;
+    color: inherit;
+    display: block;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* 📱 移动端优化 */
+  @media (max-width: 768px) {
+    .product-related-card {
+      flex-direction: column;
+      align-items: flex-start;
+      height: auto; /* 移动端取消固定高度 */
+    }
+  
+    .product-related-card-img {
+      width: 100%;
+      height: auto;
+    }
+  
+    .product-related-card-body {
+      padding: 10px 0;
+      text-align: left;
+      width: 100%; /* 移动端文字部分宽度 */
+    }
+  
+    .product-related-container {
+      grid-template-columns: 1fr; /* 移动端每行 1 个 */
+    }
+  }
