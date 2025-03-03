@@ -35,7 +35,7 @@ const ProductRelatedPerson = () => {
 
             return (
             <Col key={founder.id} xs={12} sm={6} md={6}>
-                <div className="product-related-container">
+                <div className="product-related-person-container">
                     <Row>
                         {/* 左侧图片框 */}
                         <Col>
