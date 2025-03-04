@@ -42,14 +42,11 @@
     flex-wrap: wrap;
     gap: 20px; /* 增加按钮间距 */
   }
-  .brand-related-section{
-    max-width: 900px;
-  }
 
   .btn-outline-black {
     font-size: 1rem;
     padding: 10px 18px;
-    min-width: 160px;
+    min-width: 140px;
     text-align: center;
   }
 
@@ -105,5 +102,61 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+  }
+}
+
+/* 📱 移动端优化 */
+@media (max-width: 1024px) {
+  .brand-detail-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .brand-logo {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .brand-info {
+    max-width: 100%;
+    align-items: center;
+  }
+
+  .brand-title {
+    font-size: 1.8rem;
+  }
+
+  .brand-contact-row {
+    justify-content: center;
+  }
+
+  .brand-tags {
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  .brand-intro {
+    max-width: 100%;
+    margin: 20px auto 0;
+  }
+
+  .brand-related-section {
+    max-width: 100%;
+    margin-top: 20px;
+  }
+
+  .brand-related-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: nowrap; /* 禁止换行 */
+    overflow-x: auto; /* 允许水平滚动 */
+  }
+
+  .brand-related-buttons > a {
+    flex: 1 1 auto; /* 确保按钮均匀分布 */
+    text-align: center;
   }
 }
