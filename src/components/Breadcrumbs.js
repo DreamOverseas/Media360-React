@@ -90,40 +90,34 @@ const Breadcrumbs = () => {
   }, [location.pathname, i18n.language]);
 
   return (
-    <Container>
-      <nav className="breadcrumbs-container">
-        <div className="breadcrumbs">
-          <span>
-            <Link to="/" className="breadcrumb-link">
-              {i18n.language === "zh" ? predefinedPaths.home.zh : predefinedPaths.home.en}
-            </Link>
-            {pathnames.length > 0 && <span className="breadcrumb-separator"> / </span>}
-          </span>
-          {pathnames.map((path, index) => {
-            const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
-            const displayName = titles[path]
-              ? i18n.language === "zh"
-                ? titles[path].zh
-                : titles[path].en
-              : path;
+      <Container>
+        <nav className="breadcrumbs-container">
+          <div className="breadcrumbs">
+            <span>
+              <span className="breadcrumb-text">
+                {i18n.language === "zh" ? predefinedPaths.home.zh : predefinedPaths.home.en}
+              </span>
+              {pathnames.length > 0 && <span className="breadcrumb-separator"> / </span>}
+            </span>
+            {pathnames.map((path, index) => {
+              const displayName = titles[path]
+                ? i18n.language === "zh"
+                  ? titles[path].zh
+                  : titles[path].en
+                : path;
 
               return (
                 <span key={path}>
-                  {path === "person" ? ( 
-                    <span className="breadcrumb-disabled">{displayName}</span> // 不可点击
-                  ) : index === pathnames.length - 1 ? (
-                    <span className="breadcrumb-current">{displayName}</span>
-                  ) : (
-                    <Link to={routeTo} className="breadcrumb-link">{displayName}</Link>
-                  )}
+                  <span className={path === "person" ? "breadcrumb-disabled" : "breadcrumb-current"}>
+                    {displayName}
+                  </span>
                   {index < pathnames.length - 1 && <span className="breadcrumb-separator"> / </span>}
                 </span>
               );
-          })}
-        </div>
-      </nav>
-  </Container>
-    
+            })}
+          </div>
+        </nav>
+    </Container>
   );
 };
 
