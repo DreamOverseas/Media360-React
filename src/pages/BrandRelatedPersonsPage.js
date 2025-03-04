@@ -42,9 +42,15 @@ const RelatedPersonsPage = () => {
                       <Card.Text className='related-card-role'>
                         {person.Title_zh || person.Title_en || t("noTitle")}
                       </Card.Text>
-                      <Card.Text className='related-card-text'>
-                        {person.Bio_zh || person.Bio_en || t("noBioAvailable")}
-                      </Card.Text>
+                      <Card.Text
+                        className='related-card-text'
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            person.Bio_zh ||
+                            person.Bio_en ||
+                            t("noBioAvailable"),
+                        }}
+                      />
                       <Link
                         to={`/person/${person.internal_url || person.id}`}
                         className='read-more-btn'

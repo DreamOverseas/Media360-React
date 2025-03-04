@@ -1,9 +1,9 @@
-/* 🎨 页面整体样式 */
+/* 页面整体样式 */
 .related-page {
   padding: 30px;
 }
 
-/* 🎨 标题样式 */
+/* 标题样式 */
 .section-title {
   text-align: left;
   font-size: 1.5rem;
@@ -11,21 +11,14 @@
   margin-bottom: 20px;
 }
 
-/* 🎨 相关卡片布局 */
-.related-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* ✅ PC 端每行 2 个 */
-  gap: 20px;
-}
-
-/* 🎨 相关卡片 */
+/* 相关卡片样式 */
 .related-card {
-  display: flex;
-  flex-direction: row; /* ✅ 图片左，文本右 */
-  align-items: center;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
+  display: flex; /* ✅ 水平排列 */
+  flex-direction: row; /* ✅ 让图片始终在左，文本在右 */
+  align-items: center; /* ✅ 垂直居中 */
+  border: none; /* ✅ 移除边框 */
+  border-radius: 0; /* ✅ 移除圆角 */
+  box-shadow: none; /* ✅ 去掉阴影 */
   overflow: hidden;
   text-align: left;
   width: 100%;
@@ -33,31 +26,30 @@
   padding: 15px;
   border-bottom: 1px solid #ddd;
   transition: transform 0.3s ease-in-out;
-  height: 200px; /* ✅ 统一卡片高度 */
+  margin-bottom: 15px;
 }
 
 .related-card:hover {
   transform: translateY(-3px);
 }
 
-/* 🎨 相关卡片图片 */
+/* 相关卡片图片 - 位置固定在左侧 */
 .related-card-img {
-  width: 120px;
-  height: 120px;
+  width: 150px; /* ✅ 统一图片宽度 */
+  height: 150px; /* ✅ 确保图片是正方形 */
   object-fit: cover;
-  flex-shrink: 0;
-  border-radius: 8px;
+  flex-shrink: 0; /* ✅ 防止图片被压缩 */
+  border-radius: 8px; /* ✅ 增加微小圆角 */
 }
 
-/* 🎨 相关卡片内容 */
+/* 相关卡片文字部分 */
 .related-card-body {
   flex-grow: 1;
   padding: 10px 15px;
   text-align: left;
-  width: calc(100% - 135px); /* ✅ 增加文字部分宽度 */
 }
 
-/* 🎨 相关卡片标题 */
+/* 相关卡片标题 */
 .related-card-title {
   font-size: 1.1rem;
   font-weight: bold;
@@ -66,28 +58,23 @@
   text-decoration: none !important;
 }
 
-/* 🎨 相关卡片简介（最多 3 行） */
+/* 相关卡片描述 */
+/* 相关卡片描述 - 限制最多 3 行 */
 .related-card-text {
   font-size: 0.9rem;
   color: #666;
   margin-bottom: 5px;
   line-height: 1.5;
-  max-height: 4.5em; /* ✅ 限制三行 */
+  max-height: 4.5em; /* ✅ 限制三行 (1.5em * 3) */
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 3; /* ✅ 限制最多 3 行 */
   -webkit-box-orient: vertical;
+  white-space: normal;
 }
 
-/* 🎨 相关卡片角色 */
-.related-card-role {
-  font-size: 0.85rem;
-  color: #888;
-  margin-bottom: 5px;
-}
-
-/* 🎨 “查看更多” 按钮 */
+/* “查看更多”按钮 */
 .read-more-btn {
   font-size: 0.9rem;
   font-weight: bold;
@@ -101,7 +88,7 @@
   opacity: 0.7;
 }
 
-/* 🎨 相关卡片链接 */
+/* 确保卡片链接不会改变样式 */
 .related-card-link {
   text-decoration: none !important;
   color: inherit;
@@ -109,26 +96,28 @@
   transition: all 0.3s ease-in-out;
 }
 
-/* 📱 移动端优化 */
+/* 响应式优化 */
 @media (max-width: 768px) {
   .related-card {
-    flex-direction: column;
+    flex-direction: column; /* ✅ 小屏幕改为垂直排列 */
     align-items: flex-start;
-    height: auto; /* 移动端取消固定高度 */
   }
 
   .related-card-img {
-    width: 100%;
+    width: 100%; /* ✅ 图片占满整个宽度 */
     height: auto;
   }
 
   .related-card-body {
     padding: 10px 0;
     text-align: left;
-    width: 100%; /* 移动端文字部分宽度 */
   }
+}
 
+@media (min-width: 769px) {
   .related-container {
-    grid-template-columns: 1fr; /* 移动端每行 1 个 */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* ✅ PC 端每行 2 个 */
+    gap: 20px;
   }
 }

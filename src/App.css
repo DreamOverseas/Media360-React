@@ -1,4 +1,6 @@
 @import url("https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/theme/classic.css");
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
 
 .ck-content {
   margin: 0 auto;
@@ -6,7 +8,9 @@
   max-width: 100%;
 }
 
-.ck-content h1, .ck-content h2, .ck-content p {
+.ck-content h1,
+.ck-content h2,
+.ck-content p {
   text-align: center;
   margin: 1em 0;
 }
@@ -31,12 +35,13 @@
   text-align: center;
 }
 
-.ck-content ul, .ck-content ol {
+.ck-content ul,
+.ck-content ol {
   margin-left: 2em;
 }
 
 .ck-content p {
-  margin: 1em 0; 
+  margin: 1em 0;
   line-height: 1.6;
 }
 
@@ -54,14 +59,14 @@
 }
 
 @font-face {
-  font-family: 'HomepageFont';
-  src: url('./fonts/YSHST.ttf') format('truetype');
+  font-family: "HomepageFont";
+  src: url("./fonts/YSHST.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 body {
-  font-family: 'HomepageFont', sans-serif !important;
+  font-family: "HomepageFont", sans-serif !important;
   box-sizing: border-box;
   margin-top: 0;
 }
@@ -164,7 +169,7 @@ footer {
 
 .custom-breadcrumb {
   position: fixed;
-  top:50px;
+  top: 50px;
   left: 0;
   width: 100%;
   background-color: white;
@@ -175,5 +180,4 @@ footer {
   .custom-breadcrumb {
     font-size: 12px;
   }
-
 }
