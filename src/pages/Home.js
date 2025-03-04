@@ -77,7 +77,7 @@ const HomePage = ()=> {
         </div>
 
         <Link to="/products/">
-          <button><b>{t("btn_more")}</b></button>
+          <Button><b>{t("btn_more")}</b></Button>
         </Link>
 
       </Container>
@@ -159,7 +159,7 @@ const HomePage = ()=> {
         </div>
 
         <Link to="/news/">
-          <button><b>{t("btn_more")}</b></button>
+          <Button><b>{t("btn_more")}</b></Button>
         </Link>
 
       </Container>
@@ -251,7 +251,7 @@ const HomePage = ()=> {
         </div>
 
         <Link to="/events/">
-          <button><b>{t("btn_more")}</b></button>
+          <Button><b>{t("btn_more")}</b></Button>
         </Link>
 
       </Container>
@@ -330,7 +330,9 @@ const HomePage = ()=> {
 
   return (
     <div className="homepage-background">
-      <BannerSlider ads={ads} />
+      <Container>
+        <BannerSlider ads={ads} />
+      </Container>
       <Container className='influence-hub-section'>
         <Row className="d-flex text-center">
           <h6>我们有各领域专家及优质自媒体网红</h6>
@@ -346,7 +348,7 @@ const HomePage = ()=> {
                   <h6 className="product-title">开创品牌愿景，引领卓越未来</h6>
                   <h3 className="product-subtitle">品牌创始人</h3>
                   <Link to="/founders">
-                    <button><b>查看更多</b></button>
+                    <Button><b>查看更多</b></Button>
                   </Link>
                 </div>
               </div>
@@ -361,7 +363,7 @@ const HomePage = ()=> {
                   <h6 className="product-title">赋予群众力量，启发潮流趋势</h6>
                   <h3 className="product-subtitle">意见领袖</h3>
                   <Link to="/kols/">
-                    <button><b>查看更多</b></button>
+                    <Button><b>查看更多</b></Button>
                   </Link>
                 </div>
               </div>
@@ -376,7 +378,7 @@ const HomePage = ()=> {
                   <h6 className="product-title">引领潮流风向，定义时代风格</h6>
                   <h3 className="product-subtitle">品牌代言人</h3>
                   <Link to="/ambassadors/">
-                    <button><b>查看更多</b></button>
+                    <Button><b>查看更多</b></Button>
                   </Link>
                 </div>
               </div>

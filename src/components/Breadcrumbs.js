@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Container } from "react-bootstrap";
 import "../css/Breadcrumbs.css";
 
 const Breadcrumbs = () => {
@@ -23,6 +24,7 @@ const Breadcrumbs = () => {
     "kols": { zh: "产品意见领袖", en: "Kols" },
     "ambassadors": { zh: "产品代言人", en: "Ambassadors" },
     "related-news":{zh: "相关新闻", en: "Related News"},
+    "related-brand":{zh: "相关品牌", en: "Related Brand"},
     "related-product":{zh: "相关产品", en: "Related Product"},
     "related-founder":{zh: "品牌创始人", en: "Related Founder"},
     "related-kol":{zh: "产品意见领袖", en: "Related Kol"},
@@ -88,37 +90,40 @@ const Breadcrumbs = () => {
   }, [location.pathname, i18n.language]);
 
   return (
-    <nav className="breadcrumbs-container">
-      <div className="breadcrumbs">
-        <span>
-          <Link to="/" className="breadcrumb-link">
-            {i18n.language === "zh" ? predefinedPaths.home.zh : predefinedPaths.home.en}
-          </Link>
-          {pathnames.length > 0 && <span className="breadcrumb-separator"> / </span>}
-        </span>
-        {pathnames.map((path, index) => {
-          const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
-          const displayName = titles[path]
-            ? i18n.language === "zh"
-              ? titles[path].zh
-              : titles[path].en
-            : path;
+    <Container>
+      <nav className="breadcrumbs-container">
+        <div className="breadcrumbs">
+          <span>
+            <Link to="/" className="breadcrumb-link">
+              {i18n.language === "zh" ? predefinedPaths.home.zh : predefinedPaths.home.en}
+            </Link>
+            {pathnames.length > 0 && <span className="breadcrumb-separator"> / </span>}
+          </span>
+          {pathnames.map((path, index) => {
+            const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
+            const displayName = titles[path]
+              ? i18n.language === "zh"
+                ? titles[path].zh
+                : titles[path].en
+              : path;
 
-            return (
-              <span key={path}>
-                {path === "person" ? ( 
-                  <span className="breadcrumb-disabled">{displayName}</span> // 不可点击
-                ) : index === pathnames.length - 1 ? (
-                  <span className="breadcrumb-current">{displayName}</span>
-                ) : (
-                  <Link to={routeTo} className="breadcrumb-link">{displayName}</Link>
-                )}
-                {index < pathnames.length - 1 && <span className="breadcrumb-separator"> / </span>}
-              </span>
-            );
-        })}
-      </div>
-    </nav>
+              return (
+                <span key={path}>
+                  {path === "person" ? ( 
+                    <span className="breadcrumb-disabled">{displayName}</span> // 不可点击
+                  ) : index === pathnames.length - 1 ? (
+                    <span className="breadcrumb-current">{displayName}</span>
+                  ) : (
+                    <Link to={routeTo} className="breadcrumb-link">{displayName}</Link>
+                  )}
+                  {index < pathnames.length - 1 && <span className="breadcrumb-separator"> / </span>}
+                </span>
+              );
+          })}
+        </div>
+      </nav>
+  </Container>
+    
   );
 };
 
