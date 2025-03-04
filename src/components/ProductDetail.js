@@ -1,7 +1,7 @@
 import axios from "axios";
 import moment from "moment-timezone";
 import React, { useContext, useEffect, useState} from "react";
-import {Button, Col, Container, Image, Row, Spinner} from "react-bootstrap";
+import {Button, Col, Container, Image, Row, Spinner, Modal} from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { Link, useLocation} from "react-router-dom";
@@ -26,7 +26,7 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [cartModal, setCartModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
+  // const [showLoginModal, setShowLoginModal] = useState(false);
   const [founder, setFounder] = useState([]);
   const [kol, setKol] = useState([]);
   const [spokesperson, setSpokesperson] = useState([]);
@@ -123,6 +123,24 @@ const ProductDetail = () => {
           index={currentIndex}
         />
       </Container>
+    );
+  };
+
+
+  const ConsultationModal = ({ show, handleClose }) => {
+    return (
+      <Modal show={show} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>咨询与购买</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="custom-modal-body" dangerouslySetInnerHTML={{ __html: Note }}>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            关闭
+          </Button>
+        </Modal.Footer>
+      </Modal>
     );
   };
 
@@ -349,6 +367,8 @@ const ProductDetail = () => {
     );
   }
 
+  console.log("product", product)
+
   const { Price, ProductImage, Available, Sponsor } = product;
   const language = i18n.language;
 
@@ -356,6 +376,8 @@ const ProductDetail = () => {
   const Name = language === "zh" ? product.Name_zh : product.Name_en;
 
   const Detail = language === "zh" ? product.Detail_zh : product.Detail_en;
+
+  const Note = language === "zh" ? product.Note_zh : product.Note_en;
   console.log(productTag)
 
   return (
@@ -387,7 +409,7 @@ const ProductDetail = () => {
                 </Row>
 
                 <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
-                  <Col md={4} className="amount-price-bar">
+                  {/* <Col md={4} className="amount-price-bar">
                     <div className='quantity-control'>
                       <Button
                         className='quantity-btn'
@@ -403,11 +425,14 @@ const ProductDetail = () => {
                         +
                       </Button>
                     </div>
-                  </Col>
+                  </Col> */}
 
                   <Col md={8} className='d-flex justify-content-center'>
-                    <Button className='add-to-cart-btn'>即刻咨询并购买</Button>
+                    <Button className='add-to-cart-btn' onClick={() => setShowModal(true)}>即刻咨询并购买</Button>
                   </Col>
+
+                  {/* 弹窗组件 */}
+                  <ConsultationModal show={showModal} handleClose={() => setShowModal(false)} />
                 </Row>
 
                 <Row>
@@ -487,7 +512,8 @@ const ProductDetail = () => {
 
                 <Row className="d-flex justify-content-center">
                   <h4 style={{ textAlign: "center" }}>产品信息有误？</h4>
-                  <Button className="update-function-btn">完善信息</Button>
+                  
+                  <Button className="update-function-btn" onClick={() => window.open("https://do360.com/pages/360media-files-upload-standard", "_blank")}>完善信息</Button>
                 </Row>
                 {/* <Row>
                   {(Price !== 0 || 1) && Available ? (

@@ -376,6 +376,11 @@
   color: white;
 }
 
+.custom-modal-body {
+  max-height: 300px; /* 固定高度 */
+  overflow-y: auto;  /* 允许垂直滚动 */
+}
+
 
 /* Responsive design for mobile devices */
 @media (max-width: 768px) {
