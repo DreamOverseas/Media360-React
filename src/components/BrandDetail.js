@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Image, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
+import Slider from "react-slick"; // ✅ 引入 react-slick
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 import "../css/BrandDetail.css";
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
@@ -156,15 +159,44 @@ const BrandDetail = () => {
       {t("noEmail")}
     </Button>
   );
+  // ✅ 自定义箭头按钮（需要在 BrandDetail.js 文件中定义）
+  const SampleNextArrow = props => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", right: "10px", zIndex: 10 }}
+        onClick={onClick}
+      >
+        ➡
+      </div>
+    );
+  };
+
+  const SamplePrevArrow = props => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", left: "10px", zIndex: 10 }}
+        onClick={onClick}
+      >
+        ⬅
+      </div>
+    );
+  };
+
+  // 📌 画廊轮播
   const settings = {
-    dots: false,
+    dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: Math.min(galleryImages.length, 4),
+    slidesToShow: 1, // ✅ 只显示一张图
     slidesToScroll: 1,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
   };
+
   return (
     <div className='brand-detail-page'>
       <section className='brand-detail-header'>
@@ -217,13 +249,12 @@ const BrandDetail = () => {
           </button>
         </div>
       </Container>
-      {/* 📌 Gallery Section */}
-      <Container>
-        <div className='brand-gallery'>
-          <h3>{t("gallery")}</h3>
-          <div className='gallery-container'>
-            {galleryImages.length > 0 ? (
-              galleryImages.map(image => (
+
+      {galleryImages.length > 0 && (
+        <Container>
+          <div className='brand-gallery'>
+            <Slider {...settings} className='gallery-slider'>
+              {galleryImages.map(image => (
                 <div key={image.id} className='gallery-item'>
                   <Image
                     src={`${BACKEND_HOST}${image.url}`}
@@ -231,13 +262,11 @@ const BrandDetail = () => {
                     className='gallery-image'
                   />
                 </div>
-              ))
-            ) : (
-              <span>{t("noGalleryImages")}</span>
-            )}
+              ))}
+            </Slider>
           </div>
-        </div>
-      </Container>
+        </Container>
+      )}
       <Container>
         <div className='brand-related-section'>
           <h3>{t("relatedInformation")}</h3>
@@ -275,26 +304,5 @@ const BrandDetail = () => {
     </div>
   );
 };
-// ✅ 自定义箭头按钮
-const SampleNextArrow = props => {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{ ...style, display: "block", right: "-25px" }}
-      onClick={onClick}
-    />
-  );
-};
 
-const SamplePrevArrow = props => {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{ ...style, display: "block", left: "-25px" }}
-      onClick={onClick}
-    />
-  );
-};
 export default BrandDetail;

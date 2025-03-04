@@ -1,28 +1,21 @@
 /* 🎨 桌面端优化 */
-.brand-gallery {
-  margin-top: 40px;
+.gallery-slider .slick-prev,
+.gallery-slider .slick-next {
+  z-index: 10;
+  width: 40px;
+  height: 40px;
 }
 
-.gallery-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.gallery-slider .slick-prev {
+  left: -45px;
 }
 
-.gallery-item {
-  flex: 1 1 calc(33.333% - 10px);
-  max-width: calc(33.333% - 10px);
+.gallery-slider .slick-next {
+  right: -45px;
 }
 
-.gallery-image {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  transition: transform 0.3s ease-in-out;
-}
-
-.gallery-image:hover {
-  transform: scale(1.05);
+.gallery-slider .slick-dots {
+  bottom: -25px;
 }
 
 @media (min-width: 1024px) {
@@ -304,4 +297,100 @@
 
 .toggle-btn:hover {
   color: #0056b3;
+}
+
+/* 🎨 画廊整体容器 */
+.brand-gallery {
+  width: 100%;
+  /* max-width: 800px; ✅ 画廊最大宽度 */
+  margin: 40px auto;
+  text-align: center;
+}
+
+/* 🎨 画廊标题 */
+.brand-gallery h3 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+/* 🎨 轮播容器 */
+.gallery-slider {
+  position: relative;
+  max-width: 600px; /* ✅ 控制画廊最大宽度 */
+  margin: 0 auto;
+}
+
+/* 🎨 轮播图片 */
+.gallery-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  max-height: 400px; /* ✅ 控制最大高度，避免图片超出 */
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.gallery-item img:hover {
+  transform: scale(1.05);
+}
+
+/* 🎨 轮播箭头优化（桌面端） */
+.gallery-slider .slick-prev,
+.gallery-slider .slick-next {
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+}
+
+.gallery-slider .slick-prev {
+  left: -45px;
+}
+
+.gallery-slider .slick-next {
+  right: -45px;
+}
+
+/* 🎨 轮播点点优化 */
+.gallery-slider .slick-dots {
+  bottom: -15px;
+}
+
+/* ✅ 移动端优化 */
+@media (max-width: 768px) {
+  .gallery-slider {
+    max-width: 100%;
+  }
+
+  .gallery-item img {
+    max-height: 300px; /* ✅ 限制移动端高度 */
+    border-radius: 8px;
+  }
+
+  /* 🔹 让箭头更小，避免挡住图片 */
+  .gallery-slider .slick-prev,
+  .gallery-slider .slick-next {
+    width: 30px;
+    height: 30px;
+  }
+
+  .gallery-slider .slick-prev {
+    left: -25px;
+  }
+
+  .gallery-slider .slick-next {
+    right: -25px;
+  }
+
+  /* 🔹 移动端调整点点位置 */
+  .gallery-slider .slick-dots {
+    bottom: -10px;
+  }
 }
