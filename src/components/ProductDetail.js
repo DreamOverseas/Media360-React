@@ -385,7 +385,7 @@ const ProductDetail = () => {
   const Detail = language === "zh" ? product.Detail_zh : product.Detail_en;
 
   const Note = language === "zh" ? product.Note_zh : product.Note_en;
-  console.log(productTag)
+  // console.log(productTag)
 
   return (
     <div>

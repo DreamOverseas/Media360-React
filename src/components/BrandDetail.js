@@ -273,7 +273,7 @@ const BrandDetail = () => {
           <div className='brand-related-buttons'>
             {persons.length > 0 && (
               <Link
-                to={`/brands/${brand.internal_url}/related-persons`}
+                to={`/brands/${brand.internal_url}/related-person`}
                 className='btn-outline-black'
                 state={{ persons }}
               >
@@ -282,7 +282,7 @@ const BrandDetail = () => {
             )}
             {products.length > 0 && (
               <Link
-                to={`/brands/${brand.internal_url}/related-products`}
+                to={`/brands/${brand.internal_url}/related-product`}
                 className='btn-outline-black'
                 state={{ products }}
               >

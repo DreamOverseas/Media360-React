@@ -19,7 +19,7 @@ const PersonRelatedBrands = () => {
         {brands.length > 0 ? (
           <Row className='related-container'>
             {brands.map(brand => {
-              const brandUrl = `/brand/${brand.internal_url || brand.id}`;
+              const brandUrl = `/brands/${brand.internal_url || brand.id}`;
               const brandImage = brand.logo?.url
                 ? `${BACKEND_HOST}${brand.logo.url}`
                 : "https://placehold.co/120x120";

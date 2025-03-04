@@ -26,6 +26,7 @@ const Breadcrumbs = () => {
     "related-news":{zh: "相关新闻", en: "Related News"},
     "related-brand":{zh: "相关品牌", en: "Related Brand"},
     "related-product":{zh: "相关产品", en: "Related Product"},
+    "related-person":{zh: "相关人物", en: "Related Person"},
     "related-founder":{zh: "品牌创始人", en: "Related Founder"},
     "related-kol":{zh: "产品意见领袖", en: "Related Kol"},
     "related-ambassador":{zh: "产品代言人", en: "Related Ambassador"}

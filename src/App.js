@@ -153,11 +153,11 @@ function App() {
             element={<BrandRelatedNewsPage />}
           />
           <Route
-            path='/brands/:id/related-persons'
+            path='/brands/:id/related-person'
             element={<BrandRelatedPersonsPage />}
           />
           <Route
-            path='/brands/:id/related-products'
+            path='/brands/:id/related-product'
             element={<BrandRelatedProductsPage />}
           />
         </Routes>
