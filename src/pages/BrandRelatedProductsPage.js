@@ -48,8 +48,8 @@ const BrandRelatedProductPage = () => {
                         </Card.Title>
                         <Card.Text className='related-card-text'>
                           {currentLang === "zh"
-                            ? product.Description_zh
-                            : product.Description_en ||
+                            ? product.Short_zh
+                            : product.Short_en ||
                               t("noDescriptionAvailable")}
                         </Card.Text>
                         <Card.Text className='related-card-price'>
