@@ -78,10 +78,10 @@ function App() {
     <div className='App'>
       <ScrollToTop />
       {header}
-      <div className='main-content'>
-        <Container className='custom-breadcrumb'>
+      <div className='custom-breadcrumb'>
           <Breadcrumbs />
-        </Container>
+      </div>
+      <div className='main-content'>
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route path='/profile' element={<Profile />} />
@@ -131,11 +131,11 @@ function App() {
           <Route path='/brand/:id' element={<BrandDetail />} />
           <Route path='/news/:id' element={<NewsDetail />} />
           <Route
-            path='/person/:id/related-brands'
+            path='/person/:id/related-brand'
             element={<PersonRelatedBrands />}
           />
           <Route
-            path='/person/:id/related-products'
+            path='/person/:id/related-product'
             element={<PersonRelatedProducts />}
           />
           <Route

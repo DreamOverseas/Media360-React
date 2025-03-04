@@ -265,7 +265,7 @@ const KolDetail = () => {
           <div className='person-related-buttons'>
             {brands.length > 0 && (
               <Link
-                to={`/person/${paramId}/related-brands`}
+                to={`/person/${paramId}/related-brand`}
                 className='btn-outline-black'
                 state={{ brands }}
               >
@@ -274,7 +274,7 @@ const KolDetail = () => {
             )}
             {products.length > 0 && (
               <Link
-                to={`/person/${paramId}/related-products`}
+                to={`/person/${paramId}/related-product`}
                 className='btn-outline-black'
                 state={{ products }}
               >
