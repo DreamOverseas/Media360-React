@@ -166,6 +166,11 @@ const resources = {
       expand: "Expand",
       collapse: "Collapse",
       gallery: "Gallery",
+      related_products: "Related Products",
+      no_description: "No Description",
+      view_details: "View Details",
+      price: "Price",
+      related_brands: "Related Brands",
     },
   },
   zh: {
@@ -329,6 +334,11 @@ const resources = {
       expand: "展开",
       collapse: "收起",
       gallery: "画廊",
+      related_products: "相关产品",
+      no_description: "无详情",
+      view_details: "查看详情",
+      price: "价格",
+      related_brands: "相关品牌",
     },
   },
 };
