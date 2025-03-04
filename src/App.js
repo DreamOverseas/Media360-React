@@ -38,6 +38,7 @@ import ProductPage from "./pages/ProductPage";
 import ProductRelatedNews from "./pages/ProductRelatedNews";
 import ProductRelatedPerson from "./pages/ProductRelatedPerson";
 import ProductRelatedProduct from "./pages/ProductRelatedProduct";
+import ProductRelatedBrand from "./pages/ProductRelatedBrand";
 import Profile from "./pages/Profile";
 import Recruitment from "./pages/Recruitment";
 import RegisterMiss from "./pages/RegisterMiss";
@@ -110,6 +111,11 @@ function App() {
           <Route
             path='/products/:name/related-news'
             element={<ProductRelatedNews />}
+          />
+
+          <Route
+            path='/products/:name/related-brand'
+            element={<ProductRelatedBrand />}
           />
           <Route exact path='/products/:name' element={<ProductDetail />} />
           <Route exact path='/events/:name' element={<EventDetail />} />

@@ -1,5 +1,5 @@
 import React from "react";
-import { BsHouse, BsArrowLeft } from "react-icons/bs"; // ✅ 添加返回箭头图标
+import { BsHouse, BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import "../css/FloatingHomeButton.css";
 
@@ -16,6 +16,10 @@ const FloatingHomeButton = () => {
       {/* 主页按钮 */}
       <div className='floating-button' onClick={() => navigate("/")}>
         <BsHouse size={24} />
+      </div>
+
+      <div className='floating-button' onClick={() => navigate(+1)}>
+        <BsArrowRight size={24} />
       </div>
     </div>
   );

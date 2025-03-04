@@ -30,6 +30,7 @@ const ProductDetail = () => {
   const [founder, setFounder] = useState([]);
   const [kol, setKol] = useState([]);
   const [spokesperson, setSpokesperson] = useState([]);
+  const [brand, setBrand] = useState(null);
 
   const ProductGallery = ({ product }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -254,7 +255,7 @@ const ProductDetail = () => {
 
   const fetchData = async (path, setProduct, setPeople, setError, t) => {
     try {
-      const [productResponse, peopleResponse, newsResponse] = await Promise.all(
+      const [productResponse, peopleResponse, newsResponse, brandResponse] = await Promise.all(
         [
           axios.get(
             `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate=*`
@@ -264,6 +265,9 @@ const ProductDetail = () => {
           ),
           axios.get(
             `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[news][populate]=Image`
+          ),
+          axios.get(
+            `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[brand][populate]=logo`
           ),
         ]
       );
@@ -289,6 +293,9 @@ const ProductDetail = () => {
       const videoEmbed = productResponse.data?.data?.[0]?.videos?.data || [];
       setVideo(videoEmbed);
       const newsList = newsResponse.data?.data?.[0]?.news || [];
+      const brandinfo = brandResponse.data?.data?.[0]?.brand || null;
+      setBrand(brandinfo)
+      
       console.log("news",newsList);
       setNews(newsList);
     } catch (error) {
@@ -459,37 +466,54 @@ const ProductDetail = () => {
                 <Row>
                   <h4>查看相关人物</h4>
                   <Row>
-                    <Col xs={4}>
-                      <Link to={`/products/${product.url}/related-founder`} state={{ founder }}>
-                        <Button className="product-detail-funtion-btn">品牌创始人</Button>
-                      </Link>
-                    </Col>
-                    <Col xs={4}>
-                      <Link to={`/products/${product.url}/related-kol`} state={{ kol }}>
-                        <Button className="product-detail-funtion-btn">产品意见领袖</Button>
-                      </Link>
-                    </Col>
-                    <Col xs={4}>
-                      <Link to={`/products/${product.url}/related-ambassador`} state={{ spokesperson }}>
-                        <Button className="product-detail-funtion-btn">产品代言人</Button>
-                      </Link>
-                    </Col>
+                    {founder.length > 0 && (
+                      <Col xs={4}>
+                        <Link to={`/products/${product.url}/related-founder`} state={{ founder }}>
+                          <Button className="product-detail-funtion-btn">品牌创始人</Button>
+                        </Link>
+                      </Col>
+                    )}
+                    {kol.length > 0 && (
+                      <Col xs={4}>
+                        <Link to={`/products/${product.url}/related-kol`} state={{ kol }}>
+                          <Button className="product-detail-funtion-btn">产品意见领袖</Button>
+                        </Link>
+                      </Col>
+                    )}
+                    {spokesperson.length > 0 && (
+                      <Col xs={4}>
+                        <Link to={`/products/${product.url}/related-ambassador`} state={{ spokesperson }}>
+                          <Button className="product-detail-funtion-btn">产品代言人</Button>
+                        </Link>
+                      </Col>
+                    )}
                   </Row>
                 </Row>
 
                 <Row>
-                  <h4>查看相关产品及相关新闻</h4>
+                  <h4>查看相关产品、新闻、品牌</h4>
                   <Row>
-                    <Col xs={4}>
-                      <Link to={`/products/${product.url}/related-product`} state={{ product }}>
-                        <Button className="product-detail-funtion-btn">相关产品</Button>
-                      </Link>
-                    </Col>
-                    <Col xs={4}>
-                      <Link to={`/products/${product.url}/related-news`} state={{ news }}>
-                        <Button className="product-detail-funtion-btn">相关新闻</Button>
-                      </Link>
-                    </Col>
+                    {product && (
+                      <Col xs={4}>
+                        <Link to={`/products/${product.url}/related-product`} state={{ product }}>
+                          <Button className="product-detail-funtion-btn">相关产品</Button>
+                        </Link>
+                      </Col>
+                    )}
+                    {news && (
+                      <Col xs={4}>
+                        <Link to={`/products/${product.url}/related-news`} state={{ news }}>
+                          <Button className="product-detail-funtion-btn">相关新闻</Button>
+                        </Link>
+                      </Col>
+                    )}
+                    {brand && (
+                      <Col xs={4}>
+                        <Link to={`/products/${product.url}/related-brand`} state={{ brand }}>
+                          <Button className="product-detail-funtion-btn">相关品牌</Button>
+                        </Link>
+                      </Col>
+                    )}
                   </Row>
                   
                 </Row>

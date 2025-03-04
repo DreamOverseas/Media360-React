@@ -222,3 +222,116 @@
       grid-template-columns: 1fr; /* 移动端每行 1 个 */
     }
   }
+
+
+  /* brand card */
+
+  /* 页面整体样式 */
+.product-related-brand-page {
+  padding: 30px;
+}
+
+/* 标题样式 */
+.section-title {
+  text-align: left;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* 相关卡片样式 */
+.product-related-brand-card {
+  display: flex; /* ✅ 水平排列 */
+  flex-direction: row; /* ✅ 让图片始终在左，文本在右 */
+  align-items: center; /* ✅ 垂直居中 */
+  border: none; /* ✅ 移除边框 */
+  border-radius: 0; /* ✅ 移除圆角 */
+  box-shadow: none; /* ✅ 去掉阴影 */
+  overflow: hidden;
+  text-align: left;
+  width: 100%;
+  gap: 15px;
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  transition: transform 0.3s ease-in-out;
+  margin-bottom: 15px;
+}
+
+.product-related-brand-card:hover {
+  transform: translateY(-3px);
+}
+
+/* 相关卡片图片 - 位置固定在左侧 */
+.product-related-brand-card-img {
+  width: 150px; /* ✅ 统一图片宽度 */
+  height: 150px; /* ✅ 确保图片是正方形 */
+  object-fit: cover;
+  flex-shrink: 0; /* ✅ 防止图片被压缩 */
+  border-radius: 8px; /* ✅ 增加微小圆角 */
+}
+
+/* 相关卡片文字部分 */
+.product-related-brand-card-body {
+  flex-grow: 1;
+  padding: 10px 15px;
+  text-align: left;
+}
+
+/* 相关卡片标题 */
+.product-related-brand-card-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 5px;
+  text-decoration: none !important;
+}
+
+/* 相关卡片描述 */
+/* 相关卡片描述 - 限制最多 3 行 */
+.product-related-brand-card-text {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 5px;
+  line-height: 1.5;
+  max-height: 4.5em; /* ✅ 限制三行 (1.5em * 3) */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* ✅ 限制最多 3 行 */
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
+
+/* 确保卡片链接不会改变样式 */
+.product-related-brand-card-link {
+  text-decoration: none !important;
+  color: inherit;
+  display: block;
+  transition: all 0.3s ease-in-out;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .product-related-brand-card {
+    flex-direction: column; /* ✅ 小屏幕改为垂直排列 */
+    align-items: flex-start;
+  }
+
+  .product-related-brand-card-img {
+    width: 100%; /* ✅ 图片占满整个宽度 */
+    height: auto;
+  }
+
+  .product-related-brand-card-body {
+    padding: 10px 0;
+    text-align: left;
+  }
+}
+
+@media (min-width: 769px) {
+  .product-related-brand-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* ✅ PC 端每行 3 个 */
+    gap: 20px;
+  }
+}
