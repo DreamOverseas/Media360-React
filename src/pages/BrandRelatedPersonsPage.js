@@ -8,7 +8,8 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const RelatedPersonsPage = () => {
   const { state } = useLocation();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language;
 
   // 获取人物数据
   const persons = state?.persons ?? [];
@@ -32,23 +33,29 @@ const RelatedPersonsPage = () => {
                           ? `${BACKEND_HOST}${person.Image[0].url}`
                           : "https://placehold.co/150x150"
                       }
-                      alt={person.Name_zh || "Person"}
+                      alt={
+                        currentLang === "zh"
+                          ? person.Name_zh
+                          : person.Name_en || "Person"
+                      }
                       className='related-card-img'
                     />
                     <Card.Body className='related-card-body'>
                       <Card.Title className='related-card-title'>
-                        {person.Name_zh || person.Name_en}
+                        {currentLang === "zh" ? person.Name_zh : person.Name_en}
                       </Card.Title>
                       <Card.Text className='related-card-role'>
-                        {person.Title_zh || person.Title_en || t("noTitle")}
+                        {currentLang === "zh"
+                          ? person.Title_zh
+                          : person.Title_en || t("noTitle")}
                       </Card.Text>
                       <Card.Text
                         className='related-card-text'
                         dangerouslySetInnerHTML={{
                           __html:
-                            person.Bio_zh ||
-                            person.Bio_en ||
-                            t("noBioAvailable"),
+                            currentLang === "zh"
+                              ? person.Bio_zh
+                              : person.Bio_en || t("noBioAvailable"),
                         }}
                       />
                       <Link

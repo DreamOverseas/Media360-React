@@ -8,7 +8,8 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const BrandRelatedProductPage = () => {
   const { state } = useLocation();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language;
 
   // 获取产品数据
   const products = state?.products ?? [];
@@ -32,17 +33,24 @@ const BrandRelatedProductPage = () => {
                             ? `${BACKEND_HOST}${product.ProductImage.url}`
                             : "https://placehold.co/150x150"
                         }
-                        alt={product.Name_zh || "Product"}
+                        alt={
+                          currentLang === "zh"
+                            ? product.Name_zh
+                            : product.Name_en || "Product"
+                        }
                         className='related-card-img'
                       />
                       <Card.Body className='related-card-body'>
                         <Card.Title className='related-card-title'>
-                          {product.Name_zh || product.Name_en}
+                          {currentLang === "zh"
+                            ? product.Name_zh
+                            : product.Name_en}
                         </Card.Title>
                         <Card.Text className='related-card-text'>
-                          {product.Description_zh ||
-                            product.Description_en ||
-                            t("noDescriptionAvailable")}
+                          {currentLang === "zh"
+                            ? product.Description_zh
+                            : product.Description_en ||
+                              t("noDescriptionAvailable")}
                         </Card.Text>
                         <Card.Text className='related-card-price'>
                           ${product.Price_Display || product.Price || "N/A"}
