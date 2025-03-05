@@ -534,8 +534,8 @@ const ProductDetail = () => {
                 </Row>
 
                 <Row className="d-flex justify-content-center">
-                  <h4 style={{ textAlign: "center" }}>产品信息有误？</h4>
-                  <Button className="update-function-btn" onClick={() => window.open("https://do360.com/pages/360media-files-upload-standard", "_blank")}>完善信息</Button>
+                  <h2 style={{ textAlign: "center" }}>成为代言人、加入我们？</h2>
+                  <Button className="update-function-btn" onClick={() => window.open("https://do360.com/pages/360media-files-upload-standard", "_blank")}>加入我们</Button>
                 </Row>
 
                 {/* <Row>
