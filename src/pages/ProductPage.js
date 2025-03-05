@@ -99,11 +99,11 @@ const ProductPage = () => {
 
   return (
     <div>
-      <Container className='product-page-background-image-container'>
+      {/* <Container className='product-page-background-image-container'>
         <h1 className='product-page-banner-h1'>
           <b>{t("product")}</b>
         </h1>
-      </Container>
+      </Container> */}
       <Container>
         <Row>
           {products.map((product, index) => {

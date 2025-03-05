@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import React, { useContext, useState } from "react";
-import { Image, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Image, Navbar } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { AuthContext } from "../context/AuthContext";
 import "../css/Header.css";
@@ -22,15 +22,14 @@ const Header = () => {
         <Navbar.Brand href='/'>
           <Image className='nav-logo' src='/header_logo.png' alt='360 Media' />
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls='basic-navbar-nav' />
+        {/* <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='ms-auto nav-custom'>
             <Nav.Link href='/'>{t("home")}</Nav.Link>
-            {/*<Nav.Link href='/brands'>{t("brands")}</Nav.Link> */}
+            <Nav.Link href='/brands'>{t("brands")}</Nav.Link>
             <Nav.Link href='/products'>{t("product")}</Nav.Link>
-
-            {/* 星潮汇 - 桌面端 Hover，移动端 Click */}
-            {/*<NavDropdown
+            星潮汇 - 桌面端 Hover，移动端 Click
+            <NavDropdown
               title='星潮汇'
               id='star-dropdown'
               className='dropdown-container'
@@ -40,21 +39,18 @@ const Header = () => {
               <NavDropdown.Item href='/ambassadors'>
                 产品代言人
               </NavDropdown.Item>
-            </NavDropdown> */}
-
-            {/* 媒体中心 - 桌面端 Hover，移动端 Click */}
-            {/*<NavDropdown
+            </NavDropdown>
+            媒体中心 - 桌面端 Hover，移动端 Click
+            <NavDropdown
               title='媒体中心'
               id='media-dropdown'
               className='dropdown-container'
             >
               <NavDropdown.Item href='/news'>新闻</NavDropdown.Item>
               <NavDropdown.Item href='/events'>活动</NavDropdown.Item>
-            </NavDropdown> */}
-
+            </NavDropdown>
             <Nav.Link href='/join-us'>{t("joinus")}</Nav.Link>
-
-            {/* 语言切换 */}
+            语言切换
             <NavDropdown
               title={t("language")}
               id='language-dropdown'
@@ -67,8 +63,7 @@ const Header = () => {
                 中文
               </NavDropdown.Item>
             </NavDropdown>
-
-            {/* 登录 / 个人信息 */}
+            登录 / 个人信息
             {user ? (
               <>
                 <Nav.Link href='/cart'>
@@ -90,7 +85,7 @@ const Header = () => {
               </Nav.Link>
             )}
           </Nav>
-        </Navbar.Collapse>
+        </Navbar.Collapse> */}
       </Navbar>
 
       {/* 登录模态框 */}
