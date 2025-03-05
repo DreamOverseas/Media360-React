@@ -227,11 +227,11 @@ const BrandDetail = () => {
                     ))}
                   </div>
                 )}
-
+                {/* ✅ 根据角色显示不同的联系按钮 
                 <div className='brand-contact-row'>
                   {Website}
                   {EmailButton}
-                </div>
+                </div>*/}
               </div>
             </Col>
           </Row>
