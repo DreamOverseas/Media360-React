@@ -227,7 +227,6 @@
   cursor: pointer;
   font-size: 24px;
   padding: 10px;
-  z-index: 2;
 }
 
 .prev-button {
@@ -361,7 +360,6 @@
 
 
 .update-function-btn {
-  width: auto;
   border-radius: 50px;
   border: 1px solid black;
   background: white;
@@ -446,11 +444,6 @@
   .add-to-cart {
     width: 100%; /* Full width button */
     margin-bottom: 1rem; /* Adds spacing between buttons */
-  }
-
-  /* Adjust quantity selection on mobile */
-  .product-price-quantity {
-    padding-bottom: 2rem; /* Adds extra bottom padding */
   }
 
   /* Adjusts modal background for mobile devices */
