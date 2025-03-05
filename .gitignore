@@ -24,3 +24,4 @@ yarn-error.log*
 
 # Draw.io temp files
 *.drawio.bkp
+.env
