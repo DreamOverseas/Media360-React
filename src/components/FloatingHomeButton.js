@@ -32,6 +32,7 @@ const FloatingHomeButton = () => {
 
       <div>
         <CuteChatbot
+          nickname='DoBot'
           openai_api_url={`${API_URL}`}
           openai_asst_id={`${ASST_ID}`}
           openai_api_key={`${API_KEY}`}
