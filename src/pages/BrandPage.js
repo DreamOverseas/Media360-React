@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Card, Col, Container, Row, Image } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import "../css/BrandPage.css";
 
 const BrandPage = () => {
   const [brands, setBrands] = useState([]);
@@ -34,15 +35,9 @@ const BrandPage = () => {
 
   return (
     <div>
-      <section className='product-page-background-image-container'>
-        <h1 className='product-page-banner-h1'>
-          <b>{t("brand")}</b>
-        </h1>
-      </section>
-
       <Container>
         {/* ✅ `justify-content-start` 让不足 4 个卡片左对齐 */}
-        <Row className='justify-content-start'>
+        <Row>
           {brands.map(brand => {
             const language = i18n.language;
             const brandName =
@@ -58,24 +53,21 @@ const BrandPage = () => {
                 key={brand.id}
                 xs={12}
                 sm={6}
-                md={4}
-                lg={3}
-                className='d-flex'
+                md={6}
               >
                 <Card
                   onClick={() => handleBrandClick(brand)}
-                  className='brand-card'
+                  className="brand-card"
                 >
-                  <Card.Img
-                    variant='top'
+                  {/* ✅ 使用 `Image` 组件，并设置固定大小 */}
+                  <Image
                     src={logoUrl}
                     alt={brandName}
                     className='brand-card-img'
+                    fluid
                   />
-                  <Card.Body className='d-flex flex-column justify-content-between'>
-                    <Card.Title className='brand-card-title text-center'>
-                      {brandName}
-                    </Card.Title>
+                  <Card.Body>
+                    <Card.Title className='brand-card-title'>{brandName}</Card.Title>
                   </Card.Body>
                 </Card>
               </Col>
