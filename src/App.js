@@ -85,7 +85,7 @@ function App() {
       <div className='main-content'>
         <Routes>
           {/* <Route exact path='/' element={<Home />} /> */}
-          <Route exact path='/' element={<ProductPage />} />
+          <Route exact path='/' element={<BrandPage />} />
           <Route path='/profile' element={<Profile />} />
           <Route exact path='/products' element={<ProductPage />} />
           {/* <Route exact path='/productFinance' element={<ProductPage />} />
