@@ -31,8 +31,8 @@
 }
 
 .floating-button {
-  width: 48px;
-  height: 48px;
+  width: 35px;
+  height: 35px;
   background: white;
   border-radius: 50%;
   display: flex;
