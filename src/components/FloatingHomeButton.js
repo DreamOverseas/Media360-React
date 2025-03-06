@@ -18,16 +18,16 @@ const FloatingHomeButton = () => {
     <div className='floating-button-container'>
       {/* 返回按钮 */}
       <div className='floating-button' onClick={() => navigate(-1)}>
-        <BsArrowLeft size={24} />
+        <BsArrowLeft size={20} />
       </div>
 
       {/* 主页按钮 */}
       <div className='floating-button' onClick={() => navigate("/")}>
-        <BsHouse size={24} />
+        <BsHouse size={20} />
       </div>
 
       <div className='floating-button' onClick={() => navigate(+1)}>
-        <BsArrowRight size={24} />
+        <BsArrowRight size={20} />
       </div>
 
       <div>
