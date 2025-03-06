@@ -79,34 +79,46 @@
   cursor: pointer;
 }
 
-@media (max-width: 768px) {
-  .footer {
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
 
-  .footer-column {
-    flex: 1 1 100%;
-    padding: 1rem;
-    text-align: center;
-  }
+.footer-contact-info p {
+  font-size: 8px;
+}
 
-  .subscribe-button {
-    margin: 0 !important;
-  }
+.footer-contact-info img {
+  height:50px;
+  object-fit: cover;
+}
 
-  .footer-link h5 {
-    padding-left: 0;
-    margin: 0.5rem 0;
-    text-align: center;
-  }
+.footer-subscription p {
+  font-size: 7px;
+}
 
-  .logo-contact {
-    align-items: center;
-  }
+.footer-subscription h6 {
+  font-size: 11px;
+}
 
-  .newsletter {
-    text-align: center;
-  }
+.footer-subscription .form-control {
+  font-size:6px
+}
+
+.mobile-footer-logo {
+  height:30px;
+  object-fit: cover
+}
+
+
+.footer-subscription .newsletter button {
+  width: 100%;
+  font-size: 10px;
+  border: none;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(68, 68, 68, 1) 20%, rgba(68, 68, 68, 1) 80%, rgba(255, 255, 255, 0));
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  margin: 0 !important;
+}
+
+.mobile-footer-logo {
+  margin-top:-5%;
+  margin-bottom:5%
 }
