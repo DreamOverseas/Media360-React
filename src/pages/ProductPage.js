@@ -27,6 +27,8 @@ const ProductPage = () => {
           "pagination[page]": pageNum,
           "pagination[pageSize]": 8, // Load 8 products per page
           sort: "Order:desc",
+          "filters[$or][0][MainCollectionProduct][$eq]": true,
+          "filters[$or][1][SingleProduct][$eq]": true,
           populate: "*",
         },
       })
@@ -109,6 +111,7 @@ const ProductPage = () => {
           {products.map((product, index) => {
             const isLastElement = index === products.length - 1; // Check if it's the last product
             const Name = language === "zh" ? product.Name_zh : product.Name_en;
+            const CollectionName = language === "zh" ? product.Collection_Name_zh : product.Collection_Name_en;
             return (
               <Col
                 key={product.id}
@@ -138,11 +141,16 @@ const ProductPage = () => {
                       />
                     )}
                     <Card.Body>
-                      <Card.Title title={Name}>{Name}</Card.Title>
+                      <Card.Title title={product.MainCollectionProduct ? CollectionName : Name}>
+                        {product.MainCollectionProduct ? CollectionName : Name}
+                      </Card.Title>
+
                       <p className='productpage-product-price'>
-                        {product.Price === 0
-                          ? t("price_tbd")
-                          : `AU${product.Price}`}
+                        {product.MainCollectionProduct
+                          ? null
+                          : product.Price === 0
+                            ? t("price_tbd")
+                            : `AU${product.Price}`}
                       </p>
                     </Card.Body>
                   </Card>
