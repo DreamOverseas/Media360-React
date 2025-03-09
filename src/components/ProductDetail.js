@@ -24,13 +24,14 @@ const ProductDetail = () => {
   const [productTag, setProductTag] = useState(null);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [cartModal, setCartModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  
   // const [showLoginModal, setShowLoginModal] = useState(false);
   const [founder, setFounder] = useState([]);
   const [kol, setKol] = useState([]);
   const [spokesperson, setSpokesperson] = useState([]);
   const [brand, setBrand] = useState(null);
+  const [variants, setVariants] = useState([]);
 
   const ProductGallery = ({ product }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -145,61 +146,6 @@ const ProductDetail = () => {
     );
   };
 
-  // const VideoCarousel = ({ videos }) => {
-  //   const [currentIndex, setCurrentIndex] = useState(0);
-
-  //   // 切换到上一个视频
-  //   const prevVideo = () => {
-  //     setCurrentIndex(prevIndex =>
-  //       prevIndex === 0 ? videos.length - 1 : prevIndex - 1
-  //     );
-  //   };
-
-  //   // 切换到下一个视频
-  //   const nextVideo = () => {
-  //     setCurrentIndex(prevIndex =>
-  //       prevIndex === videos.length - 1 ? 0 : prevIndex + 1
-  //     );
-  //   };
-
-  //   return (
-  //     <Container className='video-wrapper'>
-  //       <Button
-  //         variant='dark'
-  //         className='video-prev-button'
-  //         onClick={prevVideo}
-  //       >
-  //         &#10094;
-  //       </Button>
-
-  //       <div className='product-video-container'>
-  //         <div
-  //           dangerouslySetInnerHTML={{
-  //             __html: videos[currentIndex].videoEmbed,
-  //           }}
-  //         />
-  //       </div>
-
-  //       <Button
-  //         variant='dark'
-  //         className='video-next-button'
-  //         onClick={nextVideo}
-  //       >
-  //         &#10095;
-  //       </Button>
-  //     </Container>
-  //   );
-  // };
-
-  // const handleLoginModalOpen = () => {
-  //   setShowLoginModal(true);
-  //   setCartModal(false);
-  // };
-
-  // const handleLoginModalClose = () => setShowLoginModal(false);
-
-  // const handleCloseCartModal = () => setCartModal(false);
-
   const handleDecrement = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
@@ -212,46 +158,6 @@ const ProductDetail = () => {
     }
   };
 
-  // const handleAddToCart = async () => {
-  //   if (user && Cookies.get("token")) {
-  //     try {
-  //       const user_detail = await axios.get(`${BACKEND_HOST}/api/users/${user.id}?populate[cart]=*`);
-  //       const cartid = user_detail.data.cart.id;
-  //       const cart_items = await axios.get(`${BACKEND_HOST}/api/carts/${cartid}?populate[cart_items][populate][product]=*`);
-  //       const cart_items_data = cart_items.data.cart_items;
-
-  //       const existingItem = cart_items_data.find(item => item.product.id === product.id);
-
-  //       if (existingItem) {
-  //         await axios.put(
-  //           `${BACKEND_HOST}/api/cart-items/${existingItem.id}`,
-  //           { data: { Number: existingItem.attributes.Number + quantity } },
-  //           { headers: { Authorization: `Bearer ${Cookies.get("token")}`, "Content-Type": "application/json" } }
-  //         );
-  //       } else {
-  //         await axios.post(
-  //           `${BACKEND_HOST}/api/cart-items`,
-  //           { data: { Number: quantity, product: product.id } },
-  //           { headers: { Authorization: `Bearer ${Cookies.get("token")}`, "Content-Type": "application/json" } }
-  //         );
-  //       }
-
-  //       console.log("Item added to cart successfully.");
-  //     } catch (error) {
-  //       console.error("Failed to add to cart:", error);
-  //     }
-  //   } else {
-  //     setCartModal(true);
-  //   }
-  // };
-
-  // const handlePurchase = () => {
-  //   setShowModal(true);
-  // };
-
-  // const handleCloseModal = () => {
-  //   setShowModal(false);
-  // };
 
   const fetchData = async (path, setProduct, setPeople, setError, t) => {
     try {
@@ -268,10 +174,10 @@ const ProductDetail = () => {
           ),
           axios.get(
             `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[brand][populate]=logo`
-          ),
+          )
         ]
       );
-
+      
       const productData = productResponse.data?.data?.[0] || null;
       if (!productData) {
         setError(t("noProductFound"));
@@ -308,6 +214,24 @@ const ProductDetail = () => {
     const path = location.pathname.replace("/products/", "");
     fetchData(path, setProduct, setPeople, setError, t);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!brand || !brand.internal_url) return;
+
+    axios.get("https://api.do360.com/api/brands/", {
+      params: {
+        "filters[internal_url][$eq]": `${brand.internal_url}`,
+        "populate[products][fields]": "url,Name_zh,Name_en"
+      }
+    })
+    .then(response => {
+      const variants = response.data.data[0]?.products
+      console.log("variants",variants);
+      setVariants(variants)
+    })
+    .catch(error => console.error("Error fetching product URLs and names:", error));
+  }, [brand?.internal_url]);
+
 
   useEffect(() => {
     console.log("🚀 people 数据更新:", people);
@@ -374,8 +298,6 @@ const ProductDetail = () => {
     );
   }
 
-  console.log("product", product)
-
   const { Price, ProductImage, Available, Sponsor } = product;
   const language = i18n.language;
 
@@ -385,6 +307,7 @@ const ProductDetail = () => {
   const Detail = language === "zh" ? product.Detail_zh : product.Detail_en;
 
   const Note = language === "zh" ? product.Note_zh : product.Note_en;
+
   // console.log(productTag)
 
   return (
@@ -412,8 +335,30 @@ const ProductDetail = () => {
                       })
                     ) : null}
                   </Row> */}
+
+                  {variants ? (
+                    variants.map((variant, index) => {
+                      const currentPath = location.pathname; // 获取当前路径
+                      const isActive = currentPath === `/products/${variant.url}`; // 正确匹配当前路径
+
+                      return (
+                        <Col xs={4} key={index}>
+                          <Link to={`/products/${variant.url}`}>
+                            <Button
+                              className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
+                            >
+                              {language === "zh" ? variant.Name_zh : variant.Name_en}
+                            </Button>
+                          </Link>
+                        </Col>
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}
                   <h2>{display_price}</h2>
                 </Row>
+                
 
                 <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
                   {/* <Col md={4} className="amount-price-bar">
@@ -537,141 +482,11 @@ const ProductDetail = () => {
                   <h2 style={{ textAlign: "center" }}>成为代言人、加入我们？</h2>
                   <Button className="update-function-btn" onClick={() => window.open("https://do360.com/pages/360media-files-upload-standard", "_blank")}>加入我们</Button>
                 </Row>
-
-                {/* <Row>
-                  {(Price !== 0 || 1) && Available ? (
-                    <>
-                      <Col>
-                        <Button className='add-to-cart' onClick={handlePurchase}>{t("enquireNow")}</Button>
-                      </Col>
-                      <Col>
-                        <Button className='add-to-cart' onClick={handleAddToCart}>{t("addToCart")}</Button>
-                      </Col>
-                    </>
-                  ) : (
-                    <Button className='add-to-cart' onClick={handlePurchase}>{t("enquireNow")}</Button>
-                  )}
-                </Row> */}
               </Container>
             </Col>
           </Row>
         </Container>
-
-        {/* {videos.length !== 0 && (
-          <Container>
-            <h1>相关视频</h1>
-            <VideoCarousel videos={videos} />
-          </Container>
-        )} */}
-
-        {/* <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>{Name}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {Sponsor ? (
-              <div>
-                <Row>
-                  <h5>{t("productWebsite")}</h5>
-                  <Link to={`/sponsor/${product.url}`}>www.do360.com/sponsor/{product.url}</Link>
-                </Row>
-              </div>
-            ) : (
-              <div>
-                <Row><p>{t("contactKol")}</p></Row>
-                <Row className='purchase-modal-background'>
-                  <Image src='/QR_JohnDu.png' alt='Logo' fluid />
-                </Row>
-              </div>
-            )}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant='secondary' onClick={handleCloseModal}>{t("close")}</Button>
-          </Modal.Footer>
-        </Modal>
-
-        <Modal show={cartModal} onHide={handleCloseCartModal}>
-          <Modal.Header closeButton></Modal.Header>
-          <Modal.Body>
-            <Row><p>{t("loginAlert")}</p></Row>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant='secondary' onClick={handleLoginModalOpen}>{t("logIn")}</Button>
-            <Button variant='secondary' onClick={handleCloseCartModal}>{t("cancel")}</Button>
-          </Modal.Footer>
-        </Modal>
-
-        <LoginModal show={showLoginModal} handleClose={handleLoginModalClose} /> */}
       </section>
-      <br />
-      <br />
-      {/* <section>
-        <Container>
-          <h1>相关产品及服务</h1>
-          {relatedProduct ? (
-            <RelatedProduct
-              related_product={relatedProduct}
-              language={language}
-            />
-          ) : (
-            <p>暂无推荐</p>
-          )}
-        </Container>
-      </section>
-
-      <section>
-        {news.length > 0 && (
-          <Container className='news-container'>
-            <Row>
-              <h1>相关新闻</h1>
-            </Row>
-            <Row className='justify-content-start'>
-              {news.map(newsItem => {
-                const language = i18n.language;
-                const newsTitle =
-                  language === "zh"
-                    ? newsItem.Title_zh || "未知新闻"
-                    : newsItem.Title_en || "Unknown News";
-                const newsContent = newsItem.Description_zh || "暂无内容";
-                const newsUrl = `/news/${newsItem.url}`;
-
-                return (
-                  <Col key={newsItem.id} xs={12} sm={6} md={4}>
-                    <Link to={newsUrl} className='card-link-NewsPage'>
-                      <Card className='newspage-news-card d-flex flex-column'>
-                        {newsItem.Image && newsItem.Image.length > 0 ? (
-                          <Card.Img
-                            src={`${BACKEND_HOST}${newsItem.Image[0].url}`}
-                            alt={newsTitle}
-                            className='newspage-news-card-img'
-                          />
-                        ) : (
-                          <Card.Img
-                            src='https://placehold.co/300x200'
-                            alt='Placeholder'
-                            className='newspage-news-card-img'
-                          />
-                        )}
-                        <Card.Body className='text-center d-flex flex-column justify-content-between'>
-                          <Card.Title className='newspage-news-card-title'>
-                            {newsTitle}
-                          </Card.Title>
-                          <Card.Text className='newspage-news-card-date'>
-                            {formatDateTime(newsItem.Published_time)}
-                          </Card.Text>
-                          <Card.Text className='newspage-news-card-content'>
-                            {newsContent}
-                          </Card.Text>
-                        </Card.Body>
-                      </Card>
-                    </Link>
-                  </Col>
-                );
-              })}
-            </Row>
-          </Container>
-        )}
-      </section> */}
     </div>
   );
 };

@@ -484,3 +484,37 @@
   height: 0;
 }
 
+
+
+/* variant button */
+
+/* 默认按钮样式 */
+.product-details-variant-btn {
+  width: 100%;
+  border-radius: 50px;
+  border: 1px solid black;
+  background: white;
+  color: black;
+  font-size: 10px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* 悬停效果（Hover，PC端有效） */
+@media (min-width: 769px) {
+  .product-details-variant-btn:hover {
+    background: black;
+    color: white;
+  }
+}
+
+/* 选中（Active）状态匹配当前 URL */
+.product-details-variant-btn.active-btn {
+  background: black !important;
+  color: white !important;
+  border-color: black !important;
+}
+
