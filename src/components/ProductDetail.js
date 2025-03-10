@@ -1,10 +1,17 @@
 import axios from "axios";
-import moment from "moment-timezone";
-import React, { useContext, useEffect, useState} from "react";
-import {Button, Col, Container, Image, Row, Spinner, Modal} from "react-bootstrap";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  Button,
+  Col,
+  Container,
+  Image,
+  Modal,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
-import { Link, useLocation} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import rehypeRaw from "rehype-raw";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
@@ -25,7 +32,7 @@ const ProductDetail = () => {
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [showModal, setShowModal] = useState(false);
-  
+
   // const [showLoginModal, setShowLoginModal] = useState(false);
   const [founder, setFounder] = useState([]);
   const [kol, setKol] = useState([]);
@@ -38,89 +45,102 @@ const ProductDetail = () => {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [videoThumbnails, setVideoThumbnails] = useState([]);
     const [allMedia, setAllMedia] = useState([]);
-  
+
     const mainImage = product?.ProductImage
       ? `${BACKEND_HOST}${product.ProductImage.url}`
       : "https://placehold.co/650x650";
-  
+
     const subImages = product?.SubImages?.length
       ? product.SubImages.map(img => `${BACKEND_HOST}${img.url}`)
       : [];
-  
-    const videoIframes = Array.isArray(product?.videos?.data) ? product.videos.data : [];
-  
+
+    const videoIframes = Array.isArray(product?.videos?.data)
+      ? product.videos.data
+      : [];
+
     useEffect(() => {
       if (videoIframes.length > 0) {
-        const thumbnails = videoIframes.map(video => video?.pic ?? "https://placehold.co/650x400");
+        const thumbnails = videoIframes.map(
+          video => video?.pic ?? "https://placehold.co/650x400"
+        );
 
         if (JSON.stringify(thumbnails) !== JSON.stringify(videoThumbnails)) {
           setVideoThumbnails(thumbnails);
         }
       }
     }, [videoIframes]);
-  
+
     useEffect(() => {
-      setAllMedia([mainImage, ...subImages, ...videoThumbnails])
+      setAllMedia([mainImage, ...subImages, ...videoThumbnails]);
     }, [videoThumbnails]);
-  
+
     const nextMedia = () => {
       setCurrentIndex(prevIndex => (prevIndex + 1) % allMedia.length);
     };
-  
+
     const prevMedia = () => {
       setCurrentIndex(prevIndex =>
         prevIndex === 0 ? allMedia.length - 1 : prevIndex - 1
       );
     };
-  
+
     return (
-      <Container className="product-gallery">
-        <div className="main-image-container">
-          <button className="prev-button" onClick={prevMedia}>❮</button>
-  
+      <Container className='product-gallery'>
+        <div className='main-image-container'>
+          <button className='prev-button' onClick={prevMedia}>
+            ❮
+          </button>
+
           {currentIndex >= subImages.length + 1 && videoIframes.length > 0 ? (
             <div
-              className="product-video"
+              className='product-video'
               dangerouslySetInnerHTML={{
-                __html: videoIframes[currentIndex - (subImages.length + 1)]?.videoEmbed || ""
+                __html:
+                  videoIframes[currentIndex - (subImages.length + 1)]
+                    ?.videoEmbed || "",
               }}
             />
           ) : (
             <Image
               src={allMedia[currentIndex]}
               alt={`Product Media ${currentIndex}`}
-              className="product-img"
+              className='product-img'
               onClick={() => setLightboxOpen(true)}
             />
           )}
-  
-          <button className="next-button" onClick={nextMedia}>❯</button>
+
+          <button className='next-button' onClick={nextMedia}>
+            ❯
+          </button>
         </div>
-  
-        <div className="thumbnail-container">
+
+        <div className='thumbnail-container'>
           {allMedia.map((media, index) => (
             <div
               key={index}
-              className={`thumb-container ${index === currentIndex ? "active-thumb" : ""}`}
+              className={`thumb-container ${
+                index === currentIndex ? "active-thumb" : ""
+              }`}
               onClick={() => setCurrentIndex(index)}
             >
               <Image
                 src={media}
                 alt={`Thumbnail ${index}`}
-                className="thumb-img"
+                className='thumb-img'
               />
             </div>
           ))}
         </div>
-  
+
         <Lightbox
           open={lightboxOpen}
           close={() => setLightboxOpen(false)}
           slides={allMedia.map((media, index) => ({
             src: media,
-            html: index >= subImages.length + 1 && videoIframes.length > 0
-              ? videoIframes[index - (subImages.length + 1)]?.videoEmbed
-              : undefined
+            html:
+              index >= subImages.length + 1 && videoIframes.length > 0
+                ? videoIframes[index - (subImages.length + 1)]?.videoEmbed
+                : undefined,
           }))}
           index={currentIndex}
         />
@@ -128,17 +148,18 @@ const ProductDetail = () => {
     );
   };
 
-
   const ConsultationModal = ({ show, handleClose }) => {
     return (
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>咨询与购买</Modal.Title>
         </Modal.Header>
-        <Modal.Body className="custom-modal-body" dangerouslySetInnerHTML={{ __html: Note }}>
-        </Modal.Body>
+        <Modal.Body
+          className='custom-modal-body'
+          dangerouslySetInnerHTML={{ __html: Note }}
+        ></Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant='secondary' onClick={handleClose}>
             关闭
           </Button>
         </Modal.Footer>
@@ -158,11 +179,10 @@ const ProductDetail = () => {
     }
   };
 
-
   const fetchData = async (path, setProduct, setPeople, setError, t) => {
     try {
-      const [productResponse, peopleResponse, newsResponse, brandResponse] = await Promise.all(
-        [
+      const [productResponse, peopleResponse, newsResponse, brandResponse] =
+        await Promise.all([
           axios.get(
             `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate=*`
           ),
@@ -174,10 +194,9 @@ const ProductDetail = () => {
           ),
           axios.get(
             `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[brand][populate]=logo`
-          )
-        ]
-      );
-      
+          ),
+        ]);
+
       const productData = productResponse.data?.data?.[0] || null;
       if (!productData) {
         setError(t("noProductFound"));
@@ -200,9 +219,9 @@ const ProductDetail = () => {
       setVideo(videoEmbed);
       const newsList = newsResponse.data?.data?.[0]?.news || [];
       const brandinfo = brandResponse.data?.data?.[0]?.brand || null;
-      setBrand(brandinfo)
-      
-      console.log("news",newsList);
+      setBrand(brandinfo);
+
+      console.log("news", newsList);
       setNews(newsList);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -218,20 +237,22 @@ const ProductDetail = () => {
   useEffect(() => {
     if (!brand || !brand.internal_url) return;
 
-    axios.get("https://api.do360.com/api/brands/", {
-      params: {
-        "filters[internal_url][$eq]": `${brand.internal_url}`,
-        "populate[products][fields]": "url,Name_zh,Name_en"
-      }
-    })
-    .then(response => {
-      const variants = response.data.data[0]?.products
-      console.log("variants",variants);
-      setVariants(variants)
-    })
-    .catch(error => console.error("Error fetching product URLs and names:", error));
+    axios
+      .get("https://api.do360.com/api/brands/", {
+        params: {
+          "filters[internal_url][$eq]": `${brand.internal_url}`,
+          "populate[products][fields]": "url,Name_zh,Name_en",
+        },
+      })
+      .then(response => {
+        const variants = response.data.data[0]?.products;
+        console.log("variants", variants);
+        setVariants(variants);
+      })
+      .catch(error =>
+        console.error("Error fetching product URLs and names:", error)
+      );
   }, [brand?.internal_url]);
-
 
   useEffect(() => {
     console.log("🚀 people 数据更新:", people);
@@ -339,15 +360,20 @@ const ProductDetail = () => {
                   {variants ? (
                     variants.map((variant, index) => {
                       const currentPath = location.pathname; // 获取当前路径
-                      const isActive = currentPath === `/products/${variant.url}`; // 正确匹配当前路径
+                      const isActive =
+                        currentPath === `/products/${variant.url}`; // 正确匹配当前路径
 
                       return (
                         <Col xs={4} key={index}>
                           <Link to={`/products/${variant.url}`}>
                             <Button
-                              className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
+                              className={`product-details-variant-btn ${
+                                isActive ? "active-btn" : ""
+                              }`}
                             >
-                              {language === "zh" ? variant.Name_zh : variant.Name_en}
+                              {language === "zh"
+                                ? variant.Name_zh
+                                : variant.Name_en}
                             </Button>
                           </Link>
                         </Col>
@@ -358,7 +384,6 @@ const ProductDetail = () => {
                   )}
                   <h2>{display_price}</h2>
                 </Row>
-                
 
                 <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
                   {/* <Col md={4} className="amount-price-bar">
@@ -380,50 +405,70 @@ const ProductDetail = () => {
                   </Col> */}
 
                   <Col md={8} className='d-flex justify-content-center'>
-                    <Button className='add-to-cart-btn' onClick={() => setShowModal(true)}>即刻咨询并购买</Button>
+                    <Button
+                      className='add-to-cart-btn'
+                      onClick={() => setShowModal(true)}
+                    >
+                      即刻咨询并购买
+                    </Button>
                   </Col>
 
                   {/* 弹窗组件 */}
-                  <ConsultationModal show={showModal} handleClose={() => setShowModal(false)} />
+                  <ConsultationModal
+                    show={showModal}
+                    handleClose={() => setShowModal(false)}
+                  />
                 </Row>
 
                 <Row>
                   <h4>产品描述</h4>
                   {Detail ? (
-                    <div className="detail-container">
+                    <div className='detail-container'>
                       <ReactMarkdown rehypePlugins={[rehypeRaw]}>
                         {Detail}
                       </ReactMarkdown>
                     </div>
                   ) : (
-                    <div className="detail-container">暂无产品信息</div>
+                    <div className='detail-container'>暂无产品信息</div>
                   )}
-
                 </Row>
-
-                
 
                 <Row>
                   <h4>查看相关人物</h4>
                   <Row>
                     {founder.length > 0 && (
                       <Col xs={4}>
-                        <Link to={`/products/${product.url}/related-founder`} state={{ founder }}>
-                          <Button className="product-detail-funtion-btn">品牌创始人</Button>
+                        <Link
+                          to={`/products/${product.url}/related-founder`}
+                          state={{ founder }}
+                        >
+                          <Button className='product-detail-funtion-btn'>
+                            品牌创始人
+                          </Button>
                         </Link>
                       </Col>
                     )}
                     {kol.length > 0 && (
                       <Col xs={4}>
-                        <Link to={`/products/${product.url}/related-kol`} state={{ kol }}>
-                          <Button className="product-detail-funtion-btn">产品意见领袖</Button>
+                        <Link
+                          to={`/products/${product.url}/related-kol`}
+                          state={{ kol }}
+                        >
+                          <Button className='product-detail-funtion-btn'>
+                            产品意见领袖
+                          </Button>
                         </Link>
                       </Col>
                     )}
                     {spokesperson.length > 0 && (
                       <Col xs={4}>
-                        <Link to={`/products/${product.url}/related-ambassador`} state={{ spokesperson }}>
-                          <Button className="product-detail-funtion-btn">产品代言人</Button>
+                        <Link
+                          to={`/products/${product.url}/related-ambassador`}
+                          state={{ spokesperson }}
+                        >
+                          <Button className='product-detail-funtion-btn'>
+                            产品代言人
+                          </Button>
                         </Link>
                       </Col>
                     )}
@@ -431,29 +476,45 @@ const ProductDetail = () => {
                 </Row>
 
                 <Row>
-                  <h4>查看相关产品、新闻、品牌</h4>
+                  <h4>查看更多资讯</h4>
                   <Row>
+                    {/*
                     {product && (
                       <Col xs={4}>
-                        <Link to={`/products/${product.url}/related-product`} state={{ product }}>
-                          <Button className="product-detail-funtion-btn">相关产品</Button>
+                        <Link
+                          to={`/products/${product.url}/related-product`}
+                          state={{ product }}
+                        >
+                          <Button className='product-detail-funtion-btn'>
+                            相关产品
+                          </Button>
                         </Link>
                       </Col>
-                    )}
+                    )}*/}
                     {news && (
                       <Col xs={4}>
-                        <Link to={`/products/${product.url}/related-news`} state={{ news }}>
-                          <Button className="product-detail-funtion-btn">相关新闻</Button>
+                        <Link
+                          to={`/products/${product.url}/related-news`}
+                          state={{ news }}
+                        >
+                          <Button className='product-detail-funtion-btn'>
+                            相关新闻
+                          </Button>
                         </Link>
                       </Col>
                     )}
-                    {brand && (
+                    {/* {brand && (
                       <Col xs={4}>
-                        <Link to={`/products/${product.url}/related-brand`} state={{ brand }}>
-                          <Button className="product-detail-funtion-btn">相关品牌</Button>
+                        <Link
+                          to={`/products/${product.url}/related-brand`}
+                          state={{ brand }}
+                        >
+                          <Button className='product-detail-funtion-btn'>
+                            相关品牌
+                          </Button>
                         </Link>
                       </Col>
-                    )}
+                    )} */}
                   </Row>
                 </Row>
 
@@ -476,11 +537,6 @@ const ProductDetail = () => {
                     </i>
                     <span className='share-title'>分享此产品</span>
                   </a>
-                </Row>
-
-                <Row className="d-flex justify-content-center">
-                  <h2 style={{ textAlign: "center" }}>成为代言人、加入我们？</h2>
-                  <Button className="update-function-btn" onClick={() => window.open("https://do360.com/pages/360media-files-upload-standard", "_blank")}>加入我们</Button>
                 </Row>
               </Container>
             </Col>
