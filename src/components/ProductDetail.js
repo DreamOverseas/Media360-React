@@ -482,49 +482,41 @@ const ProductDetail = () => {
                   </Row>
                 </Row>
 
-                <Row>
-                  <h4>查看更多资讯</h4>
+                {(news.length > 0 || event.length > 0) && (
                   <Row>
-                    {/*
-                    {product && (
-                      <Col xs={4}>
-                        <Link
-                          to={`/products/${product.url}/related-product`}
-                          state={{ product }}
-                        >
-                          <Button className='product-detail-funtion-btn'>
-                            相关产品
-                          </Button>
-                        </Link>
-                      </Col>
-                    )}*/}
-                    {news && (
-                      <Col xs={4}>
-                        <Link
-                          to={`/products/${product.url}/related-news`}
-                          state={{ news }}
-                        >
-                          <Button className='product-detail-funtion-btn'>
-                            相关新闻
-                          </Button>
-                        </Link>
-                      </Col>
-                    )}
-                    {event && (
-                      <Col xs={4}>
-                        <Link
-                          to={`/products/${product.url}/related-event`}
-                          state={{ event }}
-                        >
-                          <Button className='product-detail-funtion-btn'>
-                            相关活动
-                          </Button>
-                        </Link>
-                      </Col>
-                    )}
+                    <h4>查看更多资讯</h4>
+                    <Row>
+                      {/*
+                      {product && (
+                        <Col xs={4}>
+                          <Link
+                            to={`/products/${product.url}/related-product`}
+                            state={{ product }}
+                          >
+                            <Button className='product-detail-funtion-btn'>
+                              相关产品
+                            </Button>
+                          </Link>
+                        </Col>
+                      )}*/}
+                      {news.length > 0 && (
+                        <Col xs={4}>
+                          <Link to={`/products/${product.url}/related-news`} state={{ news }}>
+                            <Button className="product-detail-funtion-btn">相关新闻</Button>
+                          </Link>
+                        </Col>
+                      )}
+                      {event.length > 0 && (
+                        <Col xs={4}>
+                          <Link to={`/products/${product.url}/related-event`} state={{ event }}>
+                            <Button className="product-detail-funtion-btn">相关活动</Button>
+                          </Link>
+                        </Col>
+                      )}
+                    </Row>
                   </Row>
-                </Row>
-
+                )}
+                
                 <Row>
                   <a
                     href='#'
