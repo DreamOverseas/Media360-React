@@ -22,7 +22,7 @@ import BrandPage from "./pages/BrandPage";
 import BrandRelatedNewsPage from "./pages/BrandRelatedNewsPage";
 import BrandRelatedPersonsPage from "./pages/BrandRelatedPersonsPage";
 import BrandRelatedProductsPage from "./pages/BrandRelatedProductsPage";
-import Events from "./pages/Events";
+// import Events from "./pages/Events";
 import FounderPage from "./pages/FounderPage";
 import Greeness from "./pages/Greeness";
 import Home from "./pages/Home";
@@ -43,6 +43,7 @@ import Profile from "./pages/Profile";
 import Recruitment from "./pages/Recruitment";
 import RegisterMiss from "./pages/RegisterMiss";
 import ShoppingCart from "./pages/ShoppingCart";
+import ProductRelatedEvent from "./pages/ProductRelatedEvent";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -115,6 +116,11 @@ function App() {
           />
 
           <Route
+            path='/products/:name/related-event'
+            element={<ProductRelatedEvent />}
+          />
+
+          <Route
             path='/products/:name/related-brand'
             element={<ProductRelatedBrand />}
           />
@@ -124,7 +130,7 @@ function App() {
           <Route path='/influence-hub' element={<InfluenceHub />} />
           <Route path='/media-center' element={<MediaCenter />} />
           <Route path='/news' element={<NewsPage />} />
-          <Route path='/events' element={<Events />} />
+          {/* <Route path='/events' element={<Events />} /> */}
           <Route path='/founders' element={<FounderPage />} />
           <Route path='/kols' element={<KolPage />} />
           <Route path='/ambassadors' element={<AmbassadorPage />} />
