@@ -28,6 +28,7 @@ const ProductDetail = () => {
   const [people, setPeople] = useState(null);
   const [videos, setVideo] = useState([]);
   const [news, setNews] = useState([]);
+  const [event, setEvent] = useState([]);
   const [productTag, setProductTag] = useState(null);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -181,7 +182,7 @@ const ProductDetail = () => {
 
   const fetchData = async (path, setProduct, setPeople, setError, t) => {
     try {
-      const [productResponse, peopleResponse, newsResponse, brandResponse] =
+      const [productResponse, peopleResponse, newsResponse, brandResponse, eventResponse] =
         await Promise.all([
           axios.get(
             `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate=*`
@@ -195,6 +196,9 @@ const ProductDetail = () => {
           axios.get(
             `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[brand][populate]=logo`
           ),
+          axios.get(
+            `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[events][populate]=Image`
+          )
         ]);
 
       const productData = productResponse.data?.data?.[0] || null;
@@ -203,7 +207,6 @@ const ProductDetail = () => {
         return;
       }
       setProduct(productData);
-      // console.log(productData)
 
       const peopleData = peopleResponse.data?.data?.[0]?.people;
       setPeople(peopleData);
@@ -218,11 +221,15 @@ const ProductDetail = () => {
       const videoEmbed = productResponse.data?.data?.[0]?.videos?.data || [];
       setVideo(videoEmbed);
       const newsList = newsResponse.data?.data?.[0]?.news || [];
+      setNews(newsList);
       const brandinfo = brandResponse.data?.data?.[0]?.brand || null;
       setBrand(brandinfo);
 
-      console.log("news", newsList);
-      setNews(newsList);
+      const eventList = eventResponse.data?.data?.[0]?.events || [];
+      setEvent(eventList);
+
+      console.log("event", eventList);
+      
     } catch (error) {
       console.error("Error fetching data:", error);
       setError(t("errorFetchingProductData"));
@@ -503,18 +510,18 @@ const ProductDetail = () => {
                         </Link>
                       </Col>
                     )}
-                    {/* {brand && (
+                    {event && (
                       <Col xs={4}>
                         <Link
-                          to={`/products/${product.url}/related-brand`}
-                          state={{ brand }}
+                          to={`/products/${product.url}/related-event`}
+                          state={{ event }}
                         >
                           <Button className='product-detail-funtion-btn'>
-                            相关品牌
+                            相关活动
                           </Button>
                         </Link>
                       </Col>
-                    )} */}
+                    )}
                   </Row>
                 </Row>
 
