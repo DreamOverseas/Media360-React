@@ -429,6 +429,18 @@ const ProductDetail = () => {
                 </Row>
 
                 <Row>
+                  {Price !== 0 && Price !== null && (
+                    <Link
+                      to={`/products/${brand.MainProduct_url}`}
+                    >
+                      <Button className='main-product-detail-funtion-btn'>
+                        返回产品主页
+                      </Button>
+                    </Link>
+                  )}
+                </Row>
+
+                <Row>
                   <h4>产品描述</h4>
                   {Detail ? (
                     <div className='detail-container'>
