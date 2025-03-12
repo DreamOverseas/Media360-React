@@ -152,11 +152,10 @@ const ProductPage = () => {
                       )}
 
                       <p className="productpage-product-price">
-                        {product.MainCollectionProduct || product.Price === 0 || product.Price === null
+                        {product.MainCollectionProduct || product.Price_Display === 0 || product.Price_Display === null
                           ? null
-                          : `AU$${product.Price}`}
+                          : `AU$${product.Price_Display}`}
                       </p>
-
                       
                     </Card.Body>
                   </Card>
