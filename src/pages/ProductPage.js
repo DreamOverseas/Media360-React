@@ -145,13 +145,19 @@ const ProductPage = () => {
                         {product.MainCollectionProduct ? CollectionName : Name}
                       </Card.Title>
 
-                      <p className='productpage-product-price'>
-                        {product.MainCollectionProduct
+                      {product.MainCollectionProduct && (
+                        <Card.Text>
+                          {product.Short_zh}
+                        </Card.Text>
+                      )}
+
+                      <p className="productpage-product-price">
+                        {product.MainCollectionProduct || product.Price === 0 || product.Price === null
                           ? null
-                          : product.Price === 0
-                            ? t("price_tbd")
-                            : `AU${product.Price}`}
+                          : `AU$${product.Price}`}
                       </p>
+
+                      
                     </Card.Body>
                   </Card>
                 </Link>
