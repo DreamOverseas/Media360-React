@@ -389,7 +389,7 @@ const ProductDetail = () => {
                   ) : (
                     <></>
                   )}
-                  {Price ? (<h2>AU$ {Price}</h2>):(null)}
+                  {(Price !== 0 && Price !== null) && <h2>AU$ {Price}</h2>}
                   
                 </Row>
 
