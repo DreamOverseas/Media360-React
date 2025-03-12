@@ -24,7 +24,7 @@ const ProductCard = ({ product, tag, BACKEND_HOST, i18n, t }) => {
         <Card.Body>
           <Card.Title title={Name}>{Name}</Card.Title>
             <Card.Text>{ShortDescription}</Card.Text>
-            <p>{product.Price === 0 ? t("price_tbd") : `AU${product.Price}`}</p>
+            <p>{product.Price_Display === 0 ? t("price_tbd") : `AU${product.Price_Display}`}</p>
             <Row>
                 {tags && tags.length > 0 ? (
                     tags.map((tag, index) => {
