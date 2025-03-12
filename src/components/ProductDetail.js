@@ -329,7 +329,7 @@ const ProductDetail = () => {
   const { Price, ProductImage, Available, Sponsor } = product;
   const language = i18n.language;
 
-  const display_price = Price === 0 ? t("price_tbd") : `AU$${Price}`;
+  // const display_price = Price === (0 || null) ? t("price_tbd") : `AU$${Price}`;
   const Name = language === "zh" ? product.Name_zh : product.Name_en;
 
   const Detail = language === "zh" ? product.Detail_zh : product.Detail_en;
@@ -389,7 +389,8 @@ const ProductDetail = () => {
                   ) : (
                     <></>
                   )}
-                  <h2>{display_price}</h2>
+                  {Price ? (<h2>AU$ {Price}</h2>):(null)}
+                  
                 </Row>
 
                 <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
@@ -411,12 +412,12 @@ const ProductDetail = () => {
                     </div>
                   </Col> */}
 
-                  <Col md={8} className='d-flex justify-content-center'>
+                  <Col md={8} className="d-flex justify-content-center">
                     <Button
-                      className='add-to-cart-btn'
+                      className="add-to-cart-btn"
                       onClick={() => setShowModal(true)}
                     >
-                      即刻咨询并购买
+                      {Price === (0 ||null) ? "即刻咨询" : "即刻订购"}
                     </Button>
                   </Col>
 
