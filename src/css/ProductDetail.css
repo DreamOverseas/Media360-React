@@ -133,6 +133,25 @@
   color: white;
 }
 
+
+
+.main-product-detail-funtion-btn {
+  width: 100%;
+  border-radius: 50px;
+  border: 1px solid black;
+  background: white;
+  color: black;
+  font-size: 10px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.main-product-detail-funtion-btn:hover {
+  background: black;
+  color: white;
+}
+
+
 .detail-container {
   max-height: 300px; /* 设置最大高度 */
   overflow-y: auto; /* 超出部分出现滚动条 */
