@@ -326,7 +326,7 @@ const ProductDetail = () => {
     );
   }
 
-  const { Price, ProductImage, Available, Sponsor } = product;
+  const { Price_Display, ProductImage, Available, Sponsor } = product;
   const language = i18n.language;
 
   // const display_price = Price === (0 || null) ? t("price_tbd") : `AU$${Price}`;
@@ -389,7 +389,7 @@ const ProductDetail = () => {
                   ) : (
                     <></>
                   )}
-                  {(Price !== 0 && Price !== null) && <h2>AU$ {Price}</h2>}
+                  {(Price_Display !== 0 && Price_Display !== null) && <h2>AU$ {Price_Display}</h2>}
                   
                 </Row>
 
@@ -417,7 +417,7 @@ const ProductDetail = () => {
                       className="add-to-cart-btn"
                       onClick={() => setShowModal(true)}
                     >
-                      {Price === (0 ||null) ? "即刻咨询" : "即刻订购"}
+                      {Price_Display === (0 ||null) ? "即刻订购" : "即刻订购"}
                     </Button>
                   </Col>
 
@@ -429,7 +429,7 @@ const ProductDetail = () => {
                 </Row>
 
                 <Row>
-                  {Price !== 0 && Price !== null && (
+                  {Price_Display !== 0 && Price_Display !== null && (
                     <Link
                       to={`/products/${brand.MainProduct_url}`}
                     >
@@ -454,7 +454,7 @@ const ProductDetail = () => {
                 </Row>
 
                 <Row>
-                  <h4>查看相关人物</h4>
+                  <h4>查看相关信息</h4>
                   <Row>
                     {founder.length > 0 && (
                       <Col xs={4}>
@@ -475,7 +475,7 @@ const ProductDetail = () => {
                           state={{ kol }}
                         >
                           <Button className='product-detail-funtion-btn'>
-                            产品意见领袖
+                            意见领袖
                           </Button>
                         </Link>
                       </Col>
@@ -487,48 +487,28 @@ const ProductDetail = () => {
                           state={{ spokesperson }}
                         >
                           <Button className='product-detail-funtion-btn'>
-                            产品代言人
+                            代言人
                           </Button>
+                        </Link>
+                      </Col>
+                    )}
+
+                    {news.length > 0 && (
+                      <Col xs={4}>
+                        <Link to={`/products/${product.url}/related-news`} state={{ news }}>
+                          <Button className="product-detail-funtion-btn">相关新闻</Button>
+                        </Link>
+                      </Col>
+                    )}
+                    {event.length > 0 && (
+                      <Col xs={4}>
+                        <Link to={`/products/${product.url}/related-event`} state={{ event }}>
+                          <Button className="product-detail-funtion-btn">相关活动</Button>
                         </Link>
                       </Col>
                     )}
                   </Row>
                 </Row>
-
-                {(news.length > 0 || event.length > 0) && (
-                  <Row>
-                    <h4>查看更多资讯</h4>
-                    <Row>
-                      {/*
-                      {product && (
-                        <Col xs={4}>
-                          <Link
-                            to={`/products/${product.url}/related-product`}
-                            state={{ product }}
-                          >
-                            <Button className='product-detail-funtion-btn'>
-                              相关产品
-                            </Button>
-                          </Link>
-                        </Col>
-                      )}*/}
-                      {news.length > 0 && (
-                        <Col xs={4}>
-                          <Link to={`/products/${product.url}/related-news`} state={{ news }}>
-                            <Button className="product-detail-funtion-btn">相关新闻</Button>
-                          </Link>
-                        </Col>
-                      )}
-                      {event.length > 0 && (
-                        <Col xs={4}>
-                          <Link to={`/products/${product.url}/related-event`} state={{ event }}>
-                            <Button className="product-detail-funtion-btn">相关活动</Button>
-                          </Link>
-                        </Col>
-                      )}
-                    </Row>
-                  </Row>
-                )}
                 
                 <Row>
                   <a
