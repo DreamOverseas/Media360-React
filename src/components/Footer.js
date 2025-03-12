@@ -81,7 +81,7 @@ const Footer = () => {
                     <i className='bi bi-mailbox2'></i>
                   </Col>
                   <Col>
-                    <p>john.du@do360.com</p>
+                    <p>info@do360.com</p>
                   </Col>
                 </Row>
               </div>
@@ -178,7 +178,7 @@ const Footer = () => {
                       <i className='bi bi-mailbox2'></i>
                     </Col>
                     <Col xs={10}>
-                      <p>john.du@do360.com</p>
+                      <p>info@do360.com</p>
                     </Col>
                   </Row>
                 </Col>
