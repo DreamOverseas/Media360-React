@@ -63,7 +63,7 @@ const Footer = () => {
                   </Col>
                 </Row>
 
-                {/* 加入我们按钮被移动到这里 */}
+                {/* 加入我们按钮 */}
                 <Row className='mt-3'>
                   <Col className='d-flex justify-content-start'>
                     <Button
@@ -90,7 +90,7 @@ const Footer = () => {
             </Col>
           </Row>
         ) : (
-          // mobile view
+          // 移动端：将 4 个元素分成 2 排
           <div>
             <Image
               src='/footer_logo.png'
@@ -99,62 +99,36 @@ const Footer = () => {
               fluid
             />
             <Row className='footer-contact-info'>
-              <Row>
-                <Col>
-                  <Row>
-                    <Col xs={2}>
-                      <i className='bi bi-pin-map-fill'></i>
-                    </Col>
-                    <Col xs={10}>
-                      <p>
-                        L2 171 La Trobe Street <br /> Melbourne VIC 3000
-                      </p>
-                    </Col>
-                  </Row>
-                </Col>
+              {/* 第一排：地址 & 电话 */}
+              <Col xs={6} className='d-flex align-items-center'>
+                <i className='bi bi-pin-map-fill'></i>
+                <p className='ms-2'>
+                  L2 171 La Trobe Street <br /> Melbourne VIC 3000
+                </p>
+              </Col>
+              <Col xs={6} className='d-flex align-items-center'>
+                <i className='bi bi-telephone-inbound-fill'></i>
+                <p className='ms-2'>0413 168 533</p>
+              </Col>
 
-                <Col>
-                  <Row>
-                    <Col xs={2}>
-                      <i className='bi bi-telephone-inbound-fill'></i>
-                    </Col>
-                    <Col xs={10}>
-                      <p>0413 168 533</p>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col>
-                  <Row>
-                    <Col xs={2}>
-                      <i className='bi bi-mailbox2'></i>
-                    </Col>
-                    <Col xs={10}>
-                      <p>info@do360.com</p>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col></Col>
-              </Row>
-
-              {/* 移动端 "加入我们" 按钮也放到这里 */}
-              <Row className='mt-3'>
-                <Col className='d-flex justify-content-start'>
-                  <Button
-                    className='update-function-btn'
-                    onClick={() =>
-                      window.open(
-                        "https://do360.com/pages/360media-files-upload-standard",
-                        "_blank"
-                      )
-                    }
-                  >
-                    加入我们
-                  </Button>
-                </Col>
-              </Row>
+              {/* 第二排：邮箱 & 加入我们 */}
+              <Col xs={6} className='d-flex align-items-center mt-2'>
+                <i className='bi bi-mailbox2'></i>
+                <p className='ms-2'>info@do360.com</p>
+              </Col>
+              <Col xs={6} className='d-flex align-items-center mt-2'>
+                <Button
+                  className='update-function-btn'
+                  onClick={() =>
+                    window.open(
+                      "https://do360.com/pages/360media-files-upload-standard",
+                      "_blank"
+                    )
+                  }
+                >
+                  加入我们
+                </Button>
+              </Col>
             </Row>
           </div>
         )}
