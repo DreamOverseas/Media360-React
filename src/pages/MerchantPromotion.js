@@ -9,61 +9,72 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const MerchantPromotion = () => {
     const navigate = useNavigate();
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
 
 
     const PackageTabComponent = () => {
-        const [activeTab, setActiveTab] = useState("企业定制套餐");
+      const defaultTab = "enterprise_package"; 
+      const [activeTab, setActiveTab] = useState(defaultTab);
       
-        const tabs = ["企业定制套餐", "卓越尊享套餐", "精英基础套餐"];
-        
+        const tabs = [
+          { key: "enterprise_package", label: t("企业定制套餐") },
+          { key: "premium_package", label: t("卓越尊享套餐") },
+          { key: "elite_package", label: t("精英基础套餐") },
+        ];
+      
+        // 定义内容翻译
         const tabContent = {
-          "企业定制套餐": (
+          enterprise_package: (
             <div className="tab-content">
-              <h2>360传媒 企业定制策略套餐</h2>
+              <h4>{t("360传媒 企业定制策略套餐")}</h4>
               <p>AU $5,500</p>
-              <h3>套餐包含权益</h3>
-              <ul>
-                <li>提供西方精准访谈服务，帮助品牌曝光。</li>
-                <li>信息上传到 360Media 平台，提升品牌可信度。</li>
-                <li>MCN 推广服务，提高社交媒体影响力。</li>
-                <li>广告投放、活动拍摄、市场推广等多项服务。</li>
-              </ul>
-              <Button className="order-button">即刻订购</Button>
+              <h3>{t("我们提供12个月套餐包含以下服务")}</h3>
+              {t("enterprise_package").split("\n").map((line, index) => (
+                <p key={index}>{line}</p>
+              ))}
+              <Button className="order-button">{t("即刻订购")}</Button>
             </div>
           ),
-          "卓越尊享套餐": (
+          premium_package: (
             <div className="tab-content">
-              <h2>卓越尊享套餐</h2>
-              <p>价格与服务详情待定</p>
-              <p>包含高级定制推广方案，适合高端品牌和企业宣传。</p>
-              <button className="order-button">即刻订购</button>
+              <h4>{t("360传媒 卓越尊享套餐")}</h4>
+              <p>AU $3,300</p>
+              <h3>{t("我们提供6个月套餐包含以下服务")}</h3>
+              <></>
+              {t("premium_package").split("\n").map((line, index) => (
+                <p key={index}>{line}</p>
+              ))}
+              <Button className="order-button">{t("即刻订购")}</Button>
             </div>
           ),
-          "精英基础套餐": (
+          elite_package: (
             <div className="tab-content">
-              <h2>精英基础套餐</h2>
-              <p>价格与服务详情待定</p>
-              <p>适合初创企业和个人品牌，提供基础营销支持。</p>
-              <Button className="order-button">即刻订购</Button>
+              <h4>{t("360传媒 精英基础套餐")}</h4>
+              <p>AU $990</p>
+              <h3>{t("我们提供6个月套餐包含以下服务")}</h3>
+              {t("elite_package").split("\n").map((line, index) => (
+                <p key={index}>{line}</p>
+              ))}
+              <Button className="order-button">{t("即刻订购")}</Button>
             </div>
           ),
         };
       
         return (
-          <div className="tab-container">
-            <div className="tab-menu">
-              {tabs.map((tab) => (
-                <Button
-                  key={tab}
-                  className={activeTab === tab ? "active" : ""}
-                  onClick={() => setActiveTab(tab)}
-                >
-                  {tab}
-                </Button>
-              ))}
-            </div>
+          <div className="package-tab-container">
+              <Row className="justify-content-center">
+                {tabs.map((tab) => (
+                  <Col xs={4} key={tab.key} className="text-center">
+                    <Button
+                      className={activeTab === tab.key ? "active" : ""}
+                      onClick={() => setActiveTab(tab.key)}
+                    >
+                      {tab.label}
+                    </Button>
+                  </Col>
+                ))}
+              </Row>
             <div className="tab-content-container">{tabContent[activeTab]}</div>
           </div>
         );
@@ -71,67 +82,75 @@ const MerchantPromotion = () => {
 
 
     const FileUploadTabComponent = () => {
-        const [activeTab, setActiveTab] = useState("人物肖像及简介");
-      
-        const tabs = ["人物肖像及简介", "产品图文介绍", "视频格式"];
-      
-        const tabContent = {
-          "人物肖像及简介": (
-            <div className="tab-content">
-              <h2>人物肖像及简介</h2>
-              <div className="example-images">
-                <div>
-                  <p>示例图片</p>
-                  <img src="https://via.placeholder.com/200" alt="示例图片" />
-                  <p>姓名</p>
-                  <p>职业 / 身份</p>
-                </div>
-                <div>
-                  <p>示例图片</p>
-                  <img src="https://via.placeholder.com/200" alt="示例图片" />
-                  <p>人物简介</p>
-                </div>
+      const defaultTab = "portrait_info";
+      const [activeTab, setActiveTab] = useState(defaultTab);
+    
+      // 选项卡信息
+      const tabs = [
+        { key: "portrait_info", label: t("人物肖像及简介") },
+        { key: "product_description", label: t("产品图文介绍") },
+        { key: "video_format", label: t("视频格式") },
+      ];
+    
+      // 选项卡内容
+      const tabContent = {
+        portrait_info: (
+          <div className="tab-content">
+            <h2>{t("人物肖像及简介")}</h2>
+            <div className="example-images">
+              <div>
+                <p>{t("示例图片")}</p>
+                <img src="https://via.placeholder.com/200" alt={t("示例图片")} />
+                <p>{t("姓名")}</p>
+                <p>{t("职业 / 身份")}</p>
               </div>
-              <p>提供至少 2 张宽高比 2:3 的半身照。</p>
-              <p>提供至少 1 张正方形照片。</p>
-              <p>需提供人物中英文姓名及人物头衔：</p>
-              <ul>
-                <li>中文少于 10 字</li>
-                <li>英文少于 6 个单词</li>
-              </ul>
-              <p>需提供中英文人物简介。</p>
+              <div>
+                <p>{t("示例图片")}</p>
+                <img src="https://via.placeholder.com/200" alt={t("示例图片")} />
+                <p>{t("人物简介")}</p>
+              </div>
             </div>
-          ),
-          "产品图文介绍": (
-            <div className="tab-content">
-              <h2>产品图文介绍</h2>
-              <p>在此添加产品相关信息，包括图片、文字说明、规格等。</p>
-            </div>
-          ),
-          "视频格式": (
-            <div className="tab-content">
-              <h2>视频格式</h2>
-              <p>在此添加视频格式要求，如分辨率、时长、文件类型等。</p>
-            </div>
-          ),
-        };
-      
-        return (
-          <div className="tab-container">
-            <div className="tab-menu">
-              {tabs.map((tab) => (
-                <Button
-                  key={tab}
-                  className={activeTab === tab ? "active" : ""}
-                  onClick={() => setActiveTab(tab)}
-                >
-                  {tab}
-                </Button>
-              ))}
-            </div>
-            <div className="tab-content-container">{tabContent[activeTab]}</div>
+            <p>{t("提供至少 2 张宽高比 2:3 的半身照。")}</p>
+            <p>{t("提供至少 1 张正方形照片。")}</p>
+            <p>{t("需提供人物中英文姓名及人物头衔：")}</p>
+            <ul>
+              <li>{t("中文少于 10 字")}</li>
+              <li>{t("英文少于 6 个单词")}</li>
+            </ul>
+            <p>{t("需提供中英文人物简介。")}</p>
           </div>
-        );
+        ),
+        product_description: (
+          <div className="tab-content">
+            <h2>{t("产品图文介绍")}</h2>
+            <p>{t("在此添加产品相关信息，包括图片、文字说明、规格等。")}</p>
+          </div>
+        ),
+        video_format: (
+          <div className="tab-content">
+            <h2>{t("视频格式")}</h2>
+            <p>{t("在此添加视频格式要求，如分辨率、时长、文件类型等。")}</p>
+          </div>
+        ),
+      };
+    
+      return (
+        <div className="file-upload-tab-container">
+          <Row className="justify-content-center">
+            {tabs.map((tab) => (
+              <Col xs={4} key={tab.key} className="text-center">
+                <Button
+                  className={activeTab === tab.key ? "active" : ""}
+                  onClick={() => setActiveTab(tab.key)}
+                >
+                  {tab.label}
+                </Button>
+              </Col>
+            ))}
+          </Row>
+          <div className="tab-content-container">{tabContent[activeTab]}</div>
+        </div>
+      );
     };
 
     
