@@ -1,16 +1,45 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Row, Image, Button } from "react-bootstrap";
+import { Col, Container, Row, Image, Button, Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import MerchantUploadForm from "../components/MerchantUploadForm";
 import "../css/MerchantPromotion.css"
 
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const MerchantPromotion = () => {
-    const navigate = useNavigate();
     const { t } = useTranslation();
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleUpload = () => setShow(true);
+
+    const handleSubmit = async (formData) => {
+      try {
+        const data = new FormData();
+        data.append("firstName", formData.firstName);
+        data.append("lastName", formData.lastName);
+        data.append("email", formData.email);
+        data.append("phone", formData.phone);
+        data.append("description", formData.description);
+        if (formData.file) {
+          data.append("file", formData.file);
+        }
+  
+        const response = await axios.post(`${BACKEND_HOST}/api/upload`, data, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+  
+        alert("提交成功！");
+        console.log(response.data);
+        setShow(false); // 关闭弹窗
+      } catch (error) {
+        console.error("上传失败:", error);
+        alert("提交失败，请重试！");
+      }
+    };
 
 
 
@@ -184,7 +213,22 @@ const MerchantPromotion = () => {
             <section>
                 <h2>360传媒平台上传要求</h2>
                 <FileUploadTabComponent/>
-                <Button className="merchant-funtion-btn">即刻上传资料</Button>
+                <Button className="merchant-funtion-btn" onClick={handleUpload}>即刻上传资料</Button>
+
+
+                <Modal show={show} onHide={handleClose} centered>
+                  <Modal.Header closeButton>
+                    <Modal.Title>上传资料</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <MerchantUploadForm onSubmit={handleSubmit} />
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                      关闭
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
             </section>
             
         </Container>
