@@ -1,6 +1,28 @@
 import React, { useState, useRef } from "react";
 import { Button, Row, Col, Form } from "react-bootstrap";
 
+
+const initialFormData = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  person_title: "",
+  person_type: "",
+  person_introduction: "",
+  portrait: [],
+  product_introduction:"",
+  product_image:[],
+  recommended_person_firstName: "",
+  recommended_person_lastName: "",
+  recommended_person_email: "",
+  recommended_person_phone: "",
+  recommended_person_title: "",
+  recommended_person_type: "",
+  recommended_person_introduction: "",
+  recommended_person_portrait: []
+}
+
 const MerchantUploadForm = ({ onSubmit }) => {
     
   const fileInputRef_portrait = useRef(null);
@@ -8,28 +30,7 @@ const MerchantUploadForm = ({ onSubmit }) => {
   const fileInputRef_recommended_person_portrait = useRef(null);
   const [step, setStep] = useState(1);
 
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    person_title: "",
-    person_type: "",
-    person_introduction: "",
-    portrait: [],
-    product_introduction:"",
-    product_image:[],
-
-    recommended_person_firstName: "",
-    recommended_person_lastName: "",
-    recommended_person_email: "",
-    recommended_person_phone: "",
-    recommended_person_title: "",
-    recommended_person_type: "",
-    recommended_person_introduction: "",
-    recommended_person_portrait: [],
-
-  });
+  const [formData, setFormData] = useState(initialFormData);
 
   const [errors, setErrors] = useState({});
 
@@ -261,7 +262,7 @@ const MerchantUploadForm = ({ onSubmit }) => {
     event.preventDefault();
 
     if (validateStep()) {
-      onSubmit(formData);
+      onSubmit(formData)
     }
   };
 
@@ -357,9 +358,9 @@ const MerchantUploadForm = ({ onSubmit }) => {
                   isInvalid={!!errors.person_type}
                 >
                   <option value="">请选择人物类型</option>
-                  <option value="品牌创始人">品牌创始人</option>
-                  <option value="意见领袖">意见领袖</option>
-                  <option value="代言人">代言人</option>
+                  <option value="Founder">品牌创始人</option>
+                  <option value="Kol">意见领袖</option>
+                  <option value="Ambassador">代言人</option>
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">{errors.person_type}</Form.Control.Feedback>
               </Form.Group>
@@ -566,9 +567,9 @@ const MerchantUploadForm = ({ onSubmit }) => {
               isInvalid={!!errors.recommended_person_type}
             >
               <option value="">请选择人物类型</option>
-              <option value="品牌创始人">品牌创始人</option>
-              <option value="意见领袖">意见领袖</option>
-              <option value="代言人">代言人</option>
+              <option value="Founder">品牌创始人</option>
+              <option value="Kol">意见领袖</option>
+              <option value="Ambassador">代言人</option>
             </Form.Select>
             <Form.Control.Feedback type="invalid">{errors.recommended_person_type}</Form.Control.Feedback>
           </Form.Group>
