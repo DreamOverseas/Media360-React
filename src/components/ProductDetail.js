@@ -17,6 +17,7 @@ import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
+import PayPalButton from "./PayPalButton";
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
@@ -119,9 +120,8 @@ const ProductDetail = () => {
           {allMedia.map((media, index) => (
             <div
               key={index}
-              className={`thumb-container ${
-                index === currentIndex ? "active-thumb" : ""
-              }`}
+              className={`thumb-container ${index === currentIndex ? "active-thumb" : ""
+                }`}
               onClick={() => setCurrentIndex(index)}
             >
               <Image
@@ -229,7 +229,7 @@ const ProductDetail = () => {
       setEvent(eventList);
 
       console.log("event", eventList);
-      
+
     } catch (error) {
       console.error("Error fetching data:", error);
       setError(t("errorFetchingProductData"));
@@ -374,9 +374,8 @@ const ProductDetail = () => {
                         <Col xs={4} key={index}>
                           <Link to={`/products/${variant.url}`}>
                             <Button
-                              className={`product-details-variant-btn ${
-                                isActive ? "active-btn" : ""
-                              }`}
+                              className={`product-details-variant-btn ${isActive ? "active-btn" : ""
+                                }`}
                             >
                               {language === "zh"
                                 ? variant.Name_zh
@@ -390,42 +389,38 @@ const ProductDetail = () => {
                     <></>
                   )}
                   {(Price_Display !== 0 && Price_Display !== null) && <h2>AU$ {Price_Display}</h2>}
-                  
+
                 </Row>
 
                 <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
-                  {/* <Col md={4} className="amount-price-bar">
-                    <div className='quantity-control'>
-                      <Button
-                        className='quantity-btn'
-                        onClick={handleDecrement}
-                      >
-                        -
-                      </Button>
-                      <div className='quantity-text'>{quantity}</div>
-                      <Button
-                        className='quantity-btn'
-                        onClick={handleIncrement}
-                      >
-                        +
-                      </Button>
-                    </div>
-                  </Col> */}
-
                   <Col md={8} className="d-flex justify-content-center">
-                    <Button
-                      className="add-to-cart-btn"
-                      onClick={() => setShowModal(true)}
-                    >
-                      {Price_Display === (0 ||null) ? "即刻订购" : "即刻订购"}
-                    </Button>
+                    {Note ? (
+                      // 如果 Note 存在，显示原来的按钮和弹窗
+                      <>
+                        <Button
+                          className="add-to-cart-btn"
+                          onClick={() => setShowModal(true)}
+                        >
+                          即刻订购
+                        </Button>
+                        {/* 弹窗组件 */}
+                        <ConsultationModal
+                          show={showModal}
+                          handleClose={() => setShowModal(false)}
+                        />
+                      </>
+                    ) : (
+                      // 如果 Note 为空，显示 PayPal 按钮
+                      <PayPalButton
+                        //amount="0.01"
+                        amount={parseFloat(Price_Display.toString().replace(/,/g, ''))}
+                        currency="AUD"
+                        description={Name} // 动态传递商品名称
+                      />
+
+                    )}
                   </Col>
 
-                  {/* 弹窗组件 */}
-                  <ConsultationModal
-                    show={showModal}
-                    handleClose={() => setShowModal(false)}
-                  />
                 </Row>
 
                 <Row>
@@ -509,7 +504,7 @@ const ProductDetail = () => {
                     )}
                   </Row>
                 </Row>
-                
+
                 <Row>
                   <a
                     href='#'
