@@ -3,7 +3,7 @@ import { Button, Col, Container, Image, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import "../css/Footer.css";
-
+import Payment from "./Payment";
 // Load Backend Host for API calls
 const EMAIL_SUBSCRIPTION =
   process.env.REACT_APP_EMAIL_SUBSCRIPTION + "quick-subscription";
@@ -83,7 +83,7 @@ const Footer = () => {
             </Col>
 
             <Col md={6}></Col>
-
+           
             <Col md={3} className='footer-column qr-social text-end'>
               <img src='/QR_JohnDu.png' alt='QR Code' className='qr-code' />
               <p>{t("footer_scan")}</p>
