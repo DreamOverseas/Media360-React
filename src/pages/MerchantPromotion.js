@@ -8,6 +8,7 @@ import "../css/MerchantPromotion.css"
 
 
 const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
+const API_KEY_MERCHANT_UPLOAD = "904f7b631c2a66671a3b1f37d05d8a03a80510ea1484765838bf128b8a96b0177a2fefbee0c1043481193512e86c7540769da2875d802a34235da792f0370d40200ea547779cec9e4ce13e1028f657410f51b267f8e58f7d1fda6435a0e1e4efb703a01b60eebe669c8e1bb688edd7b4809549cba1eff423938cf476dd4c4682";
 
 const MerchantPromotion = () => {
     const { t } = useTranslation();
@@ -17,28 +18,161 @@ const MerchantPromotion = () => {
     const handleUpload = () => setShow(true);
 
     const handleSubmit = async (formData) => {
-      try {
-        const data = new FormData();
-        data.append("firstName", formData.firstName);
-        data.append("lastName", formData.lastName);
-        data.append("email", formData.email);
-        data.append("phone", formData.phone);
-        data.append("description", formData.description);
-        if (formData.file) {
-          data.append("file", formData.file);
+
+      // Step 1: Upload files to Media Library
+    const uploadedPortraitUrls = [];
+    const uploadedPortraitIds = [];
+    if (formData.portrait.length > 0) {
+      for (let i = 0; i < formData.portrait.length; i++) {
+        const file = formData.portrait[i];
+        const formDataToUpload = new FormData();
+        formDataToUpload.append('files', file);
+
+        try {
+          const uploadResponse = await fetch(`${BACKEND_HOST}/api/upload`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${API_KEY_MERCHANT_UPLOAD}`,
+            },
+            body: formDataToUpload,
+          });
+
+          const uploadResult = await uploadResponse.json();
+          if (uploadResponse.ok && uploadResult.length > 0) {
+            // Push the image URL into the array
+            uploadedPortraitUrls.push(uploadResult[0].url);
+            uploadedPortraitIds.push(uploadResult[0].id);
+          } else {
+            console.error('Failed to upload image:', uploadResult);
+            alert('图片上传失败，请重试 (Please retry image uploading.)');
+            return;
+          }
+        } catch (error) {
+          console.error('Error during file upload:', error);
+          alert('图片上传时出现错误 (Error on image uploading, mind the maximum image size will be 5M)');
+          return;
         }
-  
-        const response = await axios.post(`${BACKEND_HOST}/api/upload`, data, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-  
-        alert("提交成功！");
-        console.log(response.data);
-        setShow(false); // 关闭弹窗
-      } catch (error) {
-        console.error("上传失败:", error);
-        alert("提交失败，请重试！");
+      }  
+    }
+
+    const uploadedProductImageUrls = [];
+    const uploadedProductImageIds = [];
+    if (formData.product_image.length > 0) {
+      for (let i = 0; i < formData.product_image.length; i++) {
+        const file = formData.product_image[i];
+        const formDataToUpload = new FormData();
+        formDataToUpload.append('files', file);
+
+        try {
+          const uploadResponse = await fetch(`${BACKEND_HOST}/api/upload`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${API_KEY_MERCHANT_UPLOAD}`,
+            },
+            body: formDataToUpload,
+          });
+
+          const uploadResult = await uploadResponse.json();
+          if (uploadResponse.ok && uploadResult.length > 0) {
+            // 保存上传后返回的 URL 和 id
+            uploadedProductImageUrls.push(uploadResult[0].url);
+            uploadedProductImageIds.push(uploadResult[0].id);
+          } else {
+            console.error('Failed to upload product image:', uploadResult);
+            alert('产品图片上传失败，请重试 (Please retry product image uploading.)');
+            return;
+          }
+        } catch (error) {
+          console.error('Error during product image upload:', error);
+          alert('产品图片上传时出现错误 (Error on product image uploading, mind the maximum image size will be 5M)');
+          return;
+        }
       }
+    }
+
+    // 上传推荐人头像
+    const uploadedRecommendedPortraitUrls = [];
+    const uploadedRecommendedPortraitIds = [];
+    if (formData.recommended_person_portrait.length > 0) {
+      for (let i = 0; i < formData.recommended_person_portrait.length; i++) {
+        const file = formData.recommended_person_portrait[i];
+        const formDataToUpload = new FormData();
+        formDataToUpload.append('files', file);
+
+        try {
+          const uploadResponse = await fetch(`${BACKEND_HOST}/api/upload`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${API_KEY_MERCHANT_UPLOAD}`,
+            },
+            body: formDataToUpload,
+          });
+
+          const uploadResult = await uploadResponse.json();
+          if (uploadResponse.ok && uploadResult.length > 0) {
+            // 保存上传后返回的 URL 和 id
+            uploadedRecommendedPortraitUrls.push(uploadResult[0].url);
+            uploadedRecommendedPortraitIds.push(uploadResult[0].id);
+          } else {
+            console.error('Failed to upload recommended person portrait:', uploadResult);
+            alert('推荐代言人头像上传失败，请重试 (Please retry recommended person portrait uploading.)');
+            return;
+          }
+        } catch (error) {
+          console.error('Error during recommended person portrait upload:', error);
+          alert('推荐代言人头像上传时出现错误 (Error on recommended person portrait uploading, mind the maximum image size will be 5M)');
+          return;
+        }
+      }
+    }
+
+    // Step 2: Create RegisteredMiss with image URLs in Gallery and wrap it in `data`
+    const finalFormData = {
+      Name_zh: formData.Name_zh,
+      Name_en: formData.Name_en,
+      OccupationNow: formData.OccupationNow,
+      OccupationHoped: formData.OccupationHoped,
+      OccupatedPlace: formData.CompanyOrSchool,
+      Education: formData.Education,
+      MajorStudied: formData.MajorStudied,
+      Age: formData.Age,
+      Height: formData.Height,
+      Weight: formData.Weight,
+      Talent: formData.Talent,
+      IDInfo: {
+        Nationality: formData.Nationality,
+        Type: formData.IDType,
+        Number: formData.IDNumber
+      },
+      Phone: formData.Phone,
+      WechatID: formData.WechatID,
+      Email: formData.Email,
+      MediaAccounts: formData.SocialMediaAccounts,
+      Gallery: uploadedImageIds.map((id) => ({ Photo: id })),
+      Location: formData.Location
+    };
+      // try {
+      //   const data = new FormData();
+      //   data.append("firstName", formData.firstName);
+      //   data.append("lastName", formData.lastName);
+      //   data.append("email", formData.email);
+      //   data.append("phone", formData.phone);
+      //   data.append("description", formData.description);
+      //   if (formData.file) {
+      //     data.append("file", formData.file);
+      //   }
+  
+      //   const response = await axios.post(`${BACKEND_HOST}/api/upload`, data, {
+      //     headers: { "Content-Type": "multipart/form-data" },
+      //   });
+  
+      //   alert("提交成功！");
+      //   console.log(response.data);
+      //   setShow(false); // 关闭弹窗
+      // } catch (error) {
+      //   console.error("上传失败:", error);
+      //   alert("提交失败，请重试！");
+      // }
     };
 
 
