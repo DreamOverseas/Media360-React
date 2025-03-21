@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Container, Row, Image, Button, Modal, Alert, Spinner } from "react-bootstrap";
 import { useMediaQuery } from "react-responsive";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 import MerchantUploadForm from "../components/MerchantUploadForm";
 import "../css/MerchantPromotion.css"
@@ -194,7 +195,7 @@ const MerchantPromotion = () => {
                 <p key={index}>{line}</p>
               ))}
             </div>
-            <Button className="merchant-funtion-btn">{t("即刻订购")}</Button>
+            <Link to={`/products/360-media-service-enterprise-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link>
           </div>
         ),
         premium_package: (
@@ -213,7 +214,7 @@ const MerchantPromotion = () => {
                 <p key={index}>{line}</p>
               ))}
             </div>
-            <Button className="merchant-funtion-btn">{t("即刻订购")}</Button>
+            <Link to={`/products/360-media-service-premium-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link>
           </div>
         ),
         elite_package: (
@@ -226,7 +227,8 @@ const MerchantPromotion = () => {
                 <p key={index}>{line}</p>
               ))}
             </div>
-            <Button className="merchant-funtion-btn">{t("即刻订购")}</Button>
+            
+            <Link to={`/products/360-media-service-standard-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link>
           </div>
         ),
       };
@@ -348,7 +350,7 @@ const MerchantPromotion = () => {
                             <p key={index}>{line}</p>
                           ))}
                         </div>
-                        <Button className="merchant-funtion-btn">{t("即刻订购")}</Button>
+                        <Link to={`/products/360-media-service-enterprise-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link>
                       </div>
                     </Col>
 
@@ -368,7 +370,7 @@ const MerchantPromotion = () => {
                             <p key={index}>{line}</p>
                           ))}
                         </div>
-                        <Button className="merchant-funtion-btn">{t("即刻订购")}</Button>
+                        <Link to={`/products/360-media-service-premium-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link>
                       </div>
                     </Col>
 
@@ -382,7 +384,7 @@ const MerchantPromotion = () => {
                             <p key={index}>{line}</p>
                           ))}
                         </div>
-                        <Button className="merchant-funtion-btn">{t("即刻订购")}</Button>
+                        <Link to={`/products/360-media-service-standard-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link>
                       </div>
                     </Col>
                   </Row>
@@ -397,7 +399,6 @@ const MerchantPromotion = () => {
               <h2>360传媒平台上传要求</h2>
               <FileUploadTabComponent/>
               <Button className="merchant-funtion-btn" onClick={handleUpload}>即刻上传资料</Button>
-
 
               <Modal show={show} onHide={handleClose} centered>
                 <Modal.Header closeButton>
