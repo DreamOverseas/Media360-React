@@ -22,6 +22,7 @@ const Breadcrumbs = () => {
     person: { zh: "人物", en: "Person" },
     founders: { zh: "品牌创始人", en: "Founders" },
     kols: { zh: "产品意见领袖", en: "Kols" },
+    merchant: { zh: "商家", en: "Merchant" },
     ambassadors: { zh: "产品代言人", en: "Ambassadors" },
     "related-news": { zh: "相关新闻", en: "Related News" },
     "related-event": { zh: "相关活动", en: "Related Event" },
@@ -31,6 +32,7 @@ const Breadcrumbs = () => {
     "related-founder": { zh: "品牌创始人", en: "Related Founder" },
     "related-kol": { zh: "产品意见领袖", en: "Related Kol" },
     "related-ambassador": { zh: "产品代言人", en: "Related Ambassador" },
+    "360-media-promotion-service":{ zh: "360平台推广服务", en: "360 Meadia promotion service" }
   };
 
   // ✅ 定义 API 查询字段

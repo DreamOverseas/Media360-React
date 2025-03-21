@@ -44,6 +44,7 @@ import Recruitment from "./pages/Recruitment";
 import RegisterMiss from "./pages/RegisterMiss";
 import ShoppingCart from "./pages/ShoppingCart";
 import ProductRelatedEvent from "./pages/ProductRelatedEvent";
+import MerchantPromotion from "./pages/MerchantPromotion";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -125,6 +126,7 @@ function App() {
             element={<ProductRelatedBrand />}
           />
           <Route exact path='/products/:name' element={<ProductDetail />} />
+          <Route exact path='/merchant/360-media-promotion-service' element={<MerchantPromotion />} />
           <Route exact path='/events/:name' element={<EventDetail />} />
           <Route path='/join-us' element={<Recruitment />} />
           <Route path='/influence-hub' element={<InfluenceHub />} />

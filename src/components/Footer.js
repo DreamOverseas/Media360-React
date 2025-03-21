@@ -70,7 +70,7 @@ const Footer = () => {
                       className='update-function-btn'
                       onClick={() =>
                         window.open(
-                          "https://do360.com/pages/360media-files-upload-standard",
+                          "/merchant/360media-promotion",
                           "_blank"
                         )
                       }
@@ -121,7 +121,7 @@ const Footer = () => {
                   className='update-function-btn'
                   onClick={() =>
                     window.open(
-                      "https://do360.com/pages/360media-files-upload-standard",
+                      "/merchant/360media-promotion",
                       "_blank"
                     )
                   }

@@ -1,0 +1,156 @@
+.package-tab-content p {
+    font-size:9px;
+    font-weight: 200;
+    line-height: 1px;
+}
+
+.package-tab-content h5 {
+    padding-bottom:2%;
+}
+
+.package-tab-content h6 {
+    padding-bottom:1%;
+}
+
+.basic-info-text {
+    padding-bottom:2%;
+}
+
+.package-tab-content {
+    background-color: #fc926d;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1); 
+    margin: 0 auto;
+}
+
+.package-content {
+  background-color: #fc926d;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1); 
+  margin: 0 auto;
+  height:auto
+}
+
+.package-content p {
+  font-size:9px;
+  font-weight: 200;
+  line-height: 1px;
+}
+
+.package-content h5 {
+  padding-bottom:2%;
+}
+
+.package-content h6 {
+  padding-bottom:1%;
+}
+
+.package-info {
+    height: 400px;
+    overflow-y: scroll;
+}
+
+
+.package-tab-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+
+  .package-tab-button {
+    background: none;
+    border: none;
+    font-size: 12px;
+    color: black;
+    padding: 10px 20px;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  /* 选中状态的按钮样式 */
+  .package-tab-button.active {
+    color: black;
+  }
+  
+  /* 选中项的下划线效果 */
+  .package-tab-button.active::after {
+    content: "";
+    display: block;
+    width: 80%; /* 控制下划线长度 */
+    height: 3px;
+    background-color: black; /* 下划线颜色 */
+    margin: 5px auto 0; /* 居中 */
+  }
+  
+  /* 鼠标悬停效果 */
+  .package-tab-button:hover {
+    color: black; /* 保持黑色 */
+  }
+
+
+  .media-tab-content {
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1); 
+    margin: 0 auto;
+  }
+
+  .media-tab-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .media-tab-button {
+    background: none;
+    border: none;
+    font-size: 12px;
+    color: black;
+    padding: 10px 20px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  /* 选中项的下划线效果 */
+  .media-tab-button.active::after {
+    content: "";
+    display: block;
+    width: 80%; /* 控制下划线长度 */
+    height: 3px;
+    background-color: black; /* 下划线颜色 */
+    margin: 5px auto 0; /* 居中 */
+  }
+  
+  /* 鼠标悬停效果 */
+  .media-tab-button:hover {
+    color: black; /* 保持黑色 */
+  }
+  
+  /* 让列等宽 */
+  .media-text-center {
+    text-align: center;
+    flex: 1; /* 让每个选项占据相等的宽度 */
+  } 
+
+  .merchant-funtion-btn {
+    display: block;
+    margin: 3% auto 0;
+    border-radius: 50px;
+    border: 1px solid black;
+    background: none;
+    color: black;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  
+  .merchant-funtion-btn:hover {
+    background: black;
+    color: white;
+  }
+
+  .package-section {
+    margin-bottom:10%;
+  }
