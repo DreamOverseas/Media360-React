@@ -135,6 +135,10 @@
     flex: 1; /* 让每个选项占据相等的宽度 */
   } 
 
+  .merchant-product-link{
+    text-decoration: none;
+  }
+
   .merchant-funtion-btn {
     display: block;
     margin: 3% auto 0;
