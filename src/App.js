@@ -126,7 +126,7 @@ function App() {
             element={<ProductRelatedBrand />}
           />
           <Route exact path='/products/:name' element={<ProductDetail />} />
-          <Route exact path='/merchant/360media-promotion' element={<MerchantPromotion />} />
+          <Route exact path='/merchant/360-media-promotion-service' element={<MerchantPromotion />} />
           <Route exact path='/events/:name' element={<EventDetail />} />
           <Route path='/join-us' element={<Recruitment />} />
           <Route path='/influence-hub' element={<InfluenceHub />} />
