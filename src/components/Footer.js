@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Col, Container, Image, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
+import { Link } from "react-router-dom";
 import "../css/Footer.css";
 import Payment from "./Payment";
 // Load Backend Host for API calls
@@ -66,17 +67,14 @@ const Footer = () => {
                 {/* 加入我们按钮 */}
                 <Row className='mt-3'>
                   <Col className='d-flex justify-content-start'>
+
+                  <Link to={`/merchant/360-media-promotion-service`}>
                     <Button
-                      className='update-function-btn'
-                      onClick={() =>
-                        window.open(
-                          "/merchant/360media-promotion",
-                          "_blank"
-                        )
-                      }
-                    >
-                      加入我们
+                        className='update-function-btn'
+                      >
+                        加入我们
                     </Button>
+                  </Link>
                   </Col>
                 </Row>
               </div>
@@ -117,17 +115,13 @@ const Footer = () => {
                 <p className='ms-2'>info@do360.com</p>
               </Col>
               <Col xs={6} className='d-flex align-items-center mt-2'>
+              <Link to={`/merchant/360-media-promotion-service`}>
                 <Button
-                  className='update-function-btn'
-                  onClick={() =>
-                    window.open(
-                      "/merchant/360media-promotion",
-                      "_blank"
-                    )
-                  }
-                >
-                  加入我们
+                    className='update-function-btn'
+                  >
+                    加入我们
                 </Button>
+              </Link>
               </Col>
             </Row>
           </div>
