@@ -373,7 +373,7 @@ const MerchantUploadForm = ({ onSubmit }) => {
               as="textarea"
               name="person_introduction"
               rows={3}
-              placeholder="输入人物介绍"
+              placeholder="输入中英文人物介绍"
               value={formData.person_introduction}
               onChange={handleChange}
               isInvalid={!!errors.person_introduction}
@@ -427,7 +427,7 @@ const MerchantUploadForm = ({ onSubmit }) => {
               as="textarea"
               name="product_introduction"
               rows={3}
-              placeholder="输入产品介绍"
+              placeholder="输入中英文产品介绍"
               value={formData.product_introduction}
               onChange={handleChange}
               isInvalid={!!errors.product_introduction}
@@ -582,7 +582,7 @@ const MerchantUploadForm = ({ onSubmit }) => {
           as="textarea"
           name="recommended_person_introduction"
           rows={3}
-          placeholder="输入人物介绍"
+          placeholder="输入中英文人物介绍"
           value={formData.recommended_person_introduction}
           onChange={handleChange}
           isInvalid={!!errors.recommended_person_introduction}
