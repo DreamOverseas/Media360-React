@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import "../css/Footer.css";
-import Payment from "./Payment";
 // Load Backend Host for API calls
 const EMAIL_SUBSCRIPTION =
   process.env.REACT_APP_EMAIL_SUBSCRIPTION + "quick-subscription";
