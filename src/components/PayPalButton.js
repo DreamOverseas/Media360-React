@@ -1,13 +1,11 @@
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
-//test-id:AfNM7A_anHxFT40Si_q4kXgLWItc5y4kUP3qwtrW5hx9QbdUpCpIcJ16Ot_7lr6Y89GWevADtHg_kvUH
-//live-id:ATyoeFcUGfOR2q44oJWtdvJFFh_oV0BdP8UZpwtvZIgPYDjzIqHUVkoNIu2ArBCBOASmYA0J9bys4jVe
-
+const client_id = process.env.REACT_APP_PAYPAL_CLIENT_ID
 const PayPalButton = ({ amount, currency }) => {
   return (
     <PayPalScriptProvider
       options={{
-        "client-id": "ATyoeFcUGfOR2q44oJWtdvJFFh_oV0BdP8UZpwtvZIgPYDjzIqHUVkoNIu2ArBCBOASmYA0J9bys4jVe",
+        "client-id": client_id,
         currency: currency || "USD", // Ensure the currency is passed here
       }}
     >
