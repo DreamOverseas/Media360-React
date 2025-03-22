@@ -238,11 +238,18 @@ const KolDetail = () => {
             <h1>{displayName}</h1>
             <h5>{displayTitle}</h5>
 
-            {/*
             {role === "Founder" ? (
               <div className='founder-contact'>
-                <Button className='btn-outline-black'>{t("电话")}</Button>
-                <Button className='btn-outline-black'>{t("邮箱")}</Button>
+                {person.SocialMedia_zh && (
+                  <div>
+                    <h4>社交媒体</h4>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: person.SocialMedia_zh,
+                      }}
+                    ></span>
+                  </div>
+                )}
               </div>
             ) : (
               <></>
@@ -250,14 +257,20 @@ const KolDetail = () => {
 
             {role === "Kol" ? (
               <div className='kol-contact'>
-                <Button className='btn-outline-black'>
-                  {t("联系意见领袖")}
-                </Button>
+                {person.SocialMedia_zh && (
+                  <div>
+                    <h4>社交媒体</h4>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: person.SocialMedia_zh,
+                      }}
+                    ></span>
+                  </div>
+                )}
               </div>
             ) : (
               <></>
             )}
-            */}
 
             {role === "Ambassador" ? (
               <div className='ambassador-contact'>
