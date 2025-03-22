@@ -259,6 +259,23 @@ const KolDetail = () => {
             )}
             */}
 
+            {role === "Kol" ? (
+              <div className='kol-contact'>
+                {person.SocialMedia_zh && (
+                  <div>
+                    <h4>社交媒体</h4>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: person.SocialMedia_zh,
+                      }}
+                    ></span>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <></>
+            )}
+
             {role === "Ambassador" ? (
               <div className='ambassador-contact'>
                 {person.SocialMedia_zh && (
