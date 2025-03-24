@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import {
   Button,
   Col,
@@ -301,7 +302,7 @@ const ProductDetail = () => {
 
   const handleShare = () => {
     const shareData = {
-      title: "页面分享",
+      title: Name || "页面分享",
       text: document.title,
       url: window.location.href,
     };
@@ -339,7 +340,16 @@ const ProductDetail = () => {
   // console.log(productTag)
 
   return (
+     
     <div>
+      <Helmet>
+        <title>{Name}</title>
+        <meta property="og:title" content={Name} />
+        <meta property="og:description" content={Detail?.replace(/<[^>]+>/g, "").slice(0, 100)} />
+        <meta property="og:image" content={`${BACKEND_HOST}${ProductImage?.url}`} />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <section>
         <Container>
           <Row className='product-detail-section'>
@@ -392,36 +402,32 @@ const ProductDetail = () => {
 
                 </Row>
 
-                <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
-                  <Col md={8} className="d-flex justify-content-center">
-                    {Note ? (
-                      // 如果 Note 存在，显示原来的按钮和弹窗
-                      <>
-                        <Button
-                          className="add-to-cart-btn"
-                          onClick={() => setShowModal(true)}
-                        >
-                          即刻订购
-                        </Button>
-                        {/* 弹窗组件 */}
-                        <ConsultationModal
-                          show={showModal}
-                          handleClose={() => setShowModal(false)}
+                {!product.MainCollectionProduct && (
+                  <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
+                    <Col md={8} className="d-flex justify-content-center">
+                      {Note ? (
+                        <>
+                          <Button
+                            className="add-to-cart-btn"
+                            onClick={() => setShowModal(true)}
+                          >
+                            即刻订购
+                          </Button>
+                          <ConsultationModal
+                            show={showModal}
+                            handleClose={() => setShowModal(false)}
+                          />
+                        </>
+                      ) : (
+                        <PayPalButton
+                          amount={parseFloat(Price_Display.toString().replace(/,/g, ''))}
+                          currency="AUD"
+                          description={Name}
                         />
-                      </>
-                    ) : (
-                      // 如果 Note 为空，显示 PayPal 按钮
-                      <PayPalButton
-                        //amount="0.01"
-                        amount={parseFloat(Price_Display.toString().replace(/,/g, ''))}
-                        currency="AUD"
-                        description={Name} // 动态传递商品名称
-                      />
-
-                    )}
-                  </Col>
-
-                </Row>
+                      )}
+                    </Col>
+                  </Row>
+                )}
 
                 <Row>
                   {Price_Display !== 0 && Price_Display !== null && (
