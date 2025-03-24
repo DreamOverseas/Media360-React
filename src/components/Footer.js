@@ -48,7 +48,11 @@ const Footer = () => {
                     <i className='bi bi-telephone-inbound-fill'></i>
                   </Col>
                   <Col>
-                    <p>0413 168 533</p>
+                    <p>
+                      <a href='tel:+61413168533' className='phone-link'>
+                        +61 (0)413 168 533
+                      </a>
+                    </p>
                   </Col>
                 </Row>
                 <Row>
@@ -66,21 +70,16 @@ const Footer = () => {
                 {/* 加入我们按钮 */}
                 <Row className='mt-3'>
                   <Col className='d-flex justify-content-start'>
-
-                  <Link to={`/merchant/360-media-promotion-service`}>
-                    <Button
-                        className='update-function-btn'
-                      >
-                        加入我们
-                    </Button>
-                  </Link>
+                    <Link to={`/merchant/360-media-promotion-service`}>
+                      <Button className='update-function-btn'>加入我们</Button>
+                    </Link>
                   </Col>
                 </Row>
               </div>
             </Col>
 
             <Col md={6}></Col>
-           
+
             <Col md={3} className='footer-column qr-social text-end'>
               <img src='/QR_JohnDu.png' alt='QR Code' className='qr-code' />
               <p>{t("footer_scan")}</p>
@@ -105,7 +104,11 @@ const Footer = () => {
               </Col>
               <Col xs={6} className='d-flex align-items-center'>
                 <i className='bi bi-telephone-inbound-fill'></i>
-                <p className='ms-2'>0413 168 533</p>
+                <p className='ms-2'>
+                  <a href='tel:+61413168533' className='phone-link'>
+                    +61 (0)413 168 533
+                  </a>
+                </p>
               </Col>
 
               {/* 第二排：邮箱 & 加入我们 */}
@@ -114,13 +117,9 @@ const Footer = () => {
                 <p className='ms-2'>info@do360.com</p>
               </Col>
               <Col xs={6} className='d-flex align-items-center mt-2'>
-              <Link to={`/merchant/360-media-promotion-service`}>
-                <Button
-                    className='update-function-btn'
-                  >
-                    加入我们
-                </Button>
-              </Link>
+                <Link to={`/merchant/360-media-promotion-service`}>
+                  <Button className='update-function-btn'>加入我们</Button>
+                </Link>
               </Col>
             </Row>
           </div>
