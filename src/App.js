@@ -1,7 +1,6 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
 // import { useMediaQuery } from "react-responsive";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
@@ -23,28 +22,28 @@ import BrandRelatedNewsPage from "./pages/BrandRelatedNewsPage";
 import BrandRelatedPersonsPage from "./pages/BrandRelatedPersonsPage";
 import BrandRelatedProductsPage from "./pages/BrandRelatedProductsPage";
 // import Events from "./pages/Events";
+import RecentProductsBar from "./components/RecentProductsBar";
 import FounderPage from "./pages/FounderPage";
 import Greeness from "./pages/Greeness";
-import Home from "./pages/Home";
 import InfluenceHub from "./pages/InfluenceHub";
 import KolPage from "./pages/KolPage";
 import MediaCenter from "./pages/MediaCenter";
+import MerchantPromotion from "./pages/MerchantPromotion";
 import MIVoting from "./pages/MI_VotingPage";
 import NewsPage from "./pages/NewsPage";
 import PersonRelatedBrands from "./pages/PersonRelatedBrands";
 import PersonRelatedNews from "./pages/PersonRelatedNews";
 import PersonRelatedProducts from "./pages/PersonRelatedProducts";
 import ProductPage from "./pages/ProductPage";
+import ProductRelatedBrand from "./pages/ProductRelatedBrand";
+import ProductRelatedEvent from "./pages/ProductRelatedEvent";
 import ProductRelatedNews from "./pages/ProductRelatedNews";
 import ProductRelatedPerson from "./pages/ProductRelatedPerson";
 import ProductRelatedProduct from "./pages/ProductRelatedProduct";
-import ProductRelatedBrand from "./pages/ProductRelatedBrand";
 import Profile from "./pages/Profile";
 import Recruitment from "./pages/Recruitment";
 import RegisterMiss from "./pages/RegisterMiss";
 import ShoppingCart from "./pages/ShoppingCart";
-import ProductRelatedEvent from "./pages/ProductRelatedEvent";
-import MerchantPromotion from "./pages/MerchantPromotion";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -82,7 +81,7 @@ function App() {
       <ScrollToTop />
       {header}
       <div className='custom-breadcrumb'>
-          <Breadcrumbs />
+        <Breadcrumbs />
       </div>
       <div className='main-content'>
         <Routes>
@@ -115,18 +114,20 @@ function App() {
             path='/products/:name/related-news'
             element={<ProductRelatedNews />}
           />
-
           <Route
             path='/products/:name/related-event'
             element={<ProductRelatedEvent />}
           />
-
           <Route
             path='/products/:name/related-brand'
             element={<ProductRelatedBrand />}
           />
           <Route exact path='/products/:name' element={<ProductDetail />} />
-          <Route exact path='/merchant/360-media-promotion-service' element={<MerchantPromotion />} />
+          <Route
+            exact
+            path='/merchant/360-media-promotion-service'
+            element={<MerchantPromotion />}
+          />
           <Route exact path='/events/:name' element={<EventDetail />} />
           <Route path='/join-us' element={<Recruitment />} />
           <Route path='/influence-hub' element={<InfluenceHub />} />
@@ -171,6 +172,7 @@ function App() {
           />
         </Routes>
         {/* 全局悬浮按钮 */}
+        <RecentProductsBar /> {/* ✅ 在整个应用的底部加载 */}
         <FloatingHomeButton />
       </div>
 

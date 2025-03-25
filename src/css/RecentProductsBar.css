@@ -1,0 +1,54 @@
+/* 🎨 最近浏览栏样式 */
+.recent-products-bar {
+  position: fixed; /* 固定在页面 */
+  bottom: 0; /* 距离页面底部 0 */
+  left: 0;
+  width: 100%; /* 占满宽度 */
+  background-color: #f8f9fa; /* 背景颜色 */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+  z-index: 0; /* 确保在其他元素之上 */
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.recent-products-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.recent-products-list {
+  display: flex;
+  overflow-x: auto;
+  gap: 15px;
+}
+
+.recent-product-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.recent-product-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.recent-product-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.recent-product-name {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
 import {
   Button,
   Col,
@@ -10,9 +9,10 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
+import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import rehypeRaw from "rehype-raw";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
@@ -24,6 +24,7 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const ProductDetail = () => {
   const location = useLocation();
+  const { name } = useParams();
   const { user } = useContext(AuthContext);
   const { t, i18n } = useTranslation();
   const [product, setProduct] = useState(null);
@@ -40,7 +41,7 @@ const ProductDetail = () => {
   const [founder, setFounder] = useState([]);
   const [kol, setKol] = useState([]);
   const [spokesperson, setSpokesperson] = useState([]);
-  const [brand, setBrand] = useState(null);
+  const [brand, setBrand] = useState({});
   const [variants, setVariants] = useState([]);
 
   const ProductGallery = ({ product }) => {
@@ -121,8 +122,9 @@ const ProductDetail = () => {
           {allMedia.map((media, index) => (
             <div
               key={index}
-              className={`thumb-container ${index === currentIndex ? "active-thumb" : ""
-                }`}
+              className={`thumb-container ${
+                index === currentIndex ? "active-thumb" : ""
+              }`}
               onClick={() => setCurrentIndex(index)}
             >
               <Image
@@ -183,24 +185,29 @@ const ProductDetail = () => {
 
   const fetchData = async (path, setProduct, setPeople, setError, t) => {
     try {
-      const [productResponse, peopleResponse, newsResponse, brandResponse, eventResponse] =
-        await Promise.all([
-          axios.get(
-            `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate=*`
-          ),
-          axios.get(
-            `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[people][populate]=Image`
-          ),
-          axios.get(
-            `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[news][populate]=Image`
-          ),
-          axios.get(
-            `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[brand][populate]=logo`
-          ),
-          axios.get(
-            `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[events][populate]=Image`
-          )
-        ]);
+      const [
+        productResponse,
+        peopleResponse,
+        newsResponse,
+        brandResponse,
+        eventResponse,
+      ] = await Promise.all([
+        axios.get(
+          `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate=*`
+        ),
+        axios.get(
+          `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[people][populate]=Image`
+        ),
+        axios.get(
+          `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[news][populate]=Image`
+        ),
+        axios.get(
+          `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[brand][populate]=logo`
+        ),
+        axios.get(
+          `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[events][populate]=Image`
+        ),
+      ]);
 
       const productData = productResponse.data?.data?.[0] || null;
       if (!productData) {
@@ -230,7 +237,6 @@ const ProductDetail = () => {
       setEvent(eventList);
 
       console.log("event", eventList);
-
     } catch (error) {
       console.error("Error fetching data:", error);
       setError(t("errorFetchingProductData"));
@@ -317,6 +323,52 @@ const ProductDetail = () => {
     }
   };
 
+  // Fetch product data and save to localStorage
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(
+          `${BACKEND_HOST}/api/products?filters[url][$eq]=${name}&populate=*`
+        );
+        const data = await response.json();
+
+        if (data.data.length > 0) {
+          const productData = data.data[0];
+          setProduct(productData);
+
+          // Save to localStorage
+          const recentProducts =
+            JSON.parse(localStorage.getItem("recentProducts")) || [];
+          const isExisting = recentProducts.some(p => p.id === productData.id);
+
+          if (!isExisting) {
+            recentProducts.unshift({
+              id: productData.id,
+              name: productData.Name_zh || productData.Name_en,
+              url: productData.url,
+              image: productData.ProductImage?.url,
+            });
+
+            if (recentProducts.length > 1) recentProducts.pop(); // Keep at most 1 record
+
+            localStorage.setItem(
+              "recentProducts",
+              JSON.stringify(recentProducts)
+            );
+
+            // ✅ 触发自定义事件
+            const event = new Event("recentProductsUpdated");
+            window.dispatchEvent(event);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    };
+
+    fetchProduct();
+  }, [name]);
+
   if (!product) {
     return (
       <div className='loading-container'>
@@ -340,15 +392,20 @@ const ProductDetail = () => {
   // console.log(productTag)
 
   return (
-     
     <div>
       <Helmet>
         <title>{Name}</title>
-        <meta property="og:title" content={Name} />
-        <meta property="og:description" content={Detail?.replace(/<[^>]+>/g, "").slice(0, 100)} />
-        <meta property="og:image" content={`${BACKEND_HOST}${ProductImage?.url}`} />
-        <meta property="og:url" content={window.location.href} />
-        <meta property="og:type" content="website" />
+        <meta property='og:title' content={Name} />
+        <meta
+          property='og:description'
+          content={Detail?.replace(/<[^>]+>/g, "").slice(0, 100)}
+        />
+        <meta
+          property='og:image'
+          content={`${BACKEND_HOST}${ProductImage?.url}`}
+        />
+        <meta property='og:url' content={window.location.href} />
+        <meta property='og:type' content='website' />
       </Helmet>
       <section>
         <Container>
@@ -384,8 +441,9 @@ const ProductDetail = () => {
                         <Col xs={4} key={index}>
                           <Link to={`/products/${variant.url}`}>
                             <Button
-                              className={`product-details-variant-btn ${isActive ? "active-btn" : ""
-                                }`}
+                              className={`product-details-variant-btn ${
+                                isActive ? "active-btn" : ""
+                              }`}
                             >
                               {language === "zh"
                                 ? variant.Name_zh
@@ -398,17 +456,18 @@ const ProductDetail = () => {
                   ) : (
                     <></>
                   )}
-                  {(Price_Display !== 0 && Price_Display !== null) && <h2>AU$ {Price_Display}</h2>}
-
+                  {Price_Display !== 0 && Price_Display !== null && (
+                    <h2>AU$ {Price_Display}</h2>
+                  )}
                 </Row>
 
                 {!product.MainCollectionProduct && (
                   <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
-                    <Col md={8} className="d-flex justify-content-center">
+                    <Col md={8} className='d-flex justify-content-center'>
                       {Note ? (
                         <>
                           <Button
-                            className="add-to-cart-btn"
+                            className='add-to-cart-btn'
                             onClick={() => setShowModal(true)}
                           >
                             即刻订购
@@ -420,8 +479,10 @@ const ProductDetail = () => {
                         </>
                       ) : (
                         <PayPalButton
-                          amount={parseFloat(Price_Display.toString().replace(/,/g, ''))}
-                          currency="AUD"
+                          amount={parseFloat(
+                            Price_Display.toString().replace(/,/g, "")
+                          )}
+                          currency='AUD'
                           description={Name}
                         />
                       )}
@@ -431,9 +492,7 @@ const ProductDetail = () => {
 
                 <Row>
                   {Price_Display !== 0 && Price_Display !== null && (
-                    <Link
-                      to={`/products/${brand.MainProduct_url}`}
-                    >
+                    <Link to={`/products/${brand.MainProduct_url}`}>
                       <Button className='main-product-detail-funtion-btn'>
                         返回产品主页
                       </Button>
@@ -496,15 +555,25 @@ const ProductDetail = () => {
 
                     {news.length > 0 && (
                       <Col xs={4}>
-                        <Link to={`/products/${product.url}/related-news`} state={{ news }}>
-                          <Button className="product-detail-funtion-btn">相关新闻</Button>
+                        <Link
+                          to={`/products/${product.url}/related-news`}
+                          state={{ news }}
+                        >
+                          <Button className='product-detail-funtion-btn'>
+                            相关新闻
+                          </Button>
                         </Link>
                       </Col>
                     )}
                     {event.length > 0 && (
                       <Col xs={4}>
-                        <Link to={`/products/${product.url}/related-event`} state={{ event }}>
-                          <Button className="product-detail-funtion-btn">相关活动</Button>
+                        <Link
+                          to={`/products/${product.url}/related-event`}
+                          state={{ event }}
+                        >
+                          <Button className='product-detail-funtion-btn'>
+                            相关活动
+                          </Button>
                         </Link>
                       </Col>
                     )}

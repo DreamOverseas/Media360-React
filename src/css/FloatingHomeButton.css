@@ -1,7 +1,7 @@
 /* 🎨 悬浮按钮样式 */
 .floating-home-button {
   position: fixed;
-  bottom: 20px;
+  bottom: 80px; /* 将按钮距离底部的间距从 20px 增加到 80px */
   right: 20px;
   width: 50px;
   height: 50px;
@@ -24,7 +24,7 @@
 /* ✅ 新增悬浮按钮容器样式 */
 .floating-button-container {
   position: fixed;
-  bottom: 20px;
+  bottom: 80px; /* 同样调整容器的底部间距 */
   left: 20px;
   display: flex;
   gap: 10px; /* ✅ 按钮间距 */
