@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import {
@@ -72,10 +73,12 @@ const ProductDetail = () => {
           setVideoThumbnails(thumbnails);
         }
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoIframes]);
 
     useEffect(() => {
       setAllMedia([mainImage, ...subImages, ...videoThumbnails]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoThumbnails]);
 
     const nextMedia = () => {
@@ -246,6 +249,7 @@ const ProductDetail = () => {
   useEffect(() => {
     const path = location.pathname.replace("/products/", "");
     fetchData(path, setProduct, setPeople, setError, t);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   useEffect(() => {
@@ -266,6 +270,7 @@ const ProductDetail = () => {
       .catch(error =>
         console.error("Error fetching product URLs and names:", error)
       );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brand?.internal_url]);
 
   useEffect(() => {
@@ -581,8 +586,8 @@ const ProductDetail = () => {
                 </Row>
 
                 <Row>
-                  <a
-                    href='#'
+                  <button
+                    href=''
                     onClick={handleShare}
                     className='social-sharing__link'
                     title='分享'
@@ -598,7 +603,7 @@ const ProductDetail = () => {
                       </svg>
                     </i>
                     <span className='share-title'>分享此产品</span>
-                  </a>
+                  </button>
                 </Row>
               </Container>
             </Col>
