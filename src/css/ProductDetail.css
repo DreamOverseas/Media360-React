@@ -30,8 +30,8 @@
 
 /* Image styling to ensure responsiveness on desktop and mobile */
 .product-img {
-  width: 100%;  /* Ensures the image does not exceed container width */
-  height: 100%;     /* Height adjusts based on width */
+  width: 100%; /* Ensures the image does not exceed container width */
+  height: 100%; /* Height adjusts based on width */
   object-fit: cover; /* Maintains image aspect ratio */
 }
 
@@ -42,7 +42,6 @@
   justify-content: center;
   padding-left: 20px;
 }
-
 
 /* Purchase modal background */
 .purchase-modal-background {
@@ -58,9 +57,8 @@
   border: 1px solid #e0e0e0;
   border-radius: 50px;
   width: 100%;
-  height:50px
+  height: 50px;
 }
-
 
 .quantity-btn {
   border: none;
@@ -86,10 +84,9 @@
   text-align: center;
 }
 
-
 .add-to-cart-btn {
   width: 100%;
-  height:50px;
+  height: 50px;
   border-radius: 50px;
   border: 1px solid black;
   background: white;
@@ -102,7 +99,6 @@
   background: black;
   color: white;
 }
-
 
 .tag-label {
   width: 100%;
@@ -133,8 +129,6 @@
   color: white;
 }
 
-
-
 .main-product-detail-funtion-btn {
   width: 100%;
   border-radius: 50px;
@@ -150,7 +144,6 @@
   background: black;
   color: white;
 }
-
 
 .detail-container {
   max-height: 300px; /* 设置最大高度 */
@@ -207,7 +200,6 @@
   color: #007bff; /* 鼠标悬停时的颜色 */
 }
 
-
 /* productGallery */
 .product-gallery {
   display: flex;
@@ -260,7 +252,7 @@
   display: flex;
   gap: 10px;
   margin-top: 10px;
-  justify-content:flex-start;
+  justify-content: flex-start;
   width: 100%;
   flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
@@ -335,7 +327,7 @@
 
 /* 视频容器，确保 iframe 正确显示 */
 .product-video-container {
-  position: relative;  /* 让 iframe 绝对定位填充 */
+  position: relative; /* 让 iframe 绝对定位填充 */
   padding-bottom: 56.25%; /* 16:9 视频比例 */
   height: 0;
   overflow: hidden;
@@ -359,8 +351,6 @@
   margin-bottom: 5%;
 }
 
-
-
 .product-detail h1 {
   margin-top: 5%;
   margin-bottom: 2%;
@@ -369,14 +359,13 @@
 .product-detail h4 {
   margin-top: 15px;
   margin-bottom: 15px;
-  font-size:14px
+  font-size: 14px;
 }
 
 .product-detail h2 {
   margin-top: 15px;
   margin-bottom: 15px;
 }
-
 
 .update-function-btn {
   border-radius: 50px;
@@ -395,13 +384,11 @@
 
 .custom-modal-body {
   max-height: 300px; /* 固定高度 */
-  overflow-y: auto;  /* 允许垂直滚动 */
+  overflow-y: auto; /* 允许垂直滚动 */
 }
-
 
 /* Responsive design for mobile devices */
 @media (max-width: 768px) {
-
   .amount-price-bar {
     margin-bottom: 5%;
   }
@@ -425,7 +412,7 @@
   .product-detail h4 {
     margin-top: 15px;
     margin-bottom: 15px;
-    font-size:14px
+    font-size: 14px;
   }
 
   .product-detail h2 {
@@ -448,7 +435,7 @@
 
   /* Ensures the image fits the screen width and maintains aspect ratio */
   .product-img {
-    width: 100%;  /* Full width image */
+    width: 100%; /* Full width image */
     height: auto; /* Height adjusts based on width */
     object-fit: contain; /* Maintains image aspect ratio */
   }
@@ -485,7 +472,7 @@
   }
 
   .quantity-control {
-    width:120px;
+    width: 120px;
   }
 }
 .responsive-iframe {
@@ -502,8 +489,6 @@
   padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
   height: 0;
 }
-
-
 
 /* variant button */
 
@@ -537,3 +522,13 @@
   border-color: black !important;
 }
 
+/* 确保 PayPal 按钮的 z-index 低于 RecentProductsBar */
+.paypal-button-container {
+  position: relative; /* 确保 z-index 生效 */
+  z-index: -1; /* 设置 z-index 为负值，低于 RecentProductsBar 的 0 */
+}
+
+/* 如果 PayPal 按钮是通过 iframe 嵌入的，覆盖 iframe 的 z-index */
+.paypal-button-container iframe {
+  z-index: -1 !important; /* 强制覆盖 iframe 的 z-index */
+}

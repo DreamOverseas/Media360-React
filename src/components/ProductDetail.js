@@ -73,12 +73,12 @@ const ProductDetail = () => {
           setVideoThumbnails(thumbnails);
         }
       }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoIframes]);
 
     useEffect(() => {
       setAllMedia([mainImage, ...subImages, ...videoThumbnails]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoThumbnails]);
 
     const nextMedia = () => {
@@ -249,7 +249,7 @@ const ProductDetail = () => {
   useEffect(() => {
     const path = location.pathname.replace("/products/", "");
     fetchData(path, setProduct, setPeople, setError, t);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   useEffect(() => {
@@ -270,7 +270,7 @@ const ProductDetail = () => {
       .catch(error =>
         console.error("Error fetching product URLs and names:", error)
       );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brand?.internal_url]);
 
   useEffect(() => {
@@ -468,29 +468,14 @@ const ProductDetail = () => {
 
                 {!product.MainCollectionProduct && (
                   <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
-                    <Col md={8} className='d-flex justify-content-center'>
-                      {Note ? (
-                        <>
-                          <Button
-                            className='add-to-cart-btn'
-                            onClick={() => setShowModal(true)}
-                          >
-                            即刻订购
-                          </Button>
-                          <ConsultationModal
-                            show={showModal}
-                            handleClose={() => setShowModal(false)}
-                          />
-                        </>
-                      ) : (
-                        <PayPalButton
-                          amount={parseFloat(
-                            Price_Display.toString().replace(/,/g, "")
-                          )}
-                          currency='AUD'
-                          description={Name}
-                        />
-                      )}
+                    <Col md={8} className='paypal-button-container'>
+                      <PayPalButton
+                        amount={parseFloat(
+                          Price_Display.toString().replace(/,/g, "")
+                        )}
+                        currency='AUD'
+                        description={Name}
+                      />
                     </Col>
                   </Row>
                 )}

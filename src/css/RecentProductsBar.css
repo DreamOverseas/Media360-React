@@ -3,7 +3,7 @@
   position: fixed; /* 固定在页面 */
   bottom: 0; /* 距离页面底部 0 */
   left: 0;
-  width: 100%; /* 占满宽度 */
+  width: 100%; /* 默认占满宽度 */
   background-color: #f8f9fa; /* 背景颜色 */
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 添加阴影 */
   z-index: 0; /* 确保在其他元素之上 */
@@ -13,24 +13,33 @@
   justify-content: space-between;
 }
 
+/* 完全隐藏 RecentProductsBar */
+.recent-products-bar.hidden {
+  display: none; /* 不占用任何空间 */
+}
+
+/* 居中标题 */
 .recent-products-title {
   font-size: 16px;
   font-weight: bold;
   margin-right: 20px;
 }
 
+/* 最近浏览商品列表 */
 .recent-products-list {
   display: flex;
   overflow-x: auto;
   gap: 15px;
 }
 
+/* 单个商品项 */
 .recent-product-item {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+/* 商品链接 */
 .recent-product-link {
   display: flex;
   align-items: center;
@@ -38,6 +47,7 @@
   color: inherit;
 }
 
+/* 商品图片 */
 .recent-product-image {
   width: 50px;
   height: 50px;
@@ -46,9 +56,20 @@
   border-radius: 5px;
 }
 
+/* 商品名称 */
 .recent-product-name {
   font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* ✅ 电脑端居中样式 */
+@media (min-width: 768px) {
+  .recent-products-bar {
+    width: 60%; /* 设置宽度为 60% */
+    left: 50%; /* 左侧偏移 */
+    transform: translateX(-50%); /* 水平居中 */
+    border-radius: 10px; /* 添加圆角 */
+  }
 }
