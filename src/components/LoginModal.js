@@ -75,6 +75,7 @@ const LoginModal = ({ show, handleClose }) => {
       }
     } else {
       setError(t("password_mismatch"));
+      console.log(error);
     }
   };
 

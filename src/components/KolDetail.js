@@ -126,10 +126,12 @@ const KolDetail = () => {
           setVideoThumbnails(thumbnails);
         }
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoIframes]);
 
     useEffect(() => {
       setAllMedia([mainImage, ...subImages, ...videoThumbnails]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoThumbnails]);
 
     const nextMedia = () => {
@@ -222,9 +224,9 @@ const KolDetail = () => {
     language === "zh"
       ? person.Bio_zh || "暂无简介"
       : person.Bio_en || "No biography available";
-  const personImage = person.Image?.[0]?.url
-    ? `${BACKEND_HOST}${person.Image[0].url}`
-    : "https://placehold.co/280x280";
+  // const personImage = person.Image?.[0]?.url
+    // ? `${BACKEND_HOST}${person.Image[0].url}`
+    // : "https://placehold.co/280x280";
 
   return (
     <div className='kol-detail-page'>

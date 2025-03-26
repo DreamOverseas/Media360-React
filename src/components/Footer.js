@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Col, Container, Image, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import "../css/Footer.css";
 // Load Backend Host for API calls
-const EMAIL_SUBSCRIPTION =
-  process.env.REACT_APP_EMAIL_SUBSCRIPTION + "quick-subscription";
+// const EMAIL_SUBSCRIPTION = process.env.REACT_APP_EMAIL_SUBSCRIPTION + "quick-subscription";
 
 const Footer = () => {
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [message, setMessage] = useState("");
+  // const [error, setError] = useState("");
 
   // Check if is on desktop
   const onDesktop = useMediaQuery({ query: "(min-width: 768px)" });

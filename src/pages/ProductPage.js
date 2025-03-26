@@ -16,7 +16,7 @@ const ProductPage = () => {
   const [loading, setLoading] = useState(false); // Loading state
   const [hasMore, setHasMore] = useState(true); // Whether there are more products to load
   const observer = useRef(); // Ref for observing the last product element
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   // Function to fetch products
   const fetchProducts = pageNum => {
@@ -88,6 +88,7 @@ const ProductPage = () => {
 
     return () => {
       if (observer.current && lastProductElementRef.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         observer.current.unobserve(lastProductElementRef.current); // Cleanup the observer
       }
     };

@@ -21,6 +21,7 @@ const ShoppingCart = () => {
   const { t } = useTranslation();
   const { user } = useContext(AuthContext);
   const [cartItems, setCartItems] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [recommendations, setRecommendations] = useState([]);
   const [error, setError] = useState(null);
 
@@ -223,14 +224,14 @@ const ShoppingCart = () => {
     calculateSelectedItemsCount,
   ]);
 
-  const settings = {
-    className: "center",
-    centerMode: true,
-    infinite: true,
-    centerPadding: "60px",
-    slidesToShow: 3,
-    speed: 500,
-  };
+  // const settings = {
+  //   className: "center",
+  //   centerMode: true,
+  //   infinite: true,
+  //   centerPadding: "60px",
+  //   slidesToShow: 3,
+  //   speed: 500,
+  // };
 
   return (
     <Container>

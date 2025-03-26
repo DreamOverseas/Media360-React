@@ -1,9 +1,9 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Col, Container, Row, Image, Button, Modal, Alert, Spinner } from "react-bootstrap";
 import { useMediaQuery } from "react-responsive";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 import MerchantUploadForm from "../components/MerchantUploadForm";
 import PayPalButton from "../components/PayPalButton";

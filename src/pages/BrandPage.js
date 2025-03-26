@@ -8,7 +8,7 @@ import "../css/BrandPage.css";
 const BrandPage = () => {
   const [brands, setBrands] = useState([]);
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const BrandPage = () => {
       .catch(error => {
         console.error("Error fetching brands:", error);
       });
-  }, []);
+  }, [BACKEND_HOST]);
 
   // ✅ 处理点击事件，优先使用 `internal_url`，否则回退到 `id`
   const handleBrandClick = brand => {

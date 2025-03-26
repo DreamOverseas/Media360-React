@@ -44,8 +44,8 @@ const Events = () => {
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
   const lastEventElementRef = useRef();
-  const { t, i18n } = useTranslation();
-  const language = i18n.language;
+  const { t } = useTranslation();
+  // const language = i18n.language;
 
   // Fetch Upcoming & In Progress events
   useEffect(() => {
@@ -134,6 +134,7 @@ const Events = () => {
 
     return () => {
       if (observer.current && lastEventElementRef.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         observer.current.unobserve(lastEventElementRef.current);
       }
     };
