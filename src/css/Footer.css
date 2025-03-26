@@ -1,6 +1,6 @@
 .footer {
   display: flex;
-  min-height: 280px;
+  min-height: 350px;
   padding: 2rem;
   background-color: #333;
   color: #fff;
@@ -50,7 +50,13 @@
   width: 100%;
   padding: 0.5rem 2rem;
   border: none;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(68, 68, 68, 1) 20%, rgba(68, 68, 68, 1) 80%, rgba(255, 255, 255, 0));
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0),
+    rgba(68, 68, 68, 1) 20%,
+    rgba(68, 68, 68, 1) 80%,
+    rgba(255, 255, 255, 0)
+  );
   color: #fff;
   cursor: pointer;
   border-radius: 4px;
@@ -58,7 +64,13 @@
 }
 
 .newsletter button:hover {
-  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(128, 128, 128, 1) 25%, rgba(128, 128, 128, 1) 75%, rgba(255, 255, 255, 0));
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0),
+    rgba(128, 128, 128, 1) 25%,
+    rgba(128, 128, 128, 1) 75%,
+    rgba(255, 255, 255, 0)
+  );
 }
 
 .qr-social {
@@ -79,13 +91,12 @@
   cursor: pointer;
 }
 
-
 .footer-contact-info p {
   font-size: 8px;
 }
 
 .footer-contact-info img {
-  height:50px;
+  height: 50px;
   object-fit: cover;
 }
 
@@ -98,20 +109,25 @@
 }
 
 .footer-subscription .form-control {
-  font-size:6px
+  font-size: 6px;
 }
 
 .mobile-footer-logo {
-  height:30px;
-  object-fit: cover
+  height: 30px;
+  object-fit: cover;
 }
-
 
 .footer-subscription .newsletter button {
   width: 100%;
   font-size: 10px;
   border: none;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(68, 68, 68, 1) 20%, rgba(68, 68, 68, 1) 80%, rgba(255, 255, 255, 0));
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0),
+    rgba(68, 68, 68, 1) 20%,
+    rgba(68, 68, 68, 1) 80%,
+    rgba(255, 255, 255, 0)
+  );
   color: #fff;
   cursor: pointer;
   border-radius: 4px;
@@ -119,6 +135,6 @@
 }
 
 .mobile-footer-logo {
-  margin-top:-5%;
-  margin-bottom:5%
+  margin-top: -5%;
+  margin-bottom: 5%;
 }

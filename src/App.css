@@ -155,7 +155,7 @@ footer {
   padding: 2rem;
   display: flex;
   justify-content: space-around;
-  margin-bottom: 70px; /* 根据 RecentProductsBar 的高度调整 */
+  /* margin-bottom: 70px; 根据 RecentProductsBar 的高度调整 */
 }
 
 .footer-column {

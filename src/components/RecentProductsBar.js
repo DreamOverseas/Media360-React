@@ -14,6 +14,9 @@ const RecentProductsBar = () => {
   };
 
   useEffect(() => {
+    // 清空 localStorage 中的最近浏览商品
+    localStorage.removeItem("recentProducts");
+
     // 初始化时加载最近浏览的商品
     updateRecentProducts();
 
