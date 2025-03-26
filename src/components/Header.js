@@ -1,20 +1,20 @@
-import Cookies from "js-cookie";
-import React, { useContext, useState } from "react";
+// import Cookies from "js-cookie";
+import React, { useState } from "react";
 import { Image, Navbar } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { AuthContext } from "../context/AuthContext";
+// import { useTranslation } from "react-i18next";
+// import { AuthContext } from "../context/AuthContext";
 import "../css/Header.css";
 import LoginModal from "./LoginModal";
 
 const Header = () => {
-  const { user, logout } = useContext(AuthContext);
-  const { t, i18n } = useTranslation();
+  // const { user, logout } = useContext(AuthContext);
+  // const { t, i18n } = useTranslation();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const changeLanguage = lng => {
-    i18n.changeLanguage(lng);
-    Cookies.set("i18next", lng, { expires: 7 });
-  };
+  // const changeLanguage = lng => {
+  //   i18n.changeLanguage(lng);
+  //   Cookies.set("i18next", lng, { expires: 7 });
+  // };
 
   return (
     <div>

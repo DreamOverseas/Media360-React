@@ -131,6 +131,7 @@ const Breadcrumbs = () => {
     };
 
     fetchTitles();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, i18n.language]);
 
   // Hide breadcrumbs on the homepage

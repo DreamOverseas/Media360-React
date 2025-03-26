@@ -12,6 +12,7 @@ const ProductRelatedProduct = () => {
   const location = useLocation();
   const [relatedProduct, setRelatedProduct] = useState([]); 
   const { t, i18n } = useTranslation();
+  // eslint-disable-next-line no-unused-vars
   const [Product, setProduct] = useState(location.state?.product || []); 
 
   const productTag = Product.product_tags ? Product.product_tags.map(tag => tag.Tag_en) : [];
@@ -29,6 +30,7 @@ const ProductRelatedProduct = () => {
       .catch(error => {
         console.error("Error fetching products:", error);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [Product]);
 
 

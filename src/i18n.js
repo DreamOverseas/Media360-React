@@ -106,7 +106,6 @@ const resources = {
       founder_title: "The driving soul behind brand development",
       founder_content:
         "Brand founders are pioneers of their time, bridging brand values and consumer emotions. With unique perspectives, deep industry insights, and innovative spirits, they set benchmarks in their fields.\nWe recognize their vital role as shapers of core values and leaders in delivering brand vision to the market. Partnering with brand founders is central to our strategy.\nTheir vision and leadership amplify brand impact, inspire innovation, and inject new energy into industries like technology, fashion, and education. Together, we aim to share compelling brand stories, drive growth, and create a prosperous, collaborative future.",
-      brands: "Brands",
       /* Miss Registration form components */
       miss_reg_contest_title:
         "The 73rd Miss Universe China Competition Australia Division - Melbourne 2024",
@@ -146,7 +145,6 @@ const resources = {
       readMore: "Read More",
       relatedProducts: "Related Products",
       relatedNews: "Related News",
-      relatedPersons: "Related Persons",
       noPersonsAvailable: "No persons available",
       noNewsAvailable: "No news available",
       noProductsAvailable: "No products available",
@@ -154,7 +152,6 @@ const resources = {
       noDate: "No date available",
       introduction: "Introduction",
       officalWebsite: "Offical Website",
-      email: "Email",
       officialWebsite: "Official Website",
       relatedInformation: "Related Information",
       closetonature: "Close to Nature",
@@ -162,11 +159,9 @@ const resources = {
       resourceIntegration: "Resource Integration",
       innovationSupport: "Innovation Support",
       publicWelfare: "Public Welfare",
-      relatedInformation: "Related Information",
       expand: "Expand",
       collapse: "Collapse",
       gallery: "Gallery",
-      relatedProducts: "Related Products",
       relatedEvents: "Related Events",
       no_description: "No Description",
       view_details: "View Details",
@@ -318,7 +313,6 @@ const resources = {
       home: "首页",
       relatedProducts: "相关产品",
       relatedNews: "相关新闻",
-      relatedPersons: "相关人物",
       relatedEvents: "相关活动",
       noPersonsAvailable: "当前无人物",
       noNewsAvailable: "当前无新闻",

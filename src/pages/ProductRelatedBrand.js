@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Card, Container, Row } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "../css/ProductRelated.css";
@@ -8,7 +8,7 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 const ProductRelatedBrand = () => {
     const location = useLocation();
-    const { t, i18n } = useTranslation();
+    const { i18n } = useTranslation();
     const language = i18n.language;
     const brand = location.state?.brand || null;
 

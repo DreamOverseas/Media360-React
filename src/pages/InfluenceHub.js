@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Image, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -9,8 +9,6 @@ const BACKEND_HOST = process.env.REACT_APP_STRAPI_HOST;
 
 
 const InfluenceHub = () => {
-
-
   const { t, i18n } = useTranslation();
   const [kols, setKols] = useState([]);
   const [founders, setFounders] = useState([]);
@@ -275,7 +273,9 @@ const InfluenceHub = () => {
       fetchData(setKols, setFounders, setAmbassadors, setError, t)
     } catch {
       setError(t("errorFetchingProductData"))
+      console.log(error);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
     return (
