@@ -6,7 +6,7 @@
   width: 100%; /* 默认占满宽度 */
   background-color: #f8f9fa; /* 背景颜色 */
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 添加阴影 */
-  z-index: 100; /* 确保在其他元素之上 */
+  z-index: 49;
   padding: 10px 20px;
   display: flex;
   align-items: center;

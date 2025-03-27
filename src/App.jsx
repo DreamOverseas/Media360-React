@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 // import { useMediaQuery } from "react-responsive";
 import { Route, Routes, useLocation } from "react-router-dom";
+import CuteChatbot from "@dreamoverseas/cute-chatbot";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "./App.css";
@@ -44,6 +45,11 @@ import Profile from "./pages/Profile.jsx";
 import Recruitment from "./pages/Recruitment.jsx";
 import RegisterMiss from "./pages/RegisterMiss.jsx";
 import ShoppingCart from "./pages/ShoppingCart.jsx";
+
+const API_URL = import.meta.env.VITE_OPENAI_API_URL
+const ASST_ID = import.meta.env.VITE_OPENAI_ASST_ID
+const API_KEY = import.meta.env.VITE_OPENAI_API_KEY
+const GOOGLE_API = import.meta.env.VITE_GOOGLE_API
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -174,6 +180,14 @@ function App() {
         {/* 全局悬浮按钮 */}
         <RecentProductsBar /> {/* ✅ 在整个应用的底部加载 */}
         <FloatingHomeButton />
+        <CuteChatbot
+          style={{ zIndex: 101 }}
+          nickname='DoBot'
+          openai_api_url={`${API_URL}`}
+          openai_asst_id={`${ASST_ID}`}
+          openai_api_key={`${API_KEY}`}
+          google_api_key={`${GOOGLE_API}`}
+        />
       </div>
 
       {footer}

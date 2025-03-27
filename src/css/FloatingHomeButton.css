@@ -27,6 +27,7 @@
   bottom: 80px; /* 同样调整容器的底部间距 */
   left: 20px;
   display: flex;
+  z-index: 100;
   gap: 10px; /* ✅ 按钮间距 */
 }
 
