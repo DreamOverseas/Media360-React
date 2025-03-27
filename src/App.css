@@ -1,6 +1,6 @@
 @import url("https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/theme/classic.css");
-@import "~slick-carousel/slick/slick.css";
-@import "~slick-carousel/slick/slick-theme.css";
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
 
 .ck-content {
   margin: 0 auto;
