@@ -522,13 +522,3 @@
   border-color: black !important;
 }
 
-/* 确保 PayPal 按钮的 z-index 低于 RecentProductsBar */
-.paypal-button-container {
-  position: relative; /* 确保 z-index 生效 */
-  z-index: -1; /* 设置 z-index 为负值，低于 RecentProductsBar 的 0 */
-}
-
-/* 如果 PayPal 按钮是通过 iframe 嵌入的，覆盖 iframe 的 z-index */
-.paypal-button-container iframe {
-  z-index: -1 !important; /* 强制覆盖 iframe 的 z-index */
-}
