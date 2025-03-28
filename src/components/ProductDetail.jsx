@@ -125,9 +125,8 @@ const ProductDetail = () => {
           {allMedia.map((media, index) => (
             <div
               key={index}
-              className={`thumb-container ${
-                index === currentIndex ? "active-thumb" : ""
-              }`}
+              className={`thumb-container ${index === currentIndex ? "active-thumb" : ""
+                }`}
               onClick={() => setCurrentIndex(index)}
             >
               <Image
@@ -446,9 +445,8 @@ const ProductDetail = () => {
                         <Col xs={4} key={index}>
                           <Link to={`/products/${variant.url}`}>
                             <Button
-                              className={`product-details-variant-btn ${
-                                isActive ? "active-btn" : ""
-                              }`}
+                              className={`product-details-variant-btn ${isActive ? "active-btn" : ""
+                                }`}
                             >
                               {language === "zh"
                                 ? variant.Name_zh
@@ -469,13 +467,29 @@ const ProductDetail = () => {
                 {!product.MainCollectionProduct && (
                   <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
                     <Col md={8} className='paypal-button-container'>
-                      <PayPalButton
-                        amount={parseFloat(
-                          Price_Display.toString().replace(/,/g, "")
-                        )}
-                        currency='AUD'
-                        description={Name}
-                      />
+                      {Note ? (
+                        // 如果 Note 存在，显示原来的按钮和弹窗
+                        <>
+                          <Button
+                            className="add-to-cart-btn"
+                            onClick={() => setShowModal(true)}
+                          >
+                            即刻订购
+                          </Button>
+                          {/* 弹窗组件 */}
+                          <ConsultationModal
+                            show={showModal}
+                            handleClose={() => setShowModal(false)}
+                          />
+                        </>
+                      ) : (
+                        // 如果 Note 为空，显示 PayPal 按钮
+                        <PayPalButton
+                          amount={parseFloat(Price_Display.toString().replace(/,/g, ""))}
+                          currency="AUD"
+                          description={Name} // 动态传递商品名称
+                        />
+                      )}
                     </Col>
                   </Row>
                 )}
