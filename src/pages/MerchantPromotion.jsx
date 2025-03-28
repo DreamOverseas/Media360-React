@@ -205,7 +205,6 @@ const MerchantPromotion = () => {
             {/* <Link to={`/products/360-media-service-enterprise-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link> */}
             <h5 className="purchase-text">{t("即刻订购")}</h5>
             <PayPalButton
-              //amount="0.01"
               amount="5500"              
               currency="AUD"
               description={tabs[0].label}
@@ -231,7 +230,6 @@ const MerchantPromotion = () => {
             {/* <Link to={`/products/360-media-service-premium-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link> */}
             <h5 className="purchase-text">{t("即刻订购")}</h5>
             <PayPalButton
-              //amount="0.01"
               amount="3300"              
               currency="AUD"
               description={tabs[1].label}
@@ -252,7 +250,6 @@ const MerchantPromotion = () => {
             {/* <Link to={`/products/360-media-service-standard-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link> */}
             <h5 className="purchase-text">{t("即刻订购")}</h5>
             <PayPalButton
-              //amount="0.01"
               amount="990"              
               currency="AUD"
               description={tabs[2].label}
@@ -379,9 +376,10 @@ const MerchantPromotion = () => {
                           ))}
                         </div>
                         {/* <Link to={`/products/360-media-service-enterprise-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link> */}
-                        <h5 className="purchase-text">{t("即刻订购")}</h5>
+                      </div>
+                      <div>
+                      <h5 className="purchase-text">{t("即刻订购")}</h5>
                         <PayPalButton
-                          //amount="0.01"
                           amount="5500"              
                           currency="AUD"
                           description={tabs[0].label}
@@ -406,9 +404,10 @@ const MerchantPromotion = () => {
                           ))}
                         </div>
                         {/* <Link to={`/products/360-media-service-premium-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link> */}
-                        <h5 className="purchase-text">{t("即刻订购")}</h5>
+                      </div>
+                      <div>
+                      <h5 className="purchase-text">{t("即刻订购")}</h5>
                         <PayPalButton
-                          //amount="0.01"
                           amount="3300"              
                           currency="AUD"
                           description={tabs[1].label}
@@ -427,12 +426,14 @@ const MerchantPromotion = () => {
                           ))}
                         </div>
                         {/* <Link to={`/products/360-media-service-standard-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link> */}
+                      </div>
+                      <div>
                         <h5 className="purchase-text">{t("即刻订购")}</h5>
                         <PayPalButton
                           //amount="0.01"
-                          amount="990"              
+                          amount="3300"              
                           currency="AUD"
-                          description={tabs[2].label}
+                          description={tabs[1].label}
                         />
                       </div>
                     </Col>
