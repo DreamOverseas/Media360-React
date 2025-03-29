@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "./App.css";
 import BrandDetail from "./components/BrandDetail.jsx";
-import Breadcrumbs from "./components/Breadcrumbs.jsx";
+// import Breadcrumbs from "./components/Breadcrumbs.jsx";
 import EventDetail from "./components/EventDetail.jsx";
 import FloatingHomeButton from "./components/FloatingHomeButton.jsx";
 import Footer from "./components/Footer.jsx";
@@ -86,9 +86,9 @@ function App() {
     <div className='App'>
       <ScrollToTop />
       {header}
-      <div className='custom-breadcrumb'>
+      {/* <div className='custom-breadcrumb'>
         <Breadcrumbs />
-      </div>
+      </div> */}
       <div className='main-content'>
         <Routes>
           {/* <Route exact path='/' element={<Home />} /> */}

@@ -376,9 +376,8 @@ const ProductDetail = () => {
   if (!product) {
     return (
       <div className='loading-container'>
-        <Spinner animation='border' role='status'>
-          <span className='sr-only'>{t("loading")}</span>
-        </Spinner>
+        <Spinner animation='border' role='status'></Spinner>
+        <p className='sr-only'>{t("loading")}</p>
       </div>
     );
   }
