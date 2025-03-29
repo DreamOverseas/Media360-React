@@ -58,12 +58,12 @@
   display: inline-block;
 }
 
-@font-face {
+/* @font-face {
   font-family: "HomepageFont";
   src: url("./fonts/YSHST.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
-}
+} */
 
 body {
   font-family: "HomepageFont", sans-serif !important;
