@@ -433,35 +433,38 @@ const ProductDetail = () => {
                       })
                     ) : null}
                   </Row> */}
+                  </Row>
+                  <Row>
+                    {variants ? (
+                      variants.map((variant, index) => {
+                        const currentPath = location.pathname; // 获取当前路径
+                        const isActive =
+                          currentPath === `/products/${variant.url}`; // 正确匹配当前路径
 
-                  {variants ? (
-                    variants.map((variant, index) => {
-                      const currentPath = location.pathname; // 获取当前路径
-                      const isActive =
-                        currentPath === `/products/${variant.url}`; // 正确匹配当前路径
-
-                      return (
-                        <Col xs={4} key={index}>
-                          <Link to={`/products/${variant.url}`}>
-                            <Button
-                              className={`product-details-variant-btn ${isActive ? "active-btn" : ""
-                                }`}
-                            >
-                              {language === "zh"
-                                ? variant.Name_zh
-                                : variant.Name_en}
-                            </Button>
-                          </Link>
-                        </Col>
-                      );
-                    })
-                  ) : (
-                    <></>
-                  )}
-                  {Price_Display !== 0 && Price_Display !== null && (
-                    <h2>AU$ {Price_Display}</h2>
-                  )}
-                </Row>
+                        return (
+                          <Col xs={4} key={index}>
+                            <Link to={`/products/${variant.url}`}>
+                              <Button
+                                className={`product-details-variant-btn ${isActive ? "active-btn" : ""
+                                  }`}
+                              >
+                                {language === "zh"
+                                  ? variant.Name_zh
+                                  : variant.Name_en}
+                              </Button>
+                            </Link>
+                          </Col>
+                        );
+                      })
+                    ) : (
+                      <></>
+                    )}
+                  </Row>
+                  <Row>
+                    {Price_Display !== 0 && Price_Display !== null && (
+                      <h2>AU$ {Price_Display}</h2>
+                    )}
+                  </Row>
 
                 {!product.MainCollectionProduct && (
                   <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>

@@ -396,7 +396,7 @@
   .main-image-container {
     position: relative;
     width: 100%; /* Adjust to fit within the column */
-    height: 400px; /* Set a fixed height to maintain aspect ratio */
+    height: 300px; /* Set a fixed height to maintain aspect ratio */
     display: flex;
     align-items: center;
     justify-content: center;
