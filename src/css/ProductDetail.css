@@ -223,7 +223,7 @@
 .product-img {
   width: 100%;
   height: 500px; /* Maintain aspect ratio */
-  object-fit: cover;
+  object-fit: contain;
   cursor: pointer;
 }
 
@@ -396,7 +396,7 @@
   .main-image-container {
     position: relative;
     width: 100%; /* Adjust to fit within the column */
-    height: 400px; /* Set a fixed height to maintain aspect ratio */
+    height: 300px; /* Set a fixed height to maintain aspect ratio */
     display: flex;
     align-items: center;
     justify-content: center;
