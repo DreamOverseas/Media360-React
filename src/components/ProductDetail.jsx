@@ -497,7 +497,7 @@ const ProductDetail = () => {
                 )}
 
                 <Row>
-                  {Price_Display !== 0 && Price_Display !== null && (
+                  {!product.SingleProduct && Price_Display !== 0 && Price_Display !== null &&  (
                     <Link to={`/products/${brand.MainProduct_url}`}>
                       <Button className='main-product-detail-funtion-btn'>
                         返回产品主页
