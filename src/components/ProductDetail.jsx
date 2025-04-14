@@ -101,10 +101,13 @@ const ProductDetail = () => {
           {currentIndex >= subImages.length + 1 && videoIframes.length > 0 ? (
             <div
               className='product-video'
+              style={{ width: "100%", height: "400px" }}
               dangerouslySetInnerHTML={{
-                __html:
-                  videoIframes[currentIndex - (subImages.length + 1)]
-                    ?.videoEmbed || "",
+                __html: videoIframes[currentIndex - (subImages.length + 1)]
+                  ?.videoEmbed.replace(
+                    "<iframe ",
+                    "<iframe style='width:100%;height:100%;' "
+                  ) || "",
               }}
             />
           ) : (
