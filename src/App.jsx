@@ -45,6 +45,7 @@ import Profile from "./pages/Profile.jsx";
 import Recruitment from "./pages/Recruitment.jsx";
 import RegisterMiss from "./pages/RegisterMiss.jsx";
 import ShoppingCart from "./pages/ShoppingCart.jsx";
+import Home from "./pages/Home.jsx";
 
 const API_URL = import.meta.env.VITE_OPENAI_API_URL
 const ASST_ID = import.meta.env.VITE_OPENAI_ASST_ID
@@ -72,11 +73,7 @@ function App() {
       document.body.style.marginTop = "0px";
       setFooter(<></>);
       setHeader(<></>);
-    } else {
-      document.body.style.marginTop = "54px";
-      setHeader(<Header />);
-      setFooter(<Footer />);
-    }
+    } 
   }, [location]);
 
   // Check if is on desktop
@@ -91,8 +88,8 @@ function App() {
       </div> */}
       <div className='main-content'>
         <Routes>
-          {/* <Route exact path='/' element={<Home />} /> */}
-          <Route exact path='/' element={<ProductPage />} />
+          <Route exact path='/' element={<Home />} />
+          {/* <Route exact path='/' element={<ProductPage />} /> */}
           <Route path='/profile' element={<Profile />} />
           <Route exact path='/products' element={<ProductPage />} />
           {/* <Route exact path='/productFinance' element={<ProductPage />} />
