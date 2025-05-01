@@ -1,14 +1,14 @@
 // import Cookies from "js-cookie";
-import React, { useState } from "react";
-import { Image, Navbar } from "react-bootstrap";
-// import { useTranslation } from "react-i18next";
-// import { AuthContext } from "../context/AuthContext";
+import React, { useState, useContext } from "react";
+import { Image, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { AuthContext } from "../context/AuthContext";
 import "../css/Header.css";
 import LoginModal from "./LoginModal.jsx";
 
 const Header = () => {
-  // const { user, logout } = useContext(AuthContext);
-  // const { t, i18n } = useTranslation();
+  const { user, logout } = useContext(AuthContext);
+  const { t, i18n } = useTranslation();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   // const changeLanguage = lng => {
@@ -18,9 +18,10 @@ const Header = () => {
 
   return (
     <div>
-      <Navbar bg='light' expand='lg' fixed='top' className='navbar-custom'>
+      
+      <Navbar fixed="top" expand='lg' className='navbar-custom'>
         <Navbar.Brand href='/'>
-          <Image className='nav-logo' src='/header_logo.png' alt='360 Media' />
+          <Image className='nav-logo' src='/360_logo.png' alt='360 Media' />
         </Navbar.Brand>
         {/* <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
@@ -28,7 +29,7 @@ const Header = () => {
             <Nav.Link href='/'>{t("home")}</Nav.Link>
             <Nav.Link href='/brands'>{t("brands")}</Nav.Link>
             <Nav.Link href='/products'>{t("product")}</Nav.Link>
-            星潮汇 - 桌面端 Hover，移动端 Click
+
             <NavDropdown
               title='星潮汇'
               id='star-dropdown'
@@ -40,7 +41,7 @@ const Header = () => {
                 产品代言人
               </NavDropdown.Item>
             </NavDropdown>
-            媒体中心 - 桌面端 Hover，移动端 Click
+
             <NavDropdown
               title='媒体中心'
               id='media-dropdown'
@@ -50,7 +51,7 @@ const Header = () => {
               <NavDropdown.Item href='/events'>活动</NavDropdown.Item>
             </NavDropdown>
             <Nav.Link href='/join-us'>{t("joinus")}</Nav.Link>
-            语言切换
+
             <NavDropdown
               title={t("language")}
               id='language-dropdown'
@@ -63,7 +64,6 @@ const Header = () => {
                 中文
               </NavDropdown.Item>
             </NavDropdown>
-            登录 / 个人信息
             {user ? (
               <>
                 <Nav.Link href='/cart'>
@@ -87,12 +87,11 @@ const Header = () => {
           </Nav>
         </Navbar.Collapse> */}
       </Navbar>
-
       {/* 登录模态框 */}
-      <LoginModal
+      {/* <LoginModal
         show={showLoginModal}
         handleClose={() => setShowLoginModal(false)}
-      />
+      /> */}
     </div>
   );
 };
