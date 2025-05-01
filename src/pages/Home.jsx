@@ -1,9 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Row, Button} from "react-bootstrap";
+import { Card, Col, Container, Row, Button, Image} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import BannerSlider from "../components/BannerSlider.jsx";
 import {formatDateTime, calculateTime} from "./Events.jsx"
 // import NewsTicker from "../components/NewsTicker";
 import "../css/Home.css";
@@ -13,12 +12,11 @@ const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
 const HomePage = ()=> {
   const { t, i18n } = useTranslation();
-  const [ads, setAds] = useState([]);
   const [products, setProducts] = useState([]);
   const [news, setNews] = useState([]);
   const [events, setEvents] = useState([]);
 
-  const ProductCarousel = ({ products, language, t, BACKEND_HOST, cardsPerRow = 4 }) => {
+  const ProductCarousel = ({ products, language, t, BACKEND_HOST, cardsPerRow = 3 }) => {
     const [startIndex, setStartIndex] = useState(0);
     const totalProducts = products.length;
 
@@ -35,15 +33,15 @@ const HomePage = ()=> {
     return (
       <Container className="products-section">
         <Row className="d-flex text-center">
-          <h6>我们为您提供优质产品以及服务</h6>
-          <h2>热门产品</h2>
+          <h4>Our Products</h4>
+          <h4>我们的产品</h4>
         </Row>
         {/* 轮播容器 */}
         <div className="home-product-carousel-wrapper">
-          {/* 左侧按钮 */}
+          {/* 左侧按钮
           <Button onClick={prevSlide} disabled={startIndex === 0} className="home-product-carousel-btn left">
             &#10094;
-          </Button>
+          </Button> */}
 
           {/* 产品区域 */}
           <div className="home-product-carousel-container">
@@ -57,10 +55,11 @@ const HomePage = ()=> {
                   <Col xs={6} sm={6} md={12 / cardsPerRow} key={product.id}>
                     <Link to={`/products/${product.url}`} className="home-product-card-link">
                       <Card className="product-card">
-                        <Card.Img variant="top" src={`${BACKEND_HOST}${product.ProductImage?.url}`} alt={Name} />
+                        <Card.Img src={`${BACKEND_HOST}${product.ProductImage?.url}`} alt={Name} />
+                        <hr />
                         <Card.Body className="card-body">
                           <Card.Title title={Name}>{Name}</Card.Title>
-                          <p className="product-price">{product.Price === 0 ? t("price_tbd") : `AU$ ${product.Price}`}</p>
+                          <Card.Text>{product.Description_zh}</Card.Text>
                         </Card.Body>
                       </Card>
                     </Link>
@@ -70,10 +69,10 @@ const HomePage = ()=> {
             </Row>
           </div>
 
-          {/* 右侧按钮 */}
+          {/* 右侧按钮
           <Button onClick={nextSlide} disabled={startIndex + cardsPerRow >= totalProducts} className="home-product-carousel-btn right">
             &#10095;
-          </Button>
+          </Button> */}
         </div>
 
         <Link to="/products/">
@@ -106,9 +105,9 @@ const HomePage = ()=> {
           <h2>新闻</h2>
         </Row>
         <div className="home-product-carousel-wrapper">
-          <Button onClick={prevSlide} disabled={startIndex === 0} className="home-event-carousel-btn left">
+          {/* <Button onClick={prevSlide} disabled={startIndex === 0} className="home-event-carousel-btn left">
               &#10094;
-          </Button>
+          </Button> */}
           <div className="home-event-carousel-container">
             <Row
               className="home-event-row"
@@ -153,9 +152,9 @@ const HomePage = ()=> {
               )}
             </Row>
           </div>
-          <Button onClick={nextSlide} disabled={startIndex + cardsPerRow >= totalNews} className="home-event-carousel-btn right">
+          {/* <Button onClick={nextSlide} disabled={startIndex + cardsPerRow >= totalNews} className="home-event-carousel-btn right">
             &#10095;
-          </Button>
+          </Button> */}
         </div>
 
         <Link to="/news/">
@@ -188,9 +187,9 @@ const HomePage = ()=> {
           <h2>活动</h2>
         </Row>
         <div className="home-product-carousel-wrapper">
-          <Button onClick={prevSlide} disabled={startIndex === 0} className="home-event-carousel-btn left">
+          {/* <Button onClick={prevSlide} disabled={startIndex === 0} className="home-event-carousel-btn left">
               &#10094;
-          </Button>
+          </Button> */}
           <div className="home-event-carousel-container">
           <Row
             className="home-event-row"
@@ -245,9 +244,9 @@ const HomePage = ()=> {
           </Row>
 
           </div>
-          <Button onClick={nextSlide} disabled={startIndex + cardsPerRow >= totalEvents} className="home-event-carousel-btn right">
+          {/* <Button onClick={nextSlide} disabled={startIndex + cardsPerRow >= totalEvents} className="home-event-carousel-btn right">
             &#10095;
-          </Button> 
+          </Button>  */}
         </div>
 
         <Link to="/events/">
@@ -281,7 +280,7 @@ const HomePage = ()=> {
             },
           }
         );
-        setProducts(response.data.data.slice(0, 8)); // Limit to 8 products
+        setProducts(response.data.data.slice(0, 3)); // Limit to 8 products
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -323,78 +322,23 @@ const HomePage = ()=> {
     fetchEvents();
   }, []);
 
-  
-  // console.log(ads);
-
   const language = i18n.language;
 
   return (
     <div className="homepage-background">
-      <Container>
-        <BannerSlider ads={ads} />
-      </Container>
-      <Container className='influence-hub-section'>
-        <Row className="d-flex text-center">
-          <h6>我们有各领域专家及优质自媒体网红</h6>
-          <h2>星潮汇</h2>
-        </Row>
-        {/* Influence Hub Section */}
-        <Row>
-          {/* 第一个背景块 */}
-          <Col md={4}>
-            <Link to={`/founders`} className="home-product-card-link">
-              <div className="product-container product-bg-1">
-                <div className="product-content">
-                  <h6 className="product-title">开创品牌愿景，引领卓越未来</h6>
-                  <h3 className="product-subtitle">品牌创始人</h3>
-                  <Link to="/founders">
-                    <Button><b>查看更多</b></Button>
-                  </Link>
-                </div>
-              </div>
-            </Link>
-          </Col>
-
-          {/* 第二个背景块 */}
-          <Col md={4}>
-            <Link to={`/kols`} className="home-product-card-link">
-              <div className="product-container product-bg-2">
-                <div className="product-content">
-                  <h6 className="product-title">赋予群众力量，启发潮流趋势</h6>
-                  <h3 className="product-subtitle">意见领袖</h3>
-                  <Link to="/kols/">
-                    <Button><b>查看更多</b></Button>
-                  </Link>
-                </div>
-              </div>
-            </Link>
-          </Col>
-
-          {/* 第三个背景块 */}
-          <Col md={4}>
-            <Link to={`/ambassadors`} className="home-product-card-link">
-              <div className="product-container product-bg-3">
-                <div className="product-content">
-                  <h6 className="product-title">引领潮流风向，定义时代风格</h6>
-                  <h3 className="product-subtitle">品牌代言人</h3>
-                  <Link to="/ambassadors/">
-                    <Button><b>查看更多</b></Button>
-                  </Link>
-                </div>
-              </div>
-            </Link>
-          </Col>
-        </Row>
-      </Container>
-
+      
+      <Image className='home-banner' src='/homepage/Home_Banner.png' alt='360 Media' />
       {/* Products Section */}
-      <ProductCarousel
-      products={products}
-      language={language}
-      t = {t}
-      BACKEND_HOST={BACKEND_HOST} 
-      cardsPerRow = {4}
-      />
+      <div className="homepage-bg-1">
+        <ProductCarousel
+          products={products}
+          language={language}
+          t = {t}
+          BACKEND_HOST={BACKEND_HOST} 
+          cardsPerRow = {3}
+        />
+      </div>
+      
 
       {/* News Section */}
       <NewCarousel
