@@ -13,17 +13,14 @@ body.menu-open {
 
 /* 导航栏基础样式 */
 .navbar-custom {
-  background-color: white !important;
-  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 1px rgba(0, 0, 0, 0.1); */
   padding: 5px 15px;
-  height: 55px;
+  /* height: 55px; */
   display: flex;
   align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   z-index: 1050;
+  background-color: rgba(255, 255, 255, 0)
 }
 
 /* Logo 样式 */
@@ -49,7 +46,7 @@ body.menu-open {
   font-size: 14px;
   font-weight: 500;
   transition: color 0.3s ease-in-out;
-  background-color: white; /* 添加背景色，确保可见 */
+  background-color: transparent; /* 添加背景色，确保可见 */
 }
 
 /* 文字 Hover 颜色 */
@@ -119,7 +116,7 @@ body.menu-open {
   /* 让上一级菜单在移动端保持背景色 */
   .nav-custom .nav-link,
   .nav-custom .dropdown-container {
-    background-color: white !important; /* 强制背景色 */
+    background-color: transparent; /* 强制背景色 */
     width: 100%;
   }
 
