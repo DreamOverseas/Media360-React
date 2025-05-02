@@ -12,6 +12,7 @@ const resources = {
       event: "Event",
       contact: "Contact Us",
       joinus: "Join Us",
+      about_us:"360 Media is a multidimensional digital ecosystem platform that empowers brands, communities, and creators. It goes beyond media — integrating SaaS (Software as a Service) and PaaS (Platform as a Service) to connect third-party platforms, products, companies, payment gateway and key people including founders, KOLs, and influencers into one seamless system of communication, influence, and commerce.\nWith a built-in e-commerce engine and super API, 360 Media supports a flexible and forward-compatible payment infrastructure — combining traditional fiat, reward points, discount systems, and digital value exchanges (in compliance-aware formats). It is fully interoperable across both Web2 and Web3 environments, enabling every player in the ecosystem to explore greater value creation.\n360 Media is here to redefine the future of consumption and being consumed.",
       product: "Product",
       sponsor: "Sponsor",
       language: "Language",
@@ -167,7 +168,13 @@ const resources = {
       view_details: "View Details",
       price: "Price",
       related_brands: "Related Brands",
-      elite_package: "1. 直播采访\n提供两次直播采访服务，并上传至多个西方及中国社交平台，帮助客户推广品牌与故事。\n\n2. 信息上传\n在360Media平台上传信息，增加品牌曝光，为交易打下基础。\n\n3. 产品代言\n安排有影响力的人士代言客户产品，提供产品代言服务。\n\n4. MCN 网络资源\n连接MCN（多频道网络），帮助客户在社交媒体平台推广。\n\n5. 群发邮件\n提供群发邮件服务，用于活动宣传或新产品发布。\n\n6. 实习招聘\n提供实习招聘服务，支持客户的人力资源需求。\n\n7. 墨尔本CBD现场讲座/研讨会\n安排活动、演讲、讲座或研讨会，提供线下推广与互动的机会。"
+      elite_package: "1. 直播采访\n提供两次直播采访服务，并上传至多个西方及中国社交平台，帮助客户推广品牌与故事。\n\n2. 信息上传\n在360Media平台上传信息，增加品牌曝光，为交易打下基础。\n\n3. 产品代言\n安排有影响力的人士代言客户产品，提供产品代言服务。\n\n4. MCN 网络资源\n连接MCN（多频道网络），帮助客户在社交媒体平台推广。\n\n5. 群发邮件\n提供群发邮件服务，用于活动宣传或新产品发布。\n\n6. 实习招聘\n提供实习招聘服务，支持客户的人力资源需求。\n\n7. 墨尔本CBD现场讲座/研讨会\n安排活动、演讲、讲座或研讨会，提供线下推广与互动的机会。",
+      feature_1:"",
+      feature_2:"",
+      feature_3:"",
+      feature_4:"",
+      feature_5:"",
+      feature_6:""
     },
   },
   zh: {
@@ -176,6 +183,7 @@ const resources = {
       event: "活动",
       contact: "联系我们",
       joinus: "加入我们",
+      about_us:"360传媒（360 Media）是一个多维数字, AI 生态平台，致力于融合内容、社群与商业，支付为企业与创作者赋能。我们不仅是一个媒体平台，更是一个集成SaaS（软件即服务）与PaaS（平台即服务）的智能化系统，通过连接第三方社交平台、品牌、产品与关键人物（如创始人、KOL、影响者），打造出一个具有传播力、转化力与交易闭环的综合性平台。\n360传媒内建电商引擎与超级API接口，支持多元化支付机制，包括传统法币支付、积分奖励体系、优惠券机制与数字资产通道（以合规与灵活性为导向）。我们同时兼容Web2与Web3生态，让每一个生态角色都具备更多想象空间与增值潜力。\n我们正在重新定义“消费与被消费”的未来。",
       product: "产品",
       sponsor: "赞助商",
       language: "语言",
@@ -344,7 +352,13 @@ const resources = {
       portrait_info:"提供至少 2 张宽高比 2:3 的半身照。提供至少 1 张正方形照片。\n提供人物中英文姓名以及人物头衔：中文少于10 字，英文少于6 个单词\n需提供中英文人物简介",
       video_specification:"产品视频\n宽高比 16:9，分辨率不低于 1920 x 1080(全高清)。建议格式为 MP4，时长控制在 5 分钟以内，保证播放流畅。需展示产品功能与亮点。\n人物视频\n宽高比 16:9，分辨率不低于 1920 x 1080(全高清) 格式建议为 MP4，时长控制在 5 分钟以内， 突出人物核心价值，提升品牌形象。\n视频请单独发送至info@do360.com",
       product_specification:"需提供产品长方形尺寸照片\n 宽高比 3: 2 且分辨率不低于 900 x 600 至少 5张\n文字需提供中英文简介，精准表达产品亮点",
-      merchant_text:"360传媒 提供三个核心服务套餐：精英套餐、优质套餐，以及企业与战略套餐，旨在满足从初创企业到大型品牌的各种业务需求。 加入我们，打造品牌影响力！ 在这里，您可以上传品牌创始人、产品意见领袖、产品代言人，分享品牌故事，塑造行业影响力。 同时，推荐优质产品、意见领袖以及代言人，拓展合作渠道，助力品牌曝光，让更多目标用户关注并信赖您的品牌。"
+      merchant_text:"360传媒 提供三个核心服务套餐：精英套餐、优质套餐，以及企业与战略套餐，旨在满足从初创企业到大型品牌的各种业务需求。 加入我们，打造品牌影响力！ 在这里，您可以上传品牌创始人、产品意见领袖、产品代言人，分享品牌故事，塑造行业影响力。 同时，推荐优质产品、意见领袖以及代言人，拓展合作渠道，助力品牌曝光，让更多目标用户关注并信赖您的品牌。",
+      feature_1:"<h5>全方位品牌推广</h5><p>利用直播采访、社交平台发布、群发邮件等多渠道传播手段，为品牌故事和产品最大化曝光。</p>",
+      feature_2:"<h5>高效内容与视觉制作</h5><p>提供专业的摄影摄像、平面设计和网站建设服务，确保品牌形象专业统一、视觉吸引力强。</p>",
+      feature_3:"<h5>影响力营销与MCN资源对接</h5><p>借助KOL代言和MCN网络资源，将产品精准传达至目标受众，提升转化率。</p>",
+      feature_4:"<h5>线下互动与活动支持</h5><p>提供墨尔本CBD讲座/研讨会策划执行与活动场地租赁，增强品牌与客户之间的互动与信任。</p>",
+      feature_5:"<h5>综合运营与管理支持</h5><p>提供账号管理、人力招聘与企业合作资源，助力客户轻松进行业务运营与扩展。</p>",
+      feature_6:"<h5>战略规划与法律保障</h5><p>从战略设计到法律支持，为品牌提供持续增长路径与合规保障，构建长远发展基础。</p>"
     },
   },
 };
