@@ -34,11 +34,6 @@
   margin-bottom: 4rem;
 }
 
-/* Section Spacing */
-.products-section {
-  margin-bottom: 4rem;
-}
-
 .events-section {
   margin-bottom: 0;
   /* Removed high margin for the undermost section */
@@ -269,13 +264,23 @@
   z-index: 10;
 }
 .home-banner {
-  height:500px;
+  height:400px;
   width:100%
 }
 
 .homepage-bg-1 {
   background-image: url(/homepage/homepage_bg_1.png);
   margin-top:-1px;
+}
+
+.gradient-to-lightblue {
+  height: 90px;
+  background: linear-gradient(
+    to bottom,
+    #b8c4e4,
+    rgb(234 245 255) 80%
+  );
+  margin-top: -1px; /* 避免缝隙 */
 }
 
 .home-product-carousel-btn.left {

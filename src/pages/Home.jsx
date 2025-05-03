@@ -32,8 +32,8 @@ const HomePage = ()=> {
     };
 
     return (
-      <Container className="products-section">
-        <Row className="d-flex text-center">
+      <Container>
+        <Row className="d-flex text-center" style={{ color: 'white' }}>
           <h4>Our Products</h4>
           <h4>我们的产品</h4>
         </Row>
@@ -110,14 +110,9 @@ const HomePage = ()=> {
                 </Row>
                 <h6>{t("我们提供12个月套餐包含以下服务")}</h6>
                 <h6 className="basic-info-text">{t("基础服务")}</h6>
-                <p>{t("（精英基础套餐服务和卓越尊享套餐服务均已包含）")}</p>
-                {t("enterprise_package_homepage").split("\n").map((line, index) => (
-                  <p key={index}>{line}</p>
-                ))}
+                <p>{t("（精英基础套餐和卓越尊享套餐服务均已包含）")}</p>
                 <h6>{t("额外服务")}</h6>
-                {t("enterprise_package_extra_homepage").split("\n").map((line, index) => (
-                  <p key={index}>{line}</p>
-                ))}
+                <div dangerouslySetInnerHTML={{ __html: t('enterprise_package_extra_homepage') }}/>
               </div>
             </div>
           ),
@@ -131,13 +126,8 @@ const HomePage = ()=> {
                 <h6>{t("我们提供6个月套餐包含以下服务")}</h6>
                 <h6 className="basic-info-text">{t("基础服务")}</h6>
                 <p>{t("（精英基础套餐服务均已包含）")}</p>
-                {t("premium_package_homepage").split("\n").map((line, index) => (
-                  <p key={index}>{line}</p>
-                ))}
                 <h6>{t("额外服务")}</h6>
-                {t("premium_package_extra_homepage").split("\n").map((line, index) => (
-                  <p key={index}>{line}</p>
-                ))}
+                <div dangerouslySetInnerHTML={{ __html: t('premium_package_extra_homepage') }}/>
               </div>
             </div>
           ),
@@ -149,9 +139,7 @@ const HomePage = ()=> {
                   <h5>AU $990</h5>
                 </Row>
                 <h6>{t("我们提供6个月套餐包含以下服务")}</h6>
-                {t("elite_package").split("\n").map((line, index) => (
-                  <p key={index}>{line}</p>
-                ))}
+                <div dangerouslySetInnerHTML={{ __html: t('elite_package_homepage') }}/>
               </div>
               
               {/* <Link to={`/products/360-media-service-standard-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link> */}
@@ -193,7 +181,7 @@ const HomePage = ()=> {
 
     return (
       <Container>
-        <Row >
+        <Row>
           <h4>News</h4>
           <h4>新闻</h4>
         </Row>
@@ -250,9 +238,9 @@ const HomePage = ()=> {
           </Button> */}
         </div>
 
-        <Link to="/news/">
+        {/* <Link to="/news/">
           <Button><b>{t("btn_more")}</b></Button>
-        </Link>
+        </Link> */}
 
       </Container>
     );
@@ -277,9 +265,9 @@ const HomePage = ()=> {
 
     return (
       <Container className='events-section'>
-        <Row className="d-flex text-center">
-          <h6>探索“我们”的力量</h6>
-          <h2>活动</h2>
+        <Row>
+          <h4>Events</h4>
+          <h4>活动</h4>
         </Row>
         <div className="home-product-carousel-wrapper">
           {/* <Button onClick={prevSlide} disabled={startIndex === 0} className="home-event-carousel-btn left">
@@ -344,9 +332,9 @@ const HomePage = ()=> {
           </Button>  */}
         </div>
 
-        <Link to="/events/">
+        {/* <Link to="/events/">
           <Button><b>{t("btn_more")}</b></Button>
-        </Link>
+        </Link> */}
 
       </Container>
     );
@@ -423,7 +411,9 @@ const HomePage = ()=> {
           />
         </div>
       </section>
-      
+      <div className="gradient-to-lightblue"></div>
+      <section>
+      <section style={{ backgroundColor: 'rgb(234 245 255)'}}>
       <Container>
         <section>
           <Row className="d-flex text-center">
@@ -512,7 +502,7 @@ const HomePage = ()=> {
           </Row>
         </section>
         <br/>
-        <section className="package-section">
+        <section>
           <h5>Join Us</h5>
           <h6>加入我们</h6>
           {onDesktop?(
@@ -570,9 +560,11 @@ const HomePage = ()=> {
           </Row>
           
         </section>
-      </Container>
-      <br/>
-      <section>
+        </Container>
+    </section>
+    <br/>
+    <div>
+    <section>
         <NewCarousel
         news={news}
         language={language}
@@ -591,6 +583,8 @@ const HomePage = ()=> {
         cardsPerRow = {4}
         />
       </section>
+    </div>
+    </section>
     </div>
   );
 };
