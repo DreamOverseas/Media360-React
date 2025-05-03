@@ -149,7 +149,7 @@ const HomePage = ()=> {
                   <h5>AU $990</h5>
                 </Row>
                 <h6>{t("我们提供6个月套餐包含以下服务")}</h6>
-                {t("elite_package_homepage").split("\n").map((line, index) => (
+                {t("elite_package").split("\n").map((line, index) => (
                   <p key={index}>{line}</p>
                 ))}
               </div>
@@ -445,7 +445,7 @@ const HomePage = ()=> {
               <Col>
                 <Row>
                   <Col md={4}>
-                    <Image src="/public/homepage/home-founder-cover.jpg"/>
+                    <Image src="/homepage/brand-image.png"/>
                   </Col>
                   <Col md={8}>
                     <div dangerouslySetInnerHTML={{ __html: t('feature_1') }}/>
@@ -456,7 +456,7 @@ const HomePage = ()=> {
               <Col>
                 <Row>
                   <Col md={4}>
-                    <Image src="/public/homepage/home-founder-cover.jpg"/>
+                    <Image src="/homepage/web-design.png"/>
                   </Col>
                   <Col md={8}>
                     <div dangerouslySetInnerHTML={{ __html: t('feature_2') }}/>
@@ -467,7 +467,7 @@ const HomePage = ()=> {
               <Col>
                 <Row>
                   <Col md={4}>
-                    <Image src="/public/homepage/home-founder-cover.jpg"/>
+                    <Image src="/homepage/social-media.png"/>
                   </Col>
                   <Col md={8}>
                     <div dangerouslySetInnerHTML={{ __html: t('feature_3') }}/>
@@ -480,7 +480,7 @@ const HomePage = ()=> {
             <Col>
               <Row>
                 <Col md={4}>
-                  <Image src="/public/homepage/home-founder-cover.jpg"/>
+                  <Image src="/homepage/lecture.png"/>
                 </Col>
                 <Col md={8}>
                   <div dangerouslySetInnerHTML={{ __html: t('feature_4') }}/>
@@ -491,7 +491,7 @@ const HomePage = ()=> {
             <Col>
               <Row>
                 <Col md={4}>
-                  <Image src="/public/homepage/home-founder-cover.jpg"/>
+                  <Image src="/homepage/content.png"/>
                 </Col>
                 <Col md={8}>
                   <div dangerouslySetInnerHTML={{ __html: t('feature_5') }}/>
@@ -502,7 +502,7 @@ const HomePage = ()=> {
             <Col>
               <Row>
                 <Col md={4}>
-                  <Image src="/public/homepage/home-founder-cover.jpg"/>
+                  <Image src="/homepage/team.png"/>
                 </Col>
                 <Col md={8}>
                   <div dangerouslySetInnerHTML={{ __html: t('feature_6') }}/>
@@ -525,15 +525,9 @@ const HomePage = ()=> {
                       <h5>AU $5,500</h5>
                     </Row>
                     <h6>{t("我们提供12个月套餐包含以下服务")}</h6>
-                    <h6 className="basic-info-text">{t("基础服务")}</h6>
-                    <p>{t("（精英基础套餐服务和卓越尊享套餐服务均已包含）")}</p>
-                    {t("enterprise_package_homepage").split("\n").map((line, index) => (
-                      <p key={index}>{line}</p>
-                    ))}
+                    <p>{t("（精英基础套餐和卓越尊享套餐服务均已包含）")}</p>
                     <h6>{t("额外服务")}</h6>
-                    {t("enterprise_package_extra_homepage").split("\n").map((line, index) => (
-                      <p key={index}>{line}</p>
-                    ))}
+                    <div dangerouslySetInnerHTML={{ __html: t('enterprise_package_extra_homepage') }}/>
                   </div>
                 </div>
               </Col>
@@ -546,15 +540,9 @@ const HomePage = ()=> {
                       <h5>AU $3,300</h5>
                     </Row>
                     <h6>{t("我们提供6个月套餐包含以下服务")}</h6>
-                    <h6 className="basic-info-text">{t("基础服务")}</h6>
                     <p>{t("（精英基础套餐服务均已包含）")}</p>
-                    {t("premium_package_homepage").split("\n").map((line, index) => (
-                      <p key={index}>{line}</p>
-                    ))}
                     <h6>{t("额外服务")}</h6>
-                    {t("premium_package_extra_homepage").split("\n").map((line, index) => (
-                      <p key={index}>{line}</p>
-                    ))}
+                    <div dangerouslySetInnerHTML={{ __html: t('premium_package_extra_homepage') }}/>
                   </div>
                 </div>
               </Col>
@@ -567,9 +555,7 @@ const HomePage = ()=> {
                       <h5>AU $990</h5>
                     </Row>
                     <h6>{t("我们提供6个月套餐包含以下服务")}</h6>
-                    {t("elite_package_homepage").split("\n").map((line, index) => (
-                      <p key={index}>{line}</p>
-                    ))}
+                    <div dangerouslySetInnerHTML={{ __html: t('elite_package_homepage') }}/>
                   </div>
                 </div>
               </Col>

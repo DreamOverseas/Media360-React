@@ -345,10 +345,42 @@ const resources = {
       price: "价格",
       related_brands: "相关品牌",
       elite_package: "1. 直播采访\n提供两次直播采访服务，并上传至多个西方及中国社交平台，帮助客户推广品牌与故事。\n\n2. 信息上传\n在360Media平台上传信息，增加品牌曝光，为交易打下基础。\n\n3. 产品代言\n安排有影响力的人士代言客户产品，提供产品代言服务。\n\n4. MCN 网络资源\n连接MCN（多频道网络），帮助客户在社交媒体平台推广。\n\n5. 群发邮件\n提供群发邮件服务，用于活动宣传或新产品发布。\n\n6. 实习招聘\n提供实习招聘服务，支持客户的人力资源需求。\n\n7. 墨尔本CBD现场讲座/研讨会\n安排活动、演讲、讲座或研讨会，提供线下推广与互动的机会。",
+      elite_package_homepage:
+      `
+        <ul style="list-style-type: disc; padding-left: 20px; margin: 0;">
+          <li style="display: list-item; margin-bottom: 8px;">直播采访</li>
+          <li style="display: list-item; margin-bottom: 8px;">信息上传</li>
+          <li style="display: list-item; margin-bottom: 8px;">产品代言</li>
+          <li style="display: list-item; margin-bottom: 8px;">MCN 网络资源</li>
+          <li style="display: list-item; margin-bottom: 8px;">群发邮件</li>
+          <li style="display: list-item; margin-bottom: 8px;">实习招聘</li>
+          <li style="display: list-item; margin-bottom: 8px;">墨尔本CBD现场讲座/研讨会</li>
+        </ul>
+      `,
       premium_package: "\n1. 直播采访\n提供两次直播采访服务，并上传至多个西方及中国社交平台，帮助客户推广品牌与故事。\n\n2. 信息上传\n在360Media平台上传信息，增加品牌曝光，为交易打下基础。\n\n3. 产品代言\n安排有影响力的人士代言客户产品，提供产品代言服务。\n\n4. MCN 网络资源\n连接MCN（多频道网络），帮助客户在社交媒体平台推广。\n\n5. 群发邮件\n提供群发邮件服务，用于活动宣传或新产品发布。\n\n6. 实习招聘\n提供实习招聘服务，支持客户的人力资源需求。\n\n7. 墨尔本CBD现场讲座/研讨会\n安排活动、演讲、讲座或研讨会，提供线下推广与互动的机会。\n\n帮助客户制作高质量的宣传材料。",
       premium_package_extra:"1. 人脉拓展\n提供行业内的人脉拓展服务，帮助客户建立更广泛的行业联系。\n\n2. 场地租赁\n提供活动场地、拍摄场地或其他商业用途的租赁服务。\n\n3. 摄影/摄像服务\n提供专业摄影和摄像服务，帮助客户制作高质量的宣传材料。",
+      premium_package_extra_homepage:
+      `
+        <ul style="list-style-type: disc; padding-left: 20px; margin: 0;">
+          <li style="display: list-item; margin-bottom: 8px;">人脉拓展</li>
+          <li style="display: list-item; margin-bottom: 8px;">场地租赁</li>
+          <li style="display: list-item; margin-bottom: 8px;">摄影/摄像服务</li>
+        </ul>
+      `,
       enterprise_package: "\n1. 直播采访\n提供两次直播采访服务，并上传至多个西方及中国社交平台，帮助客户推广品牌与故事。\n\n2. 信息上传\n在360Media平台上传信息，增加品牌曝光，为交易打下基础。\n\n3. 产品代言\n安排有影响力的人士代言客户产品，提供产品代言服务。\n\n4. MCN 网络资源\n连接MCN（多频道网络），帮助客户在社交媒体平台推广。\n\n5. 群发邮件\n提供群发邮件服务，用于活动宣传或新产品发布。\n\n6. 实习招聘\n提供实习招聘服务，支持客户的人力资源需求。\n\n7. 墨尔本CBD现场讲座/研讨会\n安排活动、演讲、讲座或研讨会，提供线下推广与互动的机会。\n\n8. 人脉拓展\n提供行业内的人脉拓展服务，帮助客户建立更广泛的行业联系。\n\n9. 场地租赁\n提供活动场地、拍摄场地或其他商业用途的租赁服务。\n\n10. 摄影/摄像服务\n提供专业摄影和摄像服务，帮助客户制作高质量的宣传材料。",
       enterprise_package_extra: "1. 平面设计\n提供平面设计服务，帮助客户制作品牌形象、广告素材等。\n\n2. 企业合作\n提供企业合作机会，帮助客户拓展业务资源。\n\n3. 网站设计与实施\n提供网站设计与实施服务，帮助客户建立和维护品牌官网。\n\n4. 账号管理与运营\n提供账号管理与运营支持，确保品牌在各个平台持续曝光。\n\n5. 法律支持\n提供法律援助，协助客户处理法律事务，确保品牌合规。\n\n6. 战略设计\n提供战略设计服务，帮助客户制定长期品牌与市场营销策略。\n\n7. 公共关系\n提供公共关系服务，帮助客户与媒体及公众建立并维护良好关系。",
+      enterprise_package_extra_homepage:
+      `
+        <ul style="list-style-type: disc; padding-left: 20px; margin: 0;">
+          <li style="display: list-item; margin-bottom: 8px;">平面设计</li>
+          <li style="display: list-item; margin-bottom: 8px;">企业合作</li>
+          <li style="display: list-item; margin-bottom: 8px;">网站设计与实施</li>
+          <li style="display: list-item; margin-bottom: 8px;">账号管理与运营</li>
+          <li style="display: list-item; margin-bottom: 8px;">法律支持</li>
+          <li style="display: list-item; margin-bottom: 8px;">战略设计</li>
+          <li style="display: list-item; margin-bottom: 8px;">公共关系</li>
+        </ul>
+      `,
       portrait_info:"提供至少 2 张宽高比 2:3 的半身照。提供至少 1 张正方形照片。\n提供人物中英文姓名以及人物头衔：中文少于10 字，英文少于6 个单词\n需提供中英文人物简介",
       video_specification:"产品视频\n宽高比 16:9，分辨率不低于 1920 x 1080(全高清)。建议格式为 MP4，时长控制在 5 分钟以内，保证播放流畅。需展示产品功能与亮点。\n人物视频\n宽高比 16:9，分辨率不低于 1920 x 1080(全高清) 格式建议为 MP4，时长控制在 5 分钟以内， 突出人物核心价值，提升品牌形象。\n视频请单独发送至info@do360.com",
       product_specification:"需提供产品长方形尺寸照片\n 宽高比 3: 2 且分辨率不低于 900 x 600 至少 5张\n文字需提供中英文简介，精准表达产品亮点",
