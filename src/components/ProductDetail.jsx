@@ -537,59 +537,57 @@ const ProductDetail = () => {
                     ) : null}
                   </Row> */}
                   </Row>
-                  {subItemCategory?.[language]?.map((item, index) => (
-                    <div key={index}>
-                      <h4>{item}</h4>
-                      <Row>
-                        {variants
-                          ?.filter(variant => variant.Sub_Item_Category?.[language] === item)
-                          .map((variant, vIndex) => {
-                            const currentPath = location.pathname;
-                            const isActive = currentPath === `/products/${variant.url}`;
-                            console.log("1111",variant);
-
-                            return (
-                              <Col xs={4} key={vIndex}>
-                                <Link to={`/products/${variant.url}`}>
-                                  <Button
-                                    className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
-                                  >
-                                    {language === "zh" ? variant.Name_zh : variant.Name_en}
-                                  </Button>
-                                </Link>
-                              </Col>
-                            );
-                          })}
-                      </Row>
-                    </div>
-                  ))}
-
-                  {/* <Row>
-                    {variants ? (
-                      variants.map((variant, index) => {
-                        const currentPath = location.pathname;
-                        const isActive =
-                          currentPath === `/products/${variant.url}`;
-
-                        return (
-                          <Col xs={4} key={index}>
-                            <Link to={`/products/${variant.url}`}>
-                              <Button
-                                className={`product-details-variant-btn ${isActive ? "active-btn" : ""
-                                  }`}
-                              >
-                                {language === "zh"
-                                  ? variant.Name_zh
-                                  : variant.Name_en}
-                              </Button>
-                            </Link>
-                          </Col>
-                        );
-                      })
+                  
+                  {variants ? (
+                    subItemCategory?.[language]?.length > 0 ? (
+                      
+                      subItemCategory[language].map((item, index) => (
+                        <div key={index}>
+                          <h4>{item}</h4>
+                          <Row>
+                            {variants
+                              .filter(variant => variant.Sub_Item_Category?.[language] === item)
+                              .map((variant, vIndex) => {
+                                const currentPath = location.pathname;
+                                const isActive = currentPath === `/products/${variant.url}`;
+                                return (
+                                  <Col xs={4} key={vIndex}>
+                                    <Link to={`/products/${variant.url}`}>
+                                      <Button
+                                        className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
+                                      >
+                                        {language === "zh" ? variant.Name_zh : variant.Name_en}
+                                      </Button>
+                                    </Link>
+                                  </Col>
+                                );
+                              })}
+                          </Row>
+                        </div>
+                      ))
                     ) : (
-                      <></>
-                    )}
-                  </Row> */}
+
+                      <Row>
+                        {variants.map((variant, index) => {
+                          const currentPath = location.pathname;
+                          const isActive = currentPath === `/products/${variant.url}`;
+                          return (
+                            <Col xs={4} key={index}>
+                              <Link to={`/products/${variant.url}`}>
+                                <Button
+                                  className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
+                                >
+                                  {language === "zh" ? variant.Name_zh : variant.Name_en}
+                                </Button>
+                              </Link>
+                            </Col>
+                          );
+                        })}
+                      </Row>
+                    )
+                  ) : (
+                    <></>
+                  )}
                   <Row>
                     {Price_Display !== 0 && Price_Display !== null && (
                       <h2>AU$ {Price_Display}</h2>
