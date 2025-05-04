@@ -265,12 +265,15 @@
 }
 .home-banner {
   height:400px;
-  width:100%
+  width:100%;
+  z-index: 1;
+  position: relative;
 }
 
 .homepage-bg-1 {
   background-image: url(/homepage/homepage_bg_1.png);
   margin-top:-1px;
+  
 }
 
 .gradient-to-lightblue {
