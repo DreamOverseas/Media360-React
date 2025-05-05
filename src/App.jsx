@@ -22,7 +22,7 @@ import BrandPage from "./pages/BrandPage.jsx";
 import BrandRelatedNewsPage from "./pages/BrandRelatedNewsPage.jsx";
 import BrandRelatedPersonsPage from "./pages/BrandRelatedPersonsPage.jsx";
 import BrandRelatedProductsPage from "./pages/BrandRelatedProductsPage.jsx";
-// import Events from "./pages/Events";
+import Events from "./pages/Events";
 import RecentProductsBar from "./components/RecentProductsBar.jsx";
 import FounderPage from "./pages/FounderPage.jsx";
 import Greeness from "./pages/Greeness.jsx";
@@ -138,7 +138,7 @@ function App() {
           <Route path='/influence-hub' element={<InfluenceHub />} />
           <Route path='/media-center' element={<MediaCenter />} />
           <Route path='/news' element={<NewsPage />} />
-          {/* <Route path='/events' element={<Events />} /> */}
+          <Route path='/events' element={<Events />} />
           <Route path='/founders' element={<FounderPage />} />
           <Route path='/kols' element={<KolPage />} />
           <Route path='/ambassadors' element={<AmbassadorPage />} />

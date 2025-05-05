@@ -110,8 +110,32 @@ const Events = () => {
       .finally(() => setLoading(false));
   };
 
-
-  
+  const renderEventCard = (event,calculateTime) => {
+    const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+    const eventName = event.Name_en;
+    return (
+      <Col xs={6} sm={4} md={4} className="mb-4">
+        <Link to={`/events/${event.url}`} className="card-link-EventPage">
+          <Card className="eventpage-event-card">
+            {event.Image ? (
+              <Card.Img variant="top" src={`${BACKEND_HOST}${event.Image.url}`} alt={eventName} />
+            ) : (
+              <Card.Img variant="top" src="https://placehold.co/250x350" alt="Placeholder" />
+            )}
+            <Card.Body>
+              <Card.Title>{eventName}</Card.Title>
+              {calculateTime(event.Start_Date, event.End_date) ? (
+                <Card.Text className="eventpage-event-date">{calculateTime(event.Start_Date, event.End_Date)}</Card.Text>
+              ) :(<></>)
+              }
+              <Card.Text className="eventpage-event-location">{event.Location}</Card.Text>
+              <Card.Text className="eventpage-event-host">{event.Host}</Card.Text>
+            </Card.Body>
+          </Card>
+        </Link>
+      </Col>
+    );
+  };
 
   useEffect(() => {
     fetchPastEvents(page);
@@ -173,7 +197,11 @@ const Events = () => {
         <Row>
           <h2>Past Review</h2>
           {pastEvents.map((event, index) => (
-            <Col key={event.id} ref={index === pastEvents.length - 1 ? lastEventElementRef : null}>
+            <Col 
+
+            key={event.id} 
+            ref={index === pastEvents.length - 1 ? lastEventElementRef : null}
+            >
               {renderEventCard(event,calculateTime)}
             </Col>
           ))}
@@ -184,32 +212,7 @@ const Events = () => {
   );
 };
 
-const renderEventCard = (event,calculateTime) => {
-  const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
-  const eventName = event.Name_en;
-  return (
-    <Col xs={6} sm={4} md={4} className="mb-4">
-      <Link to={`/events/${event.url}`} className="card-link-EventPage">
-        <Card className="eventpage-event-card">
-          {event.Image ? (
-            <Card.Img variant="top" src={`${BACKEND_HOST}${event.Image.url}`} alt={eventName} />
-          ) : (
-            <Card.Img variant="top" src="https://placehold.co/250x350" alt="Placeholder" />
-          )}
-          <Card.Body>
-            <Card.Title>{eventName}</Card.Title>
-            {calculateTime(event.Start_Date, event.End_date) ? (
-              <Card.Text className="eventpage-event-date">{calculateTime(event.Start_Date, event.End_Date)}</Card.Text>
-            ) :(<></>)
-            }
-            <Card.Text className="eventpage-event-location">{event.Location}</Card.Text>
-            <Card.Text className="eventpage-event-host">{event.Host}</Card.Text>
-          </Card.Body>
-        </Card>
-      </Link>
-    </Col>
-  );
-};
+
 
 export default Events;
 

@@ -33,7 +33,7 @@ const Footer = () => {
               </div>
 
               <div>
-                <Link to={`/merchant/360-media-promotion-service`}>
+                <Link to={`/events`}>
                   <Button className='update-function-btn'>活动</Button>
                 </Link>
                 <Link to={`/merchant/360-media-promotion-service`}>
