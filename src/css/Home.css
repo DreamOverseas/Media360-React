@@ -272,19 +272,19 @@
 
 .homepage-bg-1 {
   background-image: url(/homepage/homepage_bg_1.png);
-  margin-top:-1px;
+  padding-top:50px;
   
 }
 
-.gradient-to-lightblue {
+/* .gradient-to-lightblue {
   height: 90px;
   background: linear-gradient(
     to bottom,
     #b8c4e4,
     rgb(234 245 255) 80%
   );
-  margin-top: -1px; /* 避免缝隙 */
-}
+  margin-top: -1px;
+} */
 
 .home-product-carousel-btn.left {
   left: 0px;

@@ -46,6 +46,7 @@ import Recruitment from "./pages/Recruitment.jsx";
 import RegisterMiss from "./pages/RegisterMiss.jsx";
 import ShoppingCart from "./pages/ShoppingCart.jsx";
 import Home from "./pages/Home.jsx";
+import AboutUs from "./pages/AboutUsPage.jsx";
 
 const API_URL = import.meta.env.VITE_OPENAI_API_URL
 const ASST_ID = import.meta.env.VITE_OPENAI_ASST_ID
@@ -96,6 +97,7 @@ function App() {
           <Route exact path='/productTravel' element={<ProductPage />} />
           <Route exact path='/productLife' element={<ProductPage />} /> */}
           <Route path='/products/:name' element={<ProductDetail />} />
+          <Route path='/about-us' element={<AboutUs />} />
           <Route
             path='/products/:name/related-product'
             element={<ProductRelatedProduct />}
