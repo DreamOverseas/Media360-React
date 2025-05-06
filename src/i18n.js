@@ -36,7 +36,7 @@ const resources = {
       noProducts: "No Products Available",
       noEvents: "No Events Available",
       noDescription: "No Description Available",
-      loading: "Loading...",
+      loading_more: "Loading...",
       enterEmail: "Enter Email",
       noAccount: "Do not have an account?",
       hasAccount: "Already have an account?",
@@ -107,7 +107,11 @@ const resources = {
       founder_title: "The driving soul behind brand development",
       founder_content:
         "Brand founders are pioneers of their time, bridging brand values and consumer emotions. With unique perspectives, deep industry insights, and innovative spirits, they set benchmarks in their fields.\nWe recognize their vital role as shapers of core values and leaders in delivering brand vision to the market. Partnering with brand founders is central to our strategy.\nTheir vision and leadership amplify brand impact, inspire innovation, and inject new energy into industries like technology, fashion, and education. Together, we aim to share compelling brand stories, drive growth, and create a prosperous, collaborative future.",
-      /* Miss Registration form components */
+      
+        past_review:"Past Review",
+        in_progress:"In progress",
+        up_coming:"Upcoming",
+        /* Miss Registration form components */
       miss_reg_contest_title:
         "The 73rd Miss Universe China Competition Australia Division - Melbourne 2024",
       miss_reg_name_zh: "Chinese Name*",
@@ -143,6 +147,7 @@ const resources = {
       miss_reg_please_upload: "We'll need at least one photo of you.",
       home: "Home",
       brand: "Brand",
+      news:"News",
       readMore: "Read More",
       relatedProducts: "Related Products",
       relatedNews: "Related News",
@@ -207,7 +212,7 @@ const resources = {
       noProducts: "当前无产品",
       noEvents: "当前无活动",
       noDescription: "当前无详情",
-      loading: "加载中。。。",
+      loading_more: "加载中。。。",
       enterEmail: "输入邮箱",
       noAccount: "未拥有账号？",
       hasAccount: "已拥有账号？",
@@ -264,6 +269,7 @@ const resources = {
       recruit_company: "公司主体：",
       price_tbd: "价格面议",
       brands: "品牌",
+      news:"新闻",
       recommended_product: "推荐产品",
       btn_more: "查看更多",
       highlights: "高光时刻",
@@ -285,6 +291,9 @@ const resources = {
         "意见领袖是时代的先行者，是连接品牌与消费者之间的桥梁。他们以专业的洞察力、深厚的行业知识和广泛的影响力，在各自领域中树立了权威。我们深知意见领袖的重要性，他们不仅能够帮助品牌精准传递价值观，更能激发公众的关注与信任。与意见领袖合作是我们战略发展的核心部分。无论是科技、时尚还是教育领域，他们的声音能够让品牌的愿景更具说服力，为行业趋势注入新动力。我们相信，携手意见领袖，不仅能拓宽视野，还能创造更多创新与成功的可能性。通过与各行业专家的深度合作，我们希望在不断变化的市场中，共同推动品牌与行业的进步，开创共赢的未来。",
       brand: "品牌",
       readMore: "查看更多",
+      past_review:"往期回顾",
+      in_progress:"正在进行中",
+      up_coming:"即将推出",
 
       /* Miss Registration form components */
       miss_reg_contest_title: "第73届环球小姐中国区大赛澳洲赛区-墨尔本2024",

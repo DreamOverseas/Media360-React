@@ -237,11 +237,51 @@ const KolDetail = () => {
         <Row className='kol-detail-section align-items-center'>
           <Col xs={12} md={5} className='text-center'>
             <PersonGallery person={person} />
+            {person.showRelatedInfo && (
+          <div className='kol-related-section'>
+            <h3>{t("查看相关产品及新闻")}</h3>
+            <div className='person-related-buttons'>
+              {brands.length > 0 && (
+                <Link
+                  to={`/person/${paramId}/related-brand`}
+                  className='btn-outline-black'
+                  state={{ brands }}
+                >
+                  {t("相关品牌")}
+                </Link>
+              )}
+              {products.length > 0 && (
+                <Link
+                  to={`/person/${paramId}/related-product`}
+                  className='btn-outline-black'
+                  state={{ products }}
+                >
+                  {t("相关产品")}
+                </Link>
+              )}
+              {news.length > 0 && (
+                <Link
+                  to={`/person/${paramId}/related-news`}
+                  className='btn-outline-black'
+                  state={{ news }}
+                >
+                  {t("相关新闻")}
+                </Link>
+              )}
+            </div>
+          </div>
+        )}
           </Col>
 
           <Col xs={12} md={7} className='kol-info'>
             <h1>{displayName}</h1>
             <h5>{displayTitle}</h5>
+            <div className='kol-intro'>
+          <h3 className='kol-intro-title'>{t("人物简介")}</h3>
+          <p dangerouslySetInnerHTML={{ __html: displayBio }}></p>
+        </div>
+
+        
 
             {role === "Founder" ? (
               <div className='founder-contact'>
@@ -296,45 +336,7 @@ const KolDetail = () => {
           </Col>
         </Row>
 
-        <div className='kol-intro'>
-          <h3 className='kol-intro-title'>{t("人物简介")}</h3>
-          <p dangerouslySetInnerHTML={{ __html: displayBio }}></p>
-        </div>
-
-        {person.showRelatedInfo && (
-          <div className='kol-related-section'>
-            <h3>{t("查看相关产品及新闻")}</h3>
-            <div className='person-related-buttons'>
-              {brands.length > 0 && (
-                <Link
-                  to={`/person/${paramId}/related-brand`}
-                  className='btn-outline-black'
-                  state={{ brands }}
-                >
-                  {t("相关品牌")}
-                </Link>
-              )}
-              {products.length > 0 && (
-                <Link
-                  to={`/person/${paramId}/related-product`}
-                  className='btn-outline-black'
-                  state={{ products }}
-                >
-                  {t("相关产品")}
-                </Link>
-              )}
-              {news.length > 0 && (
-                <Link
-                  to={`/person/${paramId}/related-news`}
-                  className='btn-outline-black'
-                  state={{ news }}
-                >
-                  {t("相关新闻")}
-                </Link>
-              )}
-            </div>
-          </div>
-        )}
+        
       </Container>
     </div>
   );

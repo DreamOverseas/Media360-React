@@ -13,6 +13,23 @@
     min-height: 3em;
 }
 
+.package-header{
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 5%;
+}
+
+.about-us-service-package {
+    padding:5%;
+    background-color: white;
+    border-radius: 12px;
+    height:500px;
+    margin-bottom: 5%;
+  }
+
+.package-header h5{
+    font-size:14px;
+}
 
 @media (max-width: 768px) {
     .about-text {

@@ -98,7 +98,6 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .event-page-background-image-container {
-    height: 200px;
     margin-bottom: 5%;
   }
 

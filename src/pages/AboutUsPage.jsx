@@ -28,8 +28,8 @@ const AboutUsPage = () => {
       const tabContent = {
         enterprise_package: (
           <div>
-            <div>
-              <Row style={{backgroundColor:"#b1e84f"}} className="d-flex text-center">
+            <div className="about-us-service-package">
+              <Row style={{backgroundColor:"rgb(254 120 255)"}} className="d-flex text-center package-header">
                 <h5>{t("360传媒 企业定制策略套餐")}</h5>
                 <h5>AU $5,500</h5>
               </Row>
@@ -43,8 +43,8 @@ const AboutUsPage = () => {
         ),
         premium_package: (
           <div>
-            <div>
-              <Row style={{backgroundColor:"#b1e84f"}} className="d-flex text-center">
+            <div className="about-us-service-package">
+              <Row style={{backgroundColor:"rgb(248, 230, 160)"}} className="d-flex text-center package-header">
                 <h5>{t("360传媒 卓越尊享套餐")}</h5>
                 <h5>AU $3,300</h5>
               </Row>
@@ -58,8 +58,8 @@ const AboutUsPage = () => {
         ),
         elite_package: (
           <div>
-            <div>
-              <Row style={{backgroundColor:"#b1e84f"}} className="d-flex text-center">
+            <div className="about-us-service-package">
+              <Row style={{backgroundColor:"#b1e84f"}} className="d-flex text-center package-header">
                 <h5>{t("360传媒 精英基础套餐")}</h5>
                 <h5>AU $990</h5>
               </Row>
@@ -183,9 +183,9 @@ const AboutUsPage = () => {
           {onDesktop?(
             <Row>
               <Col>
-                <div className="home-service-package">
+                <div className="about-us-service-package">
                   <div>
-                    <Row style={{backgroundColor:"#f8e6a0"}} className="d-flex text-center">
+                    <Row style={{backgroundColor:"rgb(254 120 255)"}} className="d-flex text-center package-header">
                       <h5>{t("360传媒 企业定制策略套餐")}</h5>
                       <h5>AU $5,500</h5>
                     </Row>
@@ -198,9 +198,9 @@ const AboutUsPage = () => {
               </Col>
 
               <Col>
-                <div className="home-service-package">
+                <div className="about-us-service-package">
                   <div>
-                    <Row style={{backgroundColor:"#f8e6a0"}} className="d-flex text-center">
+                    <Row style={{backgroundColor:"#f8e6a0"}} className="d-flex text-center package-header">
                       <h5>{t("360传媒 卓越尊享套餐")}</h5>
                       <h5>AU $3,300</h5>
                     </Row>
@@ -213,9 +213,9 @@ const AboutUsPage = () => {
               </Col>
 
               <Col>
-                <div className="home-service-package">
+                <div className="about-us-service-package">
                   <div>
-                    <Row style={{backgroundColor:"#b1e84f"}} className="d-flex text-center">
+                    <Row style={{backgroundColor:"#b1e84f"}} className="d-flex text-center package-header">
                       <h5>{t("360传媒 精英基础套餐")}</h5>
                       <h5>AU $990</h5>
                     </Row>

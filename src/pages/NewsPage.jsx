@@ -88,8 +88,7 @@ const NewsPage = () => {
       <section>
         <Container className='news-container'>
           <Row>
-            <h6>最新消息</h6>
-            <h2>新闻</h2>
+            <h2>{t("past_review")}</h2>
           </Row>
           <Row className='justify-content-start'>
             {news.map(newsItem => {
@@ -106,7 +105,7 @@ const NewsPage = () => {
                   key={newsItem.id}
                   xs={12}
                   sm={6}
-                  md={4} // 修改为 4 以在一行显示 3 个卡片
+                  md={4}
                 >
                   <Link to={newsUrl} className='card-link-NewsPage'>
                     <Card className='newspage-news-card d-flex flex-column'>
@@ -132,7 +131,7 @@ const NewsPage = () => {
               );
             })}
           </Row>
-          {loading && <div>Loading more news...</div>}
+          {loading && <div>{t("loading_more")}</div>}
         </Container>
       </section>
     </div>

@@ -44,8 +44,8 @@ const Events = () => {
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
   const lastEventElementRef = useRef();
-  const { t } = useTranslation();
-  // const language = i18n.language;
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
 
   // Fetch Upcoming & In Progress events
   useEffect(() => {
@@ -112,7 +112,7 @@ const Events = () => {
 
   const renderEventCard = (event,calculateTime) => {
     const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
-    const eventName = event.Name_en;
+    const eventName = language === "zh" ? event.Name_zh : event.Name_en;
     return (
         <Link to={`/events/${event.url}`} className="card-link-EventPage">
           <Card className="eventpage-event-card">
@@ -176,7 +176,7 @@ const Events = () => {
 
       {upcomingEvents.length > 0 ? (
         <Row>
-          <h2>Upcoming Events</h2>
+          <h2>{t("up_coming")}</h2>
           {upcomingEvents.map((event, index) => (
             <Col
             xs={6} sm={4} md={4} className="mb-4"
@@ -193,7 +193,7 @@ const Events = () => {
         
       {inProgressEvents.length > 0 ? (
         <Row>
-          <h2>In Progress Events</h2>
+          <h2>{t("in_progress")}</h2>
           {inProgressEvents.map((event, index) => (
             <Col
               xs={6} sm={4} md={4} className="mb-4"
@@ -211,7 +211,7 @@ const Events = () => {
 
       {pastEvents.length > 0 ? (
         <Row>
-          <h2>Past Review</h2>
+          <h2>{t("past_review")}</h2>
           {pastEvents.map((event, index) => (
             <Col 
               xs={6} sm={4} md={4} className="mb-4"

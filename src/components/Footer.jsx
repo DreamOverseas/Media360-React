@@ -30,13 +30,10 @@ const Footer = () => {
                 <Link to={`/about-us`}>
                   <Button className='update-function-btn'>关于我们</Button>
                 </Link>
-              </div>
-
-              <div>
                 <Link to={`/events`}>
                   <Button className='update-function-btn'>活动</Button>
                 </Link>
-                <Link to={`/merchant/360-media-promotion-service`}>
+                <Link to={`/news`}>
                   <Button className='update-function-btn'>新闻</Button>
                 </Link>
               </div>
@@ -99,35 +96,55 @@ const Footer = () => {
               <Link to={`/about-us`}>
                 <Button className='update-function-btn'>关于我们</Button>
               </Link>
-            </div>
-            <div>
-              <Link to={`/merchant/360-media-promotion-service`}>
+              <Link to={`/events`}>
                 <Button className='update-function-btn'>活动</Button>
               </Link>
-              <Link to={`/merchant/360-media-promotion-service`}>
+              <Link to={`/news`}>
                 <Button className='update-function-btn'>新闻</Button>
               </Link>
             </div>
-            <Row className='footer-contact-info'>
-              <Col xs={6} className='d-flex align-items-center'>
-                <i className='bi bi-pin-map-fill'></i>
-                <p className='ms-2'>
-                  L2 171 La Trobe Street <br /> Melbourne VIC 3000
-                </p>
-              </Col>
-              <Col xs={6} className='d-flex align-items-center'>
-                <i className='bi bi-telephone-inbound-fill'></i>
-                <p className='ms-2'>
-                  <a href='tel:+61413168533' className='phone-link'>
-                    +61 (0)413 168 533
-                  </a>
-                </p>
-              </Col>
+            <Row>
+                <Row>
+                  <Col
+                      xs={1}
+                      className='d-flex justify-content-center align-items-center'
+                    >
+                      <i className='bi bi-pin-map-fill'></i>
+                    </Col>
+                    <Col>
+                      <p>
+                        L2 171 La Trobe Street <br /> Melbourne VIC 3000
+                      </p>
+                  </Col>
+                </Row>
 
-              <Col xs={6} className='d-flex align-items-center mt-2'>
-                <i className='bi bi-mailbox2'></i>
-                <p className='ms-2'>info@do360.com</p>
-              </Col>
+                <Row>
+                  <Col
+                    xs={1}
+                    className='d-flex justify-content-center align-items-center'
+                  >
+                    <i className='bi bi-telephone-inbound-fill'></i>
+                  </Col>
+                  <Col>
+                    <p>
+                      <a href='tel:+61413168533' className='phone-link'>
+                        +61 (0)413 168 533
+                      </a>
+                    </p>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col
+                    xs={1}
+                    className='d-flex justify-content-center align-items-center'
+                  >
+                    <i className='bi bi-mailbox2'></i>
+                  </Col>
+                  <Col>
+                    <p>info@do360.com</p>
+                  </Col>
+                </Row>
             </Row>
           </div>
         )}
