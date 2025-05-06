@@ -1,0 +1,33 @@
+.about-text {
+    font-size:13px;
+
+}
+
+.feature-text p{
+    font-size:13px;
+}
+
+.feature-text h5{
+    font-size:14px;
+    line-height: 1.5;
+    min-height: 3em;
+}
+
+
+@media (max-width: 768px) {
+    .about-text {
+        font-size:9px;
+    }
+    .feature-text p{
+        font-size:10px;
+    }
+    .feature-text h5{
+        font-size:11px;
+    }
+
+    .feature-image {
+        margin-bottom:2%;
+    }
+    
+
+}

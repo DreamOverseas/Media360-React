@@ -68,6 +68,10 @@ body {
   box-sizing: border-box;
   margin-top: 0;
 }
+.homepage-bg-1 {
+  background-image: url(/homepage/homepage_bg_1.png);
+  
+}
 
 .App-header {
   background: #fff;

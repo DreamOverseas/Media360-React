@@ -114,7 +114,6 @@ const Events = () => {
     const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
     const eventName = event.Name_en;
     return (
-      <Col xs={6} sm={4} md={4} className="mb-4">
         <Link to={`/events/${event.url}`} className="card-link-EventPage">
           <Card className="eventpage-event-card">
             {event.Image ? (
@@ -133,7 +132,6 @@ const Events = () => {
             </Card.Body>
           </Card>
         </Link>
-      </Col>
     );
   };
 
@@ -176,43 +174,63 @@ const Events = () => {
       <br />
       <Container>
 
+      {upcomingEvents.length > 0 ? (
         <Row>
           <h2>Upcoming Events</h2>
-          {upcomingEvents.length > 0 ? (
-            upcomingEvents.map(event => renderEventCard(event, calculateTime))
-          ) : (
-            <p>暂时无活动</p>
-          )}
+          {upcomingEvents.map((event, index) => (
+            <Col
+            xs={6} sm={4} md={4} className="mb-4"
+            key={event.id}
+            ref={index === pastEvents.length - 1 ? lastEventElementRef : null}
+            >
+              {renderEventCard(event, calculateTime)}
+            </Col>
+            ))}
         </Row>
+      ) : (
+        <></>
+      )}
         
+      {inProgressEvents.length > 0 ? (
         <Row>
           <h2>In Progress Events</h2>
-          {inProgressEvents.length > 0 ? (
-            inProgressEvents.map(event => renderEventCard(event, calculateTime))
-          ) : (
-            <p>暂时无活动</p>
-          )}
+          {inProgressEvents.map((event, index) => (
+            <Col
+              xs={6} sm={4} md={4} className="mb-4"
+              key={event.id}
+              ref={index === pastEvents.length - 1 ? lastEventElementRef : null}
+            >
+              {renderEventCard(event, calculateTime)}
+            </Col>
+            ))}
         </Row>
+      ) : (
+        <></>
+      )}
 
+
+      {pastEvents.length > 0 ? (
         <Row>
           <h2>Past Review</h2>
           {pastEvents.map((event, index) => (
             <Col 
-
-            key={event.id} 
-            ref={index === pastEvents.length - 1 ? lastEventElementRef : null}
+              xs={6} sm={4} md={4} className="mb-4"
+              key={event.id}
+              ref={index === pastEvents.length - 1 ? lastEventElementRef : null}
             >
-              {renderEventCard(event,calculateTime)}
+              {renderEventCard(event, calculateTime)}
             </Col>
           ))}
         </Row>
-        {loading && <div>Loading more past events...</div>}
+      ) : (
+        <></>
+      )}
+
+      {loading && <div>Loading more past events...</div>}
       </Container>
     </div>
   );
 };
-
-
 
 export default Events;
 

@@ -318,7 +318,6 @@ const HomePage = ()=> {
 
       <section>
         {/* <Image className='home-banner' src='/homepage/Home_Banner.png' alt='360 Media' /> */}
-        <div className="homepage-bg-1">
           <ProductCarousel
             products={products}
             language={language}
@@ -326,7 +325,6 @@ const HomePage = ()=> {
             BACKEND_HOST={BACKEND_HOST} 
             cardsPerRow = {4}
           />
-        </div>
       </section>
       {/* <div className="gradient-to-lightblue"></div> */}
       <section>

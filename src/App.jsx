@@ -81,7 +81,7 @@ function App() {
   // const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 
   return (
-    <div className='App'>
+    <div className='App homepage-bg-1'>
       <ScrollToTop />
       {header}
       {/* <div className='custom-breadcrumb'>

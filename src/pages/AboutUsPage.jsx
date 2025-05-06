@@ -1,7 +1,9 @@
 import { Col, Container, Row, Image, Button} from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import "../css/AboutUsPage.css";
 
 const AboutUsPage = () => {
   const { t } = useTranslation();
@@ -96,8 +98,8 @@ const AboutUsPage = () => {
           <br/>
           <Row className="d-flex text-center">
           {t("about_us").split("\n").map((line, index) => (
-                      <p key={index}>{line}</p>
-                    ))}
+            <p className="about-text" key={index}>{line}</p>
+          ))}
           </Row>
         </section>
         <br/>
@@ -111,7 +113,7 @@ const AboutUsPage = () => {
                     <Image src="/homepage/brand-image.png"/>
                   </Col>
                   <Col md={8}>
-                    <div dangerouslySetInnerHTML={{ __html: t('feature_1') }}/>
+                    <div className="feature-text" dangerouslySetInnerHTML={{ __html: t('feature_1') }}/>
                   </Col>
                 </Row>
               </Col>
@@ -122,7 +124,7 @@ const AboutUsPage = () => {
                     <Image src="/homepage/web-design.png"/>
                   </Col>
                   <Col md={8}>
-                    <div dangerouslySetInnerHTML={{ __html: t('feature_2') }}/>
+                    <div className="feature-text" dangerouslySetInnerHTML={{ __html: t('feature_2') }}/>
                   </Col>
                 </Row>
               </Col>
@@ -133,7 +135,7 @@ const AboutUsPage = () => {
                     <Image src="/homepage/social-media.png"/>
                   </Col>
                   <Col md={8}>
-                    <div dangerouslySetInnerHTML={{ __html: t('feature_3') }}/>
+                    <div className="feature-text" dangerouslySetInnerHTML={{ __html: t('feature_3') }}/>
                   </Col>
                 </Row>
               </Col>
@@ -146,7 +148,7 @@ const AboutUsPage = () => {
                   <Image src="/homepage/lecture.png"/>
                 </Col>
                 <Col md={8}>
-                  <div dangerouslySetInnerHTML={{ __html: t('feature_4') }}/>
+                  <div className="feature-text" dangerouslySetInnerHTML={{ __html: t('feature_4') }}/>
                 </Col>
               </Row>
             </Col>
@@ -157,7 +159,7 @@ const AboutUsPage = () => {
                   <Image src="/homepage/content.png"/>
                 </Col>
                 <Col md={8}>
-                  <div dangerouslySetInnerHTML={{ __html: t('feature_5') }}/>
+                  <div className="feature-text" dangerouslySetInnerHTML={{ __html: t('feature_5') }}/>
                 </Col>
               </Row>
             </Col>
@@ -168,7 +170,7 @@ const AboutUsPage = () => {
                   <Image src="/homepage/team.png"/>
                 </Col>
                 <Col md={8}>
-                  <div dangerouslySetInnerHTML={{ __html: t('feature_6') }}/>
+                  <div className="feature-text" dangerouslySetInnerHTML={{ __html: t('feature_6') }}/>
                 </Col>
               </Row>
             </Col>

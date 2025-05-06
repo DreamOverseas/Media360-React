@@ -96,7 +96,7 @@ const Footer = () => {
               <Link to={`/merchant/360-media-promotion-service`}>
                 <Button className='update-function-btn'>加入我们</Button>
               </Link>
-              <Link to={`/merchant/360-media-promotion-service`}>
+              <Link to={`/about-us`}>
                 <Button className='update-function-btn'>关于我们</Button>
               </Link>
             </div>
