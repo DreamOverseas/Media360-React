@@ -270,6 +270,27 @@
   border-color: #000;
 }
 
+.thumb-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.placeholder-thumb {
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumb-overlay {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
 /* Ensure product image column doesn’t exceed 50% width */
 .product-image-col {
   display: flex;

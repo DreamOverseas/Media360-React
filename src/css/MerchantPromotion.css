@@ -90,6 +90,10 @@
     color: black; /* 保持黑色 */
   }
 
+  .join-us-container {
+    margin-top: 5% !important;
+  }
+
 
   .media-tab-content {
     padding: 20px;

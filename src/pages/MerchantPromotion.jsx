@@ -349,7 +349,7 @@ const MerchantPromotion = () => {
 
     
   return (
-      <Container>
+      <Container className="join-us-container">
           <section>
               <h2>我们的服务</h2>
               <p>{t("merchant_text")}</p>

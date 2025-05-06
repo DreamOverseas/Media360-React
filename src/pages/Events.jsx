@@ -44,8 +44,8 @@ const Events = () => {
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
   const lastEventElementRef = useRef();
-  const { t } = useTranslation();
-  // const language = i18n.language;
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
 
   // Fetch Upcoming & In Progress events
   useEffect(() => {
@@ -110,8 +110,30 @@ const Events = () => {
       .finally(() => setLoading(false));
   };
 
-
-  
+  const renderEventCard = (event,calculateTime) => {
+    const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+    const eventName = language === "zh" ? event.Name_zh : event.Name_en;
+    return (
+        <Link to={`/events/${event.url}`} className="card-link-EventPage">
+          <Card className="eventpage-event-card">
+            {event.Image ? (
+              <Card.Img variant="top" src={`${BACKEND_HOST}${event.Image.url}`} alt={eventName} />
+            ) : (
+              <Card.Img variant="top" src="https://placehold.co/250x350" alt="Placeholder" />
+            )}
+            <Card.Body>
+              <Card.Title>{eventName}</Card.Title>
+              {calculateTime(event.Start_Date, event.End_date) ? (
+                <Card.Text className="eventpage-event-date">{calculateTime(event.Start_Date, event.End_Date)}</Card.Text>
+              ) :(<></>)
+              }
+              <Card.Text className="eventpage-event-location">{event.Location}</Card.Text>
+              <Card.Text className="eventpage-event-host">{event.Host}</Card.Text>
+            </Card.Body>
+          </Card>
+        </Link>
+    );
+  };
 
   useEffect(() => {
     fetchPastEvents(page);
@@ -152,62 +174,61 @@ const Events = () => {
       <br />
       <Container>
 
+      {upcomingEvents.length > 0 ? (
         <Row>
-          <h2>Upcoming Events</h2>
-          {upcomingEvents.length > 0 ? (
-            upcomingEvents.map(event => renderEventCard(event, calculateTime))
-          ) : (
-            <p>暂时无活动</p>
-          )}
+          <h2>{t("up_coming")}</h2>
+          {upcomingEvents.map((event, index) => (
+            <Col
+            xs={6} sm={4} md={4} className="mb-4"
+            key={event.id}
+            ref={index === pastEvents.length - 1 ? lastEventElementRef : null}
+            >
+              {renderEventCard(event, calculateTime)}
+            </Col>
+            ))}
         </Row>
+      ) : (
+        <></>
+      )}
         
+      {inProgressEvents.length > 0 ? (
         <Row>
-          <h2>In Progress Events</h2>
-          {inProgressEvents.length > 0 ? (
-            inProgressEvents.map(event => renderEventCard(event, calculateTime))
-          ) : (
-            <p>暂时无活动</p>
-          )}
+          <h2>{t("in_progress")}</h2>
+          {inProgressEvents.map((event, index) => (
+            <Col
+              xs={6} sm={4} md={4} className="mb-4"
+              key={event.id}
+              ref={index === pastEvents.length - 1 ? lastEventElementRef : null}
+            >
+              {renderEventCard(event, calculateTime)}
+            </Col>
+            ))}
         </Row>
+      ) : (
+        <></>
+      )}
 
+
+      {pastEvents.length > 0 ? (
         <Row>
-          <h2>Past Review</h2>
+          <h2>{t("past_review")}</h2>
           {pastEvents.map((event, index) => (
-            <Col key={event.id} ref={index === pastEvents.length - 1 ? lastEventElementRef : null}>
-              {renderEventCard(event,calculateTime)}
+            <Col 
+              xs={6} sm={4} md={4} className="mb-4"
+              key={event.id}
+              ref={index === pastEvents.length - 1 ? lastEventElementRef : null}
+            >
+              {renderEventCard(event, calculateTime)}
             </Col>
           ))}
         </Row>
-        {loading && <div>Loading more past events...</div>}
+      ) : (
+        <></>
+      )}
+
+      {loading && <div>Loading more past events...</div>}
       </Container>
     </div>
-  );
-};
-
-const renderEventCard = (event,calculateTime) => {
-  const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
-  const eventName = event.Name_en;
-  return (
-    <Col xs={6} sm={4} md={4} className="mb-4">
-      <Link to={`/events/${event.url}`} className="card-link-EventPage">
-        <Card className="eventpage-event-card">
-          {event.Image ? (
-            <Card.Img variant="top" src={`${BACKEND_HOST}${event.Image.url}`} alt={eventName} />
-          ) : (
-            <Card.Img variant="top" src="https://placehold.co/250x350" alt="Placeholder" />
-          )}
-          <Card.Body>
-            <Card.Title>{eventName}</Card.Title>
-            {calculateTime(event.Start_Date, event.End_date) ? (
-              <Card.Text className="eventpage-event-date">{calculateTime(event.Start_Date, event.End_Date)}</Card.Text>
-            ) :(<></>)
-            }
-            <Card.Text className="eventpage-event-location">{event.Location}</Card.Text>
-            <Card.Text className="eventpage-event-host">{event.Host}</Card.Text>
-          </Card.Body>
-        </Card>
-      </Link>
-    </Col>
   );
 };
 

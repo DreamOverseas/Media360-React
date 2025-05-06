@@ -1,0 +1,50 @@
+.about-text {
+    font-size:13px;
+
+}
+
+.feature-text p{
+    font-size:13px;
+}
+
+.feature-text h5{
+    font-size:14px;
+    line-height: 1.5;
+    min-height: 3em;
+}
+
+.package-header{
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 5%;
+}
+
+.about-us-service-package {
+    padding:5%;
+    background-color: white;
+    border-radius: 12px;
+    height:500px;
+    margin-bottom: 5%;
+  }
+
+.package-header h5{
+    font-size:14px;
+}
+
+@media (max-width: 768px) {
+    .about-text {
+        font-size:9px;
+    }
+    .feature-text p{
+        font-size:10px;
+    }
+    .feature-text h5{
+        font-size:11px;
+    }
+
+    .feature-image {
+        margin-bottom:2%;
+    }
+    
+
+}

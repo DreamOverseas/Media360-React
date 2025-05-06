@@ -9,7 +9,6 @@
 /* Homepage Background */
 .homepage-background {
   align-items: center;
-  background-image: url(/public/homepage/bg_clear.png);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -32,11 +31,6 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-bottom: 4rem;
-}
-
-/* Section Spacing */
-.products-section {
   margin-bottom: 4rem;
 }
 
@@ -99,7 +93,7 @@
   background-image: url(/public/homepage/home-spokeperson-cover.webp);
 }
 
-/* 文字区域，增加半透明背景提升可读性 */
+
 .product-content {
   padding: 20px;
   border-radius: 10px;
@@ -120,33 +114,29 @@
   border: none;
   background-color: transparent;
   box-shadow: none;
-  max-width: 250px;
-  height: 250px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 4%;
   transition: transform 0.5s ease;
-}
-
-.product-card {
-  height: 280px !important;
+  background-color: white;
+  width:100%;
+  height: 420px !important;
 }
 
 .product-card img,
 .event-card img {
-  max-width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 12px;
-  /* Add rounded corners */
+  width: 100%;
+  height:180px;
+  object-fit: contain;
+  
 }
 
 .product-card .card-body,
 .event-card .card-body {
   padding: 10px;
-  max-height: 120px;
   overflow: hidden;
+  background-color: white;
 }
 
 .product-card .card-title,
@@ -156,6 +146,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-align: center;
   text-overflow: ellipsis;
   -webkit-line-clamp: 3;
   /* Limit title to 3 lines */
@@ -184,7 +175,6 @@
 .product-card:hover,
 .event-card:hover {
   transform: scale(1.05);
-  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .btn-more {
@@ -272,6 +262,27 @@
   border-radius: 50%;
   z-index: 10;
 }
+.home-banner {
+  height:400px;
+  width:100%;
+  z-index: 1;
+  position: relative;
+}
+
+.homepage-bg-1 {
+  background-image: url(/homepage/homepage_bg_1.png);
+  background-repeat: repeat-x;
+}
+
+/* .gradient-to-lightblue {
+  height: 90px;
+  background: linear-gradient(
+    to bottom,
+    #b8c4e4,
+    rgb(234 245 255) 80%
+  );
+  margin-top: -1px;
+} */
 
 .home-product-carousel-btn.left {
   left: 0px;
@@ -338,6 +349,10 @@
   cursor: not-allowed;
 }
 
+.home-service-package {
+  padding:5%;
+}
+
 /* Responsive Design */
 
 /* Tablet Screens (768px - 1024px) */
@@ -348,6 +363,8 @@
     -webkit-line-clamp: 2;
     /* Limit title to 2 lines */
   }
+
+  
 
   .product-card .card-text,
   .event-card .card-text {
@@ -362,6 +379,10 @@
   .section-title {
     font-size: 1.8rem;
     /* Smaller font for mobile */
+  }
+
+  .home-banner {
+    height:100%
   }
 
   .kol-col {

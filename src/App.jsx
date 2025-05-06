@@ -22,7 +22,7 @@ import BrandPage from "./pages/BrandPage.jsx";
 import BrandRelatedNewsPage from "./pages/BrandRelatedNewsPage.jsx";
 import BrandRelatedPersonsPage from "./pages/BrandRelatedPersonsPage.jsx";
 import BrandRelatedProductsPage from "./pages/BrandRelatedProductsPage.jsx";
-// import Events from "./pages/Events";
+import Events from "./pages/Events";
 import RecentProductsBar from "./components/RecentProductsBar.jsx";
 import FounderPage from "./pages/FounderPage.jsx";
 import Greeness from "./pages/Greeness.jsx";
@@ -45,6 +45,8 @@ import Profile from "./pages/Profile.jsx";
 import Recruitment from "./pages/Recruitment.jsx";
 import RegisterMiss from "./pages/RegisterMiss.jsx";
 import ShoppingCart from "./pages/ShoppingCart.jsx";
+import Home from "./pages/Home.jsx";
+import AboutUs from "./pages/AboutUsPage.jsx";
 
 const API_URL = import.meta.env.VITE_OPENAI_API_URL
 const ASST_ID = import.meta.env.VITE_OPENAI_ASST_ID
@@ -72,18 +74,14 @@ function App() {
       document.body.style.marginTop = "0px";
       setFooter(<></>);
       setHeader(<></>);
-    } else {
-      document.body.style.marginTop = "54px";
-      setHeader(<Header />);
-      setFooter(<Footer />);
-    }
+    } 
   }, [location]);
 
   // Check if is on desktop
   // const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 
   return (
-    <div className='App'>
+    <div className='App homepage-bg-1'>
       <ScrollToTop />
       {header}
       {/* <div className='custom-breadcrumb'>
@@ -91,14 +89,15 @@ function App() {
       </div> */}
       <div className='main-content'>
         <Routes>
-          {/* <Route exact path='/' element={<Home />} /> */}
-          <Route exact path='/' element={<ProductPage />} />
+          <Route exact path='/' element={<Home />} />
+          {/* <Route exact path='/' element={<ProductPage />} /> */}
           <Route path='/profile' element={<Profile />} />
           <Route exact path='/products' element={<ProductPage />} />
           {/* <Route exact path='/productFinance' element={<ProductPage />} />
           <Route exact path='/productTravel' element={<ProductPage />} />
           <Route exact path='/productLife' element={<ProductPage />} /> */}
           <Route path='/products/:name' element={<ProductDetail />} />
+          <Route path='/about-us' element={<AboutUs />} />
           <Route
             path='/products/:name/related-product'
             element={<ProductRelatedProduct />}
@@ -139,7 +138,7 @@ function App() {
           <Route path='/influence-hub' element={<InfluenceHub />} />
           <Route path='/media-center' element={<MediaCenter />} />
           <Route path='/news' element={<NewsPage />} />
-          {/* <Route path='/events' element={<Events />} /> */}
+          <Route path='/events' element={<Events />} />
           <Route path='/founders' element={<FounderPage />} />
           <Route path='/kols' element={<KolPage />} />
           <Route path='/ambassadors' element={<AmbassadorPage />} />

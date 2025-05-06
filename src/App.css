@@ -1,6 +1,4 @@
 @import url("https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/theme/classic.css");
-@import "slick-carousel/slick/slick.css";
-@import "slick-carousel/slick/slick-theme.css";
 
 .ck-content {
   margin: 0 auto;
@@ -69,6 +67,10 @@ body {
   font-family: "HomepageFont", sans-serif !important;
   box-sizing: border-box;
   margin-top: 0;
+}
+.homepage-bg-1 {
+  background-image: url(/homepage/homepage_bg_1.png);
+  
 }
 
 .App-header {
@@ -165,7 +167,6 @@ footer {
 .main-content {
   padding: 0 !important;
   min-height: calc(100vh - 347px);
-  margin-top: 50px;
 }
 
 .custom-breadcrumb {

@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import {
   Button,
   Col,
@@ -10,7 +11,6 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { Link, useLocation, useParams } from "react-router-dom";
@@ -37,6 +37,7 @@ const ProductDetail = () => {
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [showModal, setShowModal] = useState(false);
+  const onDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 
   // const [showLoginModal, setShowLoginModal] = useState(false);
   const [founder, setFounder] = useState([]);
@@ -44,7 +45,7 @@ const ProductDetail = () => {
   const [spokesperson, setSpokesperson] = useState([]);
   const [brand, setBrand] = useState({});
   const [variants, setVariants] = useState([]);
-
+  const [subItemCategory, setSubItemCategory] = useState(null);
   const ProductGallery = ({ product }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -125,11 +126,10 @@ const ProductDetail = () => {
         </div>
 
         <div className='thumbnail-container'>
-          {allMedia.map((media, index) => (
+          {allMedia.slice(0, 11).map((media, index) => (
             <div
               key={index}
-              className={`thumb-container ${index === currentIndex ? "active-thumb" : ""
-                }`}
+              className={`thumb-container ${index === currentIndex ? "active-thumb" : ""}`}
               onClick={() => setCurrentIndex(index)}
             >
               <Image
@@ -139,6 +139,27 @@ const ProductDetail = () => {
               />
             </div>
           ))}
+
+          {allMedia.length > 12 ? (
+            <div className="thumb-container placeholder-thumb">
+              <div className="thumb-overlay" onClick={() => setCurrentIndex(11)}>
+                +{allMedia.length - 11}
+              </div>
+            </div>
+          ) : (
+            allMedia.length === 12 && (
+              <div
+                className={`thumb-container ${11 === currentIndex ? "active-thumb" : ""}`}
+                onClick={() => setCurrentIndex(11)}
+              >
+                <Image
+                  src={allMedia[11]}
+                  alt={`Thumbnail 11`}
+                  className='thumb-img'
+                />
+              </div>
+            )
+          )}
         </div>
 
         <Lightbox
@@ -237,11 +258,12 @@ const ProductDetail = () => {
       setNews(newsList);
       const brandinfo = brandResponse.data?.data?.[0]?.brand || null;
       setBrand(brandinfo);
-
+      const subCategory = brandResponse.data?.data?.[0]?.brand?.item_category || null;
+      setSubItemCategory(subCategory);
       const eventList = eventResponse.data?.data?.[0]?.events || [];
       setEvent(eventList);
 
-      console.log("event", eventList);
+      // console.log("event", eventList);
     } catch (error) {
       console.error("Error fetching data:", error);
       setError(t("errorFetchingProductData"));
@@ -261,7 +283,7 @@ const ProductDetail = () => {
       .get("https://api.do360.com/api/brands/", {
         params: {
           "filters[internal_url][$eq]": `${brand.internal_url}`,
-          "populate[products][fields]": "url,Name_zh,Name_en",
+          "populate[products][fields]": "url,Name_zh,Name_en,Sub_Item_Category",
         },
       })
       .then(response => {
@@ -385,7 +407,7 @@ const ProductDetail = () => {
     );
   }
 
-  const { Price_Display, ProductImage, Available, Sponsor } = product;
+  const { Price_Display, ProductImage} = product;
   const language = i18n.language;
 
   // const display_price = Price === (0 || null) ? t("price_tbd") : `AU$${Price}`;
@@ -394,30 +416,108 @@ const ProductDetail = () => {
   const Detail = language === "zh" ? product.Detail_zh : product.Detail_en;
 
   const Note = language === "zh" ? product.Note_zh : product.Note_en;
+  console.log("info", subItemCategory);
 
   // console.log(productTag)
 
   return (
     <div>
-      <Helmet>
-        <title>{Name}</title>
-        <meta property='og:title' content={Name} />
-        <meta
-          property='og:description'
-          content={Detail?.replace(/<[^>]+>/g, "").slice(0, 100)}
-        />
-        <meta
-          property='og:image'
-          content={`${BACKEND_HOST}${ProductImage?.url}`}
-        />
-        <meta property='og:url' content={window.location.href} />
-        <meta property='og:type' content='website' />
-      </Helmet>
       <section>
         <Container>
           <Row className='product-detail-section'>
-            <Col className='product-image-col'>
-              <ProductGallery product={product} />
+            <Col >
+              <Row>
+                <ProductGallery product={product} />
+              </Row>
+              {onDesktop ? (
+                <>
+                  <Row>
+                    <h4>查看相关信息</h4>
+                    <Row>
+                      {founder.length > 0 && (
+                        <Col xs={4}>
+                          <Link
+                            to={`/products/${product.url}/related-founder`}
+                            state={{ founder }}
+                          >
+                            <Button className='product-detail-funtion-btn'>
+                              品牌创始人
+                            </Button>
+                          </Link>
+                        </Col>
+                      )}
+                      {kol.length > 0 && (
+                        <Col xs={4}>
+                          <Link
+                            to={`/products/${product.url}/related-kol`}
+                            state={{ kol }}
+                          >
+                            <Button className='product-detail-funtion-btn'>
+                              意见领袖
+                            </Button>
+                          </Link>
+                        </Col>
+                      )}
+                      {spokesperson.length > 0 && (
+                        <Col xs={4}>
+                          <Link
+                            to={`/products/${product.url}/related-ambassador`}
+                            state={{ spokesperson }}
+                          >
+                            <Button className='product-detail-funtion-btn'>
+                              代言人
+                            </Button>
+                          </Link>
+                        </Col>
+                      )}
+                      {news.length > 0 && (
+                        <Col xs={4}>
+                          <Link
+                            to={`/products/${product.url}/related-news`}
+                            state={{ news }}
+                          >
+                            <Button className='product-detail-funtion-btn'>
+                              相关新闻
+                            </Button>
+                          </Link>
+                        </Col>
+                      )}
+                      {event.length > 0 && (
+                        <Col xs={4}>
+                          <Link
+                            to={`/products/${product.url}/related-event`}
+                            state={{ event }}
+                          >
+                            <Button className='product-detail-funtion-btn'>
+                              相关活动
+                            </Button>
+                          </Link>
+                        </Col>
+                      )}
+                    </Row>
+                  </Row>
+
+                  <Row>
+                    <button
+                      onClick={handleShare}
+                      className='social-sharing__link'
+                      title='分享'
+                    >
+                      <i class='icon-share'>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 576 576'
+                        width='20'
+                        height='20'
+                      >
+                        <path d='M400 255.4l0-15.4 0-32c0-8.8-7.2-16-16-16l-32 0-16 0-46.5 0c-50.9 0-93.9 33.5-108.3 79.6c-3.3-9.4-5.2-19.8-5.2-31.6c0-61.9 50.1-112 112-112l48 0 16 0 32 0c8.8 0 16-7.2 16-16l0-32 0-15.4L506 160 400 255.4zM336 240l16 0 0 48c0 17.7 14.3 32 32 32l3.7 0c7.9 0 15.5-2.9 21.4-8.2l139-125.1c7.6-6.8 11.9-16.5 11.9-26.7s-4.3-19.9-11.9-26.7L409.9 8.9C403.5 3.2 395.3 0 386.7 0C367.5 0 352 15.5 352 34.7L352 80l-16 0-32 0-16 0c-88.4 0-160 71.6-160 160c0 60.4 34.6 99.1 63.9 120.9c5.9 4.4 11.5 8.1 16.7 11.2c4.4 2.7 8.5 4.9 11.9 6.6c3.4 1.7 6.2 3 8.2 3.9c2.2 1 4.6 1.4 7.1 1.4l2.5 0c9.8 0 17.8-8 17.8-17.8c0-7.8-5.3-14.7-11.6-19.5c0 0 0 0 0 0c-.4-.3-.7-.5-1.1-.8c-1.7-1.1-3.4-2.5-5-4.1c-.8-.8-1.7-1.6-2.5-2.6s-1.6-1.9-2.4-2.9c-1.8-2.5-3.5-5.3-5-8.5c-2.6-6-4.3-13.3-4.3-22.4c0-36.1 29.3-65.5 65.5-65.5l14.5 0 32 0zM72 32C32.2 32 0 64.2 0 104L0 440c0 39.8 32.2 72 72 72l336 0c39.8 0 72-32.2 72-72l0-64c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 64c0 13.3-10.7 24-24 24L72 464c-13.3 0-24-10.7-24-24l0-336c0-13.3 10.7-24 24-24l64 0c13.3 0 24-10.7 24-24s-10.7-24-24-24L72 32z' />
+                      </svg>
+                    </i>
+                      <span className='share-title'>分享此产品</span>
+                    </button>
+                  </Row>
+                </>
+              ) : <></>}
             </Col>
 
             <Col className='product-detail-col'>
@@ -437,32 +537,57 @@ const ProductDetail = () => {
                     ) : null}
                   </Row> */}
                   </Row>
-                  <Row>
-                    {variants ? (
-                      variants.map((variant, index) => {
-                        const currentPath = location.pathname; // 获取当前路径
-                        const isActive =
-                          currentPath === `/products/${variant.url}`; // 正确匹配当前路径
-
-                        return (
-                          <Col xs={4} key={index}>
-                            <Link to={`/products/${variant.url}`}>
-                              <Button
-                                className={`product-details-variant-btn ${isActive ? "active-btn" : ""
-                                  }`}
-                              >
-                                {language === "zh"
-                                  ? variant.Name_zh
-                                  : variant.Name_en}
-                              </Button>
-                            </Link>
-                          </Col>
-                        );
-                      })
+                  
+                  {variants ? (
+                    subItemCategory?.[language]?.length > 0 ? (
+                      
+                      subItemCategory[language].map((item, index) => (
+                        <div key={index}>
+                          <h4>{item}</h4>
+                          <Row>
+                            {variants
+                              .filter(variant => variant.Sub_Item_Category?.[language] === item)
+                              .map((variant, vIndex) => {
+                                const currentPath = location.pathname;
+                                const isActive = currentPath === `/products/${variant.url}`;
+                                return (
+                                  <Col xs={4} key={vIndex}>
+                                    <Link to={`/products/${variant.url}`}>
+                                      <Button
+                                        className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
+                                      >
+                                        {language === "zh" ? variant.Name_zh : variant.Name_en}
+                                      </Button>
+                                    </Link>
+                                  </Col>
+                                );
+                              })}
+                          </Row>
+                        </div>
+                      ))
                     ) : (
-                      <></>
-                    )}
-                  </Row>
+
+                      <Row>
+                        {variants.map((variant, index) => {
+                          const currentPath = location.pathname;
+                          const isActive = currentPath === `/products/${variant.url}`;
+                          return (
+                            <Col xs={4} key={index}>
+                              <Link to={`/products/${variant.url}`}>
+                                <Button
+                                  className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
+                                >
+                                  {language === "zh" ? variant.Name_zh : variant.Name_en}
+                                </Button>
+                              </Link>
+                            </Col>
+                          );
+                        })}
+                      </Row>
+                    )
+                  ) : (
+                    <></>
+                  )}
                   <Row>
                     {Price_Display !== 0 && Price_Display !== null && (
                       <h2>AU$ {Price_Display}</h2>
@@ -522,81 +647,81 @@ const ProductDetail = () => {
                   )}
                 </Row>
 
-                <Row>
-                  <h4>查看相关信息</h4>
+                {!onDesktop ? (
+                <>
                   <Row>
-                    {founder.length > 0 && (
-                      <Col xs={4}>
-                        <Link
-                          to={`/products/${product.url}/related-founder`}
-                          state={{ founder }}
-                        >
-                          <Button className='product-detail-funtion-btn'>
-                            品牌创始人
-                          </Button>
-                        </Link>
-                      </Col>
-                    )}
-                    {kol.length > 0 && (
-                      <Col xs={4}>
-                        <Link
-                          to={`/products/${product.url}/related-kol`}
-                          state={{ kol }}
-                        >
-                          <Button className='product-detail-funtion-btn'>
-                            意见领袖
-                          </Button>
-                        </Link>
-                      </Col>
-                    )}
-                    {spokesperson.length > 0 && (
-                      <Col xs={4}>
-                        <Link
-                          to={`/products/${product.url}/related-ambassador`}
-                          state={{ spokesperson }}
-                        >
-                          <Button className='product-detail-funtion-btn'>
-                            代言人
-                          </Button>
-                        </Link>
-                      </Col>
-                    )}
-
-                    {news.length > 0 && (
-                      <Col xs={4}>
-                        <Link
-                          to={`/products/${product.url}/related-news`}
-                          state={{ news }}
-                        >
-                          <Button className='product-detail-funtion-btn'>
-                            相关新闻
-                          </Button>
-                        </Link>
-                      </Col>
-                    )}
-                    {event.length > 0 && (
-                      <Col xs={4}>
-                        <Link
-                          to={`/products/${product.url}/related-event`}
-                          state={{ event }}
-                        >
-                          <Button className='product-detail-funtion-btn'>
-                            相关活动
-                          </Button>
-                        </Link>
-                      </Col>
-                    )}
+                    <h4>查看相关信息</h4>
+                    <Row>
+                      {founder.length > 0 && (
+                        <Col xs={4}>
+                          <Link
+                            to={`/products/${product.url}/related-founder`}
+                            state={{ founder }}
+                          >
+                            <Button className='product-detail-funtion-btn'>
+                              品牌创始人
+                            </Button>
+                          </Link>
+                        </Col>
+                      )}
+                      {kol.length > 0 && (
+                        <Col xs={4}>
+                          <Link
+                            to={`/products/${product.url}/related-kol`}
+                            state={{ kol }}
+                          >
+                            <Button className='product-detail-funtion-btn'>
+                              意见领袖
+                            </Button>
+                          </Link>
+                        </Col>
+                      )}
+                      {spokesperson.length > 0 && (
+                        <Col xs={4}>
+                          <Link
+                            to={`/products/${product.url}/related-ambassador`}
+                            state={{ spokesperson }}
+                          >
+                            <Button className='product-detail-funtion-btn'>
+                              代言人
+                            </Button>
+                          </Link>
+                        </Col>
+                      )}
+                      {news.length > 0 && (
+                        <Col xs={4}>
+                          <Link
+                            to={`/products/${product.url}/related-news`}
+                            state={{ news }}
+                          >
+                            <Button className='product-detail-funtion-btn'>
+                              相关新闻
+                            </Button>
+                          </Link>
+                        </Col>
+                      )}
+                      {event.length > 0 && (
+                        <Col xs={4}>
+                          <Link
+                            to={`/products/${product.url}/related-event`}
+                            state={{ event }}
+                          >
+                            <Button className='product-detail-funtion-btn'>
+                              相关活动
+                            </Button>
+                          </Link>
+                        </Col>
+                      )}
+                    </Row>
                   </Row>
-                </Row>
 
-                <Row>
-                  <button
-                    href=''
-                    onClick={handleShare}
-                    className='social-sharing__link'
-                    title='分享'
-                  >
-                    <i class='icon-share'>
+                  <Row>
+                    <button
+                      onClick={handleShare}
+                      className='social-sharing__link'
+                      title='分享'
+                    >
+                      <i class='icon-share'>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         viewBox='0 0 576 576'
@@ -606,9 +731,11 @@ const ProductDetail = () => {
                         <path d='M400 255.4l0-15.4 0-32c0-8.8-7.2-16-16-16l-32 0-16 0-46.5 0c-50.9 0-93.9 33.5-108.3 79.6c-3.3-9.4-5.2-19.8-5.2-31.6c0-61.9 50.1-112 112-112l48 0 16 0 32 0c8.8 0 16-7.2 16-16l0-32 0-15.4L506 160 400 255.4zM336 240l16 0 0 48c0 17.7 14.3 32 32 32l3.7 0c7.9 0 15.5-2.9 21.4-8.2l139-125.1c7.6-6.8 11.9-16.5 11.9-26.7s-4.3-19.9-11.9-26.7L409.9 8.9C403.5 3.2 395.3 0 386.7 0C367.5 0 352 15.5 352 34.7L352 80l-16 0-32 0-16 0c-88.4 0-160 71.6-160 160c0 60.4 34.6 99.1 63.9 120.9c5.9 4.4 11.5 8.1 16.7 11.2c4.4 2.7 8.5 4.9 11.9 6.6c3.4 1.7 6.2 3 8.2 3.9c2.2 1 4.6 1.4 7.1 1.4l2.5 0c9.8 0 17.8-8 17.8-17.8c0-7.8-5.3-14.7-11.6-19.5c0 0 0 0 0 0c-.4-.3-.7-.5-1.1-.8c-1.7-1.1-3.4-2.5-5-4.1c-.8-.8-1.7-1.6-2.5-2.6s-1.6-1.9-2.4-2.9c-1.8-2.5-3.5-5.3-5-8.5c-2.6-6-4.3-13.3-4.3-22.4c0-36.1 29.3-65.5 65.5-65.5l14.5 0 32 0zM72 32C32.2 32 0 64.2 0 104L0 440c0 39.8 32.2 72 72 72l336 0c39.8 0 72-32.2 72-72l0-64c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 64c0 13.3-10.7 24-24 24L72 464c-13.3 0-24-10.7-24-24l0-336c0-13.3 10.7-24 24-24l64 0c13.3 0 24-10.7 24-24s-10.7-24-24-24L72 32z' />
                       </svg>
                     </i>
-                    <span className='share-title'>分享此产品</span>
-                  </button>
-                </Row>
+                      <span className='share-title'>分享此产品</span>
+                    </button>
+                  </Row>
+                </>
+              ) : <></>}
               </Container>
             </Col>
           </Row>
