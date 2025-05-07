@@ -64,14 +64,17 @@
   text-overflow: ellipsis;
 }
 
-/* ✅ 电脑端居中样式 */
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .recent-products-bar {
-    width: 60%; /* 设置宽度为 60% */
     left: 50%; /* 左侧偏移 */
     transform: translateX(-50%); /* 水平居中 */
-    border-radius: 10px; /* 添加圆角 */
   }
+
+  .recent-products-title {
+    font-size: 11px;
+  }
+
+
 }
 
 
