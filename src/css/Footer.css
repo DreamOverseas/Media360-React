@@ -1,9 +1,9 @@
 .footer {
   display: flex;
-  padding: 2rem;
   background-color: #333;
   color: #fff;
   font-family: Arial, sans-serif;
+  padding-bottom: 150px;
 }
 
 .footer-column {
@@ -136,4 +136,19 @@
 .mobile-footer-logo {
   margin-top: -5%;
   margin-bottom: 5%;
+}
+
+.footer-info {
+  padding: 2% 0;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding-bottom: 150px;
+  }
+  .footer-info {
+    font-size:8px;
+    padding-top: 2%;
+  }
+  
 }
