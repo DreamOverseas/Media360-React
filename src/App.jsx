@@ -1,16 +1,17 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Row } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 // import { useMediaQuery } from "react-responsive";
 import { Route, Routes, useLocation } from "react-router-dom";
-import CuteChatbot from "@dreamoverseas/cute-chatbot";
+
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "./App.css";
 import BrandDetail from "./components/BrandDetail.jsx";
 // import Breadcrumbs from "./components/Breadcrumbs.jsx";
 import EventDetail from "./components/EventDetail.jsx";
-import FloatingHomeButton from "./components/FloatingHomeButton.jsx";
+
 import Footer from "./components/Footer.jsx";
 import Header from "./components/Header.jsx";
 import KolDetail from "./components/KolDetail.jsx";
@@ -47,11 +48,9 @@ import RegisterMiss from "./pages/RegisterMiss.jsx";
 import ShoppingCart from "./pages/ShoppingCart.jsx";
 import Home from "./pages/Home.jsx";
 import AboutUs from "./pages/AboutUsPage.jsx";
+import FloatingHomeButton from "./components/FloatingHomeButton.jsx";
 
-const API_URL = import.meta.env.VITE_OPENAI_API_URL
-const ASST_ID = import.meta.env.VITE_OPENAI_ASST_ID
-const API_KEY = import.meta.env.VITE_OPENAI_API_KEY
-const GOOGLE_API = import.meta.env.VITE_GOOGLE_API
+
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -176,20 +175,10 @@ function App() {
             element={<BrandRelatedProductsPage />}
           />
         </Routes>
-        {/* 全局悬浮按钮 */}
-        <RecentProductsBar /> {/* ✅ 在整个应用的底部加载 */}
-        <FloatingHomeButton />
-        <CuteChatbot
-          style={{ zIndex: 101 }}
-          nickname='DoBot'
-          openai_api_url={`${API_URL}`}
-          openai_asst_id={`${ASST_ID}`}
-          openai_api_key={`${API_KEY}`}
-          google_api_key={`${GOOGLE_API}`}
-        />
       </div>
-
       {footer}
+      <FloatingHomeButton />
+      <RecentProductsBar />
     </div>
   );
 }
