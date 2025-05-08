@@ -16,14 +16,12 @@ const Footer = () => {
           <div>
             <Row style={{marginBottom:"10px"}}>
               <Col 
-              xs={2} 
+              xs={3} 
               md={1}
               >
                 <Image
                   src='/footer_logo.png'
                   alt='Logo'
-                  className='mobile-footer-logo'
-                  fluid
                 />
               </Col>
               <Col 
