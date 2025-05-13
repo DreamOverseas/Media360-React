@@ -438,7 +438,7 @@ const ProductDetail = () => {
   const shareImg = product.ProductImage
     ? `${BACKEND_HOST}${product.ProductImage.formats.thumbnail.url}`
     : `${BACKEND_HOST}/default-share.jpg`;
-  // console.log(shareImg)
+  console.log(shareImg)
   // console.log(shareLink)
   // console.log(Name)
   // console.log(Description)
@@ -533,7 +533,7 @@ const ProductDetail = () => {
                     </Row>
                   </Row>
 
-                  {/* <Row>
+                  <Row>
                     <button
                       onClick={handleShare}
                       className='social-sharing__link'
@@ -551,7 +551,7 @@ const ProductDetail = () => {
                     </i>
                       <span className='share-title'>分享此产品</span>
                     </button>
-                  </Row> */}
+                  </Row>
                 </>
               ) : <></>}
             </Col>
@@ -751,7 +751,7 @@ const ProductDetail = () => {
                     </Row>
                   </Row>
 
-                  {/* <Row>
+                  <Row>
                     <button
                       onClick={handleShare}
                       className='social-sharing__link'
@@ -769,7 +769,7 @@ const ProductDetail = () => {
                     </i>
                       <span className='share-title'>分享此产品</span>
                     </button>
-                  </Row> */}
+                  </Row>
                 </>
               ) : <></>}
               </Container>
