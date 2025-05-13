@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import qs from 'qs';
 import { useTranslation } from "react-i18next";
 
 
@@ -15,6 +16,7 @@ const InfluenceHub = () => {
   const [ambassadors, setAmbassadors] = useState([]);
   const [error, setError] = useState(null);
   const language = i18n.language;
+  const roles = ['Founder', 'Kol', 'Ambassador'];
 
   const FounderCarousel = ({ founders, language, t, BACKEND_HOST, cardsPerRow = 4 }) => {
     const [startIndex, setStartIndex] = useState(0);
@@ -247,14 +249,20 @@ const InfluenceHub = () => {
   };
 
   const fetchData = async (setKols, setFounders, setAmbassadors, setError, t) => {
-    try {
 
-      const [FounderResponse, KolResponse, AmbassadorResponse] = await Promise.all([
-        axios.get(`${BACKEND_HOST}/api/people/?filters[Role][$eq]=Founder&populate=Image`),
-        axios.get(`${BACKEND_HOST}/api/people/?filters[Role][$eq]=Kol&populate=Image`),
-        axios.get(`${BACKEND_HOST}/api/people/?filters[Role][$eq]=Spokesperson&populate=Image`)
-      ]);
-  
+      try {
+
+        const [FounderResponse, KolResponse, AmbassadorResponse] = await Promise.all(
+          roles.map(role =>
+            axios.get(`${BACKEND_HOST}/api/people`, {
+              params: {
+                'filters[Role][$contains]': JSON.stringify({ roles: [role] }),
+                populate: 'Image',
+              },
+              paramsSerializer: params => qs.stringify(params, { encode: false }),
+            })
+          )
+        );
 
       const FounderData = FounderResponse.data?.data || null;
       const KolData = KolResponse.data?.data || null;;
