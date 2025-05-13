@@ -751,7 +751,7 @@ const ProductDetail = () => {
                     </Row>
                   </Row>
 
-                  <Row>
+                  {/* <Row>
                     <button
                       onClick={handleShare}
                       className='social-sharing__link'
@@ -769,7 +769,7 @@ const ProductDetail = () => {
                     </i>
                       <span className='share-title'>分享此产品</span>
                     </button>
-                  </Row>
+                  </Row> */}
                 </>
               ) : <></>}
               </Container>
