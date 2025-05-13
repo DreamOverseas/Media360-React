@@ -51,9 +51,8 @@ const ProductDetail = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [videoThumbnails, setVideoThumbnails] = useState([]);
-    const [overflowModalOpen, setOverflowModalOpen] = useState(false);
-
-    // 主图
+  
+    // 主图 URL
     const mainImage = useMemo(
       () =>
         product?.ProductImage
@@ -61,62 +60,81 @@ const ProductDetail = () => {
           : 'https://placehold.co/650x650',
       [product]
     );
-
-    // 子图
+  
+    // 子图 URL 列表
     const subImages = useMemo(
       () =>
-        Array.isArray(product?.SubImages) && product.SubImages.length > 0
+        Array.isArray(product?.SubImages)
           ? product.SubImages.map(img => `${BACKEND_HOST}${img.url}`)
           : [],
       [product]
     );
-
-    // 视频 iframe 数据
-    const videoIframes = useMemo(
-      () => (Array.isArray(product?.videos?.data) ? product.videos.data : []),
+  
+    // 视频数据：embed HTML + 缩略图
+    const videos = useMemo(
+      () =>
+        Array.isArray(product?.videos?.data)
+          ? product.videos.data.map(v => ({
+              embedHtml: v.videoEmbed,
+              thumbnail: v.pic,
+            }))
+          : [],
       [product]
     );
-
-    // 生成视频缩略图
+  
+    // 视频缩略图列表
     useEffect(() => {
-      if (videoIframes.length) {
-        setVideoThumbnails(
-          videoIframes.map(v => v.pic || 'https://placehold.co/650x400')
-        );
-      }
-    }, [videoIframes]);
-
-    // 合并所有媒体
+      setVideoThumbnails(videos.map(v => v.thumbnail || 'https://placehold.co/650x400'));
+    }, [videos]);
+  
+    // 合并所有媒体（图片 + 视频缩略图）
     const allMedia = useMemo(
       () => [mainImage, ...subImages, ...videoThumbnails],
       [mainImage, subImages, videoThumbnails]
     );
-
-    const nextMedia = () =>
-      setCurrentIndex(i => (i + 1) % allMedia.length);
+  
+    // 视频起始索引和判断
+    const videoStart = 1 + subImages.length;
+    const isVideoIndex = idx => idx >= videoStart;
+  
+    // 构建 Lightbox slides
+    const slides = useMemo(
+      () =>
+        allMedia.map((_, idx) =>
+          isVideoIndex(idx)
+            ? { html: videos[idx - videoStart].embedHtml }
+            : { src: allMedia[idx] }
+        ),
+      [allMedia, videos]
+    );
+  
+    // 缩略图点击：打开对应媒体
+    const handleThumbnailClick = idx => {
+      setCurrentIndex(idx);
+      setLightboxOpen(true);
+    };
+  
+    // 切换媒体
     const prevMedia = () =>
       setCurrentIndex(i => (i === 0 ? allMedia.length - 1 : i - 1));
-
-    const openOverflowModal = () => setOverflowModalOpen(true);
-    const closeOverflowModal = () => setOverflowModalOpen(false);
-
+    const nextMedia = () =>
+      setCurrentIndex(i => (i + 1) % allMedia.length);
+  
     return (
       <Container className="product-gallery">
         {/* 主展示区 & 切换按钮 */}
         <div className="main-image-container">
           <button className="prev-button" onClick={prevMedia}>❮</button>
-
-          {currentIndex >= subImages.length + 1 && videoIframes.length > 0 ? (
+  
+          {isVideoIndex(currentIndex) ? (
             <div
               className="product-video"
-              style={{ width: '100%', height: '400px' }}
+              style={{ position: 'relative', width: '100%', paddingTop: '56.25%' }}
               dangerouslySetInnerHTML={{
-                __html:
-                  videoIframes[currentIndex - (subImages.length + 1)]
-                    ?.videoEmbed.replace(
-                      '<iframe ',
-                      "<iframe style='width:100%;height:100%;' "
-                    ) || '',
+                __html: videos[currentIndex - videoStart].embedHtml.replace(
+                  '<iframe ',
+                  '<iframe style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allow="autoplay;encrypted-media;fullscreen;picture-in-picture" '
+                ),
               }}
             />
           ) : (
@@ -127,69 +145,46 @@ const ProductDetail = () => {
               onClick={() => setLightboxOpen(true)}
             />
           )}
-
+  
           <button className="next-button" onClick={nextMedia}>❯</button>
         </div>
-
-        {/* 缩略图列表 */}
+  
+        {/* 缩略图列表（最多11项 + 占位符） */}
         <div className="thumbnail-container">
-          {allMedia.slice(0, 11).map((media, idx) => (
+          {allMedia.slice(0, 11).map((src, idx) => (
             <div
               key={idx}
               className={`thumb-container ${idx === currentIndex ? 'active-thumb' : ''}`}
-              onClick={() => setCurrentIndex(idx)}
+              onClick={() => handleThumbnailClick(idx)}
             >
-              <Image src={media} alt={`Thumbnail ${idx}`} className="thumb-img" />
+              <Image src={src} alt={`Thumbnail ${idx}`} className="thumb-img" />
+              {isVideoIndex(idx) && <div className="video-icon-overlay">▶</div>}
             </div>
           ))}
-
-          {allMedia.length > 12 && (
-            <div className="thumb-container placeholder-thumb">
-              <div className="thumb-overlay" onClick={openOverflowModal}>
-                +{allMedia.length - 11}
-              </div>
+          {allMedia.length > 11 && (
+            <div
+              className="thumb-container placeholder-thumb"
+              onClick={() => handleThumbnailClick(11)}
+            >
+              <div className="thumb-overlay">+{allMedia.length - 11}</div>
             </div>
           )}
         </div>
-
-        {/* 溢出项 Modal */}
-        <Modal show={overflowModalOpen} onHide={closeOverflowModal} size="lg" centered>
-          <Modal.Header closeButton>
-            <Modal.Title>查看所有媒体</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Row>
-              {allMedia.map((media, idx) => (
-                <Col xs={3} key={idx} className="mb-3">
-                  <img
-                    src={media}
-                    alt={`Media ${idx}`}
-                    className="img-fluid"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                      setCurrentIndex(idx);
-                      setLightboxOpen(true);
-                      closeOverflowModal();
-                    }}
-                  />
-                </Col>
-              ))}
-            </Row>
-          </Modal.Body>
-        </Modal>
-
-        {/* Lightbox */}
+  
+        {/* 全屏 Lightbox */}
         <Lightbox
           open={lightboxOpen}
           close={() => setLightboxOpen(false)}
-          slides={allMedia.map((media, idx) => ({
-            src: media,
-            html:
-              idx >= subImages.length + 1 && videoIframes.length > 0
-                ? videoIframes[idx - (subImages.length + 1)]?.videoEmbed
-                : undefined,
-          }))}
+          slides={slides}
           index={currentIndex}
+          render={{
+            slide: ({ slide }) =>
+              slide.html ? (
+                <div
+                  dangerouslySetInnerHTML={{ __html: slide.html }}
+                />
+              ) : undefined,
+          }}
         />
       </Container>
     );
