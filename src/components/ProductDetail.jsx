@@ -20,6 +20,7 @@ import "yet-another-react-lightbox/styles.css";
 import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
 import PayPalButton from "./PayPalButton.jsx";
+import WechatShare from './WechatShare.jsx';
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
@@ -428,9 +429,19 @@ const ProductDetail = () => {
 
   const Detail = language === "zh" ? product.Detail_zh : product.Detail_en;
 
+  const Description = language === "zh" ? product.Description_zh : product.Description_en;
+
   const Note = language === "zh" ? product.Note_zh : product.Note_en;
 
   const slides = language === "zh" ? product.slides_zh || "N/A": product.slides_en || "N/A";
+  const shareLink = window.location.href;
+  const shareImg = product.ProductImage
+    ? `${BACKEND_HOST}${product.ProductImage.formats.thumbnail.url}`
+    : `${BACKEND_HOST}/default-share.jpg`;
+  // console.log(shareImg)
+  // console.log(shareLink)
+  // console.log(Name)
+  // console.log(Description)
 
   // console.log("info", subItemCategory);
   // console.log("product", product);
@@ -441,6 +452,12 @@ const ProductDetail = () => {
   return (
     <div>
       <section>
+        <WechatShare
+          title={Name}
+          desc={Description}
+          link={shareLink}
+          imgUrl={shareImg}
+        />
         <Container>
           <Row className='product-detail-section'>
             <Col >
@@ -516,7 +533,7 @@ const ProductDetail = () => {
                     </Row>
                   </Row>
 
-                  <Row>
+                  {/* <Row>
                     <button
                       onClick={handleShare}
                       className='social-sharing__link'
@@ -534,7 +551,7 @@ const ProductDetail = () => {
                     </i>
                       <span className='share-title'>分享此产品</span>
                     </button>
-                  </Row>
+                  </Row> */}
                 </>
               ) : <></>}
             </Col>
