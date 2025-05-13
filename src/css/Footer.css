@@ -141,6 +141,10 @@
   padding: 2% 0;
 }
 
+.social-media-section {
+  margin-bottom: 2%;
+}
+
 @media (max-width: 768px) {
   .footer {
     padding-bottom: 150px;
@@ -148,6 +152,9 @@
   .footer-info {
     font-size:8px;
     padding-top: 2%;
+  }
+  .social-media-section {
+    margin-bottom: 4%;
   }
   
 }

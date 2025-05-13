@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import { useMediaQuery } from "react-responsive";
 import {
   Button,
@@ -13,8 +13,8 @@ import {
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from 'rehype-raw';
 import { Link, useLocation, useParams } from "react-router-dom";
-import rehypeRaw from "rehype-raw";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import { AuthContext } from "../context/AuthContext";
@@ -46,130 +46,147 @@ const ProductDetail = () => {
   const [brand, setBrand] = useState({});
   const [variants, setVariants] = useState([]);
   const [subItemCategory, setSubItemCategory] = useState(null);
+
   const ProductGallery = ({ product }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [videoThumbnails, setVideoThumbnails] = useState([]);
-    const [allMedia, setAllMedia] = useState([]);
+    const [overflowModalOpen, setOverflowModalOpen] = useState(false);
 
-    const mainImage = product?.ProductImage
-      ? `${BACKEND_HOST}${product.ProductImage.url}`
-      : "https://placehold.co/650x650";
+    // 主图
+    const mainImage = useMemo(
+      () =>
+        product?.ProductImage
+          ? `${BACKEND_HOST}${product.ProductImage.url}`
+          : 'https://placehold.co/650x650',
+      [product]
+    );
 
-    const subImages = product?.SubImages?.length
-      ? product.SubImages.map(img => `${BACKEND_HOST}${img.url}`)
-      : [];
+    // 子图
+    const subImages = useMemo(
+      () =>
+        Array.isArray(product?.SubImages) && product.SubImages.length > 0
+          ? product.SubImages.map(img => `${BACKEND_HOST}${img.url}`)
+          : [],
+      [product]
+    );
 
-    const videoIframes = Array.isArray(product?.videos?.data)
-      ? product.videos.data
-      : [];
+    // 视频 iframe 数据
+    const videoIframes = useMemo(
+      () => (Array.isArray(product?.videos?.data) ? product.videos.data : []),
+      [product]
+    );
 
+    // 生成视频缩略图
     useEffect(() => {
-      if (videoIframes.length > 0) {
-        const thumbnails = videoIframes.map(
-          video => video?.pic ?? "https://placehold.co/650x400"
+      if (videoIframes.length) {
+        setVideoThumbnails(
+          videoIframes.map(v => v.pic || 'https://placehold.co/650x400')
         );
-
-        if (JSON.stringify(thumbnails) !== JSON.stringify(videoThumbnails)) {
-          setVideoThumbnails(thumbnails);
-        }
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoIframes]);
 
-    useEffect(() => {
-      setAllMedia([mainImage, ...subImages, ...videoThumbnails]);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [videoThumbnails]);
+    // 合并所有媒体
+    const allMedia = useMemo(
+      () => [mainImage, ...subImages, ...videoThumbnails],
+      [mainImage, subImages, videoThumbnails]
+    );
 
-    const nextMedia = () => {
-      setCurrentIndex(prevIndex => (prevIndex + 1) % allMedia.length);
-    };
+    const nextMedia = () =>
+      setCurrentIndex(i => (i + 1) % allMedia.length);
+    const prevMedia = () =>
+      setCurrentIndex(i => (i === 0 ? allMedia.length - 1 : i - 1));
 
-    const prevMedia = () => {
-      setCurrentIndex(prevIndex =>
-        prevIndex === 0 ? allMedia.length - 1 : prevIndex - 1
-      );
-    };
+    const openOverflowModal = () => setOverflowModalOpen(true);
+    const closeOverflowModal = () => setOverflowModalOpen(false);
 
     return (
-      <Container className='product-gallery'>
-        <div className='main-image-container'>
-          <button className='prev-button' onClick={prevMedia}>
-            ❮
-          </button>
+      <Container className="product-gallery">
+        {/* 主展示区 & 切换按钮 */}
+        <div className="main-image-container">
+          <button className="prev-button" onClick={prevMedia}>❮</button>
 
           {currentIndex >= subImages.length + 1 && videoIframes.length > 0 ? (
             <div
-              className='product-video'
-              style={{ width: "100%", height: "400px" }}
+              className="product-video"
+              style={{ width: '100%', height: '400px' }}
               dangerouslySetInnerHTML={{
-                __html: videoIframes[currentIndex - (subImages.length + 1)]
-                  ?.videoEmbed.replace(
-                    "<iframe ",
-                    "<iframe style='width:100%;height:100%;' "
-                  ) || "",
+                __html:
+                  videoIframes[currentIndex - (subImages.length + 1)]
+                    ?.videoEmbed.replace(
+                      '<iframe ',
+                      "<iframe style='width:100%;height:100%;' "
+                    ) || '',
               }}
             />
           ) : (
             <Image
               src={allMedia[currentIndex]}
-              alt={`Product Media ${currentIndex}`}
-              className='product-img'
+              alt={`Media ${currentIndex}`}
+              className="product-img"
               onClick={() => setLightboxOpen(true)}
             />
           )}
 
-          <button className='next-button' onClick={nextMedia}>
-            ❯
-          </button>
+          <button className="next-button" onClick={nextMedia}>❯</button>
         </div>
 
-        <div className='thumbnail-container'>
-          {allMedia.slice(0, 11).map((media, index) => (
+        {/* 缩略图列表 */}
+        <div className="thumbnail-container">
+          {allMedia.slice(0, 11).map((media, idx) => (
             <div
-              key={index}
-              className={`thumb-container ${index === currentIndex ? "active-thumb" : ""}`}
-              onClick={() => setCurrentIndex(index)}
+              key={idx}
+              className={`thumb-container ${idx === currentIndex ? 'active-thumb' : ''}`}
+              onClick={() => setCurrentIndex(idx)}
             >
-              <Image
-                src={media}
-                alt={`Thumbnail ${index}`}
-                className='thumb-img'
-              />
+              <Image src={media} alt={`Thumbnail ${idx}`} className="thumb-img" />
             </div>
           ))}
 
-          {allMedia.length > 12 ? (
+          {allMedia.length > 12 && (
             <div className="thumb-container placeholder-thumb">
-              <div className="thumb-overlay" onClick={() => setCurrentIndex(11)}>
+              <div className="thumb-overlay" onClick={openOverflowModal}>
                 +{allMedia.length - 11}
               </div>
             </div>
-          ) : (
-            allMedia.length === 12 && (
-              <div
-                className={`thumb-container ${11 === currentIndex ? "active-thumb" : ""}`}
-                onClick={() => setCurrentIndex(11)}
-              >
-                <Image
-                  src={allMedia[11]}
-                  alt={`Thumbnail 11`}
-                  className='thumb-img'
-                />
-              </div>
-            )
           )}
         </div>
 
+        {/* 溢出项 Modal */}
+        <Modal show={overflowModalOpen} onHide={closeOverflowModal} size="lg" centered>
+          <Modal.Header closeButton>
+            <Modal.Title>查看所有媒体</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Row>
+              {allMedia.map((media, idx) => (
+                <Col xs={3} key={idx} className="mb-3">
+                  <img
+                    src={media}
+                    alt={`Media ${idx}`}
+                    className="img-fluid"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      setCurrentIndex(idx);
+                      setLightboxOpen(true);
+                      closeOverflowModal();
+                    }}
+                  />
+                </Col>
+              ))}
+            </Row>
+          </Modal.Body>
+        </Modal>
+
+        {/* Lightbox */}
         <Lightbox
           open={lightboxOpen}
           close={() => setLightboxOpen(false)}
-          slides={allMedia.map((media, index) => ({
+          slides={allMedia.map((media, idx) => ({
             src: media,
             html:
-              index >= subImages.length + 1 && videoIframes.length > 0
-                ? videoIframes[index - (subImages.length + 1)]?.videoEmbed
+              idx >= subImages.length + 1 && videoIframes.length > 0
+                ? videoIframes[idx - (subImages.length + 1)]?.videoEmbed
                 : undefined,
           }))}
           index={currentIndex}
@@ -240,6 +257,7 @@ const ProductDetail = () => {
         setError(t("noProductFound"));
         return;
       }
+
       setProduct(productData);
 
       const peopleData = peopleResponse.data?.data?.[0]?.people;
@@ -416,7 +434,12 @@ const ProductDetail = () => {
   const Detail = language === "zh" ? product.Detail_zh : product.Detail_en;
 
   const Note = language === "zh" ? product.Note_zh : product.Note_en;
-  console.log("info", subItemCategory);
+
+  const slides = language === "zh" ? product.slides_zh || "N/A": product.slides_en || "N/A";
+
+  // console.log("info", subItemCategory);
+  // console.log("product", product);
+  // console.log("slide", slides);
 
   // console.log(productTag)
 
@@ -429,6 +452,7 @@ const ProductDetail = () => {
               <Row>
                 <ProductGallery product={product} />
               </Row>
+              <br/>
               {onDesktop ? (
                 <>
                   <Row>
@@ -646,7 +670,7 @@ const ProductDetail = () => {
                     <div className='detail-container'>暂无产品信息</div>
                   )}
                 </Row>
-
+                <br/>
                 {!onDesktop ? (
                 <>
                   <Row>
@@ -739,6 +763,17 @@ const ProductDetail = () => {
               </Container>
             </Col>
           </Row>
+          <br/>
+          {slides !== "N/A" ? (
+            <div className="slide-section">
+              <Container>
+                <h4>图文详情</h4>
+                <ReactMarkdown>{slides}</ReactMarkdown>
+              </Container>
+            </div>
+          ) : (
+            <></>
+          )}
         </Container>
       </section>
     </div>

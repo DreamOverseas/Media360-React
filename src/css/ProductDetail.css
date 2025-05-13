@@ -408,6 +408,11 @@
   overflow-y: auto; /* 允许垂直滚动 */
 }
 
+.slide-section p img {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 1%;
+}
 /* Responsive design for mobile devices */
 @media (max-width: 768px) {
   .amount-price-bar {
