@@ -94,7 +94,7 @@ const Footer = () => {
                 </Col> 
             </Row>
             <Row>
-            <div className="d-flex gap-5 align-items-center w-100">
+            <div className="d-flex gap-5 align-items-center w-100 social-media-section">
 
               <a href="https://mp.weixin.qq.com/" target="_blank" rel="noopener noreferrer" className="d-flex align-items-center text-white text-decoration-none">
                 <img src="/icons/wechat.png" alt="微信" style={{ height: '20px', marginRight: '8px' }} />
@@ -109,6 +109,13 @@ const Footer = () => {
               <a href="https://space.bilibili.com/3546717257468817" target="_blank" rel="noopener noreferrer"  className="d-flex align-items-center text-white text-decoration-none">
                 <img src="/icons/bilibili.png" alt="B站" style={{ height: '20px', marginRight: '8px' }} />
                 B站
+              </a>
+            </div>
+            <div className="d-flex gap-5 align-items-center w-100">
+
+              <a href="https://www.instagram.com/360media360media/" target="_blank" rel="noopener noreferrer" className="d-flex align-items-center text-white text-decoration-none">
+                <img src="/icons/instagram.png" alt="Instagram" style={{ height: '20px', marginRight: '8px' }} />
+                Instagram
               </a>
 
             </div>
@@ -199,9 +206,9 @@ const Footer = () => {
                 </Col> 
             </Row>
             <Row>
-            <div className="d-flex justify-content-between align-items-center w-100">
+            <div className="d-flex justify-content-between align-items-center w-100 social-media-section">
 
-              <a href="https://mp.weixin.qq.com/" target="_blank" rel="noopener noreferrer" style={{fontSize:"12px"}}className="d-flex align-items-center text-white text-decoration-none">
+              <a href="https://mp.weixin.qq.com/" target="_blank" rel="noopener noreferrer" style={{fontSize:"12px"}} className="d-flex align-items-center text-white text-decoration-none">
                 <img src="/icons/wechat.png" alt="微信" style={{ height: '20px', marginRight: '8px' }} />
                 公众号36OMedia
               </a>
@@ -214,6 +221,14 @@ const Footer = () => {
               <a href="https://space.bilibili.com/3546717257468817" target="_blank" rel="noopener noreferrer" style={{fontSize:"12px"}} className="d-flex align-items-center text-white text-decoration-none">
                 <img src="/icons/bilibili.png" alt="B站" style={{ height: '20px', marginRight: '8px' }} />
                 B站
+              </a>
+
+            </div>
+            <div className="d-flex gap-5 align-items-center w-100">
+
+              <a href="https://www.instagram.com/360media360media/" target="_blank" rel="noopener noreferrer" style={{fontSize:"12px"}} className="d-flex align-items-center text-white text-decoration-none">
+                <img src="/icons/instagram.png" alt="Instagram" style={{ height: '20px', marginRight: '8px' }} />
+                Instagram
               </a>
 
             </div>

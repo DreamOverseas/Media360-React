@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import { useMediaQuery } from "react-responsive";
 import {
   Button,
@@ -13,13 +13,14 @@ import {
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from 'rehype-raw';
 import { Link, useLocation, useParams } from "react-router-dom";
-import rehypeRaw from "rehype-raw";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
 import PayPalButton from "./PayPalButton.jsx";
+import WechatShare from './WechatShare.jsx';
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
@@ -46,133 +47,145 @@ const ProductDetail = () => {
   const [brand, setBrand] = useState({});
   const [variants, setVariants] = useState([]);
   const [subItemCategory, setSubItemCategory] = useState(null);
+
   const ProductGallery = ({ product }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [videoThumbnails, setVideoThumbnails] = useState([]);
-    const [allMedia, setAllMedia] = useState([]);
-
-    const mainImage = product?.ProductImage
-      ? `${BACKEND_HOST}${product.ProductImage.url}`
-      : "https://placehold.co/650x650";
-
-    const subImages = product?.SubImages?.length
-      ? product.SubImages.map(img => `${BACKEND_HOST}${img.url}`)
-      : [];
-
-    const videoIframes = Array.isArray(product?.videos?.data)
-      ? product.videos.data
-      : [];
-
+  
+    // 主图 URL
+    const mainImage = useMemo(
+      () =>
+        product?.ProductImage
+          ? `${BACKEND_HOST}${product.ProductImage.url}`
+          : 'https://placehold.co/650x650',
+      [product]
+    );
+  
+    // 子图 URL 列表
+    const subImages = useMemo(
+      () =>
+        Array.isArray(product?.SubImages)
+          ? product.SubImages.map(img => `${BACKEND_HOST}${img.url}`)
+          : [],
+      [product]
+    );
+  
+    // 视频数据：embed HTML + 缩略图
+    const videos = useMemo(
+      () =>
+        Array.isArray(product?.videos?.data)
+          ? product.videos.data.map(v => ({
+              embedHtml: v.videoEmbed,
+              thumbnail: v.pic,
+            }))
+          : [],
+      [product]
+    );
+  
+    // 视频缩略图列表
     useEffect(() => {
-      if (videoIframes.length > 0) {
-        const thumbnails = videoIframes.map(
-          video => video?.pic ?? "https://placehold.co/650x400"
-        );
-
-        if (JSON.stringify(thumbnails) !== JSON.stringify(videoThumbnails)) {
-          setVideoThumbnails(thumbnails);
-        }
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [videoIframes]);
-
-    useEffect(() => {
-      setAllMedia([mainImage, ...subImages, ...videoThumbnails]);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [videoThumbnails]);
-
-    const nextMedia = () => {
-      setCurrentIndex(prevIndex => (prevIndex + 1) % allMedia.length);
+      setVideoThumbnails(videos.map(v => v.thumbnail || 'https://placehold.co/650x400'));
+    }, [videos]);
+  
+    // 合并所有媒体（图片 + 视频缩略图）
+    const allMedia = useMemo(
+      () => [mainImage, ...subImages, ...videoThumbnails],
+      [mainImage, subImages, videoThumbnails]
+    );
+  
+    // 视频起始索引和判断
+    const videoStart = 1 + subImages.length;
+    const isVideoIndex = idx => idx >= videoStart;
+  
+    // 构建 Lightbox slides
+    const slides = useMemo(
+      () =>
+        allMedia.map((_, idx) =>
+          isVideoIndex(idx)
+            ? { html: videos[idx - videoStart].embedHtml }
+            : { src: allMedia[idx] }
+        ),
+      [allMedia, videos]
+    );
+  
+    // 缩略图点击：打开对应媒体
+    const handleThumbnailClick = idx => {
+      setCurrentIndex(idx);
+      setLightboxOpen(true);
     };
-
-    const prevMedia = () => {
-      setCurrentIndex(prevIndex =>
-        prevIndex === 0 ? allMedia.length - 1 : prevIndex - 1
-      );
-    };
-
+  
+    // 切换媒体
+    const prevMedia = () =>
+      setCurrentIndex(i => (i === 0 ? allMedia.length - 1 : i - 1));
+    const nextMedia = () =>
+      setCurrentIndex(i => (i + 1) % allMedia.length);
+  
     return (
-      <Container className='product-gallery'>
-        <div className='main-image-container'>
-          <button className='prev-button' onClick={prevMedia}>
-            ❮
-          </button>
-
-          {currentIndex >= subImages.length + 1 && videoIframes.length > 0 ? (
+      <Container className="product-gallery">
+        {/* 主展示区 & 切换按钮 */}
+        <div className="main-image-container">
+          <button className="prev-button" onClick={prevMedia}>❮</button>
+  
+          {isVideoIndex(currentIndex) ? (
             <div
-              className='product-video'
-              style={{ width: "100%", height: "400px" }}
+              className="product-video"
+              style={{ position: 'relative', width: '100%', paddingTop: '56.25%' }}
               dangerouslySetInnerHTML={{
-                __html: videoIframes[currentIndex - (subImages.length + 1)]
-                  ?.videoEmbed.replace(
-                    "<iframe ",
-                    "<iframe style='width:100%;height:100%;' "
-                  ) || "",
+                __html: videos[currentIndex - videoStart].embedHtml.replace(
+                  '<iframe ',
+                  '<iframe style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allow="autoplay;encrypted-media;fullscreen;picture-in-picture" '
+                ),
               }}
             />
           ) : (
             <Image
               src={allMedia[currentIndex]}
-              alt={`Product Media ${currentIndex}`}
-              className='product-img'
+              alt={`Media ${currentIndex}`}
+              className="product-img"
               onClick={() => setLightboxOpen(true)}
             />
           )}
-
-          <button className='next-button' onClick={nextMedia}>
-            ❯
-          </button>
+  
+          <button className="next-button" onClick={nextMedia}>❯</button>
         </div>
-
-        <div className='thumbnail-container'>
-          {allMedia.slice(0, 11).map((media, index) => (
+  
+        {/* 缩略图列表（最多11项 + 占位符） */}
+        <div className="thumbnail-container">
+          {allMedia.slice(0, 11).map((src, idx) => (
             <div
-              key={index}
-              className={`thumb-container ${index === currentIndex ? "active-thumb" : ""}`}
-              onClick={() => setCurrentIndex(index)}
+              key={idx}
+              className={`thumb-container ${idx === currentIndex ? 'active-thumb' : ''}`}
+              onClick={() => handleThumbnailClick(idx)}
             >
-              <Image
-                src={media}
-                alt={`Thumbnail ${index}`}
-                className='thumb-img'
-              />
+              <Image src={src} alt={`Thumbnail ${idx}`} className="thumb-img" />
+              {isVideoIndex(idx) && <div className="video-icon-overlay">▶</div>}
             </div>
           ))}
-
-          {allMedia.length > 12 ? (
-            <div className="thumb-container placeholder-thumb">
-              <div className="thumb-overlay" onClick={() => setCurrentIndex(11)}>
-                +{allMedia.length - 11}
-              </div>
+          {allMedia.length > 11 && (
+            <div
+              className="thumb-container placeholder-thumb"
+              onClick={() => handleThumbnailClick(11)}
+            >
+              <div className="thumb-overlay">+{allMedia.length - 11}</div>
             </div>
-          ) : (
-            allMedia.length === 12 && (
-              <div
-                className={`thumb-container ${11 === currentIndex ? "active-thumb" : ""}`}
-                onClick={() => setCurrentIndex(11)}
-              >
-                <Image
-                  src={allMedia[11]}
-                  alt={`Thumbnail 11`}
-                  className='thumb-img'
-                />
-              </div>
-            )
           )}
         </div>
-
+  
+        {/* 全屏 Lightbox */}
         <Lightbox
           open={lightboxOpen}
           close={() => setLightboxOpen(false)}
-          slides={allMedia.map((media, index) => ({
-            src: media,
-            html:
-              index >= subImages.length + 1 && videoIframes.length > 0
-                ? videoIframes[index - (subImages.length + 1)]?.videoEmbed
-                : undefined,
-          }))}
+          slides={slides}
           index={currentIndex}
+          render={{
+            slide: ({ slide }) =>
+              slide.html ? (
+                <div
+                  dangerouslySetInnerHTML={{ __html: slide.html }}
+                />
+              ) : undefined,
+          }}
         />
       </Container>
     );
@@ -240,6 +253,7 @@ const ProductDetail = () => {
         setError(t("noProductFound"));
         return;
       }
+
       setProduct(productData);
 
       const peopleData = peopleResponse.data?.data?.[0]?.people;
@@ -415,20 +429,42 @@ const ProductDetail = () => {
 
   const Detail = language === "zh" ? product.Detail_zh : product.Detail_en;
 
+  const Description = language === "zh" ? product.Description_zh : product.Description_en;
+
   const Note = language === "zh" ? product.Note_zh : product.Note_en;
-  console.log("info", subItemCategory);
+
+  const slides = language === "zh" ? product.slides_zh || "N/A": product.slides_en || "N/A";
+  const shareLink = window.location.href;
+  const shareImg = product.ProductImage
+    ? `${BACKEND_HOST}${product.ProductImage.formats.thumbnail.url}`
+    : `${BACKEND_HOST}/default-share.jpg`;
+  // console.log(shareImg)
+  // console.log(shareLink)
+  // console.log(Name)
+  // console.log(Description)
+
+  // console.log("info", subItemCategory);
+  // console.log("product", product);
+  // console.log("slide", slides);
 
   // console.log(productTag)
 
   return (
     <div>
       <section>
+        <WechatShare
+          title={Name}
+          desc={Description}
+          link={shareLink}
+          imgUrl={shareImg}
+        />
         <Container>
           <Row className='product-detail-section'>
             <Col >
               <Row>
                 <ProductGallery product={product} />
               </Row>
+              <br/>
               {onDesktop ? (
                 <>
                   <Row>
@@ -497,7 +533,7 @@ const ProductDetail = () => {
                     </Row>
                   </Row>
 
-                  <Row>
+                  {/* <Row>
                     <button
                       onClick={handleShare}
                       className='social-sharing__link'
@@ -515,7 +551,7 @@ const ProductDetail = () => {
                     </i>
                       <span className='share-title'>分享此产品</span>
                     </button>
-                  </Row>
+                  </Row> */}
                 </>
               ) : <></>}
             </Col>
@@ -646,7 +682,7 @@ const ProductDetail = () => {
                     <div className='detail-container'>暂无产品信息</div>
                   )}
                 </Row>
-
+                <br/>
                 {!onDesktop ? (
                 <>
                   <Row>
@@ -739,6 +775,17 @@ const ProductDetail = () => {
               </Container>
             </Col>
           </Row>
+          <br/>
+          {slides !== "N/A" ? (
+            <div className="slide-section">
+              <Container>
+                <h4>图文详情</h4>
+                <ReactMarkdown>{slides}</ReactMarkdown>
+              </Container>
+            </div>
+          ) : (
+            <></>
+          )}
         </Container>
       </section>
     </div>
