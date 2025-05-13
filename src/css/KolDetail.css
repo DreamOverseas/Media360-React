@@ -18,15 +18,8 @@ body {
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 2rem 0;
-  gap: 2rem;
 }
 
-/* 🎨 左侧人物信息 */
-.kol-info {
-  flex: 1;
-  max-width: 55%;
-  text-align: left;
-}
 
 .kol-info h1 {
   font-size: 2rem;
@@ -38,15 +31,6 @@ body {
   font-size: 1.2rem;
   color: #666;
   margin-bottom: 20px;
-}
-
-.kol-info p {
-  font-size: 1rem;
-  color: #444;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3; /* ✅ 仅显示 3 行 */
-  -webkit-box-orient: vertical;
 }
 
 /* 🎨 右侧人物头像 */
