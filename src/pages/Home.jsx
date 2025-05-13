@@ -34,8 +34,8 @@ const HomePage = ()=> {
     return (
       <Container>
         <Row className="d-flex text-center" style={{ color: 'white' }}>
-          <h4>Our Products</h4>
-          <h4>我们的产品</h4>
+          <h4>Experience the difference</h4>
+          <h4>产品体验</h4>
         </Row>
         <br/>
         <div className="home-product-carousel-wrapper">
