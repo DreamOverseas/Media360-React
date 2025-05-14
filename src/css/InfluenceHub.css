@@ -1,0 +1,40 @@
+.person-page-person-card img {
+    height:300px;
+    width:100%;
+    object-fit: cover;
+    
+}
+
+.person-page-person-card .card-text {
+    line-height: 1.5;
+    height: 3em;
+    
+}
+
+/* 小屏幕优化 */
+@media (max-width: 768px) {
+    .person-page-related-person-container{
+        height:auto
+    }
+    .person-page-related-person-title {
+        font-size: 11px
+    }
+
+    .person-page-related-person-container img{
+      height:200px;
+      width:100%;
+      object-fit: cover;
+    }
+    .person-page-related-bio-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        font-size: 8px;
+    }
+    .person-page-related-more-link {
+        font-size: 9px;
+    }
+}
