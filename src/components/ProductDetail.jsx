@@ -38,6 +38,7 @@ const ProductDetail = () => {
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [showModal, setShowModal] = useState(false);
+  const [baseurl, setBaseUrl] = useState(null);
   const onDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 
   // const [showLoginModal, setShowLoginModal] = useState(false);
@@ -47,6 +48,14 @@ const ProductDetail = () => {
   const [brand, setBrand] = useState({});
   const [variants, setVariants] = useState([]);
   const [subItemCategory, setSubItemCategory] = useState(null);
+
+  const { mainUrl, variantUrl } = useParams();
+  const slugToFetch = variantUrl || mainUrl;
+
+  const basePath = variantUrl
+    ? `/products/${mainUrl}/${variantUrl}`
+    : `/products/${mainUrl}`;
+
 
   const ProductGallery = ({ product }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -284,11 +293,20 @@ const ProductDetail = () => {
     }
   };
 
-  useEffect(() => {
-    const path = location.pathname.replace("/products/", "");
-    fetchData(path, setProduct, setPeople, setError, t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
+
+useEffect(() => {
+  const path = location.pathname.replace("/products/", "");
+  setBaseUrl(path);
+  console.log("ppppp", path);
+
+  const segments = path.split('/').filter(seg => seg);
+  const slug =
+    segments.length > 1 && !segments[1].startsWith('related-')
+      ? segments[1]
+      : segments[0];
+
+  fetchData(slug, setProduct, setPeople, setError, t);
+}, [location.pathname]);
 
   useEffect(() => {
     if (!brand || !brand.internal_url) return;
@@ -473,7 +491,7 @@ const ProductDetail = () => {
                       {founder.length > 0 && (
                         <Col xs={4}>
                           <Link
-                            to={`/products/${product.url}/related-founder`}
+                            to={`/products/${baseurl}/related-founder`}
                             state={{ founder }}
                           >
                             <Button className='product-detail-funtion-btn'>
@@ -485,7 +503,7 @@ const ProductDetail = () => {
                       {kol.length > 0 && (
                         <Col xs={4}>
                           <Link
-                            to={`/products/${product.url}/related-kol`}
+                            to={`/products/${baseurl}/related-kol`}
                             state={{ kol }}
                           >
                             <Button className='product-detail-funtion-btn'>
@@ -497,7 +515,7 @@ const ProductDetail = () => {
                       {spokesperson.length > 0 && (
                         <Col xs={4}>
                           <Link
-                            to={`/products/${product.url}/related-ambassador`}
+                            to={`/products/${baseurl}/related-ambassador`}
                             state={{ spokesperson }}
                           >
                             <Button className='product-detail-funtion-btn'>
@@ -509,7 +527,7 @@ const ProductDetail = () => {
                       {news.length > 0 && (
                         <Col xs={4}>
                           <Link
-                            to={`/products/${product.url}/related-news`}
+                            to={`/products/${baseurl}/related-news`}
                             state={{ news }}
                           >
                             <Button className='product-detail-funtion-btn'>
@@ -521,7 +539,7 @@ const ProductDetail = () => {
                       {event.length > 0 && (
                         <Col xs={4}>
                           <Link
-                            to={`/products/${product.url}/related-event`}
+                            to={`/products/${baseurl}/related-event`}
                             state={{ event }}
                           >
                             <Button className='product-detail-funtion-btn'>
@@ -588,7 +606,7 @@ const ProductDetail = () => {
                                 const isActive = currentPath === `/products/${variant.url}`;
                                 return (
                                   <Col xs={4} key={vIndex}>
-                                    <Link to={`/products/${variant.url}`}>
+                                    <Link to={`/products/${brand.MainProduct_url}/${variant.url}`}>
                                       <Button
                                         className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
                                       >
@@ -609,7 +627,7 @@ const ProductDetail = () => {
                           const isActive = currentPath === `/products/${variant.url}`;
                           return (
                             <Col xs={4} key={index}>
-                              <Link to={`/products/${variant.url}`}>
+                              <Link to={`/products/${brand.MainProduct_url}/${variant.url}`}>
                                 <Button
                                   className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
                                 >
