@@ -49,14 +49,6 @@ const ProductDetail = () => {
   const [variants, setVariants] = useState([]);
   const [subItemCategory, setSubItemCategory] = useState(null);
 
-  const { mainUrl, variantUrl } = useParams();
-  const slugToFetch = variantUrl || mainUrl;
-
-  const basePath = variantUrl
-    ? `/products/${mainUrl}/${variantUrl}`
-    : `/products/${mainUrl}`;
-
-
   const ProductGallery = ({ product }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
