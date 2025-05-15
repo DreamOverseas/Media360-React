@@ -17,6 +17,26 @@ const HomePage = ()=> {
   // const [events, setEvents] = useState([]);
   const onDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 
+  const setWithExpiry = (key, value, ttl) => {
+    const item = {
+      value,
+      expiry: Date.now() + ttl,
+    };
+    localStorage.setItem(key, JSON.stringify(item));
+  };
+
+  const getWithExpiry = (key) => {
+    const itemStr = localStorage.getItem(key);
+    if (!itemStr) return null;
+
+    const item = JSON.parse(itemStr);
+    if (Date.now() > item.expiry) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return item.value;
+  };
+
   const ProductCarousel = ({ products, language, t, BACKEND_HOST, cardsPerRow }) => {
     const [startIndex, setStartIndex] = useState(0);
     const totalProducts = products.length;
@@ -259,6 +279,15 @@ const HomePage = ()=> {
 
     const fetchProducts = async () => {
       try {
+      
+        let countryCode = getWithExpiry('user_country_code');
+
+        if (!countryCode) {
+          const ipRes = await axios.get('https://ipapi.co/json/');
+          countryCode = ipRes.data.country_code;
+          setWithExpiry('user_country_code', countryCode, 24 * 60 * 60 * 1000);
+        }
+
         const response = await axios.get(
           `${BACKEND_HOST}/api/products`, {
             params: {
@@ -269,7 +298,13 @@ const HomePage = ()=> {
             },
           }
         );
-        setProducts(response.data.data);
+        let allProducts = response.data.data;
+
+        if (countryCode === 'CN') {
+          allProducts = allProducts.filter(product => !product.BlockInChina);
+        }
+
+        setProducts(allProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
       }

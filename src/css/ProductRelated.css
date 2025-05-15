@@ -2,16 +2,16 @@
     text-decoration: none;
 }
 
-.product-related-bio-text {
+.person-page-related-bio-text {
     font-size: 12px
 }
 
-.product-related-person-title {
+.person-page-related-person-title {
     margin-top:1%;
     font-size: 13px
 }
 
-.product-related-bio-text {
+.person-page-related-bio-text {
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
@@ -20,7 +20,7 @@
     white-space: normal;
 }
 
-.product-related-more-link {
+.person-page-related-more-link {
     display: inline-block;
     color: grey; /* 初始文字颜色 */
     text-decoration: none;
@@ -30,12 +30,12 @@
 }
 
 
-.product-related-more-link:hover,
-.product-related-more-link:active {
+.person-page-related-more-link:hover,
+.person-page-related-more-link:active {
     color: black;
 }
 
-.product-related-more-link::after {
+.person-page-related-more-link::after {
     content: "";
     display: block;
     width: 100%;
@@ -47,17 +47,17 @@
 }
 
 
-.product-related-more-link:hover::after,
-.product-related-more-link:active::after {
+.person-page-related-more-link:hover::after,
+.person-page-related-more-link:active::after {
     background-color: black;
 }
 
-.product-related-person-container{
+.person-page-related-person-container{
     height:200px;
     margin-bottom:5%;
 }
 
-.product-related-person-container img{
+.person-page-related-person-container img{
   height:300px;
   width:100%;
   object-fit: cover;
@@ -66,19 +66,19 @@
 
 /* 小屏幕优化 */
 @media (max-width: 768px) {
-    .product-related-person-container{
+    .person-page-related-person-container{
         height:auto
     }
-    .product-related-person-title {
+    .person-page-related-person-title {
         font-size: 11px
     }
 
-    .product-related-person-container img{
+    .person-page-related-person-container img{
       height:200px;
       width:100%;
       object-fit: cover;
     }
-    .product-related-bio-text {
+    .person-page-related-bio-text {
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
@@ -87,7 +87,7 @@
         white-space: normal;
         font-size: 8px;
     }
-    .product-related-more-link {
+    .person-page-related-more-link {
         font-size: 9px;
     }
 }
@@ -96,7 +96,7 @@
 
 /* news-card */
 
-.product-related-page {
+.person-page-related-page {
     padding: 30px;
   }
   
@@ -109,14 +109,14 @@
   }
   
   /* 🎨 相关卡片布局 */
-  .product-related-container {
+  .person-page-related-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* ✅ PC 端每行 2 个 */
     gap: 20px;
   }
   
   /* 🎨 相关卡片 */
-  .product-related-card {
+  .person-page-related-card {
     display: flex;
     flex-direction: row; /* ✅ 图片左，文本右 */
     align-items: center;
@@ -133,12 +133,12 @@
     height: 200px; /* ✅ 统一卡片高度 */
   }
   
-  .product-related-card:hover {
+  .person-page-related-card:hover {
     transform: translateY(-3px);
   }
   
   /* 🎨 相关卡片图片 */
-  .product-related-card-img {
+  .person-page-related-card-img {
     width: 120px;
     height: 120px;
     object-fit: cover;
@@ -147,7 +147,7 @@
   }
   
   /* 🎨 相关卡片内容 */
-  .product-related-card-body {
+  .person-page-related-card-body {
     flex-grow: 1;
     padding: 10px 15px;
     text-align: left;
@@ -155,7 +155,7 @@
   }
   
   /* 🎨 相关卡片标题 */
-  .product-related-card-title {
+  .person-page-related-card-title {
     font-size: 1.1rem;
     font-weight: bold;
     color: black;
@@ -164,7 +164,7 @@
   }
   
   /* 🎨 相关卡片简介（最多 3 行） */
-  .product-related-card-text {
+  .person-page-related-card-text {
     font-size: 0.9rem;
     color: #666;
     margin-bottom: 5px;
@@ -178,14 +178,14 @@
   }
   
   /* 🎨 相关卡片角色 */
-  .product-related-card-role {
+  .person-page-related-card-role {
     font-size: 0.85rem;
     color: #888;
     margin-bottom: 5px;
   }
   
   /* 🎨 “查看更多” 按钮 */
-  .product-related-read-more-btn {
+  .person-page-related-read-more-btn {
     font-size: 0.9rem;
     font-weight: bold;
     color: black;
@@ -194,12 +194,12 @@
     transition: 0.3s ease-in-out;
   }
   
-  .product-related-read-more-btn:hover {
+  .person-page-related-read-more-btn:hover {
     opacity: 0.7;
   }
   
   /* 🎨 相关卡片链接 */
-  .product-related-card-link {
+  .person-page-related-card-link {
     text-decoration: none !important;
     color: inherit;
     display: block;
@@ -208,24 +208,24 @@
   
   /* 📱 移动端优化 */
   @media (max-width: 768px) {
-    .product-related-card {
+    .person-page-related-card {
       flex-direction: column;
       align-items: flex-start;
       height: auto; /* 移动端取消固定高度 */
     }
   
-    .product-related-card-img {
+    .person-page-related-card-img {
       width: 100%;
       height: auto;
     }
   
-    .product-related-card-body {
+    .person-page-related-card-body {
       padding: 10px 0;
       text-align: left;
       width: 100%; /* 移动端文字部分宽度 */
     }
   
-    .product-related-container {
+    .person-page-related-container {
       grid-template-columns: 1fr; /* 移动端每行 1 个 */
     }
   }
@@ -234,7 +234,7 @@
   /* brand card */
 
   /* 页面整体样式 */
-.product-related-brand-page {
+.person-page-related-brand-page {
   padding: 30px;
 }
 
@@ -247,7 +247,7 @@
 }
 
 /* 相关卡片样式 */
-.product-related-brand-card {
+.person-page-related-brand-card {
   display: flex; /* ✅ 水平排列 */
   flex-direction: row; /* ✅ 让图片始终在左，文本在右 */
   align-items: center; /* ✅ 垂直居中 */
@@ -264,12 +264,12 @@
   margin-bottom: 15px;
 }
 
-.product-related-brand-card:hover {
+.person-page-related-brand-card:hover {
   transform: translateY(-3px);
 }
 
 /* 相关卡片图片 - 位置固定在左侧 */
-.product-related-brand-card-img {
+.person-page-related-brand-card-img {
   width: 150px; /* ✅ 统一图片宽度 */
   height: 150px; /* ✅ 确保图片是正方形 */
   object-fit: cover;
@@ -278,14 +278,14 @@
 }
 
 /* 相关卡片文字部分 */
-.product-related-brand-card-body {
+.person-page-related-brand-card-body {
   flex-grow: 1;
   padding: 10px 15px;
   text-align: left;
 }
 
 /* 相关卡片标题 */
-.product-related-brand-card-title {
+.person-page-related-brand-card-title {
   font-size: 1.1rem;
   font-weight: bold;
   color: black;
@@ -295,7 +295,7 @@
 
 /* 相关卡片描述 */
 /* 相关卡片描述 - 限制最多 3 行 */
-.product-related-brand-card-text {
+.person-page-related-brand-card-text {
   font-size: 0.9rem;
   color: #666;
   margin-bottom: 5px;
@@ -310,7 +310,7 @@
 }
 
 /* 确保卡片链接不会改变样式 */
-.product-related-brand-card-link {
+.person-page-related-brand-card-link {
   text-decoration: none !important;
   color: inherit;
   display: block;
@@ -319,24 +319,24 @@
 
 /* 响应式优化 */
 @media (max-width: 768px) {
-  .product-related-brand-card {
+  .person-page-related-brand-card {
     flex-direction: column; /* ✅ 小屏幕改为垂直排列 */
     align-items: flex-start;
   }
 
-  .product-related-brand-card-img {
+  .person-page-related-brand-card-img {
     width: 100%; /* ✅ 图片占满整个宽度 */
     height: auto;
   }
 
-  .product-related-brand-card-body {
+  .person-page-related-brand-card-body {
     padding: 10px 0;
     text-align: left;
   }
 }
 
 @media (min-width: 769px) {
-  .product-related-brand-container {
+  .person-page-related-brand-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* ✅ PC 端每行 3 个 */
     gap: 20px;
@@ -345,9 +345,9 @@
 
 
 
-/* product-related-event-card */
+/* person-page-related-event-card */
 /* Banner Styling */
-.product-related-event-background-image-container {
+.person-page-related-event-background-image-container {
   background-image: url("/public/events/banner.png");
   background-size: cover;
   background-position: center;
@@ -361,14 +361,14 @@
   margin-bottom: 3%;
 }
 
-.product-related-event-banner-h1 {
+.person-page-related-event-banner-h1 {
   color: white;
   font-size: 2.5rem;
   margin: 0;
 }
 
 /* Events Section */
-.product-related-event-card {
+.person-page-related-event-card {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -380,13 +380,13 @@
   margin-top: 3%;
 }
 
-.product-related-event-card:hover {
+.person-page-related-event-card:hover {
   transform: scale(1.05);
   background-color: rgba(255, 255, 255, 0.15);
 }
 
 /* Image Styling */
-.product-related-event-card img {
+.person-page-related-event-card img {
   max-width: 100%;
   height: 230px; /* Adjusted image height to leave more room for text */
   object-fit: cover;
@@ -394,7 +394,7 @@
 }
 
 /* Card Body */
-.product-related-event-card .card-body {
+.person-page-related-event-card .card-body {
   flex-grow: 1;
   padding: 12px; /* Slightly smaller padding */
   display: flex;
@@ -404,7 +404,7 @@
 }
 
 /* Title Styling */
-.product-related-event-card .card-title {
+.person-page-related-event-card .card-title {
   font-size: 1.2rem; /* Adjusted font size for better fit */
   font-weight: bold;
   color: #333333;
@@ -417,7 +417,7 @@
 }
 
 /* Date Styling */
-.product-related-event-card .product-related-event-date {
+.person-page-related-event-card .person-page-related-event-date {
   font-size: 0.95rem; /* Smaller font size */
   color: #888888;
   margin-bottom: 6px; /* Reduced margin */
@@ -425,14 +425,14 @@
 }
 
 /* Location Styling */
-.product-related-event-card .product-related-event-location {
+.person-page-related-event-card .person-page-related-event-location {
   font-size: 0.9rem; /* Slightly smaller */
   color: #555555;
   margin-bottom: 6px;
 }
 
 /* Host Styling */
-.product-related-event-card .product-related-event-host {
+.person-page-related-event-card .person-page-related-event-host {
   font-size: 0.85rem; /* Smaller font for host */
   color: #999999;
   font-style: italic;
@@ -440,7 +440,7 @@
 }
 
 /* Adjust Link Styling */
-.card-link-product-related-event {
+.card-link-person-page-related-event {
   text-decoration: none;
   height: 100%;
   display: block;
@@ -452,38 +452,38 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .product-related-event-background-image-container {
+  .person-page-related-event-background-image-container {
     height: 200px;
     margin-bottom: 5%;
   }
 
-  .product-related-event-card img {
+  .person-page-related-event-card img {
     height: 150px; /* Reduce image height for smaller screens */
   }
 
-  .product-related-event-card .card-body {
+  .person-page-related-event-card .card-body {
     padding: 8px; /* Smaller padding on mobile */
   }
 
-  .product-related-event-card .card-title {
+  .person-page-related-event-card .card-title {
     font-size: 1rem; /* Reduce title font size */
     -webkit-line-clamp: 2;
     margin-bottom: 5px; /* Adjusted margin */
   }
 
   
-  .product-related-event-card .product-related-event-location,
-  .product-related-event-card .product-related-event-host {
+  .person-page-related-event-card .person-page-related-event-location,
+  .person-page-related-event-card .person-page-related-event-host {
     font-size: 0.8rem; /* Adjust font size for smaller screens */
     margin-bottom: 4px; /* Reduce spacing */
   }
 
-  .product-related-event-card .product-related-event-date {
+  .person-page-related-event-card .person-page-related-event-date {
     font-size: 0.6rem;
     margin-bottom: 4px;
   }
 
-  .product-related-event-card .product-related-event-date {
+  .person-page-related-event-card .person-page-related-event-date {
     line-height: 1.1; /* Adjust line height for smaller screens */
   }
 }
