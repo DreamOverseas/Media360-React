@@ -289,7 +289,7 @@ const ProductDetail = () => {
 useEffect(() => {
   const path = location.pathname.replace("/products/", "");
   setBaseUrl(path);
-  console.log("ppppp", path);
+  // console.log("ppppp", path);
 
   const segments = path.split('/').filter(seg => seg);
   const slug =
@@ -701,7 +701,7 @@ useEffect(() => {
                       {founder.length > 0 && (
                         <Col xs={4}>
                           <Link
-                            to={`/products/${product.url}/related-founder`}
+                            to={`/products/${baseurl}/related-founder`}
                             state={{ founder }}
                           >
                             <Button className='product-detail-funtion-btn'>
@@ -713,7 +713,7 @@ useEffect(() => {
                       {kol.length > 0 && (
                         <Col xs={4}>
                           <Link
-                            to={`/products/${product.url}/related-kol`}
+                            to={`/products/${baseurl}/related-kol`}
                             state={{ kol }}
                           >
                             <Button className='product-detail-funtion-btn'>
@@ -725,7 +725,7 @@ useEffect(() => {
                       {spokesperson.length > 0 && (
                         <Col xs={4}>
                           <Link
-                            to={`/products/${product.url}/related-ambassador`}
+                            to={`/products/${baseurl}/related-ambassador`}
                             state={{ spokesperson }}
                           >
                             <Button className='product-detail-funtion-btn'>
@@ -737,7 +737,7 @@ useEffect(() => {
                       {news.length > 0 && (
                         <Col xs={4}>
                           <Link
-                            to={`/products/${product.url}/related-news`}
+                            to={`/products/${baseurl}/related-news`}
                             state={{ news }}
                           >
                             <Button className='product-detail-funtion-btn'>
@@ -749,7 +749,7 @@ useEffect(() => {
                       {event.length > 0 && (
                         <Col xs={4}>
                           <Link
-                            to={`/products/${product.url}/related-event`}
+                            to={`/products/${baseurl}/related-event`}
                             state={{ event }}
                           >
                             <Button className='product-detail-funtion-btn'>

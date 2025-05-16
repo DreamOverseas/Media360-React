@@ -89,7 +89,7 @@ function App() {
       </div> */}
       <div className='main-content'>
         <Routes>
-          <Route exact path='/' element={<Home />} />
+          <Route path='/' element={<Home />} />
           <Route path="/products/:main" element={<ProductRouteGuard />}>
             <Route index element={<ProductDetail />} />
             <Route path=':variant' element={<ProductDetail />} />

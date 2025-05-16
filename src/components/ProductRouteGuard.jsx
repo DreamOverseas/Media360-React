@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useNavigate} from "react-router-dom";
 import axios from "axios";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
@@ -45,12 +45,12 @@ export default function ProductRouteGuard() {
         });
         const mainProduct = res.data.data[0];
 
-        if ((countryCode === "CN" && mainProduct?.BlockInChina && mainProduct?.MainCollectionProduct) || (countryCode === "AU" && mainProduct?.BlockInChina && mainProduct?.SingleProduct)) {
+        if ((countryCode === "AU" && mainProduct?.BlockInChina && mainProduct?.MainCollectionProduct) || (countryCode === "AU" && mainProduct?.BlockInChina && mainProduct?.SingleProduct)) {
           return navigate("/", { replace: true });
         }
       } catch (err) {
         console.error("Guard: fetch mainProduct failed", err);
-        return null;
+        return navigate("/", { replace: true });
       }
       setChecked(true);
     })();
