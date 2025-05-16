@@ -25,7 +25,7 @@ const FloatingHomeButton = () => {
           </div>
 
           {/* 主页按钮 */}
-          <div className='floating-button' onClick={() => navigate("/")}>
+          <div className='floating-button' onClick={() => window.location.href = '/'}>
             <BsHouse size={20} />
           </div>
 

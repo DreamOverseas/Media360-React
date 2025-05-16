@@ -300,7 +300,7 @@ const HomePage = ()=> {
         );
         let allProducts = response.data.data;
 
-        if (countryCode === 'CN') {
+        if (countryCode === 'AU') {
           allProducts = allProducts.filter(product => !product.BlockInChina);
         }
 
