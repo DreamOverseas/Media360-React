@@ -43,9 +43,14 @@ export default function ProductRouteGuard() {
             populate: "*",
           },
         });
-        const mainProduct = res.data.data[0];
+        const Product = res.data.data[0];
+        const mainUrl = Product?.brand?.MainProduct_url
 
-        if ((countryCode === "AU" && mainProduct?.BlockInChina && mainProduct?.MainCollectionProduct) || (countryCode === "AU" && mainProduct?.BlockInChina && mainProduct?.SingleProduct)) {
+        if ((countryCode === "CN" && Product?.BlockInChina && Product?.MainCollectionProduct) || (countryCode === "CN" && Product?.BlockInChina && Product?.SingleProduct && !Product?.MainCollectionProduct)) {
+          return navigate("/", { replace: true });
+        }
+        if ((countryCode === "CN" && !Product?.BlockInChina && !Product?.MainCollectionProduct && !Product?.SingleProduct && !(mainUrl === Product.url) )) {
+
           return navigate("/", { replace: true });
         }
       } catch (err) {
