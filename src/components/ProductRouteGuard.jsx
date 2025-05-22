@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate} from "react-router-dom";
+import { Outlet, useNavigate, useLocation} from "react-router-dom";
 import axios from "axios";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
@@ -21,6 +21,7 @@ const getWithExpiry = (key) => {
 
 export default function ProductRouteGuard() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [checked, setChecked] = useState(false);
   
 

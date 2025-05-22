@@ -2,16 +2,16 @@
     text-decoration: none;
 }
 
-.person-page-related-bio-text {
+.product-related-bio-text {
     font-size: 12px
 }
 
-.person-page-related-person-title {
+.product-related-person-title {
     margin-top:1%;
     font-size: 13px
 }
 
-.person-page-related-bio-text {
+.product-related-bio-text {
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
@@ -20,7 +20,7 @@
     white-space: normal;
 }
 
-.person-page-related-more-link {
+.product-related-more-link {
     display: inline-block;
     color: grey; /* 初始文字颜色 */
     text-decoration: none;
@@ -30,12 +30,12 @@
 }
 
 
-.person-page-related-more-link:hover,
-.person-page-related-more-link:active {
+.product-related-more-link:hover,
+.product-related-more-link:active {
     color: black;
 }
 
-.person-page-related-more-link::after {
+.product-related-more-link::after {
     content: "";
     display: block;
     width: 100%;
@@ -47,17 +47,17 @@
 }
 
 
-.person-page-related-more-link:hover::after,
-.person-page-related-more-link:active::after {
+.product-related-more-link:hover::after,
+.product-related-more-link:active::after {
     background-color: black;
 }
 
-.person-page-related-person-container{
+.product-related-person-container{
     height:200px;
     margin-bottom:5%;
 }
 
-.person-page-related-person-container img{
+.product-related-person-container img{
   height:300px;
   width:100%;
   object-fit: cover;
@@ -66,19 +66,19 @@
 
 /* 小屏幕优化 */
 @media (max-width: 768px) {
-    .person-page-related-person-container{
+    .product-related-person-container{
         height:auto
     }
-    .person-page-related-person-title {
+    .product-related-person-title {
         font-size: 11px
     }
 
-    .person-page-related-person-container img{
+    .product-related-person-container img{
       height:200px;
       width:100%;
       object-fit: cover;
     }
-    .person-page-related-bio-text {
+    .product-related-bio-text {
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
@@ -87,7 +87,7 @@
         white-space: normal;
         font-size: 8px;
     }
-    .person-page-related-more-link {
+    .product-related-more-link {
         font-size: 9px;
     }
 }

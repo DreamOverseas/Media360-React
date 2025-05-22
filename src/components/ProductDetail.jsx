@@ -26,8 +26,8 @@ const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
 const ProductDetail = () => {
   const location = useLocation();
-  const { name } = useParams();
   const { user } = useContext(AuthContext);
+  const [name, setRecentSlug] = useState(null);
   const { t, i18n } = useTranslation();
   const [product, setProduct] = useState(null);
   const [people, setPeople] = useState(null);
@@ -296,6 +296,7 @@ useEffect(() => {
     segments.length > 1 && !segments[1].startsWith('related-')
       ? segments[1]
       : segments[0];
+  setRecentSlug(slug);
 
   fetchData(slug, setProduct, setPeople, setError, t);
 }, [location.pathname]);
@@ -384,6 +385,7 @@ useEffect(() => {
           `${BACKEND_HOST}/api/products?filters[url][$eq]=${name}&populate=*`
         );
         const data = await response.json();
+        console.log("local",data)
 
         if (data.data.length > 0) {
           const productData = data.data[0];
