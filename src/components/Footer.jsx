@@ -158,6 +158,9 @@ const Footer = () => {
               <Link to={`/news`}>
                 <Button style={{width:"70px"}} className='update-function-btn'>新闻</Button>
               </Link>
+              <Link to={`/influence-hub`}>
+                <Button style={{width:"70px"}} className='update-function-btn'>人脉资源</Button>
+              </Link>
             </div>
             <Row className="footer-info">
                 <Col>

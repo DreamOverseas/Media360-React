@@ -1,45 +1,22 @@
-/* 🎨 最近浏览栏样式 */
 .recent-products-bar {
-  position: fixed; /* 固定在页面 */
-  bottom: 0; /* 距离页面底部 0 */
+  position: fixed;
+  bottom: 0;
   left: 0;
-  width: 100%; /* 默认占满宽度 */
-  background-color: #f8f9fa; /* 背景颜色 */
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 添加阴影 */
-  z-index: 49;
+  width: 100%;
+  background: #f8f9fa;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
   padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  z-index: 10;
 }
 
-/* 完全隐藏 RecentProductsBar */
-.recent-products-bar.hidden {
-  display: none; /* 不占用任何空间 */
-}
-
-/* 居中标题 */
+/* 标题 */
 .recent-products-title {
   font-size: 16px;
   font-weight: bold;
-  margin-right: 20px;
+  margin-bottom: 8px;
 }
 
-/* 最近浏览商品列表 */
-.recent-products-list {
-  display: flex;
-  overflow-x: auto;
-  gap: 15px;
-}
-
-/* 单个商品项 */
-.recent-product-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* 商品链接 */
+/* 链接容器，flex 布局 */
 .recent-product-link {
   display: flex;
   align-items: center;
@@ -47,34 +24,39 @@
   color: inherit;
 }
 
-/* 商品图片 */
+/* 图片固定大小，不收缩 */
 .recent-product-image {
   width: 50px;
   height: 50px;
   object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
   margin-right: 10px;
-  border-radius: 5px;
 }
 
-/* 商品名称 */
+/* 商品名称：占据剩余宽度，超出显示省略 */
 .recent-product-name {
+  flex: 1;
+  min-width: 0;              /* flex 子项必须加，才能让 overflow 生效 */
   font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* 移动端微调 */
 @media (max-width: 768px) {
-  .recent-products-bar {
-    left: 50%; /* 左侧偏移 */
-    transform: translateX(-50%); /* 水平居中 */
-  }
-
   .recent-products-title {
-    font-size: 11px;
+    font-size: 14px;
   }
-
-
+  .recent-product-image {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+  }
+  .recent-product-name {
+    font-size: 12px;
+  }
 }
 
 
