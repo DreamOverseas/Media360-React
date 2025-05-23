@@ -458,6 +458,7 @@ const InfluenceHub = () => {
             axios.get(`${BACKEND_HOST}/api/people`, {
               params: {
                 'filters[Role][$contains]': JSON.stringify({ roles: [role] }),
+                'filters[PersonPage]': true,
                 populate: 'Image',
                 sort: "Order:desc"
               },
