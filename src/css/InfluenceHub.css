@@ -14,7 +14,8 @@
 /* 小屏幕优化 */
 @media (max-width: 768px) {
     .person-page-related-person-container{
-        height:auto
+        height:auto;
+        margin-bottom: 5%;
     }
     .person-page-related-person-title {
         font-size: 11px
