@@ -50,6 +50,7 @@ import Home from "./pages/Home.jsx";
 import AboutUs from "./pages/AboutUsPage.jsx";
 import FloatingHomeButton from "./components/FloatingHomeButton.jsx";
 import ProductRouteGuard from "./components/ProductRouteGuard.jsx";
+import Activity from "./components/Activity.jsx";
 
 
 
@@ -172,7 +173,8 @@ function App() {
           <Route path='/influence-hub' element={<InfluenceHub />} />
           <Route path='/media-center' element={<MediaCenter />} />
           <Route path='/news' element={<NewsPage />} />
-          <Route path='/events' element={<Events />} />
+          <Route path='/events' element={
+            <><Activity /><Events /></>} />
           <Route path='/founders' element={<FounderPage />} />
           <Route path='/kols' element={<KolPage />} />
           <Route path='/ambassadors' element={<AmbassadorPage />} />

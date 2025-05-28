@@ -350,7 +350,6 @@ const HomePage = ()=> {
 
   return (
     <div className="homepage-background">
-
       <section>
         {/* <Image className='home-banner' src='/homepage/Home_Banner.png' alt='360 Media' /> */}
           <ProductCarousel
