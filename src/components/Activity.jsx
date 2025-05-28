@@ -169,7 +169,7 @@ const Activity = () => {
 
     useEffect(() => {
       const fetchActivities = async () => {
-          const endpoint = import.meta.env.VITE_CMS_ENDPOINT;
+          const endpoint = import.meta.env.VITE_STRAPI_HOST;
           const apiKey = import.meta.env.VITE_CMS_TOKEN;
       
           const url = `${endpoint}/api/wtc-activities?populate=ww_memberships&populate=member_product.Icon`;
@@ -184,12 +184,12 @@ const Activity = () => {
               const data = await response.json();
       
               const today = new Date();
-              today.setHours(0, 0, 0, 0); // Set to the beginning of today
+              today.setHours(0, 0, 0, 0);
 
               const tepActivities = data.data
                   .filter(entry => {
                       const activityDate = new Date(entry.WtcActivityDate);
-                      return activityDate >= today;
+                      return activityDate >= today && entry.DOWebsite;
                   })
                   .map(entry => ({
                       documentId: entry.documentId,
@@ -419,7 +419,7 @@ const Activity = () => {
         {paginatedProducts.map(product => {
           const { WtcActivityTitle, WtcActivityDate, WtcActivityPrice, ww_memberships, member_product, id } = product;
           const iconUrl = member_product.icon?.url
-            ? `${import.meta.env.VITE_CMS_ENDPOINT}${member_product.icon.url}`
+            ? `${import.meta.env.VITE_STRAPI_HOST}${member_product.icon.url}`
             : '';
 
           return (
@@ -479,7 +479,7 @@ const Activity = () => {
               <div className='relative w-2/3 top-0 gap-2 mx-auto'>
                   {selectedProduct.member_product.icon && (
                     <img
-                        src={`${import.meta.env.VITE_CMS_ENDPOINT}${selectedProduct.member_product.icon.url}`}
+                        src={`${import.meta.env.VITE_STRAPI_HOST}${selectedProduct.member_product.icon.url}`}
                         alt={selectedProduct.member_product.Name}
                         className="img-fluid mb-3"
                     />
