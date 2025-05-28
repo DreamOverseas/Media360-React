@@ -168,10 +168,10 @@ const Events = () => {
 
   return (
     <div>
-      <section className='event-page-background-image-container'>
+      {/* <section className='event-page-background-image-container'>
         <h1 className='event-page-banner-h1'><b>{t("event")}</b></h1>
       </section>
-      <br />
+      <br /> */}
       <Container>
 
       {upcomingEvents.length > 0 ? (

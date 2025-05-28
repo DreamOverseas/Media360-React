@@ -244,7 +244,7 @@ const Activity = () => {
     const createAttendMember = async (selectedProduct, e) => {
       e.preventDefault();
       
-      const endpoint = import.meta.env.VITE_CMS_ENDPOINT;
+      const endpoint = import.meta.env.VITE_STRAPI_HOST;
       const apiKey = import.meta.env.VITE_CMS_TOKEN;
       
       try {
