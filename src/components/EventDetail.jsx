@@ -90,14 +90,13 @@ const EventDetail = () => {
 
   return (
     <div>
-      {/* Event Banner Section */}
-      <section className='event-detail-background-image-container'>
+      {/* <section className='event-detail-background-image-container'>
         <Container className='event-banner-wrapper'>
           <Image
             src={`${BACKEND_HOST}${EventImage}`}
             alt='Event Banner'
             className='event-banner-image'
-          />
+          /> */}
           {/* <div className='banner-text'>
             <h1 className='event-title'>
               {language === "zh"
@@ -106,10 +105,10 @@ const EventDetail = () => {
             </h1>
             <h2 className='event-subtitle'>{t("The Lifetimes Tour")}</h2>
           </div> */}
-        </Container>
+        {/* </Container>
       </section>
 
-      <br />
+      <br /> */}
 
       {/* Main Content Section */}
       <section>
