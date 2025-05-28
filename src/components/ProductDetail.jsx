@@ -404,14 +404,13 @@ useEffect(() => {
               image: productData.ProductImage?.url,
             });
 
-            if (recentProducts.length > 1) recentProducts.pop(); // Keep at most 1 record
+            if (recentProducts.length > 1) recentProducts.pop();
 
             localStorage.setItem(
               "recentProducts",
               JSON.stringify(recentProducts)
             );
 
-            // ✅ 触发自定义事件
             const event = new Event("recentProductsUpdated");
             window.dispatchEvent(event);
           }
@@ -585,7 +584,26 @@ useEffect(() => {
                     ) : null}
                   </Row> */}
                   </Row>
-                  
+                   {onDesktop ? (
+                      <>
+                        <Row>
+                          <h4>产品描述</h4>
+                          {Detail ? (
+                            <div className="detail-container">
+                              <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                                {Detail}
+                              </ReactMarkdown>
+                            </div>
+                          ) : (
+                            <div className="detail-container">暂无产品信息</div>
+                          )}
+                        </Row>
+                        <br />
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                                
                   {variants ? (
                     subItemCategory?.[language]?.length > 0 ? (
                       
@@ -682,19 +700,7 @@ useEffect(() => {
                   )}
                 </Row>
 
-                <Row>
-                  <h4>产品描述</h4>
-                  {Detail ? (
-                    <div className='detail-container'>
-                      <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                        {Detail}
-                      </ReactMarkdown>
-                    </div>
-                  ) : (
-                    <div className='detail-container'>暂无产品信息</div>
-                  )}
-                </Row>
-                <br/>
+                
                 {!onDesktop ? (
                 <>
                   <Row>
@@ -782,6 +788,20 @@ useEffect(() => {
                       <span className='share-title'>分享此产品</span>
                     </button>
                   </Row>
+
+                  <Row>
+                    <h4>产品描述</h4>
+                    {Detail ? (
+                      <div className="detail-container">
+                        <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                          {Detail}
+                        </ReactMarkdown>
+                      </div>
+                    ) : (
+                      <div className="detail-container">暂无产品信息</div>
+                    )}
+                  </Row>
+                  <br />
                 </>
               ) : <></>}
               </Container>
