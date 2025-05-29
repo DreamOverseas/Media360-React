@@ -9,7 +9,7 @@ const RecentProductsBar = () => {
 
   const updateRecentProducts = () => {
     const stored =
-      JSON.parse(localStorage.getItem("recentProducts")) || [];
+      JSON.parse(sessionStorage.getItem("recentProducts")) || [];
     setRecentProducts(stored);
   };
 

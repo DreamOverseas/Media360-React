@@ -377,7 +377,7 @@ useEffect(() => {
     }
   };
 
-  // Fetch product data and save to localStorage
+  // Fetch product data and save to sessionStorage
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -385,15 +385,15 @@ useEffect(() => {
           `${BACKEND_HOST}/api/products?filters[url][$eq]=${name}&populate=*`
         );
         const data = await response.json();
-        console.log("local",data)
+        // console.log("local",data)
 
         if (data.data.length > 0) {
           const productData = data.data[0];
           setProduct(productData);
 
-          // Save to localStorage
+          // Save to sessionStorage
           const recentProducts =
-            JSON.parse(localStorage.getItem("recentProducts")) || [];
+            JSON.parse(sessionStorage.getItem("recentProducts")) || [];
           const isExisting = recentProducts.some(p => p.id === productData.id);
 
           if (!isExisting) {
@@ -406,7 +406,7 @@ useEffect(() => {
 
             if (recentProducts.length > 1) recentProducts.pop();
 
-            localStorage.setItem(
+            sessionStorage.setItem(
               "recentProducts",
               JSON.stringify(recentProducts)
             );
@@ -587,7 +587,8 @@ useEffect(() => {
                    {onDesktop ? (
                       <>
                         <Row>
-                          <h4>产品描述</h4>
+                          {(product?.brand?.MainProduct_url===name)?(<h4>品牌描述</h4>):(<h4>产品描述</h4>)}
+                          
                           {Detail ? (
                             <div className="detail-container">
                               <ReactMarkdown rehypePlugins={[rehypeRaw]}>
@@ -694,7 +695,7 @@ useEffect(() => {
                   {!product.SingleProduct && Price_Display !== 0 && Price_Display !== null &&  (
                     <Link to={`/products/${brand.MainProduct_url}`}>
                       <Button className='main-product-detail-funtion-btn'>
-                        返回产品主页
+                        返回品牌主页
                       </Button>
                     </Link>
                   )}
@@ -790,7 +791,7 @@ useEffect(() => {
                   </Row>
 
                   <Row>
-                    <h4>产品描述</h4>
+                    {(product?.brand?.MainProduct_url===name)?(<h4>品牌描述</h4>):(<h4>产品描述</h4>)}
                     {Detail ? (
                       <div className="detail-container">
                         <ReactMarkdown rehypePlugins={[rehypeRaw]}>
