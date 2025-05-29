@@ -135,6 +135,7 @@ const MerchantPromotion = () => {
       Recommended_Person_Type: formData.recommended_person_type || null,
       Recommended_Person_Introduction: formData.recommended_person_introduction,
       Recommended_Person_Portrait: recommendedPortraitData.ids,
+      From: "360"
     });
 
     try {

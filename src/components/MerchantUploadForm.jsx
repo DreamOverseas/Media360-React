@@ -20,7 +20,8 @@ const initialFormData = {
   recommended_person_title: "",
   recommended_person_type: "",
   recommended_person_introduction: "",
-  recommended_person_portrait: []
+  recommended_person_portrait: [],
+  from:"360"
 }
 
 const MerchantUploadForm = ({ onSubmit }) => {
