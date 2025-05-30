@@ -91,18 +91,12 @@ const Footer = () => {
 
                 <Col>
                   <Row style={{height:"70px"}} className="d-flex justify-content-center align-items-center text-center">
-                    <Image style={{ maxHeight: "100%", width: "auto", objectFit: "contain" }} src="/QR_JohnDu.png"/>
-                    <p>{t("footer_scan")}</p>
+                    <Image style={{ maxHeight: "100%", width: "auto", objectFit: "contain" }} src="/WechatOfficialAccount.png"/>
                   </Row>
                 </Col> 
             </Row>
             <Row>
             <div className="d-flex gap-5 align-items-center w-100 social-media-section">
-
-              <a href="https://mp.weixin.qq.com/" target="_blank" rel="noopener noreferrer" className="d-flex align-items-center text-white text-decoration-none">
-                <img src="/icons/wechat.png" alt="微信" style={{ height: '20px', marginRight: '8px' }} />
-                公众号36OMedia
-              </a>
 
               <a href="https://www.xiaohongshu.com/user/profile/5fc6e9140000000001008c09" target="_blank" rel="noopener noreferrer"  className="d-flex align-items-center text-white text-decoration-none">
                 <img src="/icons/red_note.png" alt="小红书" style={{ height: '20px', marginRight: '8px' }} />
@@ -114,14 +108,14 @@ const Footer = () => {
                 B站
               </a>
             </div>
-            <div className="d-flex gap-5 align-items-center w-100">
+            {/* <div className="d-flex gap-5 align-items-center w-100"> */}
 
-              <a href="https://www.instagram.com/360media360media/" target="_blank" rel="noopener noreferrer" className="d-flex align-items-center text-white text-decoration-none">
+              {/* <a href="https://www.instagram.com/360media360media/" target="_blank" rel="noopener noreferrer" className="d-flex align-items-center text-white text-decoration-none">
                 <img src="/icons/instagram.png" alt="Instagram" style={{ height: '20px', marginRight: '8px' }} />
                 Instagram
-              </a>
+              </a> */}
 
-            </div>
+            {/* </div> */}
           </Row>
                 
           </div>
@@ -206,18 +200,12 @@ const Footer = () => {
 
                 <Col>
                   <Row style={{height:"70px"}} className="d-flex justify-content-center align-items-center text-center">
-                    <Image style={{ maxHeight: "100%", width: "auto", objectFit: "contain" }} src="/QR_JohnDu.png"/>
-                    <p>{t("footer_scan")}</p>
+                    <Image style={{ maxHeight: "100%", width: "auto", objectFit: "contain" }} src="/WechatOfficialAccount.png"/>
                   </Row>
                 </Col> 
             </Row>
             <Row>
-            <div className="d-flex justify-content-between align-items-center w-100 social-media-section">
-
-              <a href="https://mp.weixin.qq.com/" target="_blank" rel="noopener noreferrer" style={{fontSize:"12px"}} className="d-flex align-items-center text-white text-decoration-none">
-                <img src="/icons/wechat.png" alt="微信" style={{ height: '20px', marginRight: '8px' }} />
-                公众号36OMedia
-              </a>
+            <div className="d-flex gap-5 align-items-center w-100 social-media-section">
 
               <a href="https://www.xiaohongshu.com/user/profile/5fc6e9140000000001008c09" target="_blank" rel="noopener noreferrer" style={{fontSize:"12px"}} className="d-flex align-items-center text-white text-decoration-none">
                 <img src="/icons/red_note.png" alt="小红书" style={{ height: '20px', marginRight: '8px' }} />
@@ -230,14 +218,14 @@ const Footer = () => {
               </a>
 
             </div>
-            <div className="d-flex gap-5 align-items-center w-100">
+            {/* <div className="d-flex gap-5 align-items-center w-100"> */}
 
-              <a href="https://www.instagram.com/360media360media/" target="_blank" rel="noopener noreferrer" style={{fontSize:"12px"}} className="d-flex align-items-center text-white text-decoration-none">
+              {/* <a href="https://www.instagram.com/360media360media/" target="_blank" rel="noopener noreferrer" style={{fontSize:"12px"}} className="d-flex align-items-center text-white text-decoration-none">
                 <img src="/icons/instagram.png" alt="Instagram" style={{ height: '20px', marginRight: '8px' }} />
                 Instagram
-              </a>
+              </a> */}
 
-            </div>
+            {/* </div> */}
           </Row>
                 
           </div>
