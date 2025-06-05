@@ -85,19 +85,12 @@ const NewsDetail = () => {
       <Row>
         <Col md={{ span: 8, offset: 2 }}>
           <Card className='news-detail-card'>
-            <Card.Img
-              variant='top'
-              src={NewsImage}
-              alt={Title}
-              className='news-detail-img'
-            />
             <Card.Body>
               <h1 className='news-detail-title'>{Title}</h1>
               <p className='news-detail-date'>
                 <strong>{t("publishedAt")}:</strong> {PublishedTime}
               </p>
               <hr />
-              {/* ✅ 使用 ReactMarkdown 解析和渲染 Markdown 内容 */}
               <div className='news-detail-content'>
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
