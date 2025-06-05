@@ -446,8 +446,12 @@ useEffect(() => {
 
   const slides = language === "zh" ? product.slides_zh || "N/A": product.slides_en || "N/A";
   const shareLink = window.location.href;
+  console.log("This is product.ProductImage's parent");
+  console.log(product);
   const shareImg = product.ProductImage
-    ? `${BACKEND_HOST}${product.ProductImage.formats.thumbnail.url}`
+    ? (product.ProductImage.formats
+      ? `${BACKEND_HOST}${product.ProductImage.formats.thumbnail.url}` 
+      : `${BACKEND_HOST}${product.ProductImage.url}`)
     : `${BACKEND_HOST}/default-share.jpg`;
   console.log(shareImg)
   // console.log(shareLink)
