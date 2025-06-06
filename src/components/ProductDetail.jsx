@@ -10,6 +10,8 @@ import {
   Modal,
   Row,
   Spinner,
+  Tabs,
+  Tab
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
@@ -660,33 +662,35 @@ useEffect(() => {
                                 
                 {variants ? (
                   subItemCategory?.[language]?.length > 0 ? (
-                    
-                    subItemCategory[language].map((item, index) => (
-                      <div key={index}>
-                        <h4>{item}</h4>
-                        <Row>
-                          {variants
-                            .filter(variant => variant.Sub_Item_Category?.[language] === item)
-                            .map((variant, vIndex) => {
-                              const currentPath = location.pathname;
-                              const isActive = currentPath === `/products/${variant.url}`;
-                              return (
-                                <Col xs={4} key={vIndex}>
-                                  <Link to={`/products/${brand.MainProduct_url}/${variant.url}`}>
-                                    <Button
-                                      className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
-                                    >
-                                      {language === "zh" ? variant.Name_zh : variant.Name_en}
-                                    </Button>
-                                  </Link>
-                                </Col>
-                              );
-                            })}
-                        </Row>
-                      </div>
-                    ))
+                    <Tabs defaultActiveKey={subItemCategory[language][0]} id="product-variants-tabs">
+                      {subItemCategory[language].map((item, index) => (
+                        <Tab eventKey={item} title={item} key={index}>
+                          <div className="mt-3">
+                            <Row>
+                              {variants
+                                .filter(variant => variant.Sub_Item_Category?.[language] === item)
+                                .map((variant, vIndex) => {
+                                  const currentPath = location.pathname;
+                                  const isActive = currentPath === `/products/${variant.url}`;
+                                  return (
+                                    <Col xs={4} key={vIndex}>
+                                      <Link to={`/products/${brand.MainProduct_url}/${variant.url}`}>
+                                        <Button
+                                          className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
+                                        >
+                                          {language === "zh" ? variant.Name_zh : variant.Name_en}
+                                        </Button>
+                                      </Link>
+                                    </Col>
+                                  );
+                                })}
+                            </Row>
+                          </div>
+                        </Tab>
+                      ))}
+                    </Tabs>
                   ) : (
-
+                    // Fallback: when no subcategories, show all variants as buttons
                     <Row>
                       {variants.map((variant, index) => {
                         const currentPath = location.pathname;
@@ -708,7 +712,6 @@ useEffect(() => {
                 ) : (
                   <></>
                 )}
-                
 
                 {onDesktop ? (
                   <></>
