@@ -21,6 +21,7 @@ import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
 import PayPalButton from "./PayPalButton.jsx";
 import WechatShare from './WechatShare.jsx';
+import JoinUsButton from './JoinUsButton';
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
@@ -554,7 +555,7 @@ useEffect(() => {
                       className='social-sharing__link'
                       title='分享'
                     >
-                      <i class='icon-share'>
+                      <i className='icon-share'>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         viewBox='0 0 576 576'
@@ -603,6 +604,15 @@ useEffect(() => {
                             <div className="detail-container">暂无产品信息</div>
                           )}
                         </Row>
+
+{/* 加入新的按鈕 */}
+                        {product?.showJoinUsButton && (
+                          <Row className="mt-3">
+                            <Col>
+                              <JoinUsButton />
+                            </Col>
+                          </Row>
+                        )}
                         <br />
                       </>
                     ) : (
@@ -780,7 +790,7 @@ useEffect(() => {
                       className='social-sharing__link'
                       title='分享'
                     >
-                      <i class='icon-share'>
+                      <i className='icon-share'>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         viewBox='0 0 576 576'
