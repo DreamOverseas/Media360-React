@@ -1,186 +1,212 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { Form, Button, Alert, Spinner } from "react-bootstrap";
 import axios from "axios";
-import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 
-const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
-const STRAPI_TOKEN = import.meta.env.VITE_API_KEY_PRODUCT_JOIN_APPLICATIONS;
-const STRAPI_API_URL = `${STRAPI_HOST}/api/product-screen-join-applications`;
+const API_URL = "https://api.do360.com/api/product-screen-join-applications";
+const UPLOAD_URL = "https://api.do360.com/api/upload";
+const API_TOKEN = import.meta.env.VITE_API_KEY_PRODUCT_JOIN_APPLICATIONS;
 
-const defaultFormData = {
+const initialFormData = {
   applicantName: "",
-  companyName: "",
+  productName: "",
   applicantPhone: "",
   applicantEmail: "",
   productIntro: "",
   productPhone: "",
   productEmail: "",
   productLink: "",
+  type: "Study Abroad Agency",
 };
 
 const JoinUsForm = () => {
-  const [formData, setFormData] = useState(defaultFormData);
-  const [logoFile, setLogoFile] = useState(null);
+  const [formData, setFormData] = useState(initialFormData);
+  const [productLogo, setProductLogo] = useState(null);
+  const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const fileInputRef = useRef();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFileChange = (e) => {
-    setLogoFile(e.target.files[0]);
+    setProductLogo(e.target.files[0]);
+  };
+
+  const uploadFileToStrapi = async (file) => {
+    const data = new FormData();
+    data.append("files", file);
+
+    const res = await axios.post(UPLOAD_URL, data, {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    });
+
+    return res.data[0]?.id || null;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     setSuccess(false);
-    setError(null);
+    setLoading(true);
 
     try {
-      console.log("🚀 正在提交的数据:", formData);
-      if (logoFile) console.log("🖼️ 文件内容:", logoFile);
+      let productLogoId = null;
 
-      // ✅ Step 1: 上传图片文件（可选）
-      let uploadedLogoId = null;
-      if (logoFile) {
-        const imageData = new FormData();
-        imageData.append("files", logoFile);
-
-        const uploadRes = await axios.post(`${STRAPI_HOST}/api/upload`, imageData, {
-          headers: {
-            Authorization: `Bearer ${STRAPI_TOKEN}`,
-          },
-        });
-
-        uploadedLogoId = uploadRes.data?.[0]?.id;
+      if (productLogo) {
+        productLogoId = await uploadFileToStrapi(productLogo);
+        if (!productLogoId) throw new Error("图片上传失败");
       }
 
-      // ✅ Step 2: 提交主表单 JSON 数据
-      const finalPayload = {
+      const finalData = {
         ...formData,
-        productLogo: uploadedLogoId,
+        productLogo: productLogoId,
       };
 
-      const res = await axios.post(
-        STRAPI_API_URL,
-        { data: finalPayload },
+      const response = await axios.post(
+        API_URL,
+        { data: finalData },
         {
           headers: {
-            Authorization: `Bearer ${STRAPI_TOKEN}`,
             "Content-Type": "application/json",
+            Authorization: `Bearer ${API_TOKEN}`,
           },
         }
       );
 
-      console.log("✅ 提交成功", res.data);
+      console.log("✅ 成功:", response.data);
       setSuccess(true);
-      setFormData(defaultFormData);
-      setLogoFile(null);
+      setFormData(initialFormData);
+      setProductLogo(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (err) {
-      console.error("❌ 提交失败:", err);
+      console.error("❌ 提交失败", err);
       if (err.response) {
-        console.error("📩 Strapi 返回的错误:", err.response.data);
+        console.error("🔍 Strapi 返回的错误：", err.response.data);
       }
       setError("提交失败，请稍后再试。");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Container className="mt-5">
-      <h3>加入我们 - 申请表单</h3>
-      <Form onSubmit={handleSubmit}>
-        <Row>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>申请人姓名</Form.Label>
-              <Form.Control
-                type="text"
-                name="applicantName"
-                value={formData.applicantName}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>公司名称</Form.Label>
-              <Form.Control
-                type="text"
-                name="companyName"
-                value={formData.companyName}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>电话</Form.Label>
-              <Form.Control
-                type="text"
-                name="applicantPhone"
-                value={formData.applicantPhone}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>邮箱</Form.Label>
-              <Form.Control
-                type="email"
-                name="applicantEmail"
-                value={formData.applicantEmail}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          </Col>
+    <Form onSubmit={handleSubmit}>
+      <h2>加入我们</h2>
 
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>产品简介</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="productIntro"
-                value={formData.productIntro}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>产品电话</Form.Label>
-              <Form.Control
-                type="text"
-                name="productPhone"
-                value={formData.productPhone}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>产品邮箱</Form.Label>
-              <Form.Control
-                type="email"
-                name="productEmail"
-                value={formData.productEmail}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>产品链接</Form.Label>
-              <Form.Control
-                type="text"
-                name="productLink"
-                value={formData.productLink}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>上传产品 Logo</Form.Label>
-              <Form.Control type="file" onChange={handleFileChange} />
-            </Form.Group>
-          </Col>
-        </Row>
+      {error && <Alert variant="danger">{error}</Alert>}
+      {success && <Alert variant="success">提交成功！我们会尽快与您联系。</Alert>}
 
-        <Button type="submit">提交申请</Button>
-      </Form>
+      <Form.Group className="mb-3">
+        <Form.Label>申请人姓名</Form.Label>
+        <Form.Control
+          type="text"
+          name="applicantName"
+          value={formData.applicantName}
+          onChange={handleChange}
+          required
+        />
+      </Form.Group>
 
-      {success && <Alert variant="success" className="mt-3">申请已提交！我们会尽快联系您。</Alert>}
-      {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
-    </Container>
+      <Form.Group className="mb-3">
+        <Form.Label>产品名称</Form.Label>
+        <Form.Control
+          type="text"
+          name="productName"
+          value={formData.productName}
+          onChange={handleChange}
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>申请人电话</Form.Label>
+        <Form.Control
+          type="text"
+          name="applicantPhone"
+          value={formData.applicantPhone}
+          onChange={handleChange}
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>申请人邮箱</Form.Label>
+        <Form.Control
+          type="email"
+          name="applicantEmail"
+          value={formData.applicantEmail}
+          onChange={handleChange}
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>产品介绍</Form.Label>
+        <Form.Control
+          as="textarea"
+          rows={3}
+          name="productIntro"
+          value={formData.productIntro}
+          onChange={handleChange}
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>产品电话</Form.Label>
+        <Form.Control
+          type="text"
+          name="productPhone"
+          value={formData.productPhone}
+          onChange={handleChange}
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>产品邮箱</Form.Label>
+        <Form.Control
+          type="email"
+          name="productEmail"
+          value={formData.productEmail}
+          onChange={handleChange}
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>产品链接</Form.Label>
+        <Form.Control
+          type="text"
+          name="productLink"
+          value={formData.productLink}
+          onChange={handleChange}
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>类型</Form.Label>
+        <Form.Select name="type" value={formData.type} onChange={handleChange} required>
+          <option value="Study Abroad Agency">Study Abroad Agency</option>
+          <option value="Brand Merchants">Brand Merchants</option>
+          <option value="Educational Services">Educational Services</option>
+        </Form.Select>
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>上传Logo</Form.Label>
+        <Form.Control
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          ref={fileInputRef}
+        />
+      </Form.Group>
+
+      <Button type="submit" variant="primary" disabled={loading}>
+        {loading ? <Spinner animation="border" size="sm" /> : "提交申请"}
+      </Button>
+    </Form>
   );
 };
 
