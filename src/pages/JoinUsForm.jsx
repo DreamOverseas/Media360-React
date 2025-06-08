@@ -3,8 +3,9 @@ import { Form, Button, Alert, Spinner, Container, Row, Col } from "react-bootstr
 import axios from "axios";
 import { useLocation } from 'react-router-dom';
 
-const API_URL = "https://api.do360.com/api/product-screen-join-applications";
-const UPLOAD_URL = "https://api.do360.com/api/upload";
+const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
+const API_URL = `${STRAPI_HOST}/api/product-screen-join-applications`;
+const UPLOAD_URL = `${STRAPI_HOST}/api/upload`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_PRODUCT_JOIN_APPLICATIONS;
 
 const initialFormData = {
