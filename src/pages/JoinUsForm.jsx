@@ -20,6 +20,7 @@ const initialFormData = {
 };
 
 const JoinUsForm = () => {
+  const location = useLocation();
   const [formData, setFormData] = useState(initialFormData);
   const [productLogo, setProductLogo] = useState(null);
   const [error, setError] = useState("");
@@ -27,11 +28,19 @@ const JoinUsForm = () => {
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef();
 
-  // ✅ 获取隐藏字段（sourceProductName, sourceProductUrl）
-  const location = useLocation();
-  const { state } = location;
-  const sourceProductName = state?.productName || null;
-  const sourceProductUrl = state?.productUrl || null;
+  // 隐藏字段，用于追踪来源产品
+  const [sourceProductName, setSourceProductName] = useState(null);
+  const [sourceProductUrl, setSourceProductUrl] = useState(null);
+
+  // 获取跳转传递的数据
+  useEffect(() => {
+    if (location.state?.productName) {
+      setSourceProductName(location.state.productName);
+    }
+    if (location.state?.productUrl) {
+      setSourceProductUrl(location.state.productUrl);
+    }
+  }, [location.state]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,20 +81,22 @@ const JoinUsForm = () => {
       const finalData = {
         ...formData,
         productLogo: productLogoId,
-        sourceProductName: location.state?.productName || "",
-        sourceProductUrl: location.state?.productUrl || "",
       };
 
-      const response = await axios.post(
-        API_URL,
-        { data: finalData },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${API_TOKEN}`,
-          },
-        }
-      );
+      const payload = {
+        data: {
+          ...finalData,
+          sourceProductName,
+          sourceProductUrl,
+        },
+      };
+
+      const response = await axios.post(API_URL, payload, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${API_TOKEN}`,
+        },
+      });
 
       console.log("✅ 成功:", response.data);
       setSuccess(true);
@@ -96,6 +107,7 @@ const JoinUsForm = () => {
       console.error("❌ 提交失败", err);
       if (err.response) {
         console.error("🔍 Strapi 返回的错误：", err.response.data);
+        console.error("完整错误信息", JSON.stringify(err.response.data, null, 2));
       }
       setError("提交失败，请稍后再试。");
     } finally {
