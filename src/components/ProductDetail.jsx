@@ -501,6 +501,7 @@ useEffect(() => {
   return (
     <div>
       <section>
+      <ProductInfoCard product={product} brand={brand} />
         <WechatShare
           title={Name}
           desc={Description}
