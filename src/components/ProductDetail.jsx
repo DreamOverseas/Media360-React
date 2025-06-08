@@ -25,7 +25,6 @@ import "../css/ProductDetail.css";
 import PayPalButton from "./PayPalButton.jsx";
 import WechatShare from './WechatShare.jsx';
 import JoinUsButton from './JoinUsButton';
-import ProductInfoCard from './ProductInfoCard';
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
@@ -502,7 +501,6 @@ useEffect(() => {
   return (
     <div>
       <section>
-      <ProductInfoCard product={product} brand={brand} />
         <WechatShare
           title={Name}
           desc={Description}
@@ -829,6 +827,8 @@ useEffect(() => {
                   detail={Detail}
                   defaultOpen={false}
                 />
+
+                <JoinUsButton />
 
               </Container>
             </Col>
