@@ -11,7 +11,8 @@ import {
   Row,
   Spinner,
   Tabs,
-  Tab
+  Tab,
+  Accordion
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
@@ -425,6 +426,33 @@ useEffect(() => {
     fetchProduct();
   }, [name]);
 
+
+  const AccordionItem = ({ idx, header, detail, defaultOpen = false }) => {
+    return (
+      <Accordion
+        id={idx}
+        defaultActiveKey={defaultOpen ? '0' : undefined}
+        flush
+        className="mb-3"
+      >
+        <Accordion.Item eventKey="0">
+          <Accordion.Header>{header}</Accordion.Header>
+          <Accordion.Body>
+            {detail ? (
+              <div className="detail-container">
+                <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                  {Detail}
+                </ReactMarkdown>
+              </div>
+            ) : (
+              <div className="detail-container">暂无产品信息</div>
+            )} 
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+    )
+  };
+
   if (!product) {
     return (
       <div className='loading-container'>
@@ -439,6 +467,8 @@ useEffect(() => {
 
   // const display_price = Price === (0 || null) ? t("price_tbd") : `AU$${Price}`;
   const Name = language === "zh" ? product.Name_zh : product.Name_en;
+  const ShortDetail = language === "zh" ? product.Short_zh || "N/A" : product.Short_en || "N/A";
+  console.log("short",ShortDetail)
 
   const Detail = language === "zh" ? product.Detail_zh : product.Detail_en;
 
@@ -456,6 +486,7 @@ useEffect(() => {
       : `${BACKEND_HOST}${product.ProductImage.url}`)
     : `${BACKEND_HOST}/default-share.jpg`;
   console.log(shareImg)
+  const titleHeading = (product?.brand?.MainProduct_url===name)?"品牌详情":"产品详情"
   // console.log(shareLink)
   // console.log(Name)
   // console.log(Description)
@@ -591,6 +622,9 @@ useEffect(() => {
                       })
                     ) : null}
                   </Row> */}
+                  <div>
+                    <p>{ShortDetail}</p>
+                  </div>
                 </Row>
 
                 <Row>
@@ -599,70 +633,9 @@ useEffect(() => {
                   )}
                 </Row>
 
-                {!product.MainCollectionProduct && (
-                  <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
-                    <Col md={8} className='paypal-button-container'>
-                      {Note ? (
-                        // 如果 Note 存在，显示原来的按钮和弹窗
-                        <>
-                          <Button
-                            className="add-to-cart-btn"
-                            onClick={() => setShowModal(true)}
-                          >
-                            即刻订购
-                          </Button>
-                          {/* 弹窗组件 */}
-                          <ConsultationModal
-                            show={showModal}
-                            handleClose={() => setShowModal(false)}
-                          />
-                        </>
-                      ) : (
-                        // 如果 Note 为空，显示 PayPal 按钮
-                        <PayPalButton
-                          amount={parseFloat(Price_Display.toString().replace(/,/g, ""))}
-                          currency="AUD"
-                          description={Name} // 动态传递商品名称
-                        />
-                      )}
-                    </Col>
-                  </Row>
-                )}
-
-                <Row>
-                  {!product.SingleProduct && Price_Display !== 0 && Price_Display !== null &&  (
-                    <Link to={`/products/${brand.MainProduct_url}`}>
-                      <Button className='main-product-detail-funtion-btn'>
-                        返回品牌主页
-                      </Button>
-                    </Link>
-                  )}
-                </Row>
-                
-                {onDesktop ? (
-                  <>
-                    <Row>
-                      {(product?.brand?.MainProduct_url===name)?(<h4>品牌描述</h4>):(<h4>产品描述</h4>)}
-                      
-                      {Detail ? (
-                        <div className="detail-container">
-                          <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                            {Detail}
-                          </ReactMarkdown>
-                        </div>
-                      ) : (
-                        <div className="detail-container">暂无产品信息</div>
-                      )}
-                    </Row>
-                    <br />
-                  </>
-                ) : (
-                  <></>
-                )}
-                                
                 {variants ? (
                   subItemCategory?.[language]?.length > 0 ? (
-                    <Tabs defaultActiveKey={subItemCategory[language][0]} id="product-variants-tabs">
+                    <Tabs defaultActiveKey={subItemCategory[language][0]} id="product-variants-tabs" className="product-category-tabs">
                       {subItemCategory[language].map((item, index) => (
                         <Tab eventKey={item} title={item} key={index}>
                           <div className="mt-3">
@@ -708,11 +681,53 @@ useEffect(() => {
                         );
                       })}
                     </Row>
+
+                    
                   )
                 ) : (
                   <></>
                 )}
 
+                {!product.MainCollectionProduct && (
+                  <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
+                    <Col md={8} className='paypal-button-container'>
+                      {Note ? (
+                        // 如果 Note 存在，显示原来的按钮和弹窗
+                        <>
+                          <Button
+                            className="add-to-cart-btn"
+                            onClick={() => setShowModal(true)}
+                          >
+                            即刻订购
+                          </Button>
+                          {/* 弹窗组件 */}
+                          <ConsultationModal
+                            show={showModal}
+                            handleClose={() => setShowModal(false)}
+                          />
+                        </>
+                      ) : (
+                        // 如果 Note 为空，显示 PayPal 按钮
+                        <PayPalButton
+                          amount={parseFloat(Price_Display.toString().replace(/,/g, ""))}
+                          currency="AUD"
+                          description={Name} // 动态传递商品名称
+                        />
+                      )}
+                    </Col>
+                  </Row>
+                )}
+
+                <Row>
+                  {!product.SingleProduct && Price_Display !== 0 && Price_Display !== null &&  (
+                    <Link to={`/products/${brand.MainProduct_url}`}>
+                      <Button className='main-product-detail-funtion-btn'>
+                        返回品牌主页
+                      </Button>
+                    </Link>
+                  )}
+                </Row>
+ 
                 {onDesktop ? (
                   <></>
                 ) : (
@@ -802,22 +817,16 @@ useEffect(() => {
                         <span className='share-title'>分享此产品</span>
                       </button>
                     </Row>
-
-                    <Row>
-                      {(product?.brand?.MainProduct_url===name)?(<h4>品牌描述</h4>):(<h4>产品描述</h4>)}
-                      {Detail ? (
-                        <div className="detail-container">
-                          <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                            {Detail}
-                          </ReactMarkdown>
-                        </div>
-                      ) : (
-                        <div className="detail-container">暂无产品信息</div>
-                      )}
-                    </Row>
-                    <br />
                   </>
                 )}
+
+                <AccordionItem
+                  idx="detail-accordion"
+                  header={titleHeading}
+                  detail={Detail}
+                  defaultOpen={false}
+                />
+
               </Container>
             </Col>
           </Row>
