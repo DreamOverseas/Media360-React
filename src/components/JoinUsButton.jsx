@@ -9,7 +9,7 @@ const JoinUsButton = () => {
       className="product-detail-funtion-btn"
       onClick={() => navigate('/join-us-form')}
     >
-      加入我们
+      成为合作伙伴
     </Button>
   );
 };

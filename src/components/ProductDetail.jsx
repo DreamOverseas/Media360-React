@@ -601,6 +601,19 @@ useEffect(() => {
                       <span className='share-title'>分享此产品</span>
                     </button>
                   </Row>
+
+                  <Row className="mt-3">
+                    <Link
+                      to="/join-us-form"
+                      state={{
+                        productName: Name,
+                        productUrl: window.location.href,
+                        productId: product.id,
+                      }}
+                    >
+                      <JoinUsButton />
+                    </Link>
+                  </Row>
                 </>
               ) : (
                 <></>
@@ -828,7 +841,7 @@ useEffect(() => {
                   defaultOpen={false}
                 />
 
-                <Link
+                {/* <Link
                   to="/join-us-form"
                   state={{
                     productName: Name,
@@ -837,7 +850,7 @@ useEffect(() => {
                   }}
                 >
                   <JoinUsButton />
-                </Link>
+                </Link> */}
 
               </Container>
             </Col>
