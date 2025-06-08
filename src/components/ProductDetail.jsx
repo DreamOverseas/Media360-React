@@ -25,6 +25,7 @@ import "../css/ProductDetail.css";
 import PayPalButton from "./PayPalButton.jsx";
 import WechatShare from './WechatShare.jsx';
 import JoinUsButton from './JoinUsButton';
+import ProductInfoCard from './ProductInfoCard';
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
