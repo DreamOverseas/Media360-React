@@ -828,7 +828,16 @@ useEffect(() => {
                   defaultOpen={false}
                 />
 
-                <JoinUsButton />
+                <Link
+                  to="/join-us-form"
+                  state={{
+                    productName: Name,
+                    productUrl: window.location.href,
+                    productId: product.id, // 如果你需要 ID
+                  }}
+                >
+                  <JoinUsButton />
+                </Link>
 
               </Container>
             </Col>

@@ -1,6 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Form, Button, Alert, Spinner, Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
+import { useLocation } from 'react-router-dom';
 
 const API_URL = "https://api.do360.com/api/product-screen-join-applications";
 const UPLOAD_URL = "https://api.do360.com/api/upload";
@@ -24,8 +25,13 @@ const JoinUsForm = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const fileInputRef = useRef();
+
+  // ✅ 获取隐藏字段（sourceProductName, sourceProductUrl）
+  const location = useLocation();
+  const { state } = location;
+  const sourceProductName = state?.productName || null;
+  const sourceProductUrl = state?.productUrl || null;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -66,6 +72,8 @@ const JoinUsForm = () => {
       const finalData = {
         ...formData,
         productLogo: productLogoId,
+        sourceProductName: location.state?.productName || "",
+        sourceProductUrl: location.state?.productUrl || "",
       };
 
       const response = await axios.post(
@@ -213,7 +221,7 @@ const JoinUsForm = () => {
                 accept="image/*"
                 ref={fileInputRef}
                 onChange={handleFileChange}
-                style={{ display: "none" }} // 隐藏原生上传框
+                style={{ display: "none" }}
               />
             </Form.Group>
 
