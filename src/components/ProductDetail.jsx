@@ -25,6 +25,7 @@ import "../css/ProductDetail.css";
 import PayPalButton from "./PayPalButton.jsx";
 import WechatShare from './WechatShare.jsx';
 import JoinUsButton from './JoinUsButton';
+import PartnerList from './PartnerList';
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
@@ -602,6 +603,11 @@ useEffect(() => {
                     </button>
                   </Row>
 
+                  <Row className="mt-3">
+                    <PartnerList />
+                  </Row>
+                  
+{/* partnerlist */}
                   <Row className="mt-3">
                     <Link
                       to="/join-us-form"
