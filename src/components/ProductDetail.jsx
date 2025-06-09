@@ -515,6 +515,8 @@ useEffect(() => {
                 <ProductGallery product={product} />
               </Row>
               <br/>
+
+
               {onDesktop ? (
                 <>
                   <Row>
@@ -603,27 +605,11 @@ useEffect(() => {
                     </button>
                   </Row>
 
-                  <Row className="mt-3">
-                    <PartnerList />
-                  </Row>
-                  
-{/* partnerlist */}
-                  <Row className="mt-3">
-                    <Link
-                      to="/join-us-form"
-                      state={{
-                        productName: Name,
-                        productUrl: window.location.href,
-                        productId: product.id,
-                      }}
-                    >
-                      <JoinUsButton />
-                    </Link>
-                  </Row>
                 </>
               ) : (
                 <></>
               )}
+
             </Col>
 
             <Col className='product-detail-col'>
@@ -824,7 +810,7 @@ useEffect(() => {
                         className='social-sharing__link'
                         title='分享'
                       >
-                        <i class='icon-share'>
+                        <i className='icon-share'>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           viewBox='0 0 576 576'
@@ -837,9 +823,14 @@ useEffect(() => {
                         <span className='share-title'>分享此产品</span>
                       </button>
                     </Row>
+
+                    
                   </>
+
+                  
                 )}
 
+              
                 <AccordionItem
                   idx="detail-accordion"
                   header={titleHeading}
@@ -847,7 +838,13 @@ useEffect(() => {
                   defaultOpen={false}
                 />
 
-                {/* <Link
+                <Row className="mt-3">
+                  <Col>
+                    <PartnerList />
+                  </Col>
+                </Row>
+
+                <Link
                   to="/join-us-form"
                   state={{
                     productName: Name,
@@ -856,7 +853,7 @@ useEffect(() => {
                   }}
                 >
                   <JoinUsButton />
-                </Link> */}
+                </Link>
 
               </Container>
             </Col>
