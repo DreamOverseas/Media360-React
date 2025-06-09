@@ -838,7 +838,7 @@ useEffect(() => {
                   defaultOpen={false}
                 />
 
-                <Row className="mt-3">
+                {/* <Row className="mt-3">
                   <Col>
                     <PartnerList />
                   </Col>
@@ -853,12 +853,29 @@ useEffect(() => {
                   }}
                 >
                   <JoinUsButton />
-                </Link>
+                </Link> */}
 
               </Container>
             </Col>
           </Row>
           <br/>
+
+          <Row className="mt-3">
+                  <Col>
+                    <PartnerList />
+                  </Col>
+          </Row>
+
+          <Link
+                  to="/join-us-form"
+                  state={{
+                    productName: Name,
+                    productUrl: window.location.href,
+                    productId: product.id, // 如果你需要 ID
+                  }}
+                >
+                  <JoinUsButton />
+          </Link>
 
           {slides !== "N/A" ? (
             <div className="slide-section">
