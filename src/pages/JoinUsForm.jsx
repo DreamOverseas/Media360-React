@@ -9,38 +9,32 @@ const UPLOAD_URL = `${STRAPI_HOST}/api/upload`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_PRODUCT_JOIN_APPLICATIONS;
 
 const initialFormData = {
-  applicantName: "",
-  productName: "",
-  applicantPhone: "",
-  applicantEmail: "",
-  productIntro: "",
-  productPhone: "",
-  productEmail: "",
-  productLink: "",
-  type: "Study Abroad Agency",
+  companyName: "",
+  Phone: "",
+  Email: "",
+  Notes: "",
+  companyUrlLink: "",
+  abnNumber: "",
 };
 
 const JoinUsForm = () => {
   const location = useLocation();
   const [formData, setFormData] = useState(initialFormData);
-  const [productLogo, setProductLogo] = useState(null);
+  const [companyLogo, setCompanyLogo] = useState(null);
+  const [asicCertificateFile, setAsicCertificateFile] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const fileInputRef = useRef();
 
-  // 隐藏字段，用于追踪来源产品
+  const fileInputRef = useRef();
+  const asicFileInputRef = useRef();
+
   const [sourceProductName, setSourceProductName] = useState(null);
   const [sourceProductUrl, setSourceProductUrl] = useState(null);
 
-  // 获取跳转传递的数据
   useEffect(() => {
-    if (location.state?.productName) {
-      setSourceProductName(location.state.productName);
-    }
-    if (location.state?.productUrl) {
-      setSourceProductUrl(location.state.productUrl);
-    }
+    if (location.state?.productName) setSourceProductName(location.state.productName);
+    if (location.state?.productUrl) setSourceProductUrl(location.state.productUrl);
   }, [location.state]);
 
   const handleChange = (e) => {
@@ -48,20 +42,12 @@ const JoinUsForm = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e) => {
-    setProductLogo(e.target.files[0]);
-  };
-
   const uploadFileToStrapi = async (file) => {
     const data = new FormData();
     data.append("files", file);
-
     const res = await axios.post(UPLOAD_URL, data, {
-      headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
-      },
+      headers: { Authorization: `Bearer ${API_TOKEN}` },
     });
-
     return res.data[0]?.id || null;
   };
 
@@ -72,27 +58,28 @@ const JoinUsForm = () => {
     setLoading(true);
 
     try {
-      let productLogoId = null;
+      let companyLogoId = null;
+      let asicCertificateId = null;
 
-      if (productLogo) {
-        productLogoId = await uploadFileToStrapi(productLogo);
-        if (!productLogoId) throw new Error("图片上传失败");
+      if (companyLogo) {
+        companyLogoId = await uploadFileToStrapi(companyLogo);
+        if (!companyLogoId) throw new Error("公司 Logo 上传失败");
+      }
+
+      if (asicCertificateFile) {
+        asicCertificateId = await uploadFileToStrapi(asicCertificateFile);
+        if (!asicCertificateId) throw new Error("ASIC 文件上传失败");
       }
 
       const finalData = {
         ...formData,
-        productLogo: productLogoId,
+        companyLogo: companyLogoId,
+        asicCertificate: asicCertificateId,
+        sourceProductName,
+        sourceProductUrl,
       };
 
-      const payload = {
-        data: {
-          ...finalData,
-          sourceProductName,
-          sourceProductUrl,
-        },
-      };
-
-      const response = await axios.post(API_URL, payload, {
+      const response = await axios.post(API_URL, { data: finalData }, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${API_TOKEN}`,
@@ -102,8 +89,11 @@ const JoinUsForm = () => {
       console.log("✅ 成功:", response.data);
       setSuccess(true);
       setFormData(initialFormData);
-      setProductLogo(null);
+      setCompanyLogo(null);
+      setAsicCertificateFile(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
+      if (asicFileInputRef.current) asicFileInputRef.current.value = "";
+
     } catch (err) {
       console.error("❌ 提交失败", err);
       if (err.response) {
@@ -127,98 +117,69 @@ const JoinUsForm = () => {
 
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>申请人姓名</Form.Label>
+              <Form.Label>公司名称</Form.Label>
               <Form.Control
                 type="text"
-                name="applicantName"
-                value={formData.applicantName}
+                name="companyName"
+                value={formData.companyName}
                 onChange={handleChange}
                 required
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>产品名称</Form.Label>
+              <Form.Label>电话</Form.Label>
               <Form.Control
                 type="text"
-                name="productName"
-                value={formData.productName}
+                name="Phone"
+                value={formData.Phone}
                 onChange={handleChange}
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>申请人电话</Form.Label>
-              <Form.Control
-                type="text"
-                name="applicantPhone"
-                value={formData.applicantPhone}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>申请人邮箱</Form.Label>
+              <Form.Label>邮箱</Form.Label>
               <Form.Control
                 type="email"
-                name="applicantEmail"
-                value={formData.applicantEmail}
+                name="Email"
+                value={formData.Email}
                 onChange={handleChange}
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>产品介绍</Form.Label>
+              <Form.Label>ABN 号码</Form.Label>
+              <Form.Control
+                type="text"
+                name="abnNumber"
+                value={formData.abnNumber}
+                onChange={handleChange}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>备注（公司地址、营业执照等）</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={3}
-                name="productIntro"
-                value={formData.productIntro}
+                name="Notes"
+                value={formData.Notes}
                 onChange={handleChange}
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>产品电话</Form.Label>
+              <Form.Label>公司网站地址</Form.Label>
               <Form.Control
                 type="text"
-                name="productPhone"
-                value={formData.productPhone}
+                name="companyUrlLink"
+                value={formData.companyUrlLink}
                 onChange={handleChange}
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>产品邮箱</Form.Label>
-              <Form.Control
-                type="email"
-                name="productEmail"
-                value={formData.productEmail}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>产品链接</Form.Label>
-              <Form.Control
-                type="text"
-                name="productLink"
-                value={formData.productLink}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>类型</Form.Label>
-              <Form.Select name="type" value={formData.type} onChange={handleChange} required>
-                <option value="Study Abroad Agency">留学中介</option>
-                <option value="Brand Merchants">品牌商家</option>
-                <option value="Educational Services">教育机构</option>
-              </Form.Select>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>上传Logo</Form.Label>
+              <Form.Label>上传公司 Logo</Form.Label>
               <div className="d-flex align-items-center">
                 <Button
                   variant="secondary"
@@ -227,13 +188,34 @@ const JoinUsForm = () => {
                 >
                   选择文件
                 </Button>
-                <span>{productLogo ? productLogo.name : "未选择文件"}</span>
+                <span>{companyLogo ? companyLogo.name : "未选择文件"}</span>
               </div>
               <Form.Control
                 type="file"
                 accept="image/*"
                 ref={fileInputRef}
-                onChange={handleFileChange}
+                onChange={(e) => setCompanyLogo(e.target.files[0])}
+                style={{ display: "none" }}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>ASIC 公司注册证书（PDF 或图片）</Form.Label>
+              <div className="d-flex align-items-center">
+                <Button
+                  variant="secondary"
+                  onClick={() => asicFileInputRef.current && asicFileInputRef.current.click()}
+                  className="me-3"
+                >
+                  选择文件
+                </Button>
+                <span>{asicCertificateFile ? asicCertificateFile.name : "未选择文件"}</span>
+              </div>
+              <Form.Control
+                type="file"
+                accept=".pdf,image/*"
+                ref={asicFileInputRef}
+                onChange={(e) => setAsicCertificateFile(e.target.files[0])}
                 style={{ display: "none" }}
               />
             </Form.Group>
