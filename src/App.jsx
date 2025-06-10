@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "./App.css";
 import BrandDetail from "./components/BrandDetail.jsx";
-// import Breadcrumbs from "./components/Breadcrumbs.jsx";
+import Breadcrumbs from "./components/Breadcrumbs.jsx";
 import EventDetail from "./components/EventDetail.jsx";
 
 import Footer from "./components/Footer.jsx";
@@ -82,12 +82,12 @@ function App() {
   // const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 
   return (
-    <div className='App homepage-bg-1'>
+    <div className='App'>
       <ScrollToTop />
       {header}
-      {/* <div className='custom-breadcrumb'>
+      <div className='custom-breadcrumb'>
         <Breadcrumbs />
-      </div> */}
+      </div>
       <div className='main-content'>
         <Routes>
           <Route path='/' element={<Home />} />
