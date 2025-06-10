@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Row, Col } from "react-bootstrap";
+import "../css/PartnerList.css";
 
 const PartnerList = ({ currentProductName }) => {
   console.log("✅ PartnerList 渲染了，当前产品：", currentProductName);
@@ -62,49 +63,43 @@ const PartnerList = ({ currentProductName }) => {
             : null;
 
           return (
-            <div
-              key={item.id || idx}
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "10px",
-                padding: "15px",
-                marginBottom: "10px",
-                backgroundColor: "#f9f9f9",
-              }}
-            >
-              {/* ✅ 显示公司 Logo（如有） */}
+            <div key={item.id || idx} className="partner-card">
+              {/* 左侧 logo */}
               {logoUrl && (
-                <div style={{ textAlign: "center", marginBottom: "10px" }}>
+                <div className="partner-logo-wrapper">
                   <img
                     src={logoUrl}
                     alt="公司Logo"
-                    style={{ width: 120, borderRadius: 8 }}
+                    className="partner-logo"
                   />
                 </div>
               )}
 
-              <p><strong>公司名称:</strong> {item.companyName || "N/A"}</p>
-              <p><strong>电话:</strong> {item.Phone || "N/A"}</p>
-              <p><strong>邮箱:</strong> {item.Email || "N/A"}</p>
-              <p><strong>备注:</strong> {item.Notes || "N/A"}</p>
-              <p><strong>公司官网:</strong>{" "}
-                <a href={item.companyUrlLink} target="_blank" rel="noopener noreferrer">
-                  {item.companyUrlLink}
-                </a>
-              </p>
-              <p><strong>ABN:</strong> {item.abnNumber || "N/A"}</p>
-              <p><strong>来源产品:</strong> {item.sourceProductName || "N/A"}</p>
-              <p><strong>来源链接:</strong>{" "}
-                <a href={item.sourceProductUrl} target="_blank" rel="noopener noreferrer">
-                  {item.sourceProductUrl}
-                </a>
-              </p>
-
-              {asicUrl && (
-                <p><strong>ASIC 证书:</strong><br />
-                  <a href={asicUrl} target="_blank" rel="noopener noreferrer">查看证书</a>
+              {/* 右侧信息 */}
+              <div className="partner-info">
+                <p><strong>公司名称:</strong> {item.companyName || "N/A"}</p>
+                <p><strong>电话:</strong> {item.Phone || "N/A"}</p>
+                <p><strong>邮箱:</strong> {item.Email || "N/A"}</p>
+                <p><strong>备注:</strong> {item.Notes || "N/A"}</p>
+                <p><strong>公司官网:</strong>{" "}
+                  <a href={item.companyUrlLink} target="_blank" rel="noopener noreferrer">
+                    {item.companyUrlLink}
+                  </a>
                 </p>
-              )}
+                <p><strong>ABN:</strong> {item.abnNumber || "N/A"}</p>
+                <p><strong>来源产品:</strong> {item.sourceProductName || "N/A"}</p>
+                <p><strong>来源链接:</strong>{" "}
+                  <a href={item.sourceProductUrl} target="_blank" rel="noopener noreferrer">
+                    {item.sourceProductUrl}
+                  </a>
+                </p>
+
+                {asicUrl && (
+                  <p><strong>ASIC 证书:</strong><br />
+                    <a href={asicUrl} target="_blank" rel="noopener noreferrer">查看证书</a>
+                  </p>
+                )}
+              </div>
             </div>
           );
         })}
