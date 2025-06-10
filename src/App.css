@@ -68,6 +68,7 @@ body {
   box-sizing: border-box;
   margin-top: 0;
 }
+
 .homepage-bg-1 {
   background-image: url(/homepage/homepage_bg_1.png);
   
@@ -170,11 +171,9 @@ footer {
 }
 
 .custom-breadcrumb {
-  position: fixed;
   top: 50px;
   left: 0;
   width: 100%;
-  background-color: white;
   z-index: 1000;
 }
 
