@@ -77,6 +77,7 @@ const JoinUsForm = () => {
         asicCertificate: asicCertificateId,
         sourceProductName,
         sourceProductUrl,
+        approved: false,
       };
 
       const response = await axios.post(API_URL, { data: finalData }, {

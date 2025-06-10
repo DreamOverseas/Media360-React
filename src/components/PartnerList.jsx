@@ -21,19 +21,20 @@ const PartnerList = ({ currentProductName }) => {
         const all = res.data.data || [];
         console.log("📦 所有申请原始数据:", all);
 
-        // 修正这里：因为 sourceProductName 是 item 顶层字段
         const filtered = all.filter((item, index) => {
           const fromStrapi = item?.sourceProductName?.trim().toLowerCase();
           const current = currentProductName?.trim().toLowerCase();
+          const approved = item?.approved === true;
           const match = fromStrapi === current;
 
           console.log(`🧪 对比 [${index}]:`, {
             currentProduct: current,
             fromStrapi,
             match,
+            approved,
           });
 
-          return match;
+          return match && approved;
         });
 
         console.log("🎯 匹配当前产品的记录:", filtered);
@@ -64,7 +65,7 @@ const PartnerList = ({ currentProductName }) => {
 
           return (
             <div
-              key={item.id || idx}
+              key={data.id || idx}
               style={{
                 border: "1px solid #ccc",
                 borderRadius: "10px",
