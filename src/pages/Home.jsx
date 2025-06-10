@@ -53,7 +53,7 @@ const HomePage = ()=> {
 
     return (
       <Container>
-        <Row className="d-flex text-center" style={{ color: 'white' }}>
+        <Row className="d-flex text-center" style={{ marginTop: '5%' }}>
           <h4>Experience the difference</h4>
           <h4>产品体验</h4>
         </Row>
