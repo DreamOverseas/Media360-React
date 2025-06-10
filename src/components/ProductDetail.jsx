@@ -499,6 +499,8 @@ useEffect(() => {
 
   // console.log(productTag)
 
+  console.log("当前产品名称为：", Name);
+
   return (
     <div>
       <section>
@@ -860,9 +862,11 @@ useEffect(() => {
           </Row>
           <br/>
 
+          
+
           <Row className="mt-3">
                   <Col>
-                    <PartnerList />
+                    <PartnerList currentProductName={Name}/>
                   </Col>
           </Row>
 

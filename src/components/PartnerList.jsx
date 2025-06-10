@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Row, Col } from "react-bootstrap";
 
-const PartnerList = () => {
-  console.log("✅ PartnerList 渲染了");
+const PartnerList = ({ currentProductName }) => {
+  console.log("✅ PartnerList 渲染了，当前产品：", currentProductName);
   const [applications, setApplications] = useState([]);
 
   useEffect(() => {
@@ -18,18 +18,33 @@ const PartnerList = () => {
           }
         );
 
-        console.log("✅ Strapi 返回的完整数据：", res.data);
-        console.log("📦 applications state:", res.data.data);
-        console.log("🔍 第一条申请:", res.data.data?.[0]?.attributes);
+        const all = res.data.data || [];
+        console.log("📦 所有申请原始数据:", all);
 
-        setApplications(res.data.data || []);
+        // 修正这里：因为 sourceProductName 是 item 顶层字段
+        const filtered = all.filter((item, index) => {
+          const fromStrapi = item?.sourceProductName?.trim().toLowerCase();
+          const current = currentProductName?.trim().toLowerCase();
+          const match = fromStrapi === current;
+
+          console.log(`🧪 对比 [${index}]:`, {
+            currentProduct: current,
+            fromStrapi,
+            match,
+          });
+
+          return match;
+        });
+
+        console.log("🎯 匹配当前产品的记录:", filtered);
+        setApplications(filtered);
       } catch (err) {
         console.error("❌ 拉取申请信息失败", err);
       }
     };
 
     fetchApplications();
-  }, []);
+  }, [currentProductName]);
 
   return (
     <Row className="mt-4">
