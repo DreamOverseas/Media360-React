@@ -9,11 +9,14 @@
   align-items: flex-start;
   gap: 20px;
   height: auto;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .partner-logo-wrapper {
   flex: 0 0 140px;
-  height: 140px;
+  height: 160px;
   margin-right: 12px;
 }
 
@@ -30,6 +33,7 @@
   display: flex;
   flex: 1;
   gap: 24px;
+  flex-wrap: wrap; /* ✅ 防止内容撑出卡片 */
 }
 
 .partner-info-left,
@@ -40,6 +44,8 @@
   flex-direction: column;
   font-size: 14px;
   color: #333;
+  word-break: break-word;       /* ✅ 强制换行 */
+  overflow-wrap: anywhere;      /* ✅ 避免长内容溢出 */
 }
 
 .partner-info-left p,
@@ -61,55 +67,36 @@
   text-decoration: underline;
 }
 
-/* ✅ 移动端处理：堆叠结构，字段区域上下排列 */
-@media (max-width: 768px) {
+/* ✅ 移动端：576px 以下完全垂直堆叠 */
+@media (max-width: 576px) {
   .partner-card {
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: flex-start;
-    width: 100%;
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 12px;
-    gap: 12px;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
   }
 
   .partner-logo-wrapper {
-    flex: 0 0 100px;
-    height: 120px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 8px;
+    flex: none;
+    width: 100%;
+    max-width: 160px;
+    height: auto;
+    margin: 0 auto;
   }
 
   .partner-logo {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid #ddd;
+    height: auto;
+    max-height: 160px;
   }
 
   .partner-info-split {
-    display: flex;
-    flex-direction: row; /* ✅ 保持中右并排布局 */
-    flex: 1;
+    flex-direction: column;
+    width: 100%;
     gap: 12px;
   }
 
   .partner-info-left,
   .partner-info-right {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    font-size: 14px;
-  }
-
-  .partner-info-left p,
-  .partner-info-right p {
-    margin: 0 0 6px 0;
-    line-height: 1.4;
+    width: 100%;
   }
 }
