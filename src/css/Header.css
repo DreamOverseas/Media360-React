@@ -138,7 +138,7 @@ body.menu-open {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: transparent;
+  background-color: rgb(170, 214, 250);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height:70px;
 }
