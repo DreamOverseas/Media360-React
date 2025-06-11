@@ -1,3 +1,12 @@
+/* ✅ 新增容器：用于收纳所有 partner-card */
+.partner-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 8px;
+}
+
+/* 单个公司卡片 */
 .partner-card {
   display: flex;
   padding: 16px;
@@ -14,6 +23,7 @@
   box-sizing: border-box;
 }
 
+/* 左侧 logo 容器 */
 .partner-logo-wrapper {
   flex: 0 0 140px;
   height: 160px;
