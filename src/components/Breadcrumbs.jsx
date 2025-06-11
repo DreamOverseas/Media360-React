@@ -21,6 +21,7 @@ const Breadcrumbs = () => {
     founders: { zh: "品牌创始人", en: "Founders" },
     kols: { zh: "产品意见领袖", en: "Kols" },
     ambassadors: { zh: "产品代言人", en: "Ambassadors" },
+    "about-us":{zh:"关于我们",en:"About Us"},
     "related-news": { zh: "相关新闻", en: "Related News" },
     "related-event": { zh: "相关活动", en: "Related Event" },
     "related-brand": { zh: "相关品牌", en: "Related Brand" },

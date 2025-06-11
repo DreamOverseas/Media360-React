@@ -27,7 +27,7 @@ import Events from "./pages/Events";
 import RecentProductsBar from "./components/RecentProductsBar.jsx";
 import FounderPage from "./pages/FounderPage.jsx";
 import Greeness from "./pages/Greeness.jsx";
-import InfluenceHub from "./pages/InfluenceHub.jsx";
+import Networks from "./pages/Networks.jsx";
 import KolPage from "./pages/KolPage.jsx";
 import MediaCenter from "./pages/MediaCenter.jsx";
 import MerchantPromotion from "./pages/MerchantPromotion.jsx";
@@ -170,7 +170,7 @@ function App() {
           />
           <Route exact path='/events/:name' element={<EventDetail />} />
           <Route path='/join-us' element={<Recruitment />} />
-          <Route path='/influence-hub' element={<InfluenceHub />} />
+          <Route path='/networks' element={<Networks />} />
           <Route path='/media-center' element={<MediaCenter />} />
           <Route path='/news' element={<NewsPage />} />
           <Route path='/events' element={

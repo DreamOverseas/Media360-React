@@ -27,10 +27,10 @@ const Header = () => {
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='gap-3 nav-custom'>
             <Nav.Link href='/'>{t("home")}</Nav.Link>
-            <Nav.Link href='/brands'>{t("brands")}</Nav.Link>
-            <Nav.Link href='/products'>{t("product")}</Nav.Link>
+            {/* <Nav.Link href='/brands'>{t("brands")}</Nav.Link>
+            <Nav.Link href='/products'>{t("product")}</Nav.Link> */}
 
-            <NavDropdown
+            {/* <NavDropdown
               title='星潮汇'
               id='star-dropdown'
               className='dropdown-container'
@@ -40,7 +40,7 @@ const Header = () => {
               <NavDropdown.Item href='/ambassadors'>
                 产品代言人
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
 
             <NavDropdown
               title='媒体中心'
@@ -50,7 +50,9 @@ const Header = () => {
               <NavDropdown.Item href='/news'>新闻</NavDropdown.Item>
               <NavDropdown.Item href='/events'>活动</NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href='/join-us'>{t("joinus")}</Nav.Link>
+            <Nav.Link href='/networks'>{t("人脉资源")}</Nav.Link>
+            <Nav.Link href='/about-us'>{t("About_us")}</Nav.Link>
+            {/* <Nav.Link href='/join-us'>{t("joinus")}</Nav.Link> */}
 
             {/* <NavDropdown
               title={t("language")}

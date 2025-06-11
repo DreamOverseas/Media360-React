@@ -11,7 +11,7 @@ import "../css/InfluenceHub.css"
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
 
-const InfluenceHub = () => {
+const Networks = () => {
   const { t, i18n } = useTranslation();
   const [kols, setKols] = useState([]);
   const [founders, setFounders] = useState([]);
@@ -615,4 +615,4 @@ const InfluenceHub = () => {
     );
 };
   
-export default InfluenceHub;
+export default Networks;
