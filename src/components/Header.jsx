@@ -20,17 +20,17 @@ const Header = () => {
     <div>
       
       <Navbar expand='lg' className='navbar-custom'>
-        <Navbar.Brand href='/'>
+        <Navbar.Toggle aria-controls='basic-navbar-nav'/>
+        <Navbar.Brand href='/' className='navbar-brand-custom'>
           <Image className='nav-logo' src='/360_logo.png' alt='360 Media' />
         </Navbar.Brand>
-        {/* <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
-          <Nav className='ms-auto nav-custom'>
+          <Nav className='gap-3 nav-custom'>
             <Nav.Link href='/'>{t("home")}</Nav.Link>
-            <Nav.Link href='/brands'>{t("brands")}</Nav.Link>
-            <Nav.Link href='/products'>{t("product")}</Nav.Link>
+            {/* <Nav.Link href='/brands'>{t("brands")}</Nav.Link>
+            <Nav.Link href='/products'>{t("product")}</Nav.Link> */}
 
-            <NavDropdown
+            {/* <NavDropdown
               title='星潮汇'
               id='star-dropdown'
               className='dropdown-container'
@@ -40,7 +40,7 @@ const Header = () => {
               <NavDropdown.Item href='/ambassadors'>
                 产品代言人
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
 
             <NavDropdown
               title='媒体中心'
@@ -50,9 +50,11 @@ const Header = () => {
               <NavDropdown.Item href='/news'>新闻</NavDropdown.Item>
               <NavDropdown.Item href='/events'>活动</NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href='/join-us'>{t("joinus")}</Nav.Link>
+            <Nav.Link href='/networks'>{t("人脉资源")}</Nav.Link>
+            <Nav.Link href='/about-us'>{t("About_us")}</Nav.Link>
+            {/* <Nav.Link href='/join-us'>{t("joinus")}</Nav.Link> */}
 
-            <NavDropdown
+            {/* <NavDropdown
               title={t("language")}
               id='language-dropdown'
               className='dropdown-container'
@@ -63,8 +65,8 @@ const Header = () => {
               <NavDropdown.Item onClick={() => changeLanguage("zh")}>
                 中文
               </NavDropdown.Item>
-            </NavDropdown>
-            {user ? (
+            </NavDropdown> */}
+            {/* {user ? (
               <>
                 <Nav.Link href='/cart'>
                   <i className='bi bi-cart nav-icon'></i>
@@ -83,9 +85,9 @@ const Header = () => {
               <Nav.Link onClick={() => setShowLoginModal(true)}>
                 <i className='bi bi-person nav-icon'></i>
               </Nav.Link>
-            )}
+            )} */}
           </Nav>
-        </Navbar.Collapse> */}
+        </Navbar.Collapse>
       </Navbar>
       {/* 登录模态框 */}
       {/* <LoginModal

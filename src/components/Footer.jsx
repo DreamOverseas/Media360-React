@@ -33,7 +33,7 @@ const Footer = () => {
                 </Link>
               </Col>
             </Row>
-            <div className="d-flex gap-3">
+            {/* <div className="d-flex gap-3">
               <Link to={`/about-us`}>
                 <Button style={{width:"70px"}} className='update-function-btn'>关于我们</Button>
               </Link>
@@ -46,7 +46,7 @@ const Footer = () => {
               <Link to={`/influence-hub`}>
                 <Button style={{width:"70px"}} className='update-function-btn'>人脉资源</Button>
               </Link>
-            </div>
+            </div> */}
             <Row className="footer-info">
                 <Col>
                   <Row>
@@ -142,7 +142,7 @@ const Footer = () => {
                 </Link>
               </Col>
             </Row>
-            <div className="d-flex gap-3">
+            {/* <div className="d-flex gap-3">
               <Link to={`/about-us`}>
                 <Button style={{width:"70px"}} className='update-function-btn'>关于我们</Button>
               </Link>
@@ -155,7 +155,7 @@ const Footer = () => {
               <Link to={`/influence-hub`}>
                 <Button style={{width:"70px"}} className='update-function-btn'>人脉资源</Button>
               </Link>
-            </div>
+            </div> */}
             <Row className="footer-info">
                 <Col>
                   <Row>

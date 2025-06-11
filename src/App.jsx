@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "./App.css";
 import BrandDetail from "./components/BrandDetail.jsx";
-// import Breadcrumbs from "./components/Breadcrumbs.jsx";
+import Breadcrumbs from "./components/Breadcrumbs.jsx";
 import EventDetail from "./components/EventDetail.jsx";
 
 import Footer from "./components/Footer.jsx";
@@ -27,7 +27,7 @@ import Events from "./pages/Events";
 import RecentProductsBar from "./components/RecentProductsBar.jsx";
 import FounderPage from "./pages/FounderPage.jsx";
 import Greeness from "./pages/Greeness.jsx";
-import InfluenceHub from "./pages/InfluenceHub.jsx";
+import Networks from "./pages/Networks.jsx";
 import KolPage from "./pages/KolPage.jsx";
 import MediaCenter from "./pages/MediaCenter.jsx";
 import MerchantPromotion from "./pages/MerchantPromotion.jsx";
@@ -82,12 +82,12 @@ function App() {
   // const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 
   return (
-    <div className='App homepage-bg-1'>
+    <div className='App'>
       <ScrollToTop />
       {header}
-      {/* <div className='custom-breadcrumb'>
+      <div className='custom-breadcrumb'>
         <Breadcrumbs />
-      </div> */}
+      </div>
       <div className='main-content'>
         <Routes>
           <Route path='/' element={<Home />} />
@@ -171,7 +171,7 @@ function App() {
           <Route exact path='/events/:name' element={<EventDetail />} />
           <Route path="/join-us-form" element={<JoinUsForm />} />
           <Route path='/join-us' element={<Recruitment />} />
-          <Route path='/influence-hub' element={<InfluenceHub />} />
+          <Route path='/networks' element={<Networks />} />
           <Route path='/media-center' element={<MediaCenter />} />
           <Route path='/news' element={<NewsPage />} />
           <Route path='/events' element={
