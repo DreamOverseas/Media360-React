@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Row, Col, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "../css/PartnerList.css";
 
 const PartnerList = ({ currentProductName }) => {
   const [applications, setApplications] = useState([]);
-  const [showAll, setShowAll] = useState(false); // 控制展开/收起
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -19,11 +20,11 @@ const PartnerList = ({ currentProductName }) => {
           }
         );
 
-        // ✅ 同时满足：approved === true && 当前产品名匹配
-        const filtered = (res.data.data || []).filter(item =>
-          item.approved === true &&
-          item.sourceProductName?.toLowerCase() === currentProductName?.toLowerCase()
-        );
+        const filtered = (res.data.data || []).filter((item) => {
+          const matchProduct = item?.sourceProductName?.trim().toLowerCase() === currentProductName?.trim().toLowerCase();
+          const approved = item?.approved === true;
+          return matchProduct && approved;
+        });
 
         setApplications(filtered);
       } catch (err) {
@@ -57,14 +58,12 @@ const PartnerList = ({ currentProductName }) => {
 
                 return (
                   <div key={item.id || idx} className="partner-card">
-                    {/* 公司Logo */}
                     {logoUrl && (
                       <div className="partner-logo-wrapper">
                         <img src={logoUrl} alt="公司Logo" className="partner-logo" />
                       </div>
                     )}
 
-                    {/* 信息字段 */}
                     <div className="partner-info-split">
                       <div className="partner-info-left">
                         <p><strong>公司名称:</strong> {item.companyName || "N/A"}</p>
@@ -86,12 +85,18 @@ const PartnerList = ({ currentProductName }) => {
                         <p><strong>备注:</strong> {item.Notes || "N/A"}</p>
                       </div>
                     </div>
+
+                    {/* 加入按钮 */}
+                    <div className="partner-join-button">
+                      <Link to={`/partner-apply/${item.id}`}>
+                        <Button variant="outline-primary" size="sm">立即加入</Button>
+                      </Link>
+                    </div>
                   </div>
                 );
               })}
             </div>
 
-            {/* 展开/收起按钮 */}
             {applications.length > 2 && (
               <div style={{ textAlign: "center", marginTop: "12px" }}>
                 <Button

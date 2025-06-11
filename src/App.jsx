@@ -52,7 +52,7 @@ import FloatingHomeButton from "./components/FloatingHomeButton.jsx";
 import ProductRouteGuard from "./components/ProductRouteGuard.jsx";
 import Activity from "./components/Activity.jsx";
 import JoinUsForm from './pages/JoinUsForm';
-
+import PartnerApplicationForm from "./pages/partner/PartnerApplicationForm.jsx";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -170,6 +170,7 @@ function App() {
           />
           <Route exact path='/events/:name' element={<EventDetail />} />
           <Route path="/join-us-form" element={<JoinUsForm />} />
+          <Route path="/partner-apply/:companyId" element={<PartnerApplicationForm />} />
           <Route path='/join-us' element={<Recruitment />} />
           <Route path='/networks' element={<Networks />} />
           <Route path='/media-center' element={<MediaCenter />} />
