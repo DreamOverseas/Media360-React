@@ -45,7 +45,7 @@ const PartnerList = ({ currentProductName }) => {
 
             return (
               <div key={item.id || idx} className="partner-card">
-                {/* 左侧 logo */}
+                {/* 左侧：公司 Logo */}
                 {logoUrl && (
                   <div className="partner-logo-wrapper">
                     <img
@@ -56,9 +56,9 @@ const PartnerList = ({ currentProductName }) => {
                   </div>
                 )}
 
-                {/* 信息区域：两列 */}
+                {/* 中右结构：字段区域分为两列 */}
                 <div className="partner-info-split">
-                  {/* 左列：常规字段 */}
+                  {/* 中间：公司字段 */}
                   <div className="partner-info-left">
                     <p><strong>公司名称:</strong> {item.companyName || "N/A"}</p>
                     <p><strong>电话:</strong> {item.Phone || "N/A"}</p>
@@ -76,7 +76,7 @@ const PartnerList = ({ currentProductName }) => {
                     )}
                   </div>
 
-                  {/* 右列：备注 */}
+                  {/* 右侧：备注字段 */}
                   <div className="partner-info-right">
                     <p><strong>备注:</strong> {item.Notes || "N/A"}</p>
                   </div>
