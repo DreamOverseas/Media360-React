@@ -1,0 +1,112 @@
+/* ✅ 新增容器：用于收纳所有 partner-card */
+.partner-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 8px;
+}
+
+/* 单个公司卡片 */
+.partner-card {
+  display: flex;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  align-items: flex-start;
+  gap: 20px;
+  height: auto;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* 左侧 logo 容器 */
+.partner-logo-wrapper {
+  flex: 0 0 140px;
+  height: 160px;
+  margin-right: 12px;
+}
+
+.partner-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* 三列结构：公司字段 + 备注字段 */
+.partner-info-split {
+  display: flex;
+  flex: 1;
+  gap: 24px;
+  flex-wrap: wrap; /* ✅ 防止内容撑出卡片 */
+}
+
+.partner-info-left,
+.partner-info-right {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #333;
+  word-break: break-word;       /* ✅ 强制换行 */
+  overflow-wrap: anywhere;      /* ✅ 避免长内容溢出 */
+}
+
+.partner-info-left p,
+.partner-info-right p {
+  margin: 0;
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.partner-info-left a,
+.partner-info-right a {
+  color: #0066cc;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.partner-info-left a:hover,
+.partner-info-right a:hover {
+  text-decoration: underline;
+}
+
+/* ✅ 移动端：576px 以下完全垂直堆叠 */
+@media (max-width: 576px) {
+  .partner-card {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .partner-logo-wrapper {
+    flex: none;
+    width: 100%;
+    max-width: 160px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .partner-logo {
+    width: 100%;
+    height: auto;
+    max-height: 160px;
+  }
+
+  .partner-info-split {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .partner-info-left,
+  .partner-info-right {
+    width: 100%;
+  }
+}

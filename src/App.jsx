@@ -51,7 +51,7 @@ import AboutUs from "./pages/AboutUsPage.jsx";
 import FloatingHomeButton from "./components/FloatingHomeButton.jsx";
 import ProductRouteGuard from "./components/ProductRouteGuard.jsx";
 import Activity from "./components/Activity.jsx";
-
+import JoinUsForm from './pages/JoinUsForm';
 
 
 function App() {
@@ -169,6 +169,7 @@ function App() {
             element={<MerchantPromotion />}
           />
           <Route exact path='/events/:name' element={<EventDetail />} />
+          <Route path="/join-us-form" element={<JoinUsForm />} />
           <Route path='/join-us' element={<Recruitment />} />
           <Route path='/influence-hub' element={<InfluenceHub />} />
           <Route path='/media-center' element={<MediaCenter />} />
