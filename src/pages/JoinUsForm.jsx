@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
 const API_URL = `${STRAPI_HOST}/api/product-screen-join-applications`;
 const UPLOAD_URL = `${STRAPI_HOST}/api/upload`;
-const API_TOKEN = import.meta.env.VITE_API_KEY_PRODUCT_JOIN_APPLICATIONS;
+const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
 
 const initialFormData = {
   companyName: "",
