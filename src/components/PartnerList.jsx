@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Row, Col, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "../css/PartnerList.css";
 
 const PartnerList = ({ currentProductName }) => {
   const [applications, setApplications] = useState([]);
-  const [showAll, setShowAll] = useState(false); // 控制展开/收起
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -14,16 +15,18 @@ const PartnerList = ({ currentProductName }) => {
           `${import.meta.env.VITE_STRAPI_HOST}/api/product-screen-join-applications?sort=createdAt:desc&populate=*`,
           {
             headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_API_KEY_PRODUCT_JOIN_APPLICATIONS}`,
+              Authorization: `Bearer ${import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD}`,
             },
           }
         );
 
-        // ✅ 同时满足：approved === true && 当前产品名匹配
-        const filtered = (res.data.data || []).filter(item =>
-          item.approved === true &&
-          item.sourceProductName?.toLowerCase() === currentProductName?.toLowerCase()
-        );
+        const filtered = (res.data.data || []).filter((item) => {
+          const matchProduct =
+            item?.sourceProductName?.trim().toLowerCase() ===
+            currentProductName?.trim().toLowerCase();
+          const approved = item?.approved === true;
+          return matchProduct && approved;
+        });
 
         setApplications(filtered);
       } catch (err) {
@@ -40,9 +43,9 @@ const PartnerList = ({ currentProductName }) => {
   return (
     <Row className="mt-4">
       <Col>
-        <h5>最新申请信息</h5>
+        <h5>合作伙伴</h5>
         {applications.length === 0 ? (
-          <p>暂无申请记录。</p>
+          <p>暂无</p>
         ) : (
           <>
             <div className="partner-list-container">
@@ -57,14 +60,16 @@ const PartnerList = ({ currentProductName }) => {
 
                 return (
                   <div key={item.id || idx} className="partner-card">
-                    {/* 公司Logo */}
                     {logoUrl && (
                       <div className="partner-logo-wrapper">
-                        <img src={logoUrl} alt="公司Logo" className="partner-logo" />
+                        <img
+                          src={logoUrl}
+                          alt="公司Logo"
+                          className="partner-logo"
+                        />
                       </div>
                     )}
 
-                    {/* 信息字段 */}
                     <div className="partner-info-split">
                       <div className="partner-info-left">
                         <p><strong>公司名称:</strong> {item.companyName || "N/A"}</p>
@@ -82,18 +87,30 @@ const PartnerList = ({ currentProductName }) => {
                           </p>
                         )}
                       </div>
+
                       <div className="partner-info-right">
                         <p><strong>备注:</strong> {item.Notes || "N/A"}</p>
                       </div>
+                    </div>
+
+                    <div className="partner-join-button">
+                      <Link
+                        to="/partner-apply"
+                        state={{
+                          productName: currentProductName,
+                          companyName: item.companyName,
+                        }}
+                      >
+                        <Button variant="outline-primary" size="sm">立即加入</Button>
+                      </Link>
                     </div>
                   </div>
                 );
               })}
             </div>
 
-            {/* 展开/收起按钮 */}
             {applications.length > 2 && (
-              <div style={{ textAlign: "center", marginTop: "12px" }}>
+              <div style={{ textAlign: "center", marginTop: "12px", marginBottom: "40px" }}>
                 <Button
                   variant="outline-secondary"
                   size="sm"
