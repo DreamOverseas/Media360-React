@@ -27,6 +27,29 @@
   font-size: 14px;
 }
 
-.partner-application-form button {
-  align-self: flex-start;
+/* ✅ 单选按钮排列 */
+.radio-group {
+  display: flex;
+  gap: 20px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+}
+
+.radio-group input {
+  margin-right: 6px;
+}
+
+/* ✅ 蓝色主按钮 */
+.primary-submit-btn {
+  padding: 10px 20px;
+  background-color: #0d6efd;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.primary-submit-btn:hover {
+  background-color: #0b5ed7;
 }
