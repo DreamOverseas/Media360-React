@@ -170,7 +170,7 @@ function App() {
           />
           <Route exact path='/events/:name' element={<EventDetail />} />
           <Route path="/join-us-form" element={<JoinUsForm />} />
-          <Route path="/partner-apply/:companyId" element={<PartnerApplicationForm />} />
+          <Route path="/partner-apply" element={<PartnerApplicationForm />} />
           <Route path='/join-us' element={<Recruitment />} />
           <Route path='/networks' element={<Networks />} />
           <Route path='/media-center' element={<MediaCenter />} />

@@ -21,7 +21,9 @@ const PartnerList = ({ currentProductName }) => {
         );
 
         const filtered = (res.data.data || []).filter((item) => {
-          const matchProduct = item?.sourceProductName?.trim().toLowerCase() === currentProductName?.trim().toLowerCase();
+          const matchProduct =
+            item?.sourceProductName?.trim().toLowerCase() ===
+            currentProductName?.trim().toLowerCase();
           const approved = item?.approved === true;
           return matchProduct && approved;
         });
@@ -60,7 +62,11 @@ const PartnerList = ({ currentProductName }) => {
                   <div key={item.id || idx} className="partner-card">
                     {logoUrl && (
                       <div className="partner-logo-wrapper">
-                        <img src={logoUrl} alt="公司Logo" className="partner-logo" />
+                        <img
+                          src={logoUrl}
+                          alt="公司Logo"
+                          className="partner-logo"
+                        />
                       </div>
                     )}
 
@@ -81,14 +87,21 @@ const PartnerList = ({ currentProductName }) => {
                           </p>
                         )}
                       </div>
+
                       <div className="partner-info-right">
                         <p><strong>备注:</strong> {item.Notes || "N/A"}</p>
                       </div>
                     </div>
 
-                    {/* 加入按钮 */}
+                    {/* 加入按钮，传入 productName 和 companyName */}
                     <div className="partner-join-button">
-                      <Link to={`/partner-apply/${item.id}`}>
+                      <Link
+                        to="/partner-apply"
+                        state={{
+                          productName: currentProductName,
+                          companyName: item.companyName,
+                        }}
+                      >
                         <Button variant="outline-primary" size="sm">立即加入</Button>
                       </Link>
                     </div>
