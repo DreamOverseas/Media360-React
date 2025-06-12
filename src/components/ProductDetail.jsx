@@ -158,7 +158,7 @@ const ProductDetail = () => {
   
         {/* 缩略图列表（最多11项 + 占位符） */}
         <div className="thumbnail-container">
-          {allMedia.slice(0, 11).map((src, idx) => (
+          {allMedia.slice(0, 7).map((src, idx) => (
             <div
               key={idx}
               className={`thumb-container ${idx === currentIndex ? 'active-thumb' : ''}`}
@@ -168,12 +168,12 @@ const ProductDetail = () => {
               {isVideoIndex(idx) && <div className="video-icon-overlay">▶</div>}
             </div>
           ))}
-          {allMedia.length > 11 && (
+          {allMedia.length > 7 && (
             <div
               className="thumb-container placeholder-thumb"
-              onClick={() => handleThumbnailClick(11)}
+              onClick={() => handleThumbnailClick(7)}
             >
-              <div className="thumb-overlay">+{allMedia.length - 11}</div>
+              <div className="thumb-overlay">+{allMedia.length - 7}</div>
             </div>
           )}
         </div>
@@ -488,7 +488,7 @@ useEffect(() => {
       : `${BACKEND_HOST}${product.ProductImage.url}`)
     : `${BACKEND_HOST}/default-share.jpg`;
   console.log(shareImg)
-  const titleHeading = (product?.brand?.MainProduct_url===name)?"品牌详情":"产品详情"
+  const titleHeading = (product?.brand?.MainProduct_url===name)?"品牌简介":"产品简介"
   // console.log(shareLink)
   // console.log(Name)
   // console.log(Description)

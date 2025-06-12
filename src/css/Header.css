@@ -196,9 +196,4 @@ body.menu-open {
   .nav-custom {
     padding: 1rem;
   }
-  
-  .nav-link {
-    padding: 0.5rem 0 !important;
-    border-bottom: 1px solid #eee;
-  }
 }
