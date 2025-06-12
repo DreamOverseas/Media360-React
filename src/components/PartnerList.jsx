@@ -43,9 +43,9 @@ const PartnerList = ({ currentProductName }) => {
   return (
     <Row className="mt-4">
       <Col>
-        <h5>最新申请信息</h5>
+        <h5>合作伙伴</h5>
         {applications.length === 0 ? (
-          <p>暂无申请记录。</p>
+          <p>暂无</p>
         ) : (
           <>
             <div className="partner-list-container">
@@ -93,7 +93,6 @@ const PartnerList = ({ currentProductName }) => {
                       </div>
                     </div>
 
-                    {/* 加入按钮，传入 productName 和 companyName */}
                     <div className="partner-join-button">
                       <Link
                         to="/partner-apply"
@@ -111,7 +110,7 @@ const PartnerList = ({ currentProductName }) => {
             </div>
 
             {applications.length > 2 && (
-              <div style={{ textAlign: "center", marginTop: "12px" }}>
+              <div style={{ textAlign: "center", marginTop: "12px", marginBottom: "40px" }}>
                 <Button
                   variant="outline-secondary"
                   size="sm"
