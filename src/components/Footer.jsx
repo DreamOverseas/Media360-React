@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import "../css/Footer.css";
+import DoTermsAndConditions from "./DoTermsAndConditions";
 
 const Footer = () => {
   const onDesktop = useMediaQuery({ query: "(min-width: 768px)" });
@@ -93,6 +94,9 @@ const Footer = () => {
                   <Row style={{height:"70px"}} className="d-flex justify-content-center align-items-center text-center">
                     <Image style={{ maxHeight: "100%", width: "auto", objectFit: "contain" }} src="/WechatOfficialAccount.png"/>
                   </Row>
+                <div className="d-flex gap-3 text-black justify-center mt-10 text-sm">
+                  <DoTermsAndConditions defaultLang="zh" />
+                </div>
                 </Col> 
             </Row>
             <Row>
@@ -202,6 +206,9 @@ const Footer = () => {
                   <Row style={{height:"70px"}} className="d-flex justify-content-center align-items-center text-center">
                     <Image style={{ maxHeight: "100%", width: "auto", objectFit: "contain" }} src="/WechatOfficialAccount.png"/>
                   </Row>
+                  <div className="d-flex gap-3 justify-center text-black text-sm">
+                    <DoTermsAndConditions defaultLang="zh" />
+                  </div>
                 </Col> 
             </Row>
             <Row>
