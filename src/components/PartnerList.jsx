@@ -41,7 +41,7 @@ const PartnerList = ({ currentProductName }) => {
   const visibleApplications = showAll ? applications : applications.slice(0, 2);
 
   return (
-    <Row className="mt-4">
+    <Row>
       <Col>
         <h5>合作伙伴</h5>
         {applications.length === 0 ? (

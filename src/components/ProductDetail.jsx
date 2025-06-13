@@ -435,7 +435,6 @@ useEffect(() => {
         id={idx}
         defaultActiveKey={defaultOpen ? '0' : undefined}
         flush
-        className="mb-3"
       >
         <Accordion.Item eventKey="0">
           <Accordion.Header>{header}</Accordion.Header>
@@ -443,7 +442,7 @@ useEffect(() => {
             {detail ? (
               <div className="detail-container">
                 <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                  {Detail}
+                  {detail}
                 </ReactMarkdown>
               </div>
             ) : (
@@ -479,6 +478,7 @@ useEffect(() => {
   const Note = language === "zh" ? product.Note_zh : product.Note_en;
 
   const slides = language === "zh" ? product.slides_zh || "N/A": product.slides_en || "N/A";
+  const spots = language === "zh" ? product.spots_zh || "N/A": product.spots_en || "N/A";
   const shareLink = window.location.href;
   console.log("This is product.ProductImage's parent");
   console.log(product);
@@ -488,7 +488,8 @@ useEffect(() => {
       : `${BACKEND_HOST}${product.ProductImage.url}`)
     : `${BACKEND_HOST}/default-share.jpg`;
   console.log(shareImg)
-  const titleHeading = (product?.brand?.MainProduct_url===name)?"品牌简介":"产品简介"
+  const DetailHeading = (product?.brand?.MainProduct_url===name)?"品牌简介":"产品简介"
+  const SpotsHeading = language === "zh" ? "附近的景点" : "Nearby Spots";
   // console.log(shareLink)
   // console.log(Name)
   // console.log(Description)
@@ -587,7 +588,7 @@ useEffect(() => {
                     </Row>
                   </Row>
 
-                  <Row>
+                  {/* <Row>
                     <button
                       onClick={handleShare}
                       className='social-sharing__link'
@@ -605,7 +606,7 @@ useEffect(() => {
                     </i>
                       <span className='share-title'>分享此产品</span>
                     </button>
-                  </Row>
+                  </Row> */}
 
                 </>
               ) : (
@@ -740,6 +741,27 @@ useEffect(() => {
                   <></>
                 ) : (
                   <>
+                    <AccordionItem
+                      idx="detail-accordion"
+                      header={DetailHeading}
+                      detail={Detail}
+                      defaultOpen={false}
+                    />
+
+                    {spots !== "N/A" ?
+                    (
+                      <AccordionItem
+                        idx="spots-accordion"
+                        header={SpotsHeading}
+                        detail={spots}
+                        defaultOpen={false}
+                      />
+                    ):(
+                      <></>
+                    )}
+
+                    
+
                     <Row>
                       <h4>查看相关信息</h4>
                       <Row>
@@ -806,7 +828,7 @@ useEffect(() => {
                       </Row>
                     </Row>
 
-                    <Row>
+                    {/* <Row>
                       <button
                         onClick={handleShare}
                         className='social-sharing__link'
@@ -824,7 +846,7 @@ useEffect(() => {
                       </i>
                         <span className='share-title'>分享此产品</span>
                       </button>
-                    </Row>
+                    </Row> */}
 
                     
                   </>
@@ -833,12 +855,7 @@ useEffect(() => {
                 )}
 
               
-                <AccordionItem
-                  idx="detail-accordion"
-                  header={titleHeading}
-                  detail={Detail}
-                  defaultOpen={false}
-                />
+                
 
                 {/* <Row className="mt-3">
                   <Col>
@@ -860,14 +877,11 @@ useEffect(() => {
               </Container>
             </Col>
           </Row>
-          <br/>
 
-          
-
-          <Row className="mt-3">
-                  <Col>
-                    <PartnerList currentProductName={Name}/>
-                  </Col>
+          <Row>
+            <Col>
+              <PartnerList currentProductName={Name}/>
+            </Col>
           </Row>
 
           <Link
