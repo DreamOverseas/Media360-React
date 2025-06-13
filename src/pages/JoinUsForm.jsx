@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Button, Alert, Spinner, Container } from "react-bootstrap";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
@@ -26,7 +26,7 @@ const JoinUsForm = () => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const productHomepage = location.state?.productName || "";
+  const partnerName = location.state?.productName || "";
 
   const handleUpload = async (file) => {
     if (!file) return null;
@@ -45,6 +45,7 @@ const JoinUsForm = () => {
     setLoading(true);
 
     try {
+      console.log("🟡 开始上传文件...");
       const logoId = await handleUpload(companyLogo);
       const certId = await handleUpload(asicCertificateFile);
       const partnerID = uuidv4();
@@ -62,39 +63,28 @@ const JoinUsForm = () => {
         Customer: []
       };
 
-      console.log("📦 查询 productHomepage =", productHomepage);
+      console.log("🟡 构造的新 Partner 数据:", newPartner);
 
-      let existing = null;
-      try {
-        const query = new URLSearchParams({
-          'filters[productHomepage][$eq]': productHomepage,
-          'fields[0]': 'productHomepage',
-          'fields[1]': 'id'
-        }).toString();
+      const query = new URLSearchParams({
+        'filters[partnerName][$eq]': partnerName,
+        'populate': 'Partner'
+      }).toString();
+      const url = `${API_URL}?${query}`;
 
-        const res = await axios.get(`${API_URL}?${query}`, {
-          headers: { Authorization: `Bearer ${API_TOKEN}` }
-        });
-        existing = res.data?.data?.[0];
-      } catch (queryErr) {
-        console.warn("⚠ fallback 查询失败，准备直接创建 entry：", queryErr.message);
-      }
+      console.log("🔵 正在 GET 查询:", url);
+      const res = await axios.get(url, {
+        headers: { Authorization: `Bearer ${API_TOKEN}` }
+      });
+
+      console.log("🟢 查询结果:", res.data);
+      const existing = res.data?.data?.[0];
 
       if (existing) {
         const id = existing.id;
-        let currentPartners = [];
-
-        try {
-          const detail = await axios.get(`${API_URL}/${id}?populate=Partner`, {
-            headers: { Authorization: `Bearer ${API_TOKEN}` }
-          });
-          currentPartners = detail.data?.data?.attributes?.Partner || [];
-        } catch (loadErr) {
-          console.warn("⚠ 加载原有 Partner 失败，准备覆盖：", loadErr.message);
-        }
-
+        const currentPartners = existing.attributes.Partner || [];
         const updatedPartners = [...currentPartners, newPartner];
 
+        console.log("🛠️ 正在更新 ID:", id);
         await axios.put(`${API_URL}/${id}`, {
           data: {
             Partner: updatedPartners
@@ -102,18 +92,22 @@ const JoinUsForm = () => {
         }, {
           headers: { Authorization: `Bearer ${API_TOKEN}` }
         });
+
+        console.log("✅ 更新成功");
       } else {
-        console.warn("📌 创建新 entry，因为无匹配项或查询失败");
         const payload = {
           data: {
-            productHomepage,
+            partnerName,
             Partner: [newPartner]
           }
         };
 
+        console.log("🆕 正在创建新 entry:", payload);
         await axios.post(API_URL, payload, {
           headers: { Authorization: `Bearer ${API_TOKEN}` }
         });
+
+        console.log("✅ 创建成功");
       }
 
       setSuccess(true);
@@ -121,7 +115,7 @@ const JoinUsForm = () => {
       setCompanyLogo(null);
       setAsicCertificateFile(null);
     } catch (err) {
-      console.error("提交失败", err);
+      console.error("❌ 提交失败:", err);
       setError("提交失败，请稍后重试。");
     } finally {
       setLoading(false);
