@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
-const API_URL = `${STRAPI_HOST}/api/partner-application-submissions`;
+const API_URL = `${STRAPI_HOST}/api/partner-application-submission1s`;
 const UPLOAD_URL = `${STRAPI_HOST}/api/upload`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
 
@@ -28,6 +28,7 @@ const JoinUsForm = () => {
 
   const partnerName = location.state?.productName || "";
 
+  // 上传文件，返回文件ID
   const handleUpload = async (file) => {
     if (!file) return null;
     const data = new FormData();
@@ -45,11 +46,12 @@ const JoinUsForm = () => {
     setLoading(true);
 
     try {
-      console.log("🟡 开始上传文件...");
+      // 1. 文件上传
       const logoId = await handleUpload(companyLogo);
       const certId = await handleUpload(asicCertificateFile);
       const partnerID = uuidv4();
 
+      // 2. 构建新的Partner数据
       const newPartner = {
         companyName: formData.companyName,
         partnerID,
@@ -63,51 +65,65 @@ const JoinUsForm = () => {
         Customer: []
       };
 
-      console.log("🟡 构造的新 Partner 数据:", newPartner);
-
+      // 3. 查找是否已存在该partnerName的entry
       const query = new URLSearchParams({
         'filters[partnerName][$eq]': partnerName,
         'populate': 'Partner'
       }).toString();
       const url = `${API_URL}?${query}`;
 
-      console.log("🔵 正在 GET 查询:", url);
       const res = await axios.get(url, {
         headers: { Authorization: `Bearer ${API_TOKEN}` }
       });
 
-      console.log("🟢 查询结果:", res.data);
       const existing = res.data?.data?.[0];
 
-      if (existing) {
-        const id = existing.id;
-        const currentPartners = existing.attributes.Partner || [];
-        const updatedPartners = [...currentPartners, newPartner];
+      if (existing && (existing.documentId || existing.id)) {
+        // 取 documentId 或 id
+        const docId = existing.documentId || existing.id;
+        // v5下components数据在 attributes 里
+        let currentPartners = [];
+        if (existing.Partner && Array.isArray(existing.Partner)) {
+          currentPartners = existing.Partner;
+        } else if (
+          existing.attributes &&
+          Array.isArray(existing.attributes.Partner)
+        ) {
+          currentPartners = existing.attributes.Partner;
+        }
 
-        console.log("🛠️ 正在更新 ID:", id);
-        await axios.put(`${API_URL}/${id}`, {
+        // ⭐ 关键点：去除 id 字段
+        const cleanPartnerList = (list) =>
+          list.map(({ id, ...rest }) => ({ ...rest }));
+        const updatedPartners = cleanPartnerList([
+          ...currentPartners,
+          newPartner
+        ]);
+
+        const putBody = {
           data: {
             Partner: updatedPartners
           }
-        }, {
+        };
+
+        // DEBUG输出
+        console.log("PUT URL:", `${API_URL}/${docId}`);
+        console.log("PUT BODY:", putBody);
+
+        await axios.put(`${API_URL}/${docId}`, putBody, {
           headers: { Authorization: `Bearer ${API_TOKEN}` }
         });
-
-        console.log("✅ 更新成功");
       } else {
+        // 没有则新建
         const payload = {
           data: {
             partnerName,
             Partner: [newPartner]
           }
         };
-
-        console.log("🆕 正在创建新 entry:", payload);
         await axios.post(API_URL, payload, {
           headers: { Authorization: `Bearer ${API_TOKEN}` }
         });
-
-        console.log("✅ 创建成功");
       }
 
       setSuccess(true);
@@ -115,8 +131,12 @@ const JoinUsForm = () => {
       setCompanyLogo(null);
       setAsicCertificateFile(null);
     } catch (err) {
-      console.error("❌ 提交失败:", err);
-      setError("提交失败，请稍后重试。");
+      // 更详细的错误日志
+      console.error("❌ 提交失败:", err?.response?.data || err?.toJSON?.() || err);
+      setError(
+        err?.response?.data?.error?.message ||
+        JSON.stringify(err?.response?.data || err?.toJSON?.() || err)
+      );
     } finally {
       setLoading(false);
     }
