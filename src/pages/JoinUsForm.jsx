@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Form, Button, Alert, Spinner, Container, Row, Col } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Form, Button, Alert, Spinner, Container } from "react-bootstrap";
 import axios from "axios";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
-const API_URL = `${STRAPI_HOST}/api/product-screen-join-applications`;
+const API_URL = `${STRAPI_HOST}/api/partner-application-submissions`;
 const UPLOAD_URL = `${STRAPI_HOST}/api/upload`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
 
@@ -13,8 +14,7 @@ const initialFormData = {
   Phone: "",
   Email: "",
   Notes: "",
-  companyUrlLink: "",
-  abnNumber: "",
+  abnNumber: ""
 };
 
 const JoinUsForm = () => {
@@ -26,29 +26,16 @@ const JoinUsForm = () => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const fileInputRef = useRef();
-  const asicFileInputRef = useRef();
+  const productHomepage = location.state?.productName || "";
 
-  const [sourceProductName, setSourceProductName] = useState(null);
-  const [sourceProductUrl, setSourceProductUrl] = useState(null);
-
-  useEffect(() => {
-    if (location.state?.productName) setSourceProductName(location.state.productName);
-    if (location.state?.productUrl) setSourceProductUrl(location.state.productUrl);
-  }, [location.state]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const uploadFileToStrapi = async (file) => {
+  const handleUpload = async (file) => {
+    if (!file) return null;
     const data = new FormData();
     data.append("files", file);
     const res = await axios.post(UPLOAD_URL, data, {
-      headers: { Authorization: `Bearer ${API_TOKEN}` },
+      headers: { Authorization: `Bearer ${API_TOKEN}` }
     });
-    return res.data[0]?.id || null;
+    return res.data[0]?.id;
   };
 
   const handleSubmit = async (e) => {
@@ -58,175 +45,158 @@ const JoinUsForm = () => {
     setLoading(true);
 
     try {
-      let companyLogoId = null;
-      let asicCertificateId = null;
+      const logoId = await handleUpload(companyLogo);
+      const certId = await handleUpload(asicCertificateFile);
+      const partnerID = uuidv4();
 
-      if (companyLogo) {
-        companyLogoId = await uploadFileToStrapi(companyLogo);
-        if (!companyLogoId) throw new Error("公司 Logo 上传失败");
-      }
-
-      if (asicCertificateFile) {
-        asicCertificateId = await uploadFileToStrapi(asicCertificateFile);
-        if (!asicCertificateId) throw new Error("ASIC 文件上传失败");
-      }
-
-      const finalData = {
-        ...formData,
-        companyLogo: companyLogoId,
-        asicCertificate: asicCertificateId,
-        sourceProductName,
-        sourceProductUrl,
+      const newPartner = {
+        companyName: formData.companyName,
+        partnerID,
+        Phone: formData.Phone,
+        Email: formData.Email,
+        Notes: formData.Notes,
+        abnNumber: formData.abnNumber,
+        companyLogo: logoId,
+        asicCertificate: certId,
         approved: false,
+        Customer: []
       };
 
-      const response = await axios.post(API_URL, { data: finalData }, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${API_TOKEN}`,
-        },
-      });
+      console.log("📦 查询 productHomepage =", productHomepage);
 
-      console.log("✅ 成功:", response.data);
+      let existing = null;
+      try {
+        const query = new URLSearchParams({
+          'filters[productHomepage][$eq]': productHomepage,
+          'fields[0]': 'productHomepage',
+          'fields[1]': 'id'
+        }).toString();
+
+        const res = await axios.get(`${API_URL}?${query}`, {
+          headers: { Authorization: `Bearer ${API_TOKEN}` }
+        });
+        existing = res.data?.data?.[0];
+      } catch (queryErr) {
+        console.warn("⚠ fallback 查询失败，准备直接创建 entry：", queryErr.message);
+      }
+
+      if (existing) {
+        const id = existing.id;
+        let currentPartners = [];
+
+        try {
+          const detail = await axios.get(`${API_URL}/${id}?populate=Partner`, {
+            headers: { Authorization: `Bearer ${API_TOKEN}` }
+          });
+          currentPartners = detail.data?.data?.attributes?.Partner || [];
+        } catch (loadErr) {
+          console.warn("⚠ 加载原有 Partner 失败，准备覆盖：", loadErr.message);
+        }
+
+        const updatedPartners = [...currentPartners, newPartner];
+
+        await axios.put(`${API_URL}/${id}`, {
+          data: {
+            Partner: updatedPartners
+          }
+        }, {
+          headers: { Authorization: `Bearer ${API_TOKEN}` }
+        });
+      } else {
+        console.warn("📌 创建新 entry，因为无匹配项或查询失败");
+        const payload = {
+          data: {
+            productHomepage,
+            Partner: [newPartner]
+          }
+        };
+
+        await axios.post(API_URL, payload, {
+          headers: { Authorization: `Bearer ${API_TOKEN}` }
+        });
+      }
+
       setSuccess(true);
       setFormData(initialFormData);
       setCompanyLogo(null);
       setAsicCertificateFile(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      if (asicFileInputRef.current) asicFileInputRef.current.value = "";
-
     } catch (err) {
-      console.error("❌ 提交失败", err);
-      if (err.response) {
-        console.error("🔍 Strapi 返回的错误：", err.response.data);
-        console.error("完整错误信息", JSON.stringify(err.response.data, null, 2));
-      }
-      setError("提交失败，请稍后再试。");
+      console.error("提交失败", err);
+      setError("提交失败，请稍后重试。");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Container className="py-5">
-      <Row className="justify-content-center">
-        <Col xs={12} md={8} lg={6}>
-          <h2 className="mb-4">加入我们</h2>
+    <Container>
+      <h2 className="my-4">加入我们</h2>
+      {error && <Alert variant="danger">{error}</Alert>}
+      {success && <Alert variant="success">提交成功！</Alert>}
 
-          {error && <Alert variant="danger">{error}</Alert>}
-          {success && <Alert variant="success">提交成功！我们会尽快与您联系。</Alert>}
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3">
+          <Form.Label>公司名称</Form.Label>
+          <Form.Control
+            type="text"
+            value={formData.companyName}
+            onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+            required
+          />
+        </Form.Group>
 
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>公司名称</Form.Label>
-              <Form.Control
-                type="text"
-                name="companyName"
-                value={formData.companyName}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>电话</Form.Label>
+          <Form.Control
+            type="text"
+            value={formData.Phone}
+            onChange={(e) => setFormData({ ...formData, Phone: e.target.value })}
+          />
+        </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>电话</Form.Label>
-              <Form.Control
-                type="text"
-                name="Phone"
-                value={formData.Phone}
-                onChange={handleChange}
-              />
-            </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>邮箱</Form.Label>
+          <Form.Control
+            type="email"
+            value={formData.Email}
+            onChange={(e) => setFormData({ ...formData, Email: e.target.value })}
+            required
+          />
+        </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>邮箱</Form.Label>
-              <Form.Control
-                type="email"
-                name="Email"
-                value={formData.Email}
-                onChange={handleChange}
-              />
-            </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>备注</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            value={formData.Notes}
+            onChange={(e) => setFormData({ ...formData, Notes: e.target.value })}
+          />
+        </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>ABN 号码</Form.Label>
-              <Form.Control
-                type="text"
-                name="abnNumber"
-                value={formData.abnNumber}
-                onChange={handleChange}
-              />
-            </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>ABN 编号</Form.Label>
+          <Form.Control
+            type="text"
+            value={formData.abnNumber}
+            onChange={(e) => setFormData({ ...formData, abnNumber: e.target.value })}
+          />
+        </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>备注（公司地址、营业执照等）</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="Notes"
-                value={formData.Notes}
-                onChange={handleChange}
-              />
-            </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>公司 Logo</Form.Label>
+          <Form.Control type="file" onChange={(e) => setCompanyLogo(e.target.files[0])} />
+        </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>公司网站地址</Form.Label>
-              <Form.Control
-                type="text"
-                name="companyUrlLink"
-                value={formData.companyUrlLink}
-                onChange={handleChange}
-              />
-            </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>ASIC 证书</Form.Label>
+          <Form.Control type="file" onChange={(e) => setAsicCertificateFile(e.target.files[0])} />
+        </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>上传公司 Logo</Form.Label>
-              <div className="d-flex align-items-center">
-                <Button
-                  variant="secondary"
-                  onClick={() => fileInputRef.current && fileInputRef.current.click()}
-                  className="me-3"
-                >
-                  选择文件
-                </Button>
-                <span>{companyLogo ? companyLogo.name : "未选择文件"}</span>
-              </div>
-              <Form.Control
-                type="file"
-                accept="image/*"
-                ref={fileInputRef}
-                onChange={(e) => setCompanyLogo(e.target.files[0])}
-                style={{ display: "none" }}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>ASIC 公司注册证书（PDF 或图片）</Form.Label>
-              <div className="d-flex align-items-center">
-                <Button
-                  variant="secondary"
-                  onClick={() => asicFileInputRef.current && asicFileInputRef.current.click()}
-                  className="me-3"
-                >
-                  选择文件
-                </Button>
-                <span>{asicCertificateFile ? asicCertificateFile.name : "未选择文件"}</span>
-              </div>
-              <Form.Control
-                type="file"
-                accept=".pdf,image/*"
-                ref={asicFileInputRef}
-                onChange={(e) => setAsicCertificateFile(e.target.files[0])}
-                style={{ display: "none" }}
-              />
-            </Form.Group>
-
-            <Button type="submit" variant="primary" disabled={loading}>
-              {loading ? <Spinner animation="border" size="sm" /> : "提交申请"}
-            </Button>
-          </Form>
-        </Col>
-      </Row>
+        <Button type="submit" disabled={loading}>
+          {loading ? <Spinner animation="border" size="sm" /> : "提交"}
+        </Button>
+      </Form>
     </Container>
   );
 };
