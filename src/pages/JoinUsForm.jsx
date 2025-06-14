@@ -19,6 +19,9 @@ const initialFormData = {
 
 const JoinUsForm = () => {
   const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const partnerName = params.get("partnerName") || "";
+
   const [formData, setFormData] = useState(initialFormData);
   const [companyLogo, setCompanyLogo] = useState(null);
   const [asicCertificateFile, setAsicCertificateFile] = useState(null);
@@ -26,9 +29,7 @@ const JoinUsForm = () => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const partnerName = location.state?.productName || "";
-
-  // 上传文件，返回文件ID
+  // 上传文件
   const handleUpload = async (file) => {
     if (!file) return null;
     const data = new FormData();
@@ -44,6 +45,12 @@ const JoinUsForm = () => {
     setError("");
     setSuccess(false);
     setLoading(true);
+
+    if (!partnerName) {
+      setError("partnerName 不能为空，请通过产品详情页正确跳转！");
+      setLoading(false);
+      return;
+    }
 
     try {
       // 1. 文件上传
@@ -65,7 +72,7 @@ const JoinUsForm = () => {
         Customer: []
       };
 
-      // 3. 查找是否已存在该partnerName的entry
+      // 3. 查找是否已存在该 partnerName 的 entry
       const query = new URLSearchParams({
         'filters[partnerName][$eq]': partnerName,
         'populate': 'Partner'
@@ -81,7 +88,6 @@ const JoinUsForm = () => {
       if (existing && (existing.documentId || existing.id)) {
         // 取 documentId 或 id
         const docId = existing.documentId || existing.id;
-        // v5下components数据在 attributes 里
         let currentPartners = [];
         if (existing.Partner && Array.isArray(existing.Partner)) {
           currentPartners = existing.Partner;
@@ -92,7 +98,7 @@ const JoinUsForm = () => {
           currentPartners = existing.attributes.Partner;
         }
 
-        // ⭐ 关键点：去除 id 字段
+        // 去除 id 字段，防止 Strapi 校验报错
         const cleanPartnerList = (list) =>
           list.map(({ id, ...rest }) => ({ ...rest }));
         const updatedPartners = cleanPartnerList([
@@ -100,15 +106,13 @@ const JoinUsForm = () => {
           newPartner
         ]);
 
+        // PUT时带上partnerName
         const putBody = {
           data: {
+            partnerName,
             Partner: updatedPartners
           }
         };
-
-        // DEBUG输出
-        console.log("PUT URL:", `${API_URL}/${docId}`);
-        console.log("PUT BODY:", putBody);
 
         await axios.put(`${API_URL}/${docId}`, putBody, {
           headers: { Authorization: `Bearer ${API_TOKEN}` }
@@ -117,10 +121,11 @@ const JoinUsForm = () => {
         // 没有则新建
         const payload = {
           data: {
-            partnerName,
+            partnerName, // 只写 partnerName
             Partner: [newPartner]
           }
         };
+
         await axios.post(API_URL, payload, {
           headers: { Authorization: `Bearer ${API_TOKEN}` }
         });
@@ -131,8 +136,6 @@ const JoinUsForm = () => {
       setCompanyLogo(null);
       setAsicCertificateFile(null);
     } catch (err) {
-      // 更详细的错误日志
-      console.error("❌ 提交失败:", err?.response?.data || err?.toJSON?.() || err);
       setError(
         err?.response?.data?.error?.message ||
         JSON.stringify(err?.response?.data || err?.toJSON?.() || err)

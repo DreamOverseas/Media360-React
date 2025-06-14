@@ -839,24 +839,6 @@ useEffect(() => {
                   detail={Detail}
                   defaultOpen={false}
                 />
-
-                {/* <Row className="mt-3">
-                  <Col>
-                    <PartnerList />
-                  </Col>
-                </Row>
-
-                <Link
-                  to="/join-us-form"
-                  state={{
-                    productName: Name,
-                    productUrl: window.location.href,
-                    productId: product.id, // 如果你需要 ID
-                  }}
-                >
-                  <JoinUsButton />
-                </Link> */}
-
               </Container>
             </Col>
           </Row>
@@ -870,15 +852,8 @@ useEffect(() => {
                   </Col>
           </Row>
 
-          <Link
-                  to="/join-us-form"
-                  state={{
-                    productName: Name,
-                    productUrl: window.location.href,
-                    productId: product.id, // 如果你需要 ID
-                  }}
-                >
-                  <JoinUsButton />
+          <Link to={`/join-us-form?partnerName=${encodeURIComponent(Name)}`}>
+            <JoinUsButton />
           </Link>
 
           {slides !== "N/A" ? (
