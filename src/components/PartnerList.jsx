@@ -4,6 +4,17 @@ import { Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../css/PartnerList.css";
 
+// 通用兼容 Strapi 媒体字段（对象/数组/null）
+function getMediaUrl(media) {
+  if (!media) return null;
+  if (Array.isArray(media)) {
+    if (media[0] && media[0].url) return import.meta.env.VITE_STRAPI_HOST + media[0].url;
+    return null;
+  }
+  if (media.url) return import.meta.env.VITE_STRAPI_HOST + media.url;
+  return null;
+}
+
 const PartnerList = ({ currentProductName }) => {
   const [partners, setPartners] = useState([]);
   const [showAll, setShowAll] = useState(false);
@@ -11,25 +22,26 @@ const PartnerList = ({ currentProductName }) => {
   useEffect(() => {
     const fetchPartners = async () => {
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submission1s?filters[partnerName][$eq]=${encodeURIComponent(
-            currentProductName
-          )}&populate=*`,
-          {
-            headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD}`,
-            },
-          }
-        );
-        // Debug 输出返回结构
-        // console.log("[DEBUG] PartnerList 获取返回：", res.data);
+        const url =
+          `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submission1s` +
+          `?filters[partnerName][$eq]=${encodeURIComponent(currentProductName)}` +
+          `&populate[Partner][populate][companyLogo]=true` +
+          `&populate[Partner][populate][asicCertificate]=true`;
 
+        const res = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD}`,
+          },
+        });
+
+        // 提取 Partner 数组
         const partnerEntry = res.data.data && res.data.data[0];
-        let partnerList = partnerEntry && Array.isArray(partnerEntry.Partner)
-          ? partnerEntry.Partner
-          : [];
+        let partnerList =
+          partnerEntry && Array.isArray(partnerEntry.Partner)
+            ? partnerEntry.Partner
+            : [];
 
-        // ⭐️ 按 Order 升序排序（无 Order 的排在最后）
+        // 按 Order 升序排序（无 Order 的排最后）
         partnerList = [...partnerList].sort((a, b) => {
           const orderA = typeof a.Order === "number" ? a.Order : 9999;
           const orderB = typeof b.Order === "number" ? b.Order : 9999;
@@ -60,50 +72,82 @@ const PartnerList = ({ currentProductName }) => {
           <>
             <div className="partner-list-container">
               {visiblePartners.map((item, idx) => {
-                const logoUrl =
-                  item?.companyLogo?.url
-                    ? import.meta.env.VITE_STRAPI_HOST + item.companyLogo.url
-                    : null;
-
-                const asicUrl =
-                  item?.asicCertificate?.url
-                    ? import.meta.env.VITE_STRAPI_HOST + item.asicCertificate.url
-                    : null;
+                const logoUrl = getMediaUrl(item.companyLogo);
+                const asicUrl = getMediaUrl(item.asicCertificate);
 
                 return (
                   <div key={item.id || idx} className="partner-card">
-                    {logoUrl && (
-                      <div className="partner-logo-wrapper">
+                    {/* 左上角 Logo */}
+                    <div className="partner-logo-wrapper">
+                      {logoUrl ? (
                         <img
                           src={logoUrl}
                           alt="公司Logo"
                           className="partner-logo"
                         />
-                      </div>
-                    )}
+                      ) : (
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            border: "2px dashed #fcc",
+                            borderRadius: "8px",
+                            background: "#fdeeee",
+                            color: "#e66666",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "16px",
+                          }}
+                        >
+                          无LOGO
+                        </div>
+                      )}
+                    </div>
 
                     <div className="partner-info-split">
                       <div className="partner-info-left">
-                        <p><strong>公司名称:</strong> {item.companyName || "N/A"}</p>
-                        <p><strong>电话:</strong> {item.Phone || "N/A"}</p>
-                        <p><strong>邮箱:</strong> {item.Email || "N/A"}</p>
-                        <p><strong>公司官网:</strong>{" "}
-                          <a href={item.companyUrlLink} target="_blank" rel="noopener noreferrer">
+                        <p>
+                          <strong>公司名称:</strong> {item.companyName || "N/A"}
+                        </p>
+                        <p>
+                          <strong>电话:</strong> {item.Phone || "N/A"}
+                        </p>
+                        <p>
+                          <strong>邮箱:</strong> {item.Email || "N/A"}
+                        </p>
+                        <p>
+                          <strong>公司官网:</strong>{" "}
+                          <a
+                            href={item.companyUrlLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
                             {item.companyUrlLink}
                           </a>
                         </p>
-                        <p><strong>ABN:</strong> {item.abnNumber || "N/A"}</p>
+                        <p>
+                          <strong>ABN:</strong> {item.abnNumber || "N/A"}
+                        </p>
                         {asicUrl && (
-                          <p><strong>ASIC 证书:</strong>{" "}
-                            <a href={asicUrl} target="_blank" rel="noopener noreferrer">查看证书</a>
+                          <p>
+                            <strong>ASIC 证书:</strong>{" "}
+                            <a
+                              href={asicUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              查看证书
+                            </a>
                           </p>
                         )}
-                        {/* ⭐️ 可以加一行显示排序字段 Order */}
                         {/* <p><strong>排序号:</strong> {item.Order ?? "N/A"}</p> */}
                       </div>
 
                       <div className="partner-info-right">
-                        <p><strong>备注:</strong> {item.Notes || "N/A"}</p>
+                        <p>
+                          <strong>备注:</strong> {item.Notes || "N/A"}
+                        </p>
                       </div>
                     </div>
 
@@ -115,7 +159,9 @@ const PartnerList = ({ currentProductName }) => {
                           companyName: item.companyName,
                         }}
                       >
-                        <Button variant="outline-primary" size="sm">立即加入</Button>
+                        <Button variant="outline-primary" size="sm">
+                          立即加入
+                        </Button>
                       </Link>
                     </div>
                   </div>
@@ -124,7 +170,13 @@ const PartnerList = ({ currentProductName }) => {
             </div>
 
             {partners.length > 2 && (
-              <div style={{ textAlign: "center", marginTop: "12px", marginBottom: "40px" }}>
+              <div
+                style={{
+                  textAlign: "center",
+                  marginTop: "12px",
+                  marginBottom: "40px",
+                }}
+              >
                 <Button
                   variant="outline-secondary"
                   size="sm"
