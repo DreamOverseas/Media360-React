@@ -5,58 +5,66 @@ import { Link } from "react-router-dom";
 import "../css/PartnerList.css";
 
 const PartnerList = ({ currentProductName }) => {
-  const [applications, setApplications] = useState([]);
+  const [partners, setPartners] = useState([]);
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
-    const fetchApplications = async () => {
+    const fetchPartners = async () => {
       try {
+        // 动态 partnerName 过滤
         const res = await axios.get(
-          `${import.meta.env.VITE_STRAPI_HOST}/api/product-screen-join-applications?sort=createdAt:desc&populate=*`,
+          `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submission1s?filters[partnerName][$eq]=${encodeURIComponent(
+            currentProductName
+          )}&populate=*`,
           {
             headers: {
               Authorization: `Bearer ${import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD}`,
             },
           }
         );
+        // Debug 输出返回结构
+        console.log("[DEBUG] PartnerList 获取返回：", res.data);
 
-        const filtered = (res.data.data || []).filter((item) => {
-          const matchProduct =
-            item?.sourceProductName?.trim().toLowerCase() ===
-            currentProductName?.trim().toLowerCase();
-          const approved = item?.approved === true;
-          return matchProduct && approved;
-        });
+        // 提取 Partner 数组（先判断有无数据）
+        const partnerEntry = res.data.data && res.data.data[0];
+        const partnerList = partnerEntry && Array.isArray(partnerEntry.Partner)
+          ? partnerEntry.Partner
+          : [];
 
-        setApplications(filtered);
+        setPartners(partnerList);
       } catch (err) {
-        console.error("❌ 拉取申请信息失败", err);
-        setApplications([]);
+        console.error("❌ 拉取合作伙伴失败", err);
+        setPartners([]);
       }
     };
 
-    fetchApplications();
+    if (currentProductName) {
+      fetchPartners();
+    }
   }, [currentProductName]);
 
-  const visibleApplications = showAll ? applications : applications.slice(0, 2);
+  const visiblePartners = showAll ? partners : partners.slice(0, 2);
 
   return (
     <Row className="mt-4">
       <Col>
         <h5>合作伙伴</h5>
-        {applications.length === 0 ? (
+        {partners.length === 0 ? (
           <p>暂无</p>
         ) : (
           <>
             <div className="partner-list-container">
-              {visibleApplications.map((item, idx) => {
-                const logoUrl = item?.companyLogo?.url
-                  ? import.meta.env.VITE_STRAPI_HOST + item.companyLogo.url
-                  : null;
+              {visiblePartners.map((item, idx) => {
+                // companyLogo/asicCertificate 可能为 null
+                const logoUrl =
+                  item?.companyLogo?.url
+                    ? import.meta.env.VITE_STRAPI_HOST + item.companyLogo.url
+                    : null;
 
-                const asicUrl = item?.asicCertificate?.url
-                  ? import.meta.env.VITE_STRAPI_HOST + item.asicCertificate.url
-                  : null;
+                const asicUrl =
+                  item?.asicCertificate?.url
+                    ? import.meta.env.VITE_STRAPI_HOST + item.asicCertificate.url
+                    : null;
 
                 return (
                   <div key={item.id || idx} className="partner-card">
@@ -109,7 +117,7 @@ const PartnerList = ({ currentProductName }) => {
               })}
             </div>
 
-            {applications.length > 2 && (
+            {partners.length > 2 && (
               <div style={{ textAlign: "center", marginTop: "12px", marginBottom: "40px" }}>
                 <Button
                   variant="outline-secondary"
