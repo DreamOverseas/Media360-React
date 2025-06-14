@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Alert, Spinner, Container } from "react-bootstrap";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
@@ -29,6 +29,33 @@ const JoinUsForm = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // 新增自动分配 Order 的状态
+  const [nextOrder, setNextOrder] = useState(1);
+
+  // 自动获取当前产品的下一个 Order
+  useEffect(() => {
+    if (!partnerName) return setNextOrder(1);
+    const query = new URLSearchParams({
+      'filters[partnerName][$eq]': partnerName,
+      'populate': 'Partner'
+    }).toString();
+    axios
+      .get(`${API_URL}?${query}`, {
+        headers: { Authorization: `Bearer ${API_TOKEN}` }
+      })
+      .then((res) => {
+        const existing = res.data?.data?.[0];
+        if (existing && Array.isArray(existing.Partner)) {
+          setNextOrder(existing.Partner.length + 1);
+        } else if (existing && Array.isArray(existing.attributes?.Partner)) {
+          setNextOrder(existing.attributes.Partner.length + 1);
+        } else {
+          setNextOrder(1);
+        }
+      })
+      .catch(() => setNextOrder(1));
+  }, [partnerName]);
 
   const handleUpload = async (file) => {
     if (!file) return null;
@@ -64,10 +91,11 @@ const JoinUsForm = () => {
         Email: formData.Email,
         Notes: formData.Notes,
         abnNumber: formData.abnNumber,
-        companyUrlLink: formData.companyUrlLink, // 新增
+        companyUrlLink: formData.companyUrlLink,
         companyLogo: logoId,
         asicCertificate: certId,
         approved: false,
+        Order: nextOrder, // 自动生成
         Customer: []
       };
 
@@ -125,6 +153,7 @@ const JoinUsForm = () => {
       setFormData(initialFormData);
       setCompanyLogo(null);
       setAsicCertificateFile(null);
+      setNextOrder((n) => n + 1); // 提交后自动递增
     } catch (err) {
       setError(
         err?.response?.data?.error?.message ||
@@ -185,14 +214,12 @@ const JoinUsForm = () => {
             onChange={(e) => setFormData({ ...formData, abnNumber: e.target.value })}
           />
         </Form.Group>
-        {/* 新增字段 */}
         <Form.Group className="mb-3">
           <Form.Label>公司网站地址</Form.Label>
           <Form.Control
             type="text"
             value={formData.companyUrlLink}
             onChange={e => setFormData({ ...formData, companyUrlLink: e.target.value })}
-            
           />
         </Form.Group>
         <Form.Group className="mb-3">
