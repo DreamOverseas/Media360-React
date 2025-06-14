@@ -11,7 +11,6 @@ const PartnerList = ({ currentProductName }) => {
   useEffect(() => {
     const fetchPartners = async () => {
       try {
-        // 动态 partnerName 过滤
         const res = await axios.get(
           `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submission1s?filters[partnerName][$eq]=${encodeURIComponent(
             currentProductName
@@ -23,13 +22,19 @@ const PartnerList = ({ currentProductName }) => {
           }
         );
         // Debug 输出返回结构
-        console.log("[DEBUG] PartnerList 获取返回：", res.data);
+        // console.log("[DEBUG] PartnerList 获取返回：", res.data);
 
-        // 提取 Partner 数组（先判断有无数据）
         const partnerEntry = res.data.data && res.data.data[0];
-        const partnerList = partnerEntry && Array.isArray(partnerEntry.Partner)
+        let partnerList = partnerEntry && Array.isArray(partnerEntry.Partner)
           ? partnerEntry.Partner
           : [];
+
+        // ⭐️ 按 Order 升序排序（无 Order 的排在最后）
+        partnerList = [...partnerList].sort((a, b) => {
+          const orderA = typeof a.Order === "number" ? a.Order : 9999;
+          const orderB = typeof b.Order === "number" ? b.Order : 9999;
+          return orderA - orderB;
+        });
 
         setPartners(partnerList);
       } catch (err) {
@@ -55,7 +60,6 @@ const PartnerList = ({ currentProductName }) => {
           <>
             <div className="partner-list-container">
               {visiblePartners.map((item, idx) => {
-                // companyLogo/asicCertificate 可能为 null
                 const logoUrl =
                   item?.companyLogo?.url
                     ? import.meta.env.VITE_STRAPI_HOST + item.companyLogo.url
@@ -94,6 +98,8 @@ const PartnerList = ({ currentProductName }) => {
                             <a href={asicUrl} target="_blank" rel="noopener noreferrer">查看证书</a>
                           </p>
                         )}
+                        {/* ⭐️ 可以加一行显示排序字段 Order */}
+                        {/* <p><strong>排序号:</strong> {item.Order ?? "N/A"}</p> */}
                       </div>
 
                       <div className="partner-info-right">
