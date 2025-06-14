@@ -4,14 +4,17 @@ import { Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../css/PartnerList.css";
 
-// 通用兼容 Strapi 媒体字段（对象/数组/null）
+// 更健壮的媒体处理函数
 function getMediaUrl(media) {
   if (!media) return null;
   if (Array.isArray(media)) {
-    if (media[0] && media[0].url) return import.meta.env.VITE_STRAPI_HOST + media[0].url;
+    if (media[0]) return getMediaUrl(media[0]);
     return null;
   }
   if (media.url) return import.meta.env.VITE_STRAPI_HOST + media.url;
+  if (media.data && media.data.url) return import.meta.env.VITE_STRAPI_HOST + media.data.url;
+  if (media.data && media.data.attributes && media.data.attributes.url)
+    return import.meta.env.VITE_STRAPI_HOST + media.data.attributes.url;
   return null;
 }
 
@@ -34,14 +37,12 @@ const PartnerList = ({ currentProductName }) => {
           },
         });
 
-        // 提取 Partner 数组
         const partnerEntry = res.data.data && res.data.data[0];
         let partnerList =
           partnerEntry && Array.isArray(partnerEntry.Partner)
             ? partnerEntry.Partner
             : [];
 
-        // 按 Order 升序排序（无 Order 的排最后）
         partnerList = [...partnerList].sort((a, b) => {
           const orderA = typeof a.Order === "number" ? a.Order : 9999;
           const orderB = typeof b.Order === "number" ? b.Order : 9999;
@@ -74,6 +75,9 @@ const PartnerList = ({ currentProductName }) => {
               {visiblePartners.map((item, idx) => {
                 const logoUrl = getMediaUrl(item.companyLogo);
                 const asicUrl = getMediaUrl(item.asicCertificate);
+                // 调试输出
+                console.log("[DEBUG] asicCertificate:", item.asicCertificate);
+                console.log("[DEBUG] asicUrl:", asicUrl);
 
                 return (
                   <div key={item.id || idx} className="partner-card">
@@ -141,7 +145,6 @@ const PartnerList = ({ currentProductName }) => {
                             </a>
                           </p>
                         )}
-                        {/* <p><strong>排序号:</strong> {item.Order ?? "N/A"}</p> */}
                       </div>
 
                       <div className="partner-info-right">
