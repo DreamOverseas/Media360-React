@@ -14,7 +14,8 @@ const initialFormData = {
   Phone: "",
   Email: "",
   Notes: "",
-  abnNumber: ""
+  abnNumber: "",
+  companyUrlLink: "" // 新增
 };
 
 const JoinUsForm = () => {
@@ -29,7 +30,6 @@ const JoinUsForm = () => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // 上传文件
   const handleUpload = async (file) => {
     if (!file) return null;
     const data = new FormData();
@@ -53,12 +53,10 @@ const JoinUsForm = () => {
     }
 
     try {
-      // 1. 文件上传
       const logoId = await handleUpload(companyLogo);
       const certId = await handleUpload(asicCertificateFile);
       const partnerID = uuidv4();
 
-      // 2. 构建新的Partner数据
       const newPartner = {
         companyName: formData.companyName,
         partnerID,
@@ -66,13 +64,13 @@ const JoinUsForm = () => {
         Email: formData.Email,
         Notes: formData.Notes,
         abnNumber: formData.abnNumber,
+        companyUrlLink: formData.companyUrlLink, // 新增
         companyLogo: logoId,
         asicCertificate: certId,
         approved: false,
         Customer: []
       };
 
-      // 3. 查找是否已存在该 partnerName 的 entry
       const query = new URLSearchParams({
         'filters[partnerName][$eq]': partnerName,
         'populate': 'Partner'
@@ -86,7 +84,6 @@ const JoinUsForm = () => {
       const existing = res.data?.data?.[0];
 
       if (existing && (existing.documentId || existing.id)) {
-        // 取 documentId 或 id
         const docId = existing.documentId || existing.id;
         let currentPartners = [];
         if (existing.Partner && Array.isArray(existing.Partner)) {
@@ -97,35 +94,28 @@ const JoinUsForm = () => {
         ) {
           currentPartners = existing.attributes.Partner;
         }
-
-        // 去除 id 字段，防止 Strapi 校验报错
         const cleanPartnerList = (list) =>
           list.map(({ id, ...rest }) => ({ ...rest }));
         const updatedPartners = cleanPartnerList([
           ...currentPartners,
           newPartner
         ]);
-
-        // PUT时带上partnerName
         const putBody = {
           data: {
             partnerName,
             Partner: updatedPartners
           }
         };
-
         await axios.put(`${API_URL}/${docId}`, putBody, {
           headers: { Authorization: `Bearer ${API_TOKEN}` }
         });
       } else {
-        // 没有则新建
         const payload = {
           data: {
-            partnerName, // 只写 partnerName
+            partnerName,
             Partner: [newPartner]
           }
         };
-
         await axios.post(API_URL, payload, {
           headers: { Authorization: `Bearer ${API_TOKEN}` }
         });
@@ -161,7 +151,6 @@ const JoinUsForm = () => {
             required
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Label>电话</Form.Label>
           <Form.Control
@@ -170,7 +159,6 @@ const JoinUsForm = () => {
             onChange={(e) => setFormData({ ...formData, Phone: e.target.value })}
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Label>邮箱</Form.Label>
           <Form.Control
@@ -180,7 +168,6 @@ const JoinUsForm = () => {
             required
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Label>备注</Form.Label>
           <Form.Control
@@ -190,7 +177,6 @@ const JoinUsForm = () => {
             onChange={(e) => setFormData({ ...formData, Notes: e.target.value })}
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Label>ABN 编号</Form.Label>
           <Form.Control
@@ -199,17 +185,24 @@ const JoinUsForm = () => {
             onChange={(e) => setFormData({ ...formData, abnNumber: e.target.value })}
           />
         </Form.Group>
-
+        {/* 新增字段 */}
+        <Form.Group className="mb-3">
+          <Form.Label>公司网站地址</Form.Label>
+          <Form.Control
+            type="text"
+            value={formData.companyUrlLink}
+            onChange={e => setFormData({ ...formData, companyUrlLink: e.target.value })}
+            
+          />
+        </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>公司 Logo</Form.Label>
           <Form.Control type="file" onChange={(e) => setCompanyLogo(e.target.files[0])} />
         </Form.Group>
-
         <Form.Group className="mb-3">
-          <Form.Label>ASIC 证书</Form.Label>
+          <Form.Label>ASIC 证书 (大小不能大于10MB)</Form.Label>
           <Form.Control type="file" onChange={(e) => setAsicCertificateFile(e.target.files[0])} />
         </Form.Group>
-
         <Button type="submit" disabled={loading}>
           {loading ? <Spinner animation="border" size="sm" /> : "提交"}
         </Button>
