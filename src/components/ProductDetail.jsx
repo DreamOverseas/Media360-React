@@ -158,22 +158,22 @@ const ProductDetail = () => {
   
         {/* 缩略图列表（最多11项 + 占位符） */}
         <div className="thumbnail-container">
-          {allMedia.slice(0, 7).map((src, idx) => (
+          {allMedia.slice(1, 8).map((src, idx) => (
             <div
               key={idx}
               className={`thumb-container ${idx === currentIndex ? 'active-thumb' : ''}`}
-              onClick={() => handleThumbnailClick(idx)}
+              onClick={() => handleThumbnailClick(idx+1)}
             >
               <Image src={src} alt={`Thumbnail ${idx}`} className="thumb-img" />
-              {isVideoIndex(idx) && <div className="video-icon-overlay">▶</div>}
+              {isVideoIndex(idx)}
             </div>
           ))}
-          {allMedia.length > 7 && (
+          {allMedia.length > 8 && (
             <div
               className="thumb-container placeholder-thumb"
-              onClick={() => handleThumbnailClick(7)}
+              onClick={() => handleThumbnailClick(8)}
             >
-              <div className="thumb-overlay">+{allMedia.length - 7}</div>
+              <div className="thumb-overlay">+{allMedia.length - 8}</div>
             </div>
           )}
         </div>
@@ -434,8 +434,6 @@ useEffect(() => {
       <Accordion
         id={idx}
         defaultActiveKey={defaultOpen ? '0' : undefined}
-        flush
-        className="mb-3"
       >
         <Accordion.Item eventKey="0">
           <Accordion.Header>{header}</Accordion.Header>
@@ -443,7 +441,7 @@ useEffect(() => {
             {detail ? (
               <div className="detail-container">
                 <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                  {Detail}
+                  {detail}
                 </ReactMarkdown>
               </div>
             ) : (
@@ -479,6 +477,7 @@ useEffect(() => {
   const Note = language === "zh" ? product.Note_zh : product.Note_en;
 
   const slides = language === "zh" ? product.slides_zh || "N/A": product.slides_en || "N/A";
+  const spots = language === "zh" ? product.spots_zh || "N/A": product.spots_en || "N/A";
   const shareLink = window.location.href;
   console.log("This is product.ProductImage's parent");
   console.log(product);
@@ -488,7 +487,8 @@ useEffect(() => {
       : `${BACKEND_HOST}${product.ProductImage.url}`)
     : `${BACKEND_HOST}/default-share.jpg`;
   console.log(shareImg)
-  const titleHeading = (product?.brand?.MainProduct_url===name)?"品牌简介":"产品简介"
+  const DetailHeading = (product?.brand?.MainProduct_url===name)?"品牌简介":"产品简介"
+  const SpotsHeading = language === "zh" ? "附近的景点" : "Nearby Spots";
   // console.log(shareLink)
   // console.log(Name)
   // console.log(Description)
@@ -587,7 +587,7 @@ useEffect(() => {
                     </Row>
                   </Row>
 
-                  <Row>
+                  {/* <Row>
                     <button
                       onClick={handleShare}
                       className='social-sharing__link'
@@ -605,7 +605,7 @@ useEffect(() => {
                     </i>
                       <span className='share-title'>分享此产品</span>
                     </button>
-                  </Row>
+                  </Row> */}
 
                 </>
               ) : (
@@ -635,7 +635,7 @@ useEffect(() => {
                   </div>
                 </Row>
 
-                <Row>
+                <Row className="price-row">
                   {Price_Display !== 0 && Price_Display !== null && (
                     <h2>AU$ {Price_Display}</h2>
                   )}
@@ -643,33 +643,35 @@ useEffect(() => {
 
                 {variants ? (
                   subItemCategory?.[language]?.length > 0 ? (
-                    <Tabs defaultActiveKey={subItemCategory[language][0]} id="product-variants-tabs" className="product-category-tabs">
-                      {subItemCategory[language].map((item, index) => (
-                        <Tab eventKey={item} title={item} key={index}>
-                          <div className="mt-3">
-                            <Row>
-                              {variants
-                                .filter(variant => variant.Sub_Item_Category?.[language] === item)
-                                .map((variant, vIndex) => {
-                                  const currentPath = location.pathname;
-                                  const isActive = currentPath === `/products/${variant.url}`;
-                                  return (
-                                    <Col xs={4} key={vIndex}>
-                                      <Link to={`/products/${brand.MainProduct_url}/${variant.url}`}>
-                                        <Button
-                                          className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
-                                        >
-                                          {language === "zh" ? variant.Name_zh : variant.Name_en}
-                                        </Button>
-                                      </Link>
-                                    </Col>
-                                  );
-                                })}
-                            </Row>
-                          </div>
-                        </Tab>
-                      ))}
-                    </Tabs>
+                    <div className="variants-div">
+                      <Tabs defaultActiveKey={subItemCategory[language][0]} id="product-variants-tabs" className="product-category-tabs">
+                        {subItemCategory[language].map((item, index) => (
+                          <Tab eventKey={item} title={item} key={index}>
+                            <div className="mt-3">
+                              <Row>
+                                {variants
+                                  .filter(variant => variant.Sub_Item_Category?.[language] === item)
+                                  .map((variant, vIndex) => {
+                                    const currentPath = location.pathname;
+                                    const isActive = currentPath === `/products/${variant.url}`;
+                                    return (
+                                      <Col xs={4} key={vIndex}>
+                                        <Link to={`/products/${brand.MainProduct_url}/${variant.url}`}>
+                                          <Button
+                                            className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
+                                          >
+                                            {language === "zh" ? variant.Name_zh : variant.Name_en}
+                                          </Button>
+                                        </Link>
+                                      </Col>
+                                    );
+                                  })}
+                              </Row>
+                            </div>
+                          </Tab>
+                        ))}
+                      </Tabs>
+                    </div>
                   ) : (
                     // Fallback: when no subcategories, show all variants as buttons
                     <Row>
@@ -740,6 +742,27 @@ useEffect(() => {
                   <></>
                 ) : (
                   <>
+                    <AccordionItem
+                      idx="detail-accordion"
+                      header={DetailHeading}
+                      detail={Detail}
+                      defaultOpen={false}
+                    />
+
+                    {spots !== "N/A" ?
+                    (
+                      <AccordionItem
+                        idx="spots-accordion"
+                        header={SpotsHeading}
+                        detail={spots}
+                        defaultOpen={false}
+                      />
+                    ):(
+                      <></>
+                    )}
+
+                    
+
                     <Row>
                       <h4>查看相关信息</h4>
                       <Row>
@@ -806,7 +829,7 @@ useEffect(() => {
                       </Row>
                     </Row>
 
-                    <Row>
+                    {/* <Row>
                       <button
                         onClick={handleShare}
                         className='social-sharing__link'
@@ -824,7 +847,7 @@ useEffect(() => {
                       </i>
                         <span className='share-title'>分享此产品</span>
                       </button>
-                    </Row>
+                    </Row> */}
 
                     
                   </>
@@ -833,12 +856,7 @@ useEffect(() => {
                 )}
 
               
-                <AccordionItem
-                  idx="detail-accordion"
-                  header={titleHeading}
-                  detail={Detail}
-                  defaultOpen={false}
-                />
+                
 
                 {/* <Row className="mt-3">
                   <Col>
@@ -860,14 +878,11 @@ useEffect(() => {
               </Container>
             </Col>
           </Row>
-          <br/>
 
-          
-
-          <Row className="mt-3">
-                  <Col>
-                    <PartnerList currentProductName={Name}/>
-                  </Col>
+          <Row>
+            <Col>
+              <PartnerList currentProductName={Name}/>
+            </Col>
           </Row>
 
           <Link
