@@ -165,7 +165,7 @@ const ProductDetail = () => {
               onClick={() => handleThumbnailClick(idx+1)}
             >
               <Image src={src} alt={`Thumbnail ${idx}`} className="thumb-img" />
-              {isVideoIndex(idx) && <div className="video-icon-overlay">▶</div>}
+              {isVideoIndex(idx)}
             </div>
           ))}
           {allMedia.length > 8 && (

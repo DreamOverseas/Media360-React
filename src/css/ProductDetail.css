@@ -236,6 +236,7 @@
   cursor: pointer;
   font-size: 24px;
   padding: 10px;
+  z-index:1;
 }
 
 .prev-button {
