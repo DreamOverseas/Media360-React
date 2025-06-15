@@ -132,6 +132,8 @@ const JoinUsForm = () => {
             Partner: updatedPartners
           }
         };
+        const putUrl = `${API_URL}/${docId}`;   // 新增这一行
+        console.log("JoinUsForm PUT URL:", putUrl); // 新增这一行
         await axios.put(`${API_URL}/${docId}`, putBody, {
           headers: { Authorization: `Bearer ${API_TOKEN}` }
         });
