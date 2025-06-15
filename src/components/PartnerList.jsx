@@ -20,6 +20,7 @@ function getMediaUrl(media) {
 
 const PartnerList = ({ currentProductName }) => {
   const [partners, setPartners] = useState([]);
+  const [documentId, setDocumentId] = useState(""); // 新增
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
@@ -43,6 +44,13 @@ const PartnerList = ({ currentProductName }) => {
             ? partnerEntry.Partner
             : [];
 
+        // 取 documentId
+        if (partnerEntry && partnerEntry.documentId) {
+          setDocumentId(partnerEntry.documentId);
+        } else {
+          setDocumentId("");
+        }
+
         partnerList = [...partnerList].sort((a, b) => {
           const orderA = typeof a.Order === "number" ? a.Order : 9999;
           const orderB = typeof b.Order === "number" ? b.Order : 9999;
@@ -53,6 +61,7 @@ const PartnerList = ({ currentProductName }) => {
       } catch (err) {
         console.error("❌ 拉取合作伙伴失败", err);
         setPartners([]);
+        setDocumentId(""); // 遇到错误也重置
       }
     };
 
@@ -153,7 +162,7 @@ const PartnerList = ({ currentProductName }) => {
 
                     <div className="partner-join-button">
                       <Link
-                        to={`/products/${encodeURIComponent(currentProductName)}/partner-apply?partnerID=${encodeURIComponent(item.partnerID)}`}
+                        to={`/products/${encodeURIComponent(currentProductName)}/partner-apply?partnerID=${encodeURIComponent(item.partnerID)}&documentId=${encodeURIComponent(documentId)}`}
                       >
                         <Button variant="outline-primary" size="sm">
                           立即加入
