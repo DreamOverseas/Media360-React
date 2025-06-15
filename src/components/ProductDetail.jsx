@@ -158,22 +158,22 @@ const ProductDetail = () => {
   
         {/* 缩略图列表（最多11项 + 占位符） */}
         <div className="thumbnail-container">
-          {allMedia.slice(0, 7).map((src, idx) => (
+          {allMedia.slice(1, 8).map((src, idx) => (
             <div
               key={idx}
               className={`thumb-container ${idx === currentIndex ? 'active-thumb' : ''}`}
-              onClick={() => handleThumbnailClick(idx)}
+              onClick={() => handleThumbnailClick(idx+1)}
             >
               <Image src={src} alt={`Thumbnail ${idx}`} className="thumb-img" />
               {isVideoIndex(idx) && <div className="video-icon-overlay">▶</div>}
             </div>
           ))}
-          {allMedia.length > 7 && (
+          {allMedia.length > 8 && (
             <div
               className="thumb-container placeholder-thumb"
-              onClick={() => handleThumbnailClick(7)}
+              onClick={() => handleThumbnailClick(8)}
             >
-              <div className="thumb-overlay">+{allMedia.length - 7}</div>
+              <div className="thumb-overlay">+{allMedia.length - 8}</div>
             </div>
           )}
         </div>
@@ -434,7 +434,6 @@ useEffect(() => {
       <Accordion
         id={idx}
         defaultActiveKey={defaultOpen ? '0' : undefined}
-        flush
       >
         <Accordion.Item eventKey="0">
           <Accordion.Header>{header}</Accordion.Header>
