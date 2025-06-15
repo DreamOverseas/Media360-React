@@ -73,7 +73,7 @@ const PartnerList = ({ currentProductName }) => {
   const visiblePartners = showAll ? partners : partners.slice(0, 2);
 
   return (
-    <Row className="mt-4">
+    <Row>
       <Col>
         <h5>合作伙伴</h5>
         {partners.length === 0 ? (
