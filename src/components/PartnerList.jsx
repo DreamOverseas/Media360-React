@@ -27,7 +27,7 @@ const PartnerList = ({ currentProductName }) => {
       try {
         const url =
           `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submission1s` +
-          `?filters[partnerName][$eq]=${encodeURIComponent(currentProductName)}` +
+          `?filters[productName][$eq]=${encodeURIComponent(currentProductName)}` +
           `&populate[Partner][populate][companyLogo]=true` +
           `&populate[Partner][populate][asicCertificate]=true`;
 
@@ -75,9 +75,6 @@ const PartnerList = ({ currentProductName }) => {
               {visiblePartners.map((item, idx) => {
                 const logoUrl = getMediaUrl(item.companyLogo);
                 const asicUrl = getMediaUrl(item.asicCertificate);
-                // 调试输出
-                console.log("[DEBUG] asicCertificate:", item.asicCertificate);
-                console.log("[DEBUG] asicUrl:", asicUrl);
 
                 return (
                   <div key={item.id || idx} className="partner-card">
@@ -156,11 +153,7 @@ const PartnerList = ({ currentProductName }) => {
 
                     <div className="partner-join-button">
                       <Link
-                        to="/partner-apply"
-                        state={{
-                          productName: currentProductName,
-                          companyName: item.companyName,
-                        }}
+                        to={`/products/${encodeURIComponent(currentProductName)}/partner-apply?partnerID=${encodeURIComponent(item.partnerID)}`}
                       >
                         <Button variant="outline-primary" size="sm">
                           立即加入

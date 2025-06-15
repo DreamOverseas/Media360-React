@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Alert, Spinner, Container } from "react-bootstrap";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
@@ -15,13 +15,12 @@ const initialFormData = {
   Email: "",
   Notes: "",
   abnNumber: "",
-  companyUrlLink: "" // 新增
+  companyUrlLink: ""
 };
 
 const JoinUsForm = () => {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const partnerName = params.get("partnerName") || "";
+  // 只用 useParams 获取 productName
+  const { productName } = useParams();
 
   const [formData, setFormData] = useState(initialFormData);
   const [companyLogo, setCompanyLogo] = useState(null);
@@ -29,15 +28,13 @@ const JoinUsForm = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  // 新增自动分配 Order 的状态
   const [nextOrder, setNextOrder] = useState(1);
 
   // 自动获取当前产品的下一个 Order
   useEffect(() => {
-    if (!partnerName) return setNextOrder(1);
+    if (!productName) return setNextOrder(1);
     const query = new URLSearchParams({
-      'filters[partnerName][$eq]': partnerName,
+      'filters[productName][$eq]': productName,
       'populate': 'Partner'
     }).toString();
     axios
@@ -55,7 +52,7 @@ const JoinUsForm = () => {
         }
       })
       .catch(() => setNextOrder(1));
-  }, [partnerName]);
+  }, [productName]);
 
   const handleUpload = async (file) => {
     if (!file) return null;
@@ -73,8 +70,8 @@ const JoinUsForm = () => {
     setSuccess(false);
     setLoading(true);
 
-    if (!partnerName) {
-      setError("partnerName 不能为空，请通过产品详情页正确跳转！");
+    if (!productName) {
+      setError("productName 不能为空，请通过产品详情页正确跳转！");
       setLoading(false);
       return;
     }
@@ -95,12 +92,12 @@ const JoinUsForm = () => {
         companyLogo: logoId,
         asicCertificate: certId,
         approved: false,
-        Order: nextOrder, // 自动生成
+        Order: nextOrder,
         Customer: []
       };
 
       const query = new URLSearchParams({
-        'filters[partnerName][$eq]': partnerName,
+        'filters[productName][$eq]': productName,
         'populate': 'Partner'
       }).toString();
       const url = `${API_URL}?${query}`;
@@ -122,6 +119,7 @@ const JoinUsForm = () => {
         ) {
           currentPartners = existing.attributes.Partner;
         }
+        // 移除 Strapi 内部 id 字段
         const cleanPartnerList = (list) =>
           list.map(({ id, ...rest }) => ({ ...rest }));
         const updatedPartners = cleanPartnerList([
@@ -130,7 +128,7 @@ const JoinUsForm = () => {
         ]);
         const putBody = {
           data: {
-            partnerName,
+            productName,
             Partner: updatedPartners
           }
         };
@@ -140,7 +138,7 @@ const JoinUsForm = () => {
       } else {
         const payload = {
           data: {
-            partnerName,
+            productName,
             Partner: [newPartner]
           }
         };
@@ -153,7 +151,7 @@ const JoinUsForm = () => {
       setFormData(initialFormData);
       setCompanyLogo(null);
       setAsicCertificateFile(null);
-      setNextOrder((n) => n + 1); // 提交后自动递增
+      setNextOrder((n) => n + 1);
     } catch (err) {
       setError(
         err?.response?.data?.error?.message ||

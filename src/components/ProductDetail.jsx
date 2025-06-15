@@ -852,7 +852,7 @@ useEffect(() => {
                   </Col>
           </Row>
 
-          <Link to={`/join-us-form?partnerName=${encodeURIComponent(Name)}`}>
+          <Link to={`/products/${encodeURIComponent(Name)}/join-us-form`}>
             <JoinUsButton />
           </Link>
 
