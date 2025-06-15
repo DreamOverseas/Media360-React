@@ -446,8 +446,9 @@
   background-color: white;
   padding: 5%;
   border-radius: 5%;
-  box-shadow: #000000;
   margin-bottom: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -456,6 +457,10 @@
 @media (max-width: 768px) {
   .amount-price-bar {
     margin-bottom: 5%;
+  }
+
+  .product-details-variant-btn {
+    font-size:9px
   }
 
   .main-image-container {
