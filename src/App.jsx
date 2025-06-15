@@ -172,7 +172,7 @@ function App() {
           <Route path="/join-us-form" element={<JoinUsForm />} />
           <Route path="/partner-apply" element={<PartnerApplicationForm />} />
           <Route path="/products/:productName/partner-apply" element={<PartnerApplicationForm />} />
-          <Route path="/products/:productName/join-us-form" element={<JoinUsForm />} />
+          <Route path="/products/:productName/加入我们" element={<JoinUsForm />} />
           <Route path='/join-us' element={<Recruitment />} />
           <Route path='/networks' element={<Networks />} />
           <Route path='/media-center' element={<MediaCenter />} />
