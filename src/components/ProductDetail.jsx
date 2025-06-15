@@ -636,7 +636,7 @@ useEffect(() => {
                   </div>
                 </Row>
 
-                <Row>
+                <Row className="price-row">
                   {Price_Display !== 0 && Price_Display !== null && (
                     <h2>AU$ {Price_Display}</h2>
                   )}
@@ -644,33 +644,35 @@ useEffect(() => {
 
                 {variants ? (
                   subItemCategory?.[language]?.length > 0 ? (
-                    <Tabs defaultActiveKey={subItemCategory[language][0]} id="product-variants-tabs" className="product-category-tabs">
-                      {subItemCategory[language].map((item, index) => (
-                        <Tab eventKey={item} title={item} key={index}>
-                          <div className="mt-3">
-                            <Row>
-                              {variants
-                                .filter(variant => variant.Sub_Item_Category?.[language] === item)
-                                .map((variant, vIndex) => {
-                                  const currentPath = location.pathname;
-                                  const isActive = currentPath === `/products/${variant.url}`;
-                                  return (
-                                    <Col xs={4} key={vIndex}>
-                                      <Link to={`/products/${brand.MainProduct_url}/${variant.url}`}>
-                                        <Button
-                                          className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
-                                        >
-                                          {language === "zh" ? variant.Name_zh : variant.Name_en}
-                                        </Button>
-                                      </Link>
-                                    </Col>
-                                  );
-                                })}
-                            </Row>
-                          </div>
-                        </Tab>
-                      ))}
-                    </Tabs>
+                    <div className="variants-div">
+                      <Tabs defaultActiveKey={subItemCategory[language][0]} id="product-variants-tabs" className="product-category-tabs">
+                        {subItemCategory[language].map((item, index) => (
+                          <Tab eventKey={item} title={item} key={index}>
+                            <div className="mt-3">
+                              <Row>
+                                {variants
+                                  .filter(variant => variant.Sub_Item_Category?.[language] === item)
+                                  .map((variant, vIndex) => {
+                                    const currentPath = location.pathname;
+                                    const isActive = currentPath === `/products/${variant.url}`;
+                                    return (
+                                      <Col xs={4} key={vIndex}>
+                                        <Link to={`/products/${brand.MainProduct_url}/${variant.url}`}>
+                                          <Button
+                                            className={`product-details-variant-btn ${isActive ? "active-btn" : ""}`}
+                                          >
+                                            {language === "zh" ? variant.Name_zh : variant.Name_en}
+                                          </Button>
+                                        </Link>
+                                      </Col>
+                                    );
+                                  })}
+                              </Row>
+                            </div>
+                          </Tab>
+                        ))}
+                      </Tabs>
+                    </div>
                   ) : (
                     // Fallback: when no subcategories, show all variants as buttons
                     <Row>

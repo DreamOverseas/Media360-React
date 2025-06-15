@@ -381,7 +381,7 @@
   font-size: 14px;
 }
 
-.product-detail h2 {
+.product-detail .price-row h2 {
   margin-top: 15px;
   margin-bottom: 15px;
 }
@@ -442,6 +442,14 @@
   overflow: visible !important;
 }
 
+.variants-div {
+  background-color: white;
+  padding: 5%;
+  border-radius: 5%;
+  box-shadow: #000000;
+  margin-bottom: 10px;
+}
+
 
 
 /* Responsive design for mobile devices */
@@ -467,9 +475,9 @@
     font-size: 14px;
   }
 
-  .product-detail h2 {
-    margin-top: 15px;
-    margin-bottom: 15px;
+  .product-detail .price-row h2 {
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 
   /* Adjusts product detail layout to vertical direction */
