@@ -4,6 +4,13 @@ import { Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../css/PartnerList.css";
 
+// 动态标题映射
+const productTitleMap = {
+  "Studyfin": "留学中介",
+  "roseneath-holidaypark": "旅游中介",
+  "nail-train": "加盟商"
+};
+
 // 更健壮的媒体处理函数
 function getMediaUrl(media) {
   if (!media) return null;
@@ -72,10 +79,13 @@ const PartnerList = ({ currentProductName }) => {
 
   const visiblePartners = showAll ? partners : partners.slice(0, 2);
 
+  // 动态标题
+  const title = productTitleMap[currentProductName] || "合作伙伴";
+
   return (
     <Row>
       <Col>
-        <h5>合作伙伴</h5>
+        <h5>{title}</h5>
         {partners.length === 0 ? (
           <p>暂无</p>
         ) : (
