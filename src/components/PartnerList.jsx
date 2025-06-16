@@ -203,6 +203,13 @@ const PartnerList = ({ currentProductName }) => {
             )}
           </>
         )}
+
+        {/* 下面是你要加的图片+按钮区（保持你的其他逻辑） */}
+        <div style={{ textAlign: "center", margin: "40px 0 12px 0" }}>
+          <img src="/partner-banner.jpg" alt="成为合作伙伴" style={{ display: "block", margin: "24px auto", maxWidth: "320px", width: "100%" }} />
+          {/* 你原本的“成为合作伙伴”按钮可以放在这里，比如 */}
+          {/* <Button variant="outline-dark">成为合作伙伴</Button> */}
+        </div>
       </Col>
     </Row>
   );
