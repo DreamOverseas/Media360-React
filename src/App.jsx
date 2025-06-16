@@ -53,6 +53,7 @@ import ProductRouteGuard from "./components/ProductRouteGuard.jsx";
 import Activity from "./components/Activity.jsx";
 import JoinUsForm from './pages/JoinUsForm';
 import PartnerApplicationForm from "./pages/partner/PartnerApplicationForm.jsx";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -172,8 +173,9 @@ function App() {
           <Route path="/join-us-form" element={<JoinUsForm />} />
           <Route path="/partner-apply" element={<PartnerApplicationForm />} />
           <Route path="/products/:productName/partner-apply" element={<PartnerApplicationForm />} />
-          <Route path="/products/:productName/加入我们" element={<JoinUsForm />} />
+          <Route path="/products/:productName/join-us-form" element={<JoinUsForm />} />
           <Route path='/join-us' element={<Recruitment />} />
+          <Route path="/products/:productName/join-us-form/terms-and-conditions" element={<TermsAndConditions />} />
           <Route path='/networks' element={<Networks />} />
           <Route path='/media-center' element={<MediaCenter />} />
           <Route path='/news' element={<NewsPage />} />

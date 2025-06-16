@@ -27,7 +27,7 @@ function getMediaUrl(media) {
 
 const PartnerList = ({ currentProductName }) => {
   const [partners, setPartners] = useState([]);
-  const [documentId, setDocumentId] = useState(""); // 新增
+  const [documentId, setDocumentId] = useState("");
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
@@ -51,7 +51,6 @@ const PartnerList = ({ currentProductName }) => {
             ? partnerEntry.Partner
             : [];
 
-        // 取 documentId
         if (partnerEntry && partnerEntry.documentId) {
           setDocumentId(partnerEntry.documentId);
         } else {
@@ -82,12 +81,15 @@ const PartnerList = ({ currentProductName }) => {
   // 动态标题
   const title = productTitleMap[currentProductName] || "合作伙伴";
 
+  // 跳转链接，使用中文“加入我们”
+  const joinUsFormLink = `/products/${encodeURIComponent(currentProductName)}/join-us-form`;
+
   return (
     <Row>
       <Col>
         <h5>{title}</h5>
         {partners.length === 0 ? (
-          <p>暂无</p>
+          <p>期待您的加入</p>
         ) : (
           <>
             <div className="partner-list-container">
@@ -204,11 +206,23 @@ const PartnerList = ({ currentProductName }) => {
           </>
         )}
 
-        {/* 下面是你要加的图片+按钮区（保持你的其他逻辑） */}
+        {/* partner-banner 作为跳转按钮，只图片本身可点 */}
         <div style={{ textAlign: "center", margin: "40px 0 12px 0" }}>
-          <img src="/partner-banner.jpg" alt="成为合作伙伴" style={{ display: "block", margin: "24px auto", maxWidth: "320px", width: "100%" }} />
-          {/* 你原本的“成为合作伙伴”按钮可以放在这里，比如 */}
-          {/* <Button variant="outline-dark">成为合作伙伴</Button> */}
+          <Link to={joinUsFormLink}>
+            <img
+              src="/partner-banner.jpg"
+              alt="成为合作伙伴"
+              style={{
+                display: "inline-block",
+                margin: "24px auto",
+                maxWidth: "320px",
+                width: "100%",
+                height: "auto",
+                cursor: "pointer",
+                transition: "opacity 0.2s"
+              }}
+            />
+          </Link>
         </div>
       </Col>
     </Row>

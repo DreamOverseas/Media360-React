@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Alert, Spinner, Container } from "react-bootstrap";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
@@ -15,12 +15,13 @@ const initialFormData = {
   Email: "",
   Notes: "",
   abnNumber: "",
-  companyUrlLink: ""
+  companyUrlLink: "",
+  agreed: false, // 新增同意字段
 };
 
 const JoinUsForm = () => {
-  // 只用 useParams 获取 productName
   const { productName } = useParams();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState(initialFormData);
   const [companyLogo, setCompanyLogo] = useState(null);
@@ -72,6 +73,12 @@ const JoinUsForm = () => {
 
     if (!productName) {
       setError("productName 不能为空，请通过产品详情页正确跳转！");
+      setLoading(false);
+      return;
+    }
+
+    if (!formData.agreed) {
+      setError("请先同意条款与条件后再提交！");
       setLoading(false);
       return;
     }
@@ -132,8 +139,6 @@ const JoinUsForm = () => {
             Partner: updatedPartners
           }
         };
-        const putUrl = `${API_URL}/${docId}`;   // 新增这一行
-        console.log("JoinUsForm PUT URL:", putUrl); // 新增这一行
         await axios.put(`${API_URL}/${docId}`, putBody, {
           headers: { Authorization: `Bearer ${API_TOKEN}` }
         });
@@ -230,7 +235,32 @@ const JoinUsForm = () => {
           <Form.Label>ASIC 证书 (大小不能大于10MB)</Form.Label>
           <Form.Control type="file" onChange={(e) => setAsicCertificateFile(e.target.files[0])} />
         </Form.Group>
-        <Button type="submit" disabled={loading}>
+
+        {/* 条款与条件复选框（必须同意才可提交） */}
+        <Form.Group className="mb-3">
+          <Form.Check
+            type="checkbox"
+            id="agree-terms"
+            label={
+              <>
+                我已阅读并同意
+                <Link
+                  to={`/products/${encodeURIComponent(productName)}/join-us-form/terms-and-conditions`}
+                  style={{ marginLeft: 4 }}
+                >
+                  条款与条件
+                </Link>
+              </>
+            }
+            checked={formData.agreed}
+            onChange={(e) =>
+              setFormData({ ...formData, agreed: e.target.checked })
+            }
+            required
+          />
+        </Form.Group>
+
+        <Button type="submit" disabled={loading || !formData.agreed}>
           {loading ? <Spinner animation="border" size="sm" /> : "提交"}
         </Button>
       </Form>
