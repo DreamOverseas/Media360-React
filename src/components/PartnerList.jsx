@@ -107,24 +107,7 @@ const PartnerList = ({ currentProductName }) => {
                           alt="公司Logo"
                           className="partner-logo"
                         />
-                      ) : (
-                        <div
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            border: "2px dashed #fcc",
-                            borderRadius: "8px",
-                            background: "#fdeeee",
-                            color: "#e66666",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: "16px",
-                          }}
-                        >
-                          无LOGO
-                        </div>
-                      )}
+                      ) : null}
                     </div>
 
                     <div className="partner-info-split">
@@ -206,7 +189,7 @@ const PartnerList = ({ currentProductName }) => {
           </>
         )}
 
-        {/* partner-banner 作为跳转按钮，只图片本身可点 */}
+        {/* partner-banner 作为跳转按钮，只图片本身可点
         <div style={{ textAlign: "center", margin: "40px 0 12px 0" }}>
           <Link to={joinUsFormLink}>
             <img
@@ -223,7 +206,7 @@ const PartnerList = ({ currentProductName }) => {
               }}
             />
           </Link>
-        </div>
+        </div> */}
       </Col>
     </Row>
   );
