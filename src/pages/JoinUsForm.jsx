@@ -11,7 +11,6 @@ const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
 // 邮件服务接口（换成你的真实服务器地址）
 const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_PARTNER_JOINUS_NOTIFICATION;
 
-
 const initialFormData = {
   companyName: "",
   Phone: "",
@@ -161,9 +160,8 @@ const JoinUsForm = () => {
       axios.post(
         MAIL_NOTIFY_API,
         {
-          email: formData.Email,
-          productName: productName,
-          companyName: formData.companyName,
+          ...formData,       // 传递所有表单字段
+          productName,       // 单独补充产品名
         }
       ).catch((err) => {
         // 邮件发送失败不影响主流程，仅做警告
