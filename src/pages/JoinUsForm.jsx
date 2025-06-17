@@ -8,6 +8,9 @@ const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
 const API_URL = `${STRAPI_HOST}/api/partner-application-submission1s`;
 const UPLOAD_URL = `${STRAPI_HOST}/api/upload`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
+// 邮件服务接口（换成你的真实服务器地址）
+const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_PARTNER_JOINUS_NOTIFICATION;
+
 
 const initialFormData = {
   companyName: "",
@@ -16,7 +19,7 @@ const initialFormData = {
   Notes: "",
   abnNumber: "",
   companyUrlLink: "",
-  agreed: false, // 新增同意字段
+  agreed: false, // 同意条款与条件
 };
 
 const JoinUsForm = () => {
@@ -31,7 +34,7 @@ const JoinUsForm = () => {
   const [loading, setLoading] = useState(false);
   const [nextOrder, setNextOrder] = useState(1);
 
-  // 自动获取当前产品的下一个 Order
+  // 获取下一个 Order
   useEffect(() => {
     if (!productName) return setNextOrder(1);
     const query = new URLSearchParams({
@@ -153,6 +156,19 @@ const JoinUsForm = () => {
           headers: { Authorization: `Bearer ${API_TOKEN}` }
         });
       }
+
+      // === 新增：自动发送邮件通知 ===
+      axios.post(
+        MAIL_NOTIFY_API,
+        {
+          email: formData.Email,
+          productName: productName,
+          companyName: formData.companyName,
+        }
+      ).catch((err) => {
+        // 邮件发送失败不影响主流程，仅做警告
+        console.warn("邮件通知发送失败", err);
+      });
 
       setSuccess(true);
       setFormData(initialFormData);
