@@ -10,7 +10,7 @@ const API_URL = `${STRAPI_HOST}/api/partner-application-submission1s`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
 
 // 邮件服务接口（和 PartnerApplicationForm 保持一致，建议写在 .env 里）
-const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_PARTNER_APPLICATION_NOTIFICATION;
+const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_CUSTOMER_APPLICATION_NOTIFICATION;
 
 // 获取 query 参数
 function getQueryParams(search) {

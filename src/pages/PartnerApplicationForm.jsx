@@ -9,7 +9,7 @@ const API_URL = `${STRAPI_HOST}/api/partner-application-submission1s`;
 const UPLOAD_URL = `${STRAPI_HOST}/api/upload`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
 // 邮件服务接口（换成你的真实服务器地址）
-const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_PARTNER_JOINUS_NOTIFICATION;
+const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_PARTNER_APPLICATION_FORM_NOTIFICATION;
 
 const initialFormData = {
   companyName: "",
