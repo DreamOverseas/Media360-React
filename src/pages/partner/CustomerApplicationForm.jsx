@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-import "../../css/PartnerApplicationForm.css";
+import "../../css/CustomerApplicationForm.css";
 
 // 环境变量配置
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
 const API_URL = `${STRAPI_HOST}/api/partner-application-submission1s`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
+
+// 邮件服务接口（和 PartnerApplicationForm 保持一致，建议写在 .env 里）
+const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_PARTNER_APPLICATION_NOTIFICATION;
 
 // 获取 query 参数
 function getQueryParams(search) {
@@ -28,7 +31,7 @@ function removeIdDeep(obj) {
   return obj;
 }
 
-const PartnerApplicationForm = () => {
+const CustomerApplicationForm = () => {
   const { productName } = useParams();
   const { partnerID, documentId } = getQueryParams(useLocation().search);
   const navigate = useNavigate();
@@ -78,6 +81,7 @@ const PartnerApplicationForm = () => {
 
       // 构建新 Customer 并更新 Partner
       const partner = partners[partnerIndex];
+      const companyName = partner.companyName || ""; // 提取公司名
       const customers = partner.Customer || partner.attributes?.Customer || [];
       const newCustomer = {
         customerID: uuidv4(),
@@ -111,16 +115,35 @@ const PartnerApplicationForm = () => {
       // 组装 PUT payload
       const putPayload = {
         data: {
-          productName,  // 保持产品名（和 joinusform 一致）
+          productName,  // 保持产品名
           Partner: cleanedPartners
         }
       };
 
       // 用 documentId 作为主键 PUT
       const putUrl = `${API_URL}/${documentId}`;
-      console.log("PartnerApplicationForm PUT URL:", putUrl); // 调试用
       await axios.put(putUrl, putPayload, {
         headers: { Authorization: `Bearer ${API_TOKEN}` }
+      });
+
+      // ======= 新增：自动发邮件通知 =======
+      // 收集需要传递给邮件服务的所有变量（按后端模版需求来，这里可以按你的需求灵活加字段）
+      // 推荐：把partner、productName、以及补充的用户信息都传过去，后端想用哪个用哪个
+      await axios.post(
+        MAIL_NOTIFY_API,
+        {
+            Name: formData.Name,
+            Email: formData.Email,
+            isInAustralia: formData.isInAustralia,
+            partnerID,        // 你可以通过 partner.partnerID 或提前保存
+            productName,      // 直接取 useParams
+            documentId,       // 当前文档id，页面参数可直接获取
+            companyName,   // 加上这一行
+            // 你想补充其它字段也可以全部加进来
+        }
+      ).catch(err => {
+        // 邮件发送失败不影响主流程，仅做警告
+        console.warn("邮件通知发送失败", err);
       });
 
       setSuccess(true);
@@ -188,4 +211,4 @@ const PartnerApplicationForm = () => {
   );
 };
 
-export default PartnerApplicationForm;
+export default CustomerApplicationForm;

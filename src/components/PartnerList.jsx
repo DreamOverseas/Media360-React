@@ -82,7 +82,7 @@ const PartnerList = ({ currentProductName }) => {
   const title = productTitleMap[currentProductName] || "合作伙伴";
 
   // 跳转链接，使用中文“加入我们”
-  const joinUsFormLink = `/products/${encodeURIComponent(currentProductName)}/join-us-form`;
+  const PartnerApplicationFormLink = `/products/${encodeURIComponent(currentProductName)}/PartnerApplicationForm`;
 
   return (
     <Row>
@@ -157,7 +157,7 @@ const PartnerList = ({ currentProductName }) => {
 
                     <div className="partner-join-button">
                       <Link
-                        to={`/products/${encodeURIComponent(currentProductName)}/partner-apply?partnerID=${encodeURIComponent(item.partnerID)}&documentId=${encodeURIComponent(documentId)}`}
+                        to={`/products/${encodeURIComponent(currentProductName)}/CustomerApplicationForm?partnerID=${encodeURIComponent(item.partnerID)}&documentId=${encodeURIComponent(documentId)}`}
                       >
                         <Button variant="outline-primary" size="sm">
                           立即加入
@@ -191,7 +191,7 @@ const PartnerList = ({ currentProductName }) => {
 
         {/* partner-banner 作为跳转按钮，只图片本身可点
         <div style={{ textAlign: "center", margin: "40px 0 12px 0" }}>
-          <Link to={joinUsFormLink}>
+          <Link to={PartnerApplicationForm}>
             <img
               src="/partner-banner.jpg"
               alt="成为合作伙伴"

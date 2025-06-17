@@ -21,7 +21,7 @@ const initialFormData = {
   agreed: false, // 同意条款与条件
 };
 
-const JoinUsForm = () => {
+const PartnerApplicationForm = () => {
   const { productName } = useParams();
   const navigate = useNavigate();
 
@@ -259,7 +259,7 @@ const JoinUsForm = () => {
               <>
                 我已阅读并同意
                 <Link
-                  to={`/products/${encodeURIComponent(productName)}/join-us-form/terms-and-conditions`}
+                  to={`/products/${encodeURIComponent(productName)}/PartnerApplicationForm/terms-and-conditions`}
                   style={{ marginLeft: 4 }}
                 >
                   条款与条件
@@ -282,4 +282,4 @@ const JoinUsForm = () => {
   );
 };
 
-export default JoinUsForm;
+export default PartnerApplicationForm;
