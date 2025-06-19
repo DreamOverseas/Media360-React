@@ -38,7 +38,8 @@ const PartnerApplicationForm = () => {
     if (!productName) return setNextOrder(1);
     const query = new URLSearchParams({
       'filters[productName][$eq]': productName,
-      'populate': 'Partner'
+      'populate[Partner][populate][0]': 'companyLogo',
+      'populate[Partner][populate][1]': 'asicCertificate'
     }).toString();
     axios
       .get(`${API_URL}?${query}`, {
@@ -107,7 +108,8 @@ const PartnerApplicationForm = () => {
 
       const query = new URLSearchParams({
         'filters[productName][$eq]': productName,
-        'populate': 'Partner'
+        'populate[Partner][populate][0]': 'companyLogo',
+        'populate[Partner][populate][1]': 'asicCertificate'
       }).toString();
       const url = `${API_URL}?${query}`;
 
@@ -128,9 +130,28 @@ const PartnerApplicationForm = () => {
         ) {
           currentPartners = existing.attributes.Partner;
         }
+
+        console.log("旧数据 currentPartners：", currentPartners);
         // 移除 Strapi 内部 id 字段
         const cleanPartnerList = (list) =>
-          list.map(({ id, ...rest }) => ({ ...rest }));
+          list.map((item) => {
+            const flat = item.attributes ? { ...item.attributes } : { ...item };
+            const cleaned = { ...flat };
+
+            // ✅ 保留媒体 ID
+            if (cleaned.companyLogo && typeof cleaned.companyLogo === 'object' && cleaned.companyLogo.id) {
+              cleaned.companyLogo = cleaned.companyLogo.id;
+            }
+            if (cleaned.asicCertificate && typeof cleaned.asicCertificate === 'object' && cleaned.asicCertificate.id) {
+              cleaned.asicCertificate = cleaned.asicCertificate.id;
+            }
+
+            delete cleaned.id; // 去掉 Strapi 的 component id
+            return cleaned;
+          });
+
+
+
         const updatedPartners = cleanPartnerList([
           ...currentPartners,
           newPartner
