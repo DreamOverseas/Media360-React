@@ -51,8 +51,9 @@ import AboutUs from "./pages/AboutUsPage.jsx";
 import FloatingHomeButton from "./components/FloatingHomeButton.jsx";
 import ProductRouteGuard from "./components/ProductRouteGuard.jsx";
 import Activity from "./components/Activity.jsx";
-import JoinUsForm from './pages/JoinUsForm';
-import PartnerApplicationForm from "./pages/partner/PartnerApplicationForm.jsx";
+import PartnerApplicationForm from './pages/PartnerApplicationForm.jsx';
+import CustomerApplicationForm from "./pages/partner/CustomerApplicationForm.jsx";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -169,9 +170,12 @@ function App() {
             element={<MerchantPromotion />}
           />
           <Route exact path='/events/:name' element={<EventDetail />} />
-          <Route path="/join-us-form" element={<JoinUsForm />} />
-          <Route path="/partner-apply" element={<PartnerApplicationForm />} />
+          <Route path="/PartnerApplicationForm" element={<PartnerApplicationForm />} />
+          <Route path="/CustomerApplicationForm" element={<CustomerApplicationForm />} />
+          <Route path="/products/:productName/CustomerApplicationForm" element={<CustomerApplicationForm />} />
+          <Route path="/products/:productName/PartnerApplicationForm" element={<PartnerApplicationForm />} />
           <Route path='/join-us' element={<Recruitment />} />
+          <Route path="/products/:productName/PartnerApplicationForm/terms-and-conditions" element={<TermsAndConditions />} />
           <Route path='/networks' element={<Networks />} />
           <Route path='/media-center' element={<MediaCenter />} />
           <Route path='/news' element={<NewsPage />} />

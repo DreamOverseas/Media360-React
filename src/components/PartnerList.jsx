@@ -4,104 +4,164 @@ import { Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../css/PartnerList.css";
 
+// 动态标题映射
+const productTitleMap = {
+  "Studyfin": "留学中介",
+  "roseneath-holidaypark": "旅游中介",
+  "nail-train": "加盟商"
+};
+
+// 更健壮的媒体处理函数
+function getMediaUrl(media) {
+  if (!media) return null;
+  if (Array.isArray(media)) {
+    if (media[0]) return getMediaUrl(media[0]);
+    return null;
+  }
+  if (media.url) return import.meta.env.VITE_STRAPI_HOST + media.url;
+  if (media.data && media.data.url) return import.meta.env.VITE_STRAPI_HOST + media.data.url;
+  if (media.data && media.data.attributes && media.data.attributes.url)
+    return import.meta.env.VITE_STRAPI_HOST + media.data.attributes.url;
+  return null;
+}
+
 const PartnerList = ({ currentProductName }) => {
-  const [applications, setApplications] = useState([]);
+  const [partners, setPartners] = useState([]);
+  const [documentId, setDocumentId] = useState("");
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
-    const fetchApplications = async () => {
+    const fetchPartners = async () => {
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_STRAPI_HOST}/api/product-screen-join-applications?sort=createdAt:desc&populate=*`,
-          {
-            headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD}`,
-            },
-          }
-        );
+        const url =
+          `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submission1s` +
+          `?filters[productName][$eq]=${encodeURIComponent(currentProductName)}` +
+          `&populate[Partner][populate][companyLogo]=true` +
+          `&populate[Partner][populate][asicCertificate]=true`;
 
-        const filtered = (res.data.data || []).filter((item) => {
-          const matchProduct =
-            item?.sourceProductName?.trim().toLowerCase() ===
-            currentProductName?.trim().toLowerCase();
-          const approved = item?.approved === true;
-          return matchProduct && approved;
+        const res = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD}`,
+          },
         });
 
-        setApplications(filtered);
+        const partnerEntry = res.data.data && res.data.data[0];
+        let partnerList =
+          partnerEntry && Array.isArray(partnerEntry.Partner)
+            ? partnerEntry.Partner
+            : [];
+
+        if (partnerEntry && partnerEntry.documentId) {
+          setDocumentId(partnerEntry.documentId);
+        } else {
+          setDocumentId("");
+        }
+
+        partnerList = [...partnerList].sort((a, b) => {
+          const orderA = typeof a.Order === "number" ? a.Order : 9999;
+          const orderB = typeof b.Order === "number" ? b.Order : 9999;
+          return orderA - orderB;
+        });
+
+        setPartners(partnerList);
       } catch (err) {
-        console.error("❌ 拉取申请信息失败", err);
-        setApplications([]);
+        console.error("❌ 拉取合作伙伴失败", err);
+        setPartners([]);
+        setDocumentId(""); // 遇到错误也重置
       }
     };
 
-    fetchApplications();
+    if (currentProductName) {
+      fetchPartners();
+    }
   }, [currentProductName]);
 
-  const visibleApplications = showAll ? applications : applications.slice(0, 2);
+  const visiblePartners = showAll ? partners : partners.slice(0, 2);
+
+  // 动态标题
+  const title = productTitleMap[currentProductName] || "合作伙伴";
+
+  // 跳转链接，使用中文“加入我们”
+  const PartnerApplicationFormLink = `/products/${encodeURIComponent(currentProductName)}/PartnerApplicationForm`;
 
   return (
     <Row>
       <Col>
-        <h5>合作伙伴</h5>
-        {applications.length === 0 ? (
-          <p>暂无</p>
+        <h5>{title}</h5>
+        {partners.length === 0 ? (
+          <p>期待您的加入</p>
         ) : (
           <>
             <div className="partner-list-container">
-              {visibleApplications.map((item, idx) => {
-                const logoUrl = item?.companyLogo?.url
-                  ? import.meta.env.VITE_STRAPI_HOST + item.companyLogo.url
-                  : null;
-
-                const asicUrl = item?.asicCertificate?.url
-                  ? import.meta.env.VITE_STRAPI_HOST + item.asicCertificate.url
-                  : null;
+              {visiblePartners.map((item, idx) => {
+                const logoUrl = getMediaUrl(item.companyLogo);
+                const asicUrl = getMediaUrl(item.asicCertificate);
 
                 return (
                   <div key={item.id || idx} className="partner-card">
-                    {logoUrl && (
-                      <div className="partner-logo-wrapper">
+                    {/* 左上角 Logo */}
+                    <div className="partner-logo-wrapper">
+                      {logoUrl ? (
                         <img
                           src={logoUrl}
                           alt="公司Logo"
                           className="partner-logo"
                         />
-                      </div>
-                    )}
+                      ) : null}
+                    </div>
 
                     <div className="partner-info-split">
                       <div className="partner-info-left">
-                        <p><strong>公司名称:</strong> {item.companyName || "N/A"}</p>
-                        <p><strong>电话:</strong> {item.Phone || "N/A"}</p>
-                        <p><strong>邮箱:</strong> {item.Email || "N/A"}</p>
-                        <p><strong>公司官网:</strong>{" "}
-                          <a href={item.companyUrlLink} target="_blank" rel="noopener noreferrer">
+                        <p>
+                          <strong>公司名称:</strong> {item.companyName || "N/A"}
+                        </p>
+                        <p>
+                          <strong>电话:</strong> {item.Phone || "N/A"}
+                        </p>
+                        <p>
+                          <strong>邮箱:</strong> {item.Email || "N/A"}
+                        </p>
+                        <p>
+                          <strong>公司官网:</strong>{" "}
+                          <a
+                            href={item.companyUrlLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
                             {item.companyUrlLink}
                           </a>
                         </p>
-                        <p><strong>ABN:</strong> {item.abnNumber || "N/A"}</p>
+                        <p>
+                          <strong>ABN:</strong> {item.abnNumber || "N/A"}
+                        </p>
                         {asicUrl && (
-                          <p><strong>ASIC 证书:</strong>{" "}
-                            <a href={asicUrl} target="_blank" rel="noopener noreferrer">查看证书</a>
+                          <p>
+                            <strong>ASIC 证书:</strong>{" "}
+                            <a
+                              href={asicUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              查看证书
+                            </a>
                           </p>
                         )}
                       </div>
 
                       <div className="partner-info-right">
-                        <p><strong>备注:</strong> {item.Notes || "N/A"}</p>
+                        <p>
+                          <strong>备注:</strong> {item.Notes || "N/A"}
+                        </p>
                       </div>
                     </div>
 
                     <div className="partner-join-button">
                       <Link
-                        to="/partner-apply"
-                        state={{
-                          productName: currentProductName,
-                          companyName: item.companyName,
-                        }}
+                        to={`/products/${encodeURIComponent(currentProductName)}/CustomerApplicationForm?partnerID=${encodeURIComponent(item.partnerID)}&documentId=${encodeURIComponent(documentId)}`}
                       >
-                        <Button variant="outline-primary" size="sm">立即加入</Button>
+                        <Button variant="outline-primary" size="sm">
+                          立即加入
+                        </Button>
                       </Link>
                     </div>
                   </div>
@@ -109,8 +169,14 @@ const PartnerList = ({ currentProductName }) => {
               })}
             </div>
 
-            {applications.length > 2 && (
-              <div style={{ textAlign: "center", marginTop: "12px", marginBottom: "40px" }}>
+            {partners.length > 2 && (
+              <div
+                style={{
+                  textAlign: "center",
+                  marginTop: "12px",
+                  marginBottom: "40px",
+                }}
+              >
                 <Button
                   variant="outline-secondary"
                   size="sm"
@@ -122,6 +188,25 @@ const PartnerList = ({ currentProductName }) => {
             )}
           </>
         )}
+
+        {/* partner-banner 作为跳转按钮，只图片本身可点
+        <div style={{ textAlign: "center", margin: "40px 0 12px 0" }}>
+          <Link to={PartnerApplicationForm}>
+            <img
+              src="/partner-banner.jpg"
+              alt="成为合作伙伴"
+              style={{
+                display: "inline-block",
+                margin: "24px auto",
+                maxWidth: "320px",
+                width: "100%",
+                height: "auto",
+                cursor: "pointer",
+                transition: "opacity 0.2s"
+              }}
+            />
+          </Link>
+        </div> */}
       </Col>
     </Row>
   );

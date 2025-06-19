@@ -856,24 +856,12 @@ useEffect(() => {
                 )}
 
               
-                
-
-                {/* <Row className="mt-3">
-                  <Col>
-                    <PartnerList />
-                  </Col>
-                </Row>
-
-                <Link
-                  to="/join-us-form"
-                  state={{
-                    productName: Name,
-                    productUrl: window.location.href,
-                    productId: product.id, // 如果你需要 ID
-                  }}
-                >
-                  <JoinUsButton />
-                </Link> */}
+                <AccordionItem
+                  idx="detail-accordion"
+                  header={DetailHeading}
+                  detail={Detail}
+                  defaultOpen={false}
+                />
 
               </Container>
             </Col>
@@ -885,15 +873,8 @@ useEffect(() => {
             </Col>
           </Row>
 
-          <Link
-                  to="/join-us-form"
-                  state={{
-                    productName: Name,
-                    productUrl: window.location.href,
-                    productId: product.id, // 如果你需要 ID
-                  }}
-                >
-                  <JoinUsButton />
+          <Link to={`/products/${encodeURIComponent(Name)}/PartnerApplicationForm`}>
+            <JoinUsButton />
           </Link>
 
           {slides !== "N/A" ? (
