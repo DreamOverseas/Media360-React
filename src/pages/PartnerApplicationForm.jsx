@@ -18,6 +18,9 @@ const initialFormData = {
   Notes: "",
   abnNumber: "",
   companyUrlLink: "",
+  cityLocation: "",       // 新增：公司地点
+  experienceYears: "",    // 新增：从业经验
+  licenseFile: "",        // 新增：牌照
   agreed: false, // 同意条款与条件
 };
 
@@ -89,6 +92,7 @@ const PartnerApplicationForm = () => {
     try {
       const logoId = await handleUpload(companyLogo);
       const certId = await handleUpload(asicCertificateFile);
+      const licenseId = await handleUpload(formData.licenseFile);
       const partnerID = uuidv4();
 
       const newPartner = {
@@ -101,8 +105,11 @@ const PartnerApplicationForm = () => {
         companyUrlLink: formData.companyUrlLink,
         companyLogo: logoId,
         asicCertificate: certId,
+        licenseFile: licenseId, // ✅ 添加这里
         approved: false,
         Order: nextOrder,
+        cityLocation: formData.cityLocation,
+        experienceYears: formData.experienceYears,
         Customer: []
       };
 
@@ -237,21 +244,23 @@ const PartnerApplicationForm = () => {
             required
           />
         </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>备注</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            value={formData.Notes}
-            onChange={(e) => setFormData({ ...formData, Notes: e.target.value })}
-          />
-        </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>ABN 编号</Form.Label>
           <Form.Control
             type="text"
             value={formData.abnNumber}
             onChange={(e) => setFormData({ ...formData, abnNumber: e.target.value })}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>公司地点（城市）</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            value={formData.cityLocation}
+            onChange={(e) => setFormData({ ...formData, cityLocation: e.target.value })}
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -263,12 +272,40 @@ const PartnerApplicationForm = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3">
+          <Form.Label>从业经验</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            value={formData.experienceYears}
+            onChange={(e) => setFormData({ ...formData, experienceYears: e.target.value })}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>牌照信息（上传 PDF 且大小不能大于10MB）</Form.Label>
+          <Form.Control
+            type="file"
+            accept=".pdf"
+            onChange={(e) =>
+              setFormData({ ...formData, licenseFile: e.target.files[0] })
+            }
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>公司 Logo</Form.Label>
           <Form.Control type="file" onChange={(e) => setCompanyLogo(e.target.files[0])} />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>ASIC 证书 (大小不能大于10MB)</Form.Label>
           <Form.Control type="file" onChange={(e) => setAsicCertificateFile(e.target.files[0])} />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>备注</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            value={formData.Notes}
+            onChange={(e) => setFormData({ ...formData, Notes: e.target.value })}
+          />
         </Form.Group>
 
         {/* 条款与条件复选框（必须同意才可提交） */}
