@@ -1,9 +1,11 @@
+/* ===== 容器布局 ===== */
 .partner-list-container {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
+/* ===== 卡片样式 ===== */
 .partner-card {
   position: relative;
   padding: 24px;
@@ -19,12 +21,13 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
+/* ===== Logo 显示区 ===== */
 .partner-logo-wrapper {
   position: absolute;
   top: 24px;
   left: 24px;
-  width: 80px;
-  height: 80px;
+  width: 200px;       /* 原来是 80px，改大 */
+  height: 200px;
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid #ddd;
@@ -37,6 +40,7 @@
   object-fit: contain;
 }
 
+/* ===== 信息分区 ===== */
 .partner-info-split {
   display: flex;
   justify-content: space-between;
@@ -50,13 +54,49 @@
   flex: 1 1 45%;
 }
 
-.partner-info-left p,
-.partner-info-right p {
-  margin-bottom: 8px;
+/* 新增：分组结构美化 */
+.partner-main-info {
+  margin-left: 220px;   /* ✅ 从140增加到220，让内容整体右移避免被挡 */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-section {
+  padding: 12px 16px;
+  background-color: #f9f9f9;
+  border-left: 4px solid #007bff;
+  border-radius: 6px;
   font-size: 14px;
+}
+
+.info-section-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.partner-field {
+  margin-bottom: 6px;
   line-height: 1.5;
 }
 
+.partner-field a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.partner-field a:hover {
+  text-decoration: underline;
+}
+
+.field-label {
+  font-weight: 500;
+  color: #444;
+}
+
+/* ===== 加入按钮样式 ===== */
 .partner-join-button {
   position: absolute;
   top: 24px;
@@ -84,7 +124,20 @@
   box-shadow: 0 5px 12px rgba(0, 123, 255, 0.3);
 }
 
+/* ===== 显示全部按钮样式 ===== */
 .toggle-button-wrapper {
   text-align: center;
   margin-top: 20px;
+}
+
+
+@media (max-width: 768px) {
+  .partner-logo-wrapper {
+    width: 100px;
+    height: 100px;
+  }
+
+  .partner-main-info {
+    margin-left: 130px;
+  }
 }

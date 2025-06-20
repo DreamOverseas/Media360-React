@@ -5,14 +5,12 @@ import { Link } from "react-router-dom";
 import { FaUserPlus } from "react-icons/fa";
 import "../css/PartnerList.css";
 
-// 动态标题映射
 const productTitleMap = {
   Studyfin: "留学中介",
-  "roseneath-holidaypark": "旅游中介",
-  "nail-train": "加盟商",
+  "罗塞尼斯半岛度假村": "旅游中介",
+  "AI美甲": "加盟商",
 };
 
-// 更健壮的媒体处理函数
 function getMediaUrl(media) {
   if (!media) return null;
   if (Array.isArray(media)) {
@@ -37,7 +35,8 @@ const PartnerList = ({ currentProductName }) => {
           `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submission1s` +
           `?filters[productName][$eq]=${encodeURIComponent(currentProductName)}` +
           `&populate[Partner][populate][companyLogo]=true` +
-          `&populate[Partner][populate][asicCertificate]=true`;
+          `&populate[Partner][populate][asicCertificate]=true` +
+          `&populate[Partner][populate][licenseFile]=true`;
 
         const res = await axios.get(url, {
           headers: {
@@ -78,7 +77,7 @@ const PartnerList = ({ currentProductName }) => {
   return (
     <Row>
       <Col>
-        <h5>{title}</h5>
+        <h5 className="partner-section-title">{title}</h5>
         {partners.length === 0 ? (
           <p>期待您的加入</p>
         ) : (
@@ -90,7 +89,6 @@ const PartnerList = ({ currentProductName }) => {
 
                 return (
                   <div key={item.id || idx} className="partner-card">
-                    {/* logo */}
                     <div className="partner-logo-wrapper">
                       {logoUrl && (
                         <img
@@ -101,60 +99,52 @@ const PartnerList = ({ currentProductName }) => {
                       )}
                     </div>
 
-                    <div className="partner-info-split">
-                      <div className="partner-info-left">
-                        <p>
-                          <strong>公司名称:</strong> {item.companyName || "N/A"}
-                        </p>
-                        <p>
-                          <strong>公司官网:</strong>{" "}
-                          <a
-                            href={item.companyUrlLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {item.companyUrlLink}
+                    <div className="partner-main-info">
+                      <div className="info-section">
+                        <div className="info-section-title">🧾 基本信息</div>
+                        <div className="partner-field"><span className="field-label">公司名称：</span>{item.companyName}</div>
+                        <div className="partner-field">
+                          <span className="field-label">公司官网：</span>
+                          <a href={item.companyUrlLink} target="_blank" rel="noopener noreferrer">
+                            {item.companyUrlLink || "未填写"}
                           </a>
-                        </p>
-                        <p>
-                          <strong>ABN:</strong> {item.abnNumber || "N/A"}
-                        </p>
-                        <p>
-                          <strong>公司地点:</strong>{" "}
-                          {item.cityLocation || "未填写"}
-                        </p>
-                        <p>
-                          <strong>从业经验:</strong>{" "}
-                          {item.experienceYears || "未填写"}
-                        </p>
+                        </div>
+                        <div className="partner-field"><span className="field-label">公司地址：</span>{item.cityLocation || "未填写"}</div>
+                        <div className="partner-field"><span className="field-label">ABN：</span>{item.abnNumber || "未填写"}</div>
+                      </div>
+
+                      <div className="info-section">
+                        <div className="info-section-title">💼 专业资质</div>
+                        <div className="partner-field"><span className="field-label">从业经验：</span>{item.experienceYears || "未填写"}</div>
                         {asicUrl && (
-                          <p>
-                            <strong>ASIC 证书:</strong>{" "}
+                          <div className="partner-field">
+                            <span className="field-label">ASIC 证书：</span>
+                            <a href={asicUrl} target="_blank" rel="noopener noreferrer">查看证书</a>
+                          </div>
+                        )}
+                        {item.licenseFile && (
+                          <div className="partner-field">
+                            <span className="field-label">牌照文件：</span>
                             <a
-                              href={asicUrl}
+                              href={getMediaUrl(item.licenseFile)}
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              查看证书
+                              下载查看
                             </a>
-                          </p>
+                          </div>
                         )}
                       </div>
 
-                      <div className="partner-info-right">
-                        <p>
-                          <strong>备注:</strong> {item.Notes || "N/A"}
-                        </p>
+                      <div className="info-section">
+                        <div className="info-section-title">📝 备注</div>
+                        <div className="partner-field">{item.Notes || "无备注"}</div>
                       </div>
                     </div>
 
                     <div className="partner-join-button">
                       <Link
-                        to={`/products/${encodeURIComponent(
-                          currentProductName
-                        )}/CustomerApplicationForm?partnerID=${encodeURIComponent(
-                          item.partnerID
-                        )}&documentId=${encodeURIComponent(documentId)}`}
+                        to={`/products/${encodeURIComponent(currentProductName)}/CustomerApplicationForm?partnerID=${encodeURIComponent(item.partnerID)}&documentId=${encodeURIComponent(documentId)}`}
                       >
                         <button className="custom-join-button">
                           <FaUserPlus style={{ marginRight: "6px" }} />
