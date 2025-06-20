@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Row, Col, Button } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { FaUserPlus } from "react-icons/fa";
 import "../css/PartnerList.css";
 
 // 动态标题映射
 const productTitleMap = {
-  "Studyfin": "留学中介",
+  Studyfin: "留学中介",
   "roseneath-holidaypark": "旅游中介",
-  "nail-train": "加盟商"
+  "nail-train": "加盟商",
 };
 
 // 更健壮的媒体处理函数
@@ -19,8 +20,7 @@ function getMediaUrl(media) {
     return null;
   }
   if (media.url) return import.meta.env.VITE_STRAPI_HOST + media.url;
-  if (media.data && media.data.url) return import.meta.env.VITE_STRAPI_HOST + media.data.url;
-  if (media.data && media.data.attributes && media.data.attributes.url)
+  if (media.data?.attributes?.url)
     return import.meta.env.VITE_STRAPI_HOST + media.data.attributes.url;
   return null;
 }
@@ -45,16 +45,13 @@ const PartnerList = ({ currentProductName }) => {
           },
         });
 
-        const partnerEntry = res.data.data && res.data.data[0];
-        let partnerList =
-          partnerEntry && Array.isArray(partnerEntry.Partner)
-            ? partnerEntry.Partner
-            : [];
+        const partnerEntry = res.data.data?.[0];
+        let partnerList = Array.isArray(partnerEntry?.Partner)
+          ? partnerEntry.Partner
+          : [];
 
-        if (partnerEntry && partnerEntry.documentId) {
+        if (partnerEntry?.documentId) {
           setDocumentId(partnerEntry.documentId);
-        } else {
-          setDocumentId("");
         }
 
         partnerList = [...partnerList].sort((a, b) => {
@@ -67,21 +64,15 @@ const PartnerList = ({ currentProductName }) => {
       } catch (err) {
         console.error("❌ 拉取合作伙伴失败", err);
         setPartners([]);
-        setDocumentId(""); // 遇到错误也重置
+        setDocumentId("");
       }
     };
 
-    if (currentProductName) {
-      fetchPartners();
-    }
+    if (currentProductName) fetchPartners();
   }, [currentProductName]);
 
   const visiblePartners = showAll ? partners : partners.slice(0, 2);
-
-  // 动态标题
   const title = productTitleMap[currentProductName] || "合作伙伴";
-
-  // 跳转链接，使用中文“加入我们”
   const PartnerApplicationFormLink = `/products/${encodeURIComponent(currentProductName)}/PartnerApplicationForm`;
 
   return (
@@ -99,27 +90,21 @@ const PartnerList = ({ currentProductName }) => {
 
                 return (
                   <div key={item.id || idx} className="partner-card">
-                    {/* 左上角 Logo */}
+                    {/* logo */}
                     <div className="partner-logo-wrapper">
-                      {logoUrl ? (
+                      {logoUrl && (
                         <img
                           src={logoUrl}
                           alt="公司Logo"
                           className="partner-logo"
                         />
-                      ) : null}
+                      )}
                     </div>
 
                     <div className="partner-info-split">
                       <div className="partner-info-left">
                         <p>
                           <strong>公司名称:</strong> {item.companyName || "N/A"}
-                        </p>
-                        <p>
-                          <strong>电话:</strong> {item.Phone || "N/A"}
-                        </p>
-                        <p>
-                          <strong>邮箱:</strong> {item.Email || "N/A"}
                         </p>
                         <p>
                           <strong>公司官网:</strong>{" "}
@@ -133,6 +118,14 @@ const PartnerList = ({ currentProductName }) => {
                         </p>
                         <p>
                           <strong>ABN:</strong> {item.abnNumber || "N/A"}
+                        </p>
+                        <p>
+                          <strong>公司地点:</strong>{" "}
+                          {item.cityLocation || "未填写"}
+                        </p>
+                        <p>
+                          <strong>从业经验:</strong>{" "}
+                          {item.experienceYears || "未填写"}
                         </p>
                         {asicUrl && (
                           <p>
@@ -157,11 +150,16 @@ const PartnerList = ({ currentProductName }) => {
 
                     <div className="partner-join-button">
                       <Link
-                        to={`/products/${encodeURIComponent(currentProductName)}/CustomerApplicationForm?partnerID=${encodeURIComponent(item.partnerID)}&documentId=${encodeURIComponent(documentId)}`}
+                        to={`/products/${encodeURIComponent(
+                          currentProductName
+                        )}/CustomerApplicationForm?partnerID=${encodeURIComponent(
+                          item.partnerID
+                        )}&documentId=${encodeURIComponent(documentId)}`}
                       >
-                        <Button variant="outline-primary" size="sm">
+                        <button className="custom-join-button">
+                          <FaUserPlus style={{ marginRight: "6px" }} />
                           立即加入
-                        </Button>
+                        </button>
                       </Link>
                     </div>
                   </div>
@@ -170,43 +168,17 @@ const PartnerList = ({ currentProductName }) => {
             </div>
 
             {partners.length > 2 && (
-              <div
-                style={{
-                  textAlign: "center",
-                  marginTop: "12px",
-                  marginBottom: "40px",
-                }}
-              >
-                <Button
-                  variant="outline-secondary"
-                  size="sm"
+              <div className="toggle-button-wrapper">
+                <button
+                  className="custom-join-button"
                   onClick={() => setShowAll(!showAll)}
                 >
                   {showAll ? "收起" : "显示全部"}
-                </Button>
+                </button>
               </div>
             )}
           </>
         )}
-
-        {/* partner-banner 作为跳转按钮，只图片本身可点
-        <div style={{ textAlign: "center", margin: "40px 0 12px 0" }}>
-          <Link to={PartnerApplicationForm}>
-            <img
-              src="/partner-banner.jpg"
-              alt="成为合作伙伴"
-              style={{
-                display: "inline-block",
-                margin: "24px auto",
-                maxWidth: "320px",
-                width: "100%",
-                height: "auto",
-                cursor: "pointer",
-                transition: "opacity 0.2s"
-              }}
-            />
-          </Link>
-        </div> */}
       </Col>
     </Row>
   );

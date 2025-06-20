@@ -1,122 +1,90 @@
-/* ✅ 新增容器：用于收纳所有 partner-card */
 .partner-list-container {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding-top: 8px;
 }
 
-/* 单个公司卡片 */
 .partner-card {
-  display: flex;
-  padding: 16px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-  margin-bottom: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  align-items: flex-start;
-  gap: 20px;
-  height: auto;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
+  position: relative;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  transition: all 0.3s ease;
 }
 
-/* 左侧 logo 容器 */
+.partner-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
 .partner-logo-wrapper {
-  flex: 0 0 140px;
-  height: 160px;
-  margin-right: 12px;
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  background: #fff;
 }
 
 .partner-logo {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  object-fit: contain;
 }
 
-/* 三列结构：公司字段 + 备注字段 */
 .partner-info-split {
   display: flex;
-  flex: 1;
-  gap: 24px;
+  justify-content: space-between;
+  margin-left: 110px;
   flex-wrap: wrap;
+  gap: 20px;
 }
 
 .partner-info-left,
 .partner-info-right {
-  flex: 1;
-  min-width: 220px;
-  display: flex;
-  flex-direction: column;
-  font-size: 14px;
-  color: #333;
-  word-break: break-word;
-  overflow-wrap: anywhere;
+  flex: 1 1 45%;
 }
 
 .partner-info-left p,
 .partner-info-right p {
-  margin: 0;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  font-size: 14px;
   line-height: 1.5;
 }
 
-.partner-info-left a,
-.partner-info-right a {
-  color: #0066cc;
-  text-decoration: none;
-  word-break: break-word;
-}
-
-.partner-info-left a:hover,
-.partner-info-right a:hover {
-  text-decoration: underline;
-}
-
-/* ✅ 按钮区域 */
 .partner-join-button {
-  margin-top: 12px;
-  text-align: right;
+  position: absolute;
+  top: 24px;
+  right: 24px;
 }
 
-/* ✅ 移动端：576px 以下完全垂直堆叠 */
-@media (max-width: 576px) {
-  .partner-card {
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-  }
+.custom-join-button {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 123, 255, 0.2);
+}
 
-  .partner-logo-wrapper {
-    flex: none;
-    width: 100%;
-    max-width: 160px;
-    height: auto;
-    margin: 0 auto;
-  }
+.custom-join-button:hover {
+  background: linear-gradient(135deg, #0056b3, #003f7f);
+  transform: scale(1.05);
+  box-shadow: 0 5px 12px rgba(0, 123, 255, 0.3);
+}
 
-  .partner-logo {
-    width: 100%;
-    height: auto;
-    max-height: 160px;
-  }
-
-  .partner-info-split {
-    flex-direction: column;
-    width: 100%;
-    gap: 12px;
-  }
-
-  .partner-info-left,
-  .partner-info-right {
-    width: 100%;
-  }
-
-  .partner-join-button {
-    text-align: center; /* 移动端按钮居中 */
-  }
+.toggle-button-wrapper {
+  text-align: center;
+  margin-top: 20px;
 }
