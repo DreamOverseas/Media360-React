@@ -17,7 +17,7 @@ import {
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from 'rehype-raw';
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import { AuthContext } from "../context/AuthContext";
@@ -862,6 +862,10 @@ useEffect(() => {
                   detail={Detail}
                   defaultOpen={false}
                 />
+
+                <Link to={`/products/${encodeURIComponent(Name)}/PartnerDetail`}>
+                  <Button variant="outline-primary">留学中介信息</Button>
+                </Link>
 
               </Container>
             </Col>
