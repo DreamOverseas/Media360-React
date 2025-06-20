@@ -1,8 +1,9 @@
 import React from "react";
-import { Container, Button } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import PartnerList from "../components/PartnerList";
 import JoinUsButton from "../components/JoinUsButton";
+import "../css/PartnerDetail.css"; // 可选：新增页面专属样式
 
 const PartnerDetail = () => {
   const { productName } = useParams();
@@ -12,23 +13,23 @@ const PartnerDetail = () => {
   return (
     <Container style={{ paddingTop: "80px", paddingBottom: "40px" }}>
 
-
-      {/* 中介列表 */}
+      {/* 合作伙伴列表 */}
       <PartnerList currentProductName={decodedProductName} />
 
-      {/* 成为合作伙伴按钮 */}
-      <div className="mt-4">
-        <Link to={`/products/${encodeURIComponent(decodedProductName)}/PartnerDetail/PartnerApplicationForm`}>
-          <JoinUsButton />
-        </Link>
-      </div>
+      {/* 加入 & 返回 按钮组 */}
+      <Row className="mt-4 justify-content-between align-items-center">
+        <Col xs="auto">
+          <Link to={`/products/${encodeURIComponent(decodedProductName)}/PartnerDetail/PartnerApplicationForm`}>
+            <JoinUsButton />
+          </Link>
+        </Col>
 
-      {/* 返回按钮右对齐 */}
-      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "20px" }}>
-        <Button variant="secondary" onClick={() => navigate(-1)}>
-          返回产品页面
-        </Button>
-      </div>
+        <Col xs="auto">
+          <Button variant="secondary" onClick={() => navigate(-1)}>
+            返回产品页面
+          </Button>
+        </Col>
+      </Row>
     </Container>
   );
 };
