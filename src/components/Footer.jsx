@@ -137,7 +137,7 @@ const Footer = () => {
             <div className="border-t border-gray-600 pt-6">
               <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div className="text-sm text-gray-400">
-                  © 2024 Do360. All rights reserved.
+                  © 2024 Dream Overseas Group Pty Ltd. All rights reserved.
                 </div>
                 <div className="flex gap-6 text-sm">
                   <DoTermsAndConditions defaultLang="en" />
