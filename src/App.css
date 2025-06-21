@@ -181,4 +181,8 @@ footer {
   .custom-breadcrumb {
     font-size: 12px;
   }
+
+  footer {
+    padding-bottom:33%;
+  }
 }
