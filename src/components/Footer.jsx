@@ -28,33 +28,33 @@ const Footer = () => {
                 </div>
                 <a href="/merchant/360-media-promotion-service">
                   <button className="bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded transition-colors text-sm font-medium">
-                    加入我们
+                    {t("joinus")}
                   </button>
                 </a>
               </div>
 
               {/* Quick Links Column */}
               <div className="col-span-1">
-                <h3 className="text-base font-semibold text-white mb-3">Quick Links</h3>
+                <h3 className="text-base font-semibold text-white mb-3">{t("quick_links")}</h3>
                 <div className="flex align-items-start flex-col gap-2 space-y-2">
                   <a href="/about-us" className="text-gray-300 text-white text-center text-decoration-none">
-                    About Us
+                    {t("About_us")}
                   </a>
                   <a href="/networks" className="text-gray-300 text-white text-center text-decoration-none">
-                    Our Networks
+                    {t("networks")}
                   </a>
                   <a href="/news" className="text-gray-300 text-white text-center text-decoration-none">
-                    News
+                    {t("news")}
                   </a>
                   <a href="/events" className="text-gray-300 text-white text-center text-decoration-none">
-                    Events
+                    {t("event")}
                   </a>
                 </div>
               </div>
 
               {/* Contact Us Column */}
               <div className="col-span-1">
-                <h3 className="text-lg font-semibold mb-3">Contact Us</h3>
+                <h3 className="text-lg font-semibold mb-3">{t("contact")}</h3>
                 <div className="mt-3 space-y-6">
                   <div className="flex items-center gap-3">
                     <i className="bi bi-pin-map-fill text-lg text-blue-400 flex-shrink-0"></i>
@@ -85,7 +85,7 @@ const Footer = () => {
 
               {/* Follow Us Column */}
               <div className="col-span-1">
-                <h3 className="text-base font-semibold text-center text-white mb-3">Follow Us</h3>
+                <h3 className="text-base font-semibold text-center text-white mb-3">{t("follow_us")}</h3>
                 <div className="flex justify-center items-center gap-2 mb-3">
                   <a
                     href="https://www.xiaohongshu.com/user/profile/5fc6e9140000000001008c09"
@@ -153,26 +153,26 @@ const Footer = () => {
               <div className="grid grid-cols-2 gap-4 mb-2">
                 {/* Quick Links Section */}
                 <div>
-                  <h3 className="text-base font-semibold text-white mb-2">Quick Links</h3>
+                  <h3 className="text-base font-semibold text-white mb-2">{t("quick_links")}</h3>
                   <div className="flex align-items-start flex-col gap-2">
                     <a href="/about-us" className="text-gray-300 text-xs text-white text-center text-decoration-none">
-                      About Us
+                      {t("About_us")}
                     </a>
                     <a href="/networks" className="text-gray-300 text-xs text-white text-center text-decoration-none">
-                      Our Networks
+                      {t("networks")}
                     </a>
                     <a href="/news" className="text-gray-300 text-xs text-white text-center text-decoration-none">
-                      News
+                      {t("news")}
                     </a>
                     <a href="/events" className="text-gray-300 text-xs text-white text-center text-decoration-none">
-                      Events
+                      {t("event")}
                     </a>
                   </div>
                 </div>
 
                 {/* Follow Us Section */}
                 <div>
-                  <h3 className="text-base font-semibold text-center text-white mb-2">Follow Us</h3>
+                  <h3 className="text-base font-semibold text-center text-white mb-2">{t("follow_us")}</h3>
                   <div className="flex justify-center items-center gap-2 mb-3">
                     <a
                       href="https://www.xiaohongshu.com/user/profile/5fc6e9140000000001008c09"
@@ -222,7 +222,7 @@ const Footer = () => {
 
               {/* Contact Us Section */}
               <div className="pt-3 border-t border-gray-600 mb-2">
-                <h3 className="text-base font-semibold mb-2 text-center text-white">Contact Us</h3>
+                <h3 className="text-base font-semibold mb-2 text-center text-white">{t("contact")}</h3>
                 <div className="space-y-1">
                   <div className="flex items-center justify-center gap-3">
                     <a 
@@ -251,7 +251,7 @@ const Footer = () => {
               <div className="flex items-center justify-center mt-3 mb-3">
                 <a href="/merchant/360-media-promotion-service">
                   <button className="bg-blue-400 hover:bg-blue-500 text-white px-3 py-1.5 rounded transition-colors text-xs font-medium">
-                    加入我们
+                    {t("joinus")}
                   </button>
                 </a>
               </div>
