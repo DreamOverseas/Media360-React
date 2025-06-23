@@ -27,12 +27,13 @@ const PartnerList = ({ currentProductName }) => {
   useEffect(() => {
     const fetchPartners = async () => {
       try {
-        const url =
-          `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submission1s` +
-          `?filters[productName][$eq]=${encodeURIComponent(currentProductName)}` +
-          `&populate[Partner][populate][companyLogo]=true` +
-          `&populate[Partner][populate][asicCertificate]=true` +
-          `&populate[Partner][populate][licenseFile]=true`;
+        const params = new URLSearchParams();
+        params.append("filters[productName][$eq]", currentProductName);
+        params.append("populate", "*");
+
+        const url = `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submissions?${params.toString()}`;
+
+        console.log("最终请求地址：", url);
 
         const res = await axios.get(url, {
           headers: {
@@ -40,22 +41,21 @@ const PartnerList = ({ currentProductName }) => {
           },
         });
 
-        const partnerEntry = res.data.data?.[0];
-        let partnerList = Array.isArray(partnerEntry?.Partner)
-          ? partnerEntry.Partner
-          : [];
-
-        if (partnerEntry?.documentId) {
-          setDocumentId(partnerEntry.documentId);
+        const entries = res.data?.data || [];
+        if (entries.length === 0) {
+          setPartners([]);
+          setDocumentId("");
+          return;
         }
 
-        partnerList.sort((a, b) => {
-          const orderA = typeof a.Order === "number" ? a.Order : 9999;
-          const orderB = typeof b.Order === "number" ? b.Order : 9999;
-          return orderA - orderB;
-        });
+        const entry = entries[0];
+        const list = Array.isArray(entry.Customer) ? entry.Customer : [];
 
-        setPartners(partnerList);
+        setPartners(list);
+        if (entry.documentId) {
+          setDocumentId(entry.documentId);
+        }
+
       } catch (err) {
         console.error("❌ 拉取合作伙伴失败", err);
         setPartners([]);
@@ -85,20 +85,13 @@ const PartnerList = ({ currentProductName }) => {
 
                 return (
                   <div key={item.id || idx} className="partner-card">
-                    {/* Logo 区域 */}
                     <div className="partner-logo-wrapper">
                       {logoUrl && (
-                        <img
-                          src={logoUrl}
-                          alt="公司Logo"
-                          className="partner-logo"
-                        />
+                        <img src={logoUrl} alt="公司Logo" className="partner-logo" />
                       )}
                     </div>
 
-                    {/* 主信息区域 */}
                     <div className="partner-main-info">
-                      {/* 基本信息 */}
                       <div className="info-section">
                         <div className="info-section-title">🧾 基本信息</div>
                         <div className="partner-field">
@@ -107,11 +100,7 @@ const PartnerList = ({ currentProductName }) => {
                         </div>
                         <div className="partner-field">
                           <span className="field-label">公司官网：</span>
-                          <a
-                            href={item.companyUrlLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
+                          <a href={item.companyUrlLink} target="_blank" rel="noopener noreferrer">
                             {item.companyUrlLink || "未填写"}
                           </a>
                         </div>
@@ -125,7 +114,6 @@ const PartnerList = ({ currentProductName }) => {
                         </div>
                       </div>
 
-                      {/* 专业资质 */}
                       <div className="info-section">
                         <div className="info-section-title">💼 专业资质</div>
                         <div className="partner-field">
@@ -135,30 +123,17 @@ const PartnerList = ({ currentProductName }) => {
                         {asicUrl && (
                           <div className="partner-field">
                             <span className="field-label">ASIC 证书：</span>
-                            <a
-                              href={asicUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              📄 查看证书
-                            </a>
+                            <a href={asicUrl} target="_blank" rel="noopener noreferrer">📄 查看证书</a>
                           </div>
                         )}
                         {licenseUrl && (
                           <div className="partner-field">
                             <span className="field-label">牌照文件：</span>
-                            <a
-                              href={licenseUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              📎 下载牌照
-                            </a>
+                            <a href={licenseUrl} target="_blank" rel="noopener noreferrer">📎 下载牌照</a>
                           </div>
                         )}
                       </div>
 
-                      {/* 备注 */}
                       <div className="info-section">
                         <div className="info-section-title">📝 备注</div>
                         <div className="partner-field">
@@ -167,15 +142,8 @@ const PartnerList = ({ currentProductName }) => {
                       </div>
                     </div>
 
-                    {/* 立即加入按钮 */}
                     <div className="partner-join-button">
-                      <Link
-                        to={`/products/${encodeURIComponent(
-                          currentProductName
-                        )}/CustomerApplicationForm?partnerID=${encodeURIComponent(
-                          item.partnerID
-                        )}&documentId=${encodeURIComponent(documentId)}`}
-                      >
+                      <Link to={`/products/${encodeURIComponent(currentProductName)}/CustomerApplicationForm?partnerID=${encodeURIComponent(item.partnerID)}&documentId=${encodeURIComponent(documentId)}`}>
                         <button className="custom-join-button">
                           <FaUserPlus style={{ marginRight: "6px" }} />
                           立即加入
@@ -187,13 +155,9 @@ const PartnerList = ({ currentProductName }) => {
               })}
             </div>
 
-            {/* 展开收起按钮 */}
             {partners.length > 2 && (
               <div className="toggle-button-wrapper">
-                <button
-                  className="custom-join-button"
-                  onClick={() => setShowAll(!showAll)}
-                >
+                <button className="custom-join-button" onClick={() => setShowAll(!showAll)}>
                   {showAll ? "收起" : "显示全部"}
                 </button>
               </div>
