@@ -17,7 +17,7 @@ import {
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from 'rehype-raw';
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import { AuthContext } from "../context/AuthContext";
@@ -26,6 +26,7 @@ import PayPalButton from "./PayPalButton.jsx";
 import WechatShare from './WechatShare.jsx';
 import JoinUsButton from './JoinUsButton';
 import PartnerList from './PartnerList';
+
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
@@ -536,6 +537,20 @@ useEffect(() => {
                           </Link>
                         </Col>
                       )}
+                      {/* 合作伙伴按钮（根据当前产品名动态命名） */}
+                      <Col xs={4}>
+                        <Link to={`/products/${baseurl}/PartnerDetail`}>
+                          <Button className='product-detail-funtion-btn'>                           
+                            {
+                              {
+                                Studyfin: "留学中介",
+                                "罗塞尼斯半岛度假村": "旅游中介",
+                                "AI美甲": "加盟商",
+                              }[Name] || "合作伙伴"
+                            }
+                          </Button>
+                        </Link>
+                      </Col>
                       {kol.length > 0 && (
                         <Col xs={4}>
                           <Link
@@ -857,15 +872,15 @@ useEffect(() => {
             </Col>
           </Row>
 
-          <Row>
+          {/* <Row>
             <Col>
               <PartnerList currentProductName={Name}/>
             </Col>
-          </Row>
+          </Row> */}
 
-          <Link to={`/products/${encodeURIComponent(Name)}/PartnerApplicationForm`}>
+          {/* <Link to={`/products/${encodeURIComponent(Name)}/PartnerApplicationForm`}>
             <JoinUsButton />
-          </Link>
+          </Link> */}
 
           {slides !== "N/A" ? (
             <div className="slide-section">

@@ -1,27 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Row, Col, Button } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { FaUserPlus } from "react-icons/fa";
 import "../css/PartnerList.css";
 
-// 动态标题映射
 const productTitleMap = {
-  "Studyfin": "留学中介",
-  "roseneath-holidaypark": "旅游中介",
-  "nail-train": "加盟商"
+  Studyfin: "留学中介",
+  "罗塞尼斯半岛度假村": "旅游中介",
+  "AI美甲": "加盟商",
 };
 
-// 更健壮的媒体处理函数
 function getMediaUrl(media) {
   if (!media) return null;
-  if (Array.isArray(media)) {
-    if (media[0]) return getMediaUrl(media[0]);
-    return null;
-  }
+  if (Array.isArray(media)) return getMediaUrl(media[0]);
   if (media.url) return import.meta.env.VITE_STRAPI_HOST + media.url;
-  if (media.data && media.data.url) return import.meta.env.VITE_STRAPI_HOST + media.data.url;
-  if (media.data && media.data.attributes && media.data.attributes.url)
-    return import.meta.env.VITE_STRAPI_HOST + media.data.attributes.url;
+  if (media.data?.attributes?.url) return import.meta.env.VITE_STRAPI_HOST + media.data.attributes.url;
   return null;
 }
 
@@ -33,11 +27,12 @@ const PartnerList = ({ currentProductName }) => {
   useEffect(() => {
     const fetchPartners = async () => {
       try {
-        const url =
-          `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submission1s` +
-          `?filters[productName][$eq]=${encodeURIComponent(currentProductName)}` +
-          `&populate[Partner][populate][companyLogo]=true` +
-          `&populate[Partner][populate][asicCertificate]=true`;
+        const params = new URLSearchParams();
+        params.append("filters[productName][$eq]", currentProductName);
+        params.append("populate", "*");
+
+        const url = `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submissions?${params.toString()}`;
+        console.log("✅ 最终请求地址：", url);
 
         const res = await axios.get(url, {
           headers: {
@@ -45,123 +40,84 @@ const PartnerList = ({ currentProductName }) => {
           },
         });
 
-        const partnerEntry = res.data.data && res.data.data[0];
-        let partnerList =
-          partnerEntry && Array.isArray(partnerEntry.Partner)
-            ? partnerEntry.Partner
-            : [];
+        const entries = res.data?.data || [];
+        console.log("✅ 后端返回的entries数据：", entries);
 
-        if (partnerEntry && partnerEntry.documentId) {
-          setDocumentId(partnerEntry.documentId);
-        } else {
+        if (entries.length === 0) {
+          setPartners([]);
           setDocumentId("");
+          return;
         }
 
-        partnerList = [...partnerList].sort((a, b) => {
-          const orderA = typeof a.Order === "number" ? a.Order : 9999;
-          const orderB = typeof b.Order === "number" ? b.Order : 9999;
-          return orderA - orderB;
-        });
+        setPartners(entries);
+        setDocumentId(entries[0]?.documentId || "");
 
-        setPartners(partnerList);
       } catch (err) {
         console.error("❌ 拉取合作伙伴失败", err);
         setPartners([]);
-        setDocumentId(""); // 遇到错误也重置
+        setDocumentId("");
       }
     };
 
-    if (currentProductName) {
-      fetchPartners();
-    }
+    if (currentProductName) fetchPartners();
   }, [currentProductName]);
 
-  const visiblePartners = showAll ? partners : partners.slice(0, 2);
-
-  // 动态标题
+  // 先筛选 approved = true 的数据
+  const approvedPartners = partners.filter(p => (p.attributes || p).approved);
+  const visiblePartners = showAll ? approvedPartners : approvedPartners.slice(0, 2);
   const title = productTitleMap[currentProductName] || "合作伙伴";
-
-  // 跳转链接，使用中文“加入我们”
-  const PartnerApplicationFormLink = `/products/${encodeURIComponent(currentProductName)}/PartnerApplicationForm`;
 
   return (
     <Row>
       <Col>
-        <h5>{title}</h5>
-        {partners.length === 0 ? (
-          <p>期待您的加入</p>
+        <h5 className="partner-section-title">{title}</h5>
+        {approvedPartners.length === 0 ? (
+          <p>敬请期待</p>
         ) : (
           <>
             <div className="partner-list-container">
               {visiblePartners.map((item, idx) => {
-                const logoUrl = getMediaUrl(item.companyLogo);
-                const asicUrl = getMediaUrl(item.asicCertificate);
+                const attr = item.attributes || item || {};
+                const logoUrl = getMediaUrl(attr.companyLogo);
+                const asicUrl = getMediaUrl(attr.asicCertificate);
+                const licenseUrl = getMediaUrl(attr.licenseFile);
 
                 return (
                   <div key={item.id || idx} className="partner-card">
-                    {/* 左上角 Logo */}
                     <div className="partner-logo-wrapper">
-                      {logoUrl ? (
-                        <img
-                          src={logoUrl}
-                          alt="公司Logo"
-                          className="partner-logo"
-                        />
-                      ) : null}
+                      {logoUrl && (
+                        <img src={logoUrl} alt="公司Logo" className="partner-logo" />
+                      )}
                     </div>
 
-                    <div className="partner-info-split">
-                      <div className="partner-info-left">
-                        <p>
-                          <strong>公司名称:</strong> {item.companyName || "N/A"}
-                        </p>
-                        <p>
-                          <strong>电话:</strong> {item.Phone || "N/A"}
-                        </p>
-                        <p>
-                          <strong>邮箱:</strong> {item.Email || "N/A"}
-                        </p>
-                        <p>
-                          <strong>公司官网:</strong>{" "}
-                          <a
-                            href={item.companyUrlLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {item.companyUrlLink}
-                          </a>
-                        </p>
-                        <p>
-                          <strong>ABN:</strong> {item.abnNumber || "N/A"}
-                        </p>
+                    <div className="partner-main-info">
+                      <div className="info-section">
+                        <div className="info-section-title">💼 专业资质</div>
+                        <div className="partner-field">
+                          <span className="field-label">从业经验：</span>
+                          {attr.experienceYears || "未填写"}
+                        </div>
                         {asicUrl && (
-                          <p>
-                            <strong>ASIC 证书:</strong>{" "}
-                            <a
-                              href={asicUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              查看证书
-                            </a>
-                          </p>
+                          <div className="partner-field">
+                            <span className="field-label">ASIC 证书：</span>
+                            <a href={asicUrl} target="_blank" rel="noopener noreferrer">📄 查看证书</a>
+                          </div>
                         )}
-                      </div>
-
-                      <div className="partner-info-right">
-                        <p>
-                          <strong>备注:</strong> {item.Notes || "N/A"}
-                        </p>
+                        {licenseUrl && (
+                          <div className="partner-field">
+                            <span className="field-label">牌照文件：</span>
+                            <a href={licenseUrl} target="_blank" rel="noopener noreferrer">📎 查看牌照</a>
+                          </div>
+                        )}
                       </div>
                     </div>
 
                     <div className="partner-join-button">
-                      <Link
-                        to={`/products/${encodeURIComponent(currentProductName)}/CustomerApplicationForm?partnerID=${encodeURIComponent(item.partnerID)}&documentId=${encodeURIComponent(documentId)}`}
-                      >
-                        <Button variant="outline-primary" size="sm">
-                          立即加入
-                        </Button>
+                      <Link to={`/products/${encodeURIComponent(currentProductName)}/CustomerApplicationForm?partnerID=${encodeURIComponent(attr.partnerID)}&documentId=${encodeURIComponent(documentId)}`}>
+                        <button className="custom-join-button">
+                          <FaUserPlus style={{ marginRight: "6px" }} />
+                          立即咨询
+                        </button>
                       </Link>
                     </div>
                   </div>
@@ -169,44 +125,15 @@ const PartnerList = ({ currentProductName }) => {
               })}
             </div>
 
-            {partners.length > 2 && (
-              <div
-                style={{
-                  textAlign: "center",
-                  marginTop: "12px",
-                  marginBottom: "40px",
-                }}
-              >
-                <Button
-                  variant="outline-secondary"
-                  size="sm"
-                  onClick={() => setShowAll(!showAll)}
-                >
+            {approvedPartners.length > 2 && (
+              <div className="toggle-button-wrapper">
+                <button className="custom-join-button" onClick={() => setShowAll(!showAll)}>
                   {showAll ? "收起" : "显示全部"}
-                </Button>
+                </button>
               </div>
             )}
           </>
         )}
-
-        {/* partner-banner 作为跳转按钮，只图片本身可点
-        <div style={{ textAlign: "center", margin: "40px 0 12px 0" }}>
-          <Link to={PartnerApplicationForm}>
-            <img
-              src="/partner-banner.jpg"
-              alt="成为合作伙伴"
-              style={{
-                display: "inline-block",
-                margin: "24px auto",
-                maxWidth: "320px",
-                width: "100%",
-                height: "auto",
-                cursor: "pointer",
-                transition: "opacity 0.2s"
-              }}
-            />
-          </Link>
-        </div> */}
       </Col>
     </Row>
   );

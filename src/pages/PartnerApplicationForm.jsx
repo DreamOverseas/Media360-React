@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Button, Alert, Spinner, Container } from "react-bootstrap";
 import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
-const API_URL = `${STRAPI_HOST}/api/partner-application-submission1s`;
+const PRODUCT_URL = `${STRAPI_HOST}/api/product-application-submissions`;
+const PARTNER_URL = `${STRAPI_HOST}/api/partner-application-submissions`;
 const UPLOAD_URL = `${STRAPI_HOST}/api/upload`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
-// 邮件服务接口（换成你的真实服务器地址）
 const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_PARTNER_APPLICATION_FORM_NOTIFICATION;
 
 const initialFormData = {
@@ -18,7 +18,10 @@ const initialFormData = {
   Notes: "",
   abnNumber: "",
   companyUrlLink: "",
-  agreed: false, // 同意条款与条件
+  cityLocation: "",
+  experienceYears: "",
+  licenseFile: "",
+  agreed: false,
 };
 
 const PartnerApplicationForm = () => {
@@ -31,40 +34,30 @@ const PartnerApplicationForm = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [nextOrder, setNextOrder] = useState(1);
-
-  // 获取下一个 Order
-  useEffect(() => {
-    if (!productName) return setNextOrder(1);
-    const query = new URLSearchParams({
-      'filters[productName][$eq]': productName,
-      'populate': 'Partner'
-    }).toString();
-    axios
-      .get(`${API_URL}?${query}`, {
-        headers: { Authorization: `Bearer ${API_TOKEN}` }
-      })
-      .then((res) => {
-        const existing = res.data?.data?.[0];
-        if (existing && Array.isArray(existing.Partner)) {
-          setNextOrder(existing.Partner.length + 1);
-        } else if (existing && Array.isArray(existing.attributes?.Partner)) {
-          setNextOrder(existing.attributes.Partner.length + 1);
-        } else {
-          setNextOrder(1);
-        }
-      })
-      .catch(() => setNextOrder(1));
-  }, [productName]);
 
   const handleUpload = async (file) => {
     if (!file) return null;
     const data = new FormData();
     data.append("files", file);
     const res = await axios.post(UPLOAD_URL, data, {
-      headers: { Authorization: `Bearer ${API_TOKEN}` }
+      headers: { Authorization: `Bearer ${API_TOKEN}` },
     });
-    return res.data[0]?.id;
+    return res.data?.[0]?.id || null;
+  };
+
+  const getOrCreateProductDocumentId = async () => {
+    const res = await axios.get(`${PRODUCT_URL}?filters[productName][$eq]=${encodeURIComponent(productName)}&fields[0]=documentId`, {
+      headers: { Authorization: `Bearer ${API_TOKEN}` },
+    });
+    const existing = res.data?.data?.[0];
+    if (existing?.documentId) return existing.documentId;
+
+    const createRes = await axios.post(PRODUCT_URL, {
+      data: { productName },
+    }, {
+      headers: { Authorization: `Bearer ${API_TOKEN}` },
+    });
+    return createRes.data?.data?.documentId;
   };
 
   const handleSubmit = async (e) => {
@@ -74,13 +67,12 @@ const PartnerApplicationForm = () => {
     setLoading(true);
 
     if (!productName) {
-      setError("productName 不能为空，请通过产品详情页正确跳转！");
+      setError("缺少产品信息，请正确跳转！");
       setLoading(false);
       return;
     }
-
     if (!formData.agreed) {
-      setError("请先同意条款与条件后再提交！");
+      setError("请同意条款与条件再提交！");
       setLoading(false);
       return;
     }
@@ -88,96 +80,62 @@ const PartnerApplicationForm = () => {
     try {
       const logoId = await handleUpload(companyLogo);
       const certId = await handleUpload(asicCertificateFile);
+      const licenseId = await handleUpload(formData.licenseFile);
+
       const partnerID = uuidv4();
 
-      const newPartner = {
-        companyName: formData.companyName,
+      const partnerRes = await axios.post(PARTNER_URL, {
+        data: {
+          companyName: formData.companyName,
+          partnerID,
+          Phone: formData.Phone,
+          Email: formData.Email,
+          Notes: formData.Notes,
+          abnNumber: formData.abnNumber,
+          companyUrlLink: formData.companyUrlLink,
+          companyLogo: logoId,
+          asicCertificate: certId,
+          licenseFile: licenseId,
+          approved: false,
+          cityLocation: formData.cityLocation,
+          experienceYears: formData.experienceYears,
+          productName,
+        },
+      }, {
+        headers: { Authorization: `Bearer ${API_TOKEN}` },
+      });
+
+      const partnerDocumentId = partnerRes.data?.data?.documentId;
+      if (!partnerDocumentId) throw new Error("获取新 Partner documentId 失败");
+
+      const productDocumentId = await getOrCreateProductDocumentId();
+      if (!productDocumentId) throw new Error("获取或创建 Product documentId 失败");
+
+      // 用 documentId 规范更新关系
+      await axios.put(`${PRODUCT_URL}/${productDocumentId}`, {
+        data: {
+          Partner: {
+            connect: [partnerDocumentId],
+          },
+        },
+      }, {
+        headers: { Authorization: `Bearer ${API_TOKEN}` },
+      });
+
+      axios.post(MAIL_NOTIFY_API, {
+        ...formData,
         partnerID,
-        Phone: formData.Phone,
-        Email: formData.Email,
-        Notes: formData.Notes,
-        abnNumber: formData.abnNumber,
-        companyUrlLink: formData.companyUrlLink,
-        companyLogo: logoId,
-        asicCertificate: certId,
-        approved: false,
-        Order: nextOrder,
-        Customer: []
-      };
-
-      const query = new URLSearchParams({
-        'filters[productName][$eq]': productName,
-        'populate': 'Partner'
-      }).toString();
-      const url = `${API_URL}?${query}`;
-
-      const res = await axios.get(url, {
-        headers: { Authorization: `Bearer ${API_TOKEN}` }
-      });
-
-      const existing = res.data?.data?.[0];
-
-      if (existing && (existing.documentId || existing.id)) {
-        const docId = existing.documentId || existing.id;
-        let currentPartners = [];
-        if (existing.Partner && Array.isArray(existing.Partner)) {
-          currentPartners = existing.Partner;
-        } else if (
-          existing.attributes &&
-          Array.isArray(existing.attributes.Partner)
-        ) {
-          currentPartners = existing.attributes.Partner;
-        }
-        // 移除 Strapi 内部 id 字段
-        const cleanPartnerList = (list) =>
-          list.map(({ id, ...rest }) => ({ ...rest }));
-        const updatedPartners = cleanPartnerList([
-          ...currentPartners,
-          newPartner
-        ]);
-        const putBody = {
-          data: {
-            productName,
-            Partner: updatedPartners
-          }
-        };
-        await axios.put(`${API_URL}/${docId}`, putBody, {
-          headers: { Authorization: `Bearer ${API_TOKEN}` }
-        });
-      } else {
-        const payload = {
-          data: {
-            productName,
-            Partner: [newPartner]
-          }
-        };
-        await axios.post(API_URL, payload, {
-          headers: { Authorization: `Bearer ${API_TOKEN}` }
-        });
-      }
-
-      // === 新增：自动发送邮件通知 ===
-      axios.post(
-        MAIL_NOTIFY_API,
-        {
-          ...formData,       // 传递所有表单字段
-          productName,       // 单独补充产品名
-        }
-      ).catch((err) => {
-        // 邮件发送失败不影响主流程，仅做警告
-        console.warn("邮件通知发送失败", err);
-      });
+        productName,
+      }).catch(err => console.warn("邮件通知失败", err));
 
       setSuccess(true);
       setFormData(initialFormData);
       setCompanyLogo(null);
       setAsicCertificateFile(null);
-      setNextOrder((n) => n + 1);
+
     } catch (err) {
-      setError(
-        err?.response?.data?.error?.message ||
-        JSON.stringify(err?.response?.data || err?.toJSON?.() || err)
-      );
+      console.error(err);
+      setError(err?.response?.data?.error?.message || "提交失败，请重试");
     } finally {
       setLoading(false);
     }
@@ -217,6 +175,52 @@ const PartnerApplicationForm = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3">
+          <Form.Label>ABN 编号</Form.Label>
+          <Form.Control
+            type="text"
+            value={formData.abnNumber}
+            onChange={(e) => setFormData({ ...formData, abnNumber: e.target.value })}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>公司地点（城市）</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            value={formData.cityLocation}
+            onChange={(e) => setFormData({ ...formData, cityLocation: e.target.value })}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>公司网站地址</Form.Label>
+          <Form.Control
+            type="text"
+            value={formData.companyUrlLink}
+            onChange={(e) => setFormData({ ...formData, companyUrlLink: e.target.value })}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>从业经验</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            value={formData.experienceYears}
+            onChange={(e) => setFormData({ ...formData, experienceYears: e.target.value })}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>牌照信息（PDF）</Form.Label>
+          <Form.Control type="file" accept=".pdf" onChange={(e) => setFormData({ ...formData, licenseFile: e.target.files[0] })} />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>公司 Logo</Form.Label>
+          <Form.Control type="file" onChange={(e) => setCompanyLogo(e.target.files[0])} />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>ASIC 证书</Form.Label>
+          <Form.Control type="file" onChange={(e) => setAsicCertificateFile(e.target.files[0])} />
+        </Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>备注</Form.Label>
           <Form.Control
             as="textarea"
@@ -226,50 +230,19 @@ const PartnerApplicationForm = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>ABN 编号</Form.Label>
-          <Form.Control
-            type="text"
-            value={formData.abnNumber}
-            onChange={(e) => setFormData({ ...formData, abnNumber: e.target.value })}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>公司网站地址</Form.Label>
-          <Form.Control
-            type="text"
-            value={formData.companyUrlLink}
-            onChange={e => setFormData({ ...formData, companyUrlLink: e.target.value })}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>公司 Logo</Form.Label>
-          <Form.Control type="file" onChange={(e) => setCompanyLogo(e.target.files[0])} />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>ASIC 证书 (大小不能大于10MB)</Form.Label>
-          <Form.Control type="file" onChange={(e) => setAsicCertificateFile(e.target.files[0])} />
-        </Form.Group>
-
-        {/* 条款与条件复选框（必须同意才可提交） */}
-        <Form.Group className="mb-3">
           <Form.Check
             type="checkbox"
             id="agree-terms"
             label={
               <>
                 我已阅读并同意
-                <Link
-                  to={`/products/${encodeURIComponent(productName)}/PartnerApplicationForm/terms-and-conditions`}
-                  style={{ marginLeft: 4 }}
-                >
+                <Link to={`/products/${encodeURIComponent(productName)}/PartnerApplicationForm/terms-and-conditions`} style={{ marginLeft: 4 }}>
                   条款与条件
                 </Link>
               </>
             }
             checked={formData.agreed}
-            onChange={(e) =>
-              setFormData({ ...formData, agreed: e.target.checked })
-            }
+            onChange={(e) => setFormData({ ...formData, agreed: e.target.checked })}
             required
           />
         </Form.Group>

@@ -4,36 +4,15 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import "../../css/CustomerApplicationForm.css";
 
-// 环境变量配置
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
-const API_URL = `${STRAPI_HOST}/api/partner-application-submission1s`;
+const CUSTOMER_URL = `${STRAPI_HOST}/api/partner-application-forms`;
+const PARTNER_URL = `${STRAPI_HOST}/api/partner-application-submissions`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
-
-// 邮件服务接口（和 PartnerApplicationForm 保持一致，建议写在 .env 里）
 const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_CUSTOMER_APPLICATION_NOTIFICATION;
-
-// 获取 query 参数
-function getQueryParams(search) {
-  return Object.fromEntries(new URLSearchParams(search));
-}
-
-// 移除所有 id 字段（包括嵌套）
-function removeIdDeep(obj) {
-  if (Array.isArray(obj)) {
-    return obj.map(removeIdDeep);
-  } else if (typeof obj === "object" && obj !== null) {
-    const { id, ...rest } = obj;
-    Object.keys(rest).forEach(key => {
-      rest[key] = removeIdDeep(rest[key]);
-    });
-    return rest;
-  }
-  return obj;
-}
 
 const CustomerApplicationForm = () => {
   const { productName } = useParams();
-  const { partnerID, documentId } = getQueryParams(useLocation().search);
+  const { partnerID } = Object.fromEntries(new URLSearchParams(useLocation().search));
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -46,15 +25,15 @@ const CustomerApplicationForm = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!productName || !partnerID || !documentId) {
-      alert("非法访问：缺少 productName、Partner ID 或 documentId。");
+    if (!productName || !partnerID) {
+      alert("缺少必要参数，非法访问！");
       navigate("/");
     }
-  }, [productName, partnerID, documentId, navigate]);
+  }, [productName, partnerID, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -64,93 +43,77 @@ const CustomerApplicationForm = () => {
     setLoading(true);
 
     try {
-      // 拉取当前 documentId 的 entry
-      const query = `?filters[documentId][$eq]=${encodeURIComponent(documentId)}&populate[Partner][populate]=Customer`;
-      const res = await axios.get(`${API_URL}${query}`, {
-        headers: { Authorization: `Bearer ${API_TOKEN}` }
-      });
-      const entry = res.data?.data?.[0];
-      if (!entry) throw new Error("未找到对应的产品数据（documentId）");
-
-      // 获取 Partner 列表
-      const partners = entry.Partner || entry.attributes?.Partner || [];
-      const partnerIndex = partners.findIndex(
-        p => (p.partnerID || p.attributes?.partnerID) === partnerID
-      );
-      if (partnerIndex === -1) throw new Error("未找到对应 Partner");
-
-      // 构建新 Customer 并更新 Partner
-      const partner = partners[partnerIndex];
-      const companyName = partner.companyName || ""; // 提取公司名
-      const customers = partner.Customer || partner.attributes?.Customer || [];
-      const newCustomer = {
-        customerID: uuidv4(),
-        Name: formData.Name,
-        Email: formData.Email,
-        isInAustralia: formData.isInAustralia === "yes"
-      };
-      const updatedCustomers = [...customers, newCustomer];
-
-      // 组装 partner，不带 id 字段
-      const updatedPartner = {
-        ...(partner.partnerID ? { partnerID: partner.partnerID } : {}),
-        ...(partner.companyName ? { companyName: partner.companyName } : {}),
-        ...(partner.Phone ? { Phone: partner.Phone } : {}),
-        ...(partner.Email ? { Email: partner.Email } : {}),
-        ...(partner.Notes ? { Notes: partner.Notes } : {}),
-        ...(partner.companyUrlLink ? { companyUrlLink: partner.companyUrlLink } : {}),
-        ...(partner.companyLogo ? { companyLogo: partner.companyLogo } : {}),
-        ...(partner.abnNumber ? { abnNumber: partner.abnNumber } : {}),
-        ...(partner.asicCertificate ? { asicCertificate: partner.asicCertificate } : {}),
-        ...(partner.approved !== undefined ? { approved: partner.approved } : {}),
-        ...(partner.Order !== undefined ? { Order: partner.Order } : {}),
-        Customer: updatedCustomers
-      };
-
-      // 替换原 partner 数组目标项
-      const updatedPartners = [...partners];
-      updatedPartners[partnerIndex] = updatedPartner;
-      const cleanedPartners = removeIdDeep(updatedPartners);
-
-      // 组装 PUT payload
-      const putPayload = {
-        data: {
-          productName,  // 保持产品名
-          Partner: cleanedPartners
-        }
-      };
-
-      // 用 documentId 作为主键 PUT
-      const putUrl = `${API_URL}/${documentId}`;
-      await axios.put(putUrl, putPayload, {
-        headers: { Authorization: `Bearer ${API_TOKEN}` }
-      });
-
-      // ======= 新增：自动发邮件通知 =======
-      // 收集需要传递给邮件服务的所有变量（按后端模版需求来，这里可以按你的需求灵活加字段）
-      // 推荐：把partner、productName、以及补充的用户信息都传过去，后端想用哪个用哪个
-      await axios.post(
-        MAIL_NOTIFY_API,
+      // 1. 创建 Customer 数据
+      const customerRes = await axios.post(
+        CUSTOMER_URL,
         {
+          data: {
+            customerID: uuidv4(),
             Name: formData.Name,
             Email: formData.Email,
-            isInAustralia: formData.isInAustralia,
-            partnerID,        // 你可以通过 partner.partnerID 或提前保存
-            productName,      // 直接取 useParams
-            documentId,       // 当前文档id，页面参数可直接获取
-            companyName,   // 加上这一行
-            // 你想补充其它字段也可以全部加进来
+            isInAustralia: formData.isInAustralia === "yes",
+          },
+        },
+        {
+          headers: { Authorization: `Bearer ${API_TOKEN}` },
         }
-      ).catch(err => {
-        // 邮件发送失败不影响主流程，仅做警告
-        console.warn("邮件通知发送失败", err);
+      );
+
+      const customerDocumentId = customerRes.data?.data?.documentId;
+      if (!customerDocumentId) throw new Error("创建用户失败");
+
+      console.log("✅ Customer documentId:", customerDocumentId);
+
+      // 2. 查找目标 Partner documentId
+      const query = `?filters[productName][$eq]=${encodeURIComponent(
+        productName
+      )}&filters[partnerID][$eq]=${encodeURIComponent(partnerID)}&fields[0]=documentId`;
+
+      const partnerRes = await axios.get(`${PARTNER_URL}${query}`, {
+        headers: { Authorization: `Bearer ${API_TOKEN}` },
       });
+
+      console.log("✅ Partner 查询结果:", partnerRes.data);
+
+      const partnerEntry = partnerRes.data?.data?.[0];
+      if (!partnerEntry) throw new Error("未找到对应合作伙伴");
+
+      const partnerDocumentId = partnerEntry?.documentId;
+      if (!partnerDocumentId) throw new Error("合作伙伴缺少 documentId");
+
+      console.log("✅ Partner documentId:", partnerDocumentId);
+
+      // 3. 执行关联
+      console.log("✅ 最终 PUT 请求地址:", `${PARTNER_URL}/${partnerDocumentId}`);
+
+      await axios.put(
+        `${PARTNER_URL}/${partnerDocumentId}`,
+        {
+          data: {
+            Customer: {
+              connect: [customerDocumentId],
+            },
+          },
+        },
+        {
+          headers: { Authorization: `Bearer ${API_TOKEN}` },
+        }
+      );
+
+      // 4. 邮件通知
+      axios
+        .post(MAIL_NOTIFY_API, {
+          ...formData,
+          partnerID,
+          productName,
+        })
+        .catch((err) => console.warn("邮件通知失败", err));
 
       setSuccess(true);
       setFormData({ Name: "", Email: "", isInAustralia: "yes" });
     } catch (err) {
-      console.error("❌ 提交失败", err);
-      setError("提交失败，请稍后重试。");
+      console.error(err);
+      setError(err?.response?.data?.error?.message || "提交失败，请稍后重试");
     } finally {
       setLoading(false);
     }
@@ -161,6 +124,7 @@ const CustomerApplicationForm = () => {
       <h2>补充申请信息</h2>
       {success && <p className="success-message">✅ 提交成功！</p>}
       {error && <p className="error-message">❌ {error}</p>}
+
       <form onSubmit={handleSubmit}>
         <label>姓名：</label>
         <input
@@ -203,6 +167,7 @@ const CustomerApplicationForm = () => {
             否
           </label>
         </div>
+
         <button type="submit" disabled={loading}>
           {loading ? "提交中..." : "提交补充信息"}
         </button>
