@@ -24,44 +24,43 @@ const PartnerList = ({ currentProductName }) => {
   const [documentId, setDocumentId] = useState("");
   const [showAll, setShowAll] = useState(false);
 
-useEffect(() => {
-  const fetchPartners = async () => {
-    try {
-      const params = new URLSearchParams();
-      params.append("filters[productName][$eq]", currentProductName);
-      params.append("populate", "*");
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        const params = new URLSearchParams();
+        params.append("filters[productName][$eq]", currentProductName);
+        params.append("populate", "*");
 
-      const url = `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submissions?${params.toString()}`;
+        const url = `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submissions?${params.toString()}`;
+        console.log("✅ 最终请求地址：", url);
 
-      console.log("✅ 最终请求地址：", url);
+        const res = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD}`,
+          },
+        });
 
-      const res = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD}`,
-        },
-      });
+        const entries = res.data?.data || [];
+        console.log("✅ 后端返回的entries数据：", entries);
 
-      const entries = res.data?.data || [];
-      console.log("✅ 后端返回的entries数据：", entries);
+        if (entries.length === 0) {
+          setPartners([]);
+          setDocumentId("");
+          return;
+        }
 
-      if (entries.length === 0) {
+        setPartners(entries);
+        setDocumentId(entries[0]?.documentId || "");
+
+      } catch (err) {
+        console.error("❌ 拉取合作伙伴失败", err);
         setPartners([]);
         setDocumentId("");
-        return;
       }
+    };
 
-      setPartners(entries);
-      setDocumentId(entries[0]?.documentId || "");
-
-    } catch (err) {
-      console.error("❌ 拉取合作伙伴失败", err);
-      setPartners([]);
-      setDocumentId("");
-    }
-  };
-
-  if (currentProductName) fetchPartners();
-}, [currentProductName]);
+    if (currentProductName) fetchPartners();
+  }, [currentProductName]);
 
   const visiblePartners = showAll ? partners : partners.slice(0, 2);
   const title = productTitleMap[currentProductName] || "合作伙伴";
@@ -76,7 +75,7 @@ useEffect(() => {
           <>
             <div className="partner-list-container">
               {visiblePartners.map((item, idx) => {
-                const attr = item.attributes || {};
+                const attr = item.attributes || item || {};
                 const logoUrl = getMediaUrl(attr.companyLogo);
                 const asicUrl = getMediaUrl(attr.asicCertificate);
                 const licenseUrl = getMediaUrl(attr.licenseFile);
@@ -144,7 +143,7 @@ useEffect(() => {
                       <Link to={`/products/${encodeURIComponent(currentProductName)}/CustomerApplicationForm?partnerID=${encodeURIComponent(attr.partnerID)}&documentId=${encodeURIComponent(documentId)}`}>
                         <button className="custom-join-button">
                           <FaUserPlus style={{ marginRight: "6px" }} />
-                          立即加入
+                          立即咨询
                         </button>
                       </Link>
                     </div>
