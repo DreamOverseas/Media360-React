@@ -62,15 +62,17 @@ const PartnerList = ({ currentProductName }) => {
     if (currentProductName) fetchPartners();
   }, [currentProductName]);
 
-  const visiblePartners = showAll ? partners : partners.slice(0, 2);
+  // 先筛选 approved = true 的数据
+  const approvedPartners = partners.filter(p => (p.attributes || p).approved);
+  const visiblePartners = showAll ? approvedPartners : approvedPartners.slice(0, 2);
   const title = productTitleMap[currentProductName] || "合作伙伴";
 
   return (
     <Row>
       <Col>
         <h5 className="partner-section-title">{title}</h5>
-        {partners.length === 0 ? (
-          <p>期待您的加入</p>
+        {approvedPartners.length === 0 ? (
+          <p>敬请期待</p>
         ) : (
           <>
             <div className="partner-list-container">
@@ -123,7 +125,7 @@ const PartnerList = ({ currentProductName }) => {
               })}
             </div>
 
-            {partners.length > 2 && (
+            {approvedPartners.length > 2 && (
               <div className="toggle-button-wrapper">
                 <button className="custom-join-button" onClick={() => setShowAll(!showAll)}>
                   {showAll ? "收起" : "显示全部"}
