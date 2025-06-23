@@ -106,7 +106,7 @@ const PartnerList = ({ currentProductName }) => {
                         {licenseUrl && (
                           <div className="partner-field">
                             <span className="field-label">牌照文件：</span>
-                            <a href={licenseUrl} target="_blank" rel="noopener noreferrer">📎 下载牌照</a>
+                            <a href={licenseUrl} target="_blank" rel="noopener noreferrer">📎 查看牌照</a>
                           </div>
                         )}
                       </div>
