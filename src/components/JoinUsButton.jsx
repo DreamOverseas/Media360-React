@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+import '../css/JoinUsButton.css';
+
 
 const productTitleMap = {
   Studyfin: "留学中介",
@@ -13,9 +14,9 @@ const JoinUsButton = (props) => {
   const role = productTitleMap[productName] || "合作伙伴";
 
   return (
-    <Button className="product-detail-funtion-btn" {...props}>
+    <button className="modern-joinus-btn" {...props}>
       成为{role}
-    </Button>
+    </button>
   );
 };
 

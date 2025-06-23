@@ -1,0 +1,23 @@
+.modern-joinus-btn {
+  background: linear-gradient(90deg, #4A90E2, #357ABD);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.modern-joinus-btn:hover {
+  background: linear-gradient(90deg, #357ABD, #2C6BB2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modern-joinus-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
