@@ -14,52 +14,38 @@
   border: 1px solid #e0e0e0;
   background: #fff;
   transition: all 0.3s ease;
-}
-
-.partner-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  overflow: hidden; /* ✅ 避免子元素穿透 */
+  display: flex;
+  align-items: flex-start;
 }
 
 /* ===== Logo 显示区 ===== */
 .partner-logo-wrapper {
-  position: absolute;
-  top: 24px;
-  left: 24px;
-  width: 200px;       /* 原来是 80px，改大 */
+  width: 200px;
   height: 200px;
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid #ddd;
   background: #fff;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .partner-logo {
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
 }
 
 /* ===== 信息分区 ===== */
-.partner-info-split {
-  display: flex;
-  justify-content: space-between;
-  margin-left: 110px;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.partner-info-left,
-.partner-info-right {
-  flex: 1 1 45%;
-}
-
-/* 新增：分组结构美化 */
 .partner-main-info {
-  margin-left: 220px;   /* ✅ 从140增加到220，让内容整体右移避免被挡 */
+  margin-left: 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  flex: 1;
 }
 
 .info-section {
@@ -130,7 +116,6 @@
   margin-top: 20px;
 }
 
-
 @media (max-width: 768px) {
   .partner-logo-wrapper {
     width: 100px;
@@ -138,6 +123,22 @@
   }
 
   .partner-main-info {
-    margin-left: 130px;
+    margin-left: 16px;
+  }
+
+  .partner-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .partner-main-info {
+    margin-top: 16px;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .partner-join-button {
+    top: 16px;
+    right: 16px;
   }
 }

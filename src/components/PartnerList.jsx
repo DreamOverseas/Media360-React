@@ -90,28 +90,6 @@ const PartnerList = ({ currentProductName }) => {
 
                     <div className="partner-main-info">
                       <div className="info-section">
-                        <div className="info-section-title">🧾 基本信息</div>
-                        <div className="partner-field">
-                          <span className="field-label">公司名称：</span>
-                          {attr.companyName || "未填写"}
-                        </div>
-                        <div className="partner-field">
-                          <span className="field-label">公司官网：</span>
-                          <a href={attr.companyUrlLink} target="_blank" rel="noopener noreferrer">
-                            {attr.companyUrlLink || "未填写"}
-                          </a>
-                        </div>
-                        <div className="partner-field">
-                          <span className="field-label">公司地址：</span>
-                          {attr.cityLocation || "未填写"}
-                        </div>
-                        <div className="partner-field">
-                          <span className="field-label">ABN：</span>
-                          {attr.abnNumber || "未填写"}
-                        </div>
-                      </div>
-
-                      <div className="info-section">
                         <div className="info-section-title">💼 专业资质</div>
                         <div className="partner-field">
                           <span className="field-label">从业经验：</span>
@@ -129,13 +107,6 @@ const PartnerList = ({ currentProductName }) => {
                             <a href={licenseUrl} target="_blank" rel="noopener noreferrer">📎 下载牌照</a>
                           </div>
                         )}
-                      </div>
-
-                      <div className="info-section">
-                        <div className="info-section-title">📝 备注</div>
-                        <div className="partner-field">
-                          {attr.Notes || "无备注"}
-                        </div>
                       </div>
                     </div>
 
