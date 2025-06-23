@@ -24,47 +24,44 @@ const PartnerList = ({ currentProductName }) => {
   const [documentId, setDocumentId] = useState("");
   const [showAll, setShowAll] = useState(false);
 
-  useEffect(() => {
-    const fetchPartners = async () => {
-      try {
-        const params = new URLSearchParams();
-        params.append("filters[productName][$eq]", currentProductName);
-        params.append("populate", "*");
+useEffect(() => {
+  const fetchPartners = async () => {
+    try {
+      const params = new URLSearchParams();
+      params.append("filters[productName][$eq]", currentProductName);
+      params.append("populate", "*");
 
-        const url = `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submissions?${params.toString()}`;
+      const url = `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submissions?${params.toString()}`;
 
-        console.log("最终请求地址：", url);
+      console.log("✅ 最终请求地址：", url);
 
-        const res = await axios.get(url, {
-          headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD}`,
-          },
-        });
+      const res = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD}`,
+        },
+      });
 
-        const entries = res.data?.data || [];
-        if (entries.length === 0) {
-          setPartners([]);
-          setDocumentId("");
-          return;
-        }
+      const entries = res.data?.data || [];
+      console.log("✅ 后端返回的entries数据：", entries);
 
-        const entry = entries[0];
-        const list = Array.isArray(entry.Customer) ? entry.Customer : [];
-
-        setPartners(list);
-        if (entry.documentId) {
-          setDocumentId(entry.documentId);
-        }
-
-      } catch (err) {
-        console.error("❌ 拉取合作伙伴失败", err);
+      if (entries.length === 0) {
         setPartners([]);
         setDocumentId("");
+        return;
       }
-    };
 
-    if (currentProductName) fetchPartners();
-  }, [currentProductName]);
+      setPartners(entries);
+      setDocumentId(entries[0]?.documentId || "");
+
+    } catch (err) {
+      console.error("❌ 拉取合作伙伴失败", err);
+      setPartners([]);
+      setDocumentId("");
+    }
+  };
+
+  if (currentProductName) fetchPartners();
+}, [currentProductName]);
 
   const visiblePartners = showAll ? partners : partners.slice(0, 2);
   const title = productTitleMap[currentProductName] || "合作伙伴";
@@ -79,9 +76,10 @@ const PartnerList = ({ currentProductName }) => {
           <>
             <div className="partner-list-container">
               {visiblePartners.map((item, idx) => {
-                const logoUrl = getMediaUrl(item.companyLogo);
-                const asicUrl = getMediaUrl(item.asicCertificate);
-                const licenseUrl = getMediaUrl(item.licenseFile);
+                const attr = item.attributes || {};
+                const logoUrl = getMediaUrl(attr.companyLogo);
+                const asicUrl = getMediaUrl(attr.asicCertificate);
+                const licenseUrl = getMediaUrl(attr.licenseFile);
 
                 return (
                   <div key={item.id || idx} className="partner-card">
@@ -96,21 +94,21 @@ const PartnerList = ({ currentProductName }) => {
                         <div className="info-section-title">🧾 基本信息</div>
                         <div className="partner-field">
                           <span className="field-label">公司名称：</span>
-                          {item.companyName || "未填写"}
+                          {attr.companyName || "未填写"}
                         </div>
                         <div className="partner-field">
                           <span className="field-label">公司官网：</span>
-                          <a href={item.companyUrlLink} target="_blank" rel="noopener noreferrer">
-                            {item.companyUrlLink || "未填写"}
+                          <a href={attr.companyUrlLink} target="_blank" rel="noopener noreferrer">
+                            {attr.companyUrlLink || "未填写"}
                           </a>
                         </div>
                         <div className="partner-field">
                           <span className="field-label">公司地址：</span>
-                          {item.cityLocation || "未填写"}
+                          {attr.cityLocation || "未填写"}
                         </div>
                         <div className="partner-field">
                           <span className="field-label">ABN：</span>
-                          {item.abnNumber || "未填写"}
+                          {attr.abnNumber || "未填写"}
                         </div>
                       </div>
 
@@ -118,7 +116,7 @@ const PartnerList = ({ currentProductName }) => {
                         <div className="info-section-title">💼 专业资质</div>
                         <div className="partner-field">
                           <span className="field-label">从业经验：</span>
-                          {item.experienceYears || "未填写"}
+                          {attr.experienceYears || "未填写"}
                         </div>
                         {asicUrl && (
                           <div className="partner-field">
@@ -137,13 +135,13 @@ const PartnerList = ({ currentProductName }) => {
                       <div className="info-section">
                         <div className="info-section-title">📝 备注</div>
                         <div className="partner-field">
-                          {item.Notes || "无备注"}
+                          {attr.Notes || "无备注"}
                         </div>
                       </div>
                     </div>
 
                     <div className="partner-join-button">
-                      <Link to={`/products/${encodeURIComponent(currentProductName)}/CustomerApplicationForm?partnerID=${encodeURIComponent(item.partnerID)}&documentId=${encodeURIComponent(documentId)}`}>
+                      <Link to={`/products/${encodeURIComponent(currentProductName)}/CustomerApplicationForm?partnerID=${encodeURIComponent(attr.partnerID)}&documentId=${encodeURIComponent(documentId)}`}>
                         <button className="custom-join-button">
                           <FaUserPlus style={{ marginRight: "6px" }} />
                           立即加入
