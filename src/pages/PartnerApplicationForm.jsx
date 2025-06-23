@@ -99,6 +99,7 @@ const PartnerApplicationForm = () => {
           approved: false,
           cityLocation: formData.cityLocation,
           experienceYears: formData.experienceYears,
+          productName,
         },
       }, {
         headers: { Authorization: `Bearer ${API_TOKEN}` },
