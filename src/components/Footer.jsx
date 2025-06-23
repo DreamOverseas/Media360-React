@@ -11,233 +11,267 @@ const Footer = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className='footer'>
-      <Container className='mobile-footer-container'>
+    <footer className="bg-gray-800 text-white">
+      <div className="max-w-7xl mx-auto py-6">
         {onDesktop ? (
-          <div>
-            <Row style={{marginBottom:"10px"}}>
-              <Col 
-              xs={3} 
-              md={1}
-              >
-                <Image
-                  src='/footer_logo.png'
-                  alt='Logo'
-                />
-              </Col>
-              <Col 
-              xs={2} 
-              md={1}
-              >
-                <Link to={`/merchant/360-media-promotion-service`}>
-                  <Button style={{backgroundColor:"#73b2ea",color:"white", width:"70px"}}className='update-function-btn'>加入我们</Button>
-                </Link>
-              </Col>
-            </Row>
-            {/* <div className="d-flex gap-3">
-              <Link to={`/about-us`}>
-                <Button style={{width:"70px"}} className='update-function-btn'>关于我们</Button>
-              </Link>
-              <Link to={`/events`}>
-                <Button style={{width:"70px"}} className='update-function-btn'>活动</Button>
-              </Link>
-              <Link to={`/news`}>
-                <Button style={{width:"70px"}} className='update-function-btn'>新闻</Button>
-              </Link>
-              <Link to={`/influence-hub`}>
-                <Button style={{width:"70px"}} className='update-function-btn'>人脉资源</Button>
-              </Link>
-            </div> */}
-            <Row className="footer-info">
-                <Col>
-                  <Row>
-                    <Col
-                        xs={1}
-                      >
-                        <i className='bi bi-pin-map-fill'></i>
-                      </Col>
-                      <Col>
-                        <p>
-                          L2 171 La Trobe Street <br /> Melbourne VIC 3000
-                        </p>
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col
-                      xs={1}
-                    >
-                      <i className='bi bi-telephone-inbound-fill'></i>
-                    </Col>
-                    <Col>
-                      <p>
-                        <a href='tel:+61413168533' className='phone-link'>
-                          +61 (0)413 168 533
-                        </a>
-                      </p>
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col
-                      xs={1}
-                    >
-                      <i className='bi bi-mailbox2'></i>
-                    </Col>
-                    <Col>
-                      <p>info@do360.com</p>
-                    </Col>
-                  </Row>
-                </Col>
-
-                <Col>
-                  <Row style={{height:"70px"}} className="d-flex justify-content-center align-items-center text-center">
-                    <Image style={{ maxHeight: "100%", width: "auto", objectFit: "contain" }} src="/WechatOfficialAccount.png"/>
-                  </Row>
-                <div className="d-flex gap-3 text-black justify-center mt-10 text-sm">
-                  <DoTermsAndConditions defaultLang="zh" />
+          <>
+            {/* Desktop Layout */}
+            <div className="grid grid-cols-4 gap-8 mb-8">
+              {/* Logo Column */}
+              <div className="col-span-1">
+                <div className="w-24 mb-4">
+                  <img
+                    src="/footer_logo.png"
+                    alt="Logo"
+                    className="w-full h-auto"
+                  />
                 </div>
-                </Col> 
-            </Row>
-            <Row>
-            <div className="d-flex gap-5 align-items-center w-100 social-media-section">
+                <a href="/merchant/360-media-promotion-service">
+                  <button className="bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded transition-colors text-sm font-medium">
+                    {t("joinus")}
+                  </button>
+                </a>
+              </div>
 
-              <a href="https://www.xiaohongshu.com/user/profile/5fc6e9140000000001008c09" target="_blank" rel="noopener noreferrer"  className="d-flex align-items-center text-white text-decoration-none">
-                <img src="/icons/red_note.png" alt="小红书" style={{ height: '20px', marginRight: '8px' }} />
-                小红书
-              </a>
+              {/* Quick Links Column */}
+              <div className="col-span-1">
+                <h3 className="text-base font-semibold text-white mb-3">{t("quick_links")}</h3>
+                <div className="flex align-items-start flex-col gap-2 space-y-2">
+                  <a href="/about-us" className="text-gray-300 text-white text-center text-decoration-none">
+                    {t("About_us")}
+                  </a>
+                  <a href="/networks" className="text-gray-300 text-white text-center text-decoration-none">
+                    {t("networks")}
+                  </a>
+                  <a href="/news" className="text-gray-300 text-white text-center text-decoration-none">
+                    {t("news")}
+                  </a>
+                  <a href="/events" className="text-gray-300 text-white text-center text-decoration-none">
+                    {t("event")}
+                  </a>
+                </div>
+              </div>
 
-              <a href="https://space.bilibili.com/3546717257468817" target="_blank" rel="noopener noreferrer"  className="d-flex align-items-center text-white text-decoration-none">
-                <img src="/icons/bilibili.png" alt="B站" style={{ height: '20px', marginRight: '8px' }} />
-                B站
-              </a>
-            </div>
-            {/* <div className="d-flex gap-5 align-items-center w-100"> */}
-
-              {/* <a href="https://www.instagram.com/360media360media/" target="_blank" rel="noopener noreferrer" className="d-flex align-items-center text-white text-decoration-none">
-                <img src="/icons/instagram.png" alt="Instagram" style={{ height: '20px', marginRight: '8px' }} />
-                Instagram
-              </a> */}
-
-            {/* </div> */}
-          </Row>
-                
-          </div>
-        ) : (
-          <div>
-            <Row style={{marginBottom:"10px"}}>
-              <Col 
-              xs={2} 
-              md={4}
-              >
-                <Image
-                  src='/footer_logo.png'
-                  alt='Logo'
-                  className='mobile-footer-logo'
-                  fluid
-                />
-              </Col>
-              <Col 
-              xs={2} 
-              md={4}
-              >
-                <Link to={`/merchant/360-media-promotion-service`}>
-                  <Button style={{backgroundColor:"#73b2ea",color:"white", width:"70px"}}className='update-function-btn'>加入我们</Button>
-                </Link>
-              </Col>
-            </Row>
-            {/* <div className="d-flex gap-3">
-              <Link to={`/about-us`}>
-                <Button style={{width:"70px"}} className='update-function-btn'>关于我们</Button>
-              </Link>
-              <Link to={`/events`}>
-                <Button style={{width:"70px"}} className='update-function-btn'>活动</Button>
-              </Link>
-              <Link to={`/news`}>
-                <Button style={{width:"70px"}} className='update-function-btn'>新闻</Button>
-              </Link>
-              <Link to={`/influence-hub`}>
-                <Button style={{width:"70px"}} className='update-function-btn'>人脉资源</Button>
-              </Link>
-            </div> */}
-            <Row className="footer-info">
-                <Col>
-                  <Row>
-                    <Col
-                        xs={1}
-                      >
-                        <i className='bi bi-pin-map-fill'></i>
-                      </Col>
-                      <Col>
-                        <p>
-                          L2 171 La Trobe Street <br /> Melbourne VIC 3000
-                        </p>
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col
-                      xs={1}
+              {/* Contact Us Column */}
+              <div className="col-span-1">
+                <h3 className="text-lg font-semibold mb-3">{t("contact")}</h3>
+                <div className="mt-3 space-y-6">
+                  <div className="flex items-center gap-3">
+                    <i className="bi bi-pin-map-fill text-lg text-blue-400 flex-shrink-0"></i>
+                    <a 
+                      href="https://www.google.com/maps/search/?api=1&query=L2+171+La+Trobe+Street,+Melbourne+VIC+3000"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-gray-300 leading-relaxed text-white"
                     >
-                      <i className='bi bi-telephone-inbound-fill'></i>
-                    </Col>
-                    <Col>
-                      <p>
-                        <a href='tel:+61413168533' className='phone-link'>
-                          +61 (0)413 168 533
-                        </a>
-                      </p>
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col
-                      xs={1}
-                    >
-                      <i className='bi bi-mailbox2'></i>
-                    </Col>
-                    <Col>
-                      <p>info@do360.com</p>
-                    </Col>
-                  </Row>
-                </Col>
-
-                <Col>
-                  <Row style={{height:"70px"}} className="d-flex justify-content-center align-items-center text-center">
-                    <Image style={{ maxHeight: "100%", width: "auto", objectFit: "contain" }} src="/WechatOfficialAccount.png"/>
-                  </Row>
-                  <div className="d-flex gap-3 justify-center text-black text-sm">
-                    <DoTermsAndConditions defaultLang="zh" />
+                      L2 171 La Trobe Street <br />
+                      Melbourne VIC 3000
+                    </a>
                   </div>
-                </Col> 
-            </Row>
-            <Row>
-            <div className="d-flex gap-5 align-items-center w-100 social-media-section">
+                  <div className="flex items-center gap-3">
+                    <i className="bi bi-telephone-inbound-fill text-lg text-blue-400 flex-shrink-0"></i>
+                    <a href="tel:+61413168533" className="text-sm text-gray-300 text-white">
+                      +61 (0)413 168 533
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <i className="bi bi-mailbox2 text-lg text-blue-400 flex-shrink-0"></i>
+                    <a href="mailto:info@do360.com" className="text-sm text-gray-300 text-white">
+                      info@do360.com
+                    </a>
+                  </div>
+                </div>
+              </div>
 
-              <a href="https://www.xiaohongshu.com/user/profile/5fc6e9140000000001008c09" target="_blank" rel="noopener noreferrer" style={{fontSize:"12px"}} className="d-flex align-items-center text-white text-decoration-none">
-                <img src="/icons/red_note.png" alt="小红书" style={{ height: '20px', marginRight: '8px' }} />
-                小红书
-              </a>
-
-              <a href="https://space.bilibili.com/3546717257468817" target="_blank" rel="noopener noreferrer" style={{fontSize:"12px"}} className="d-flex align-items-center text-white text-decoration-none">
-                <img src="/icons/bilibili.png" alt="B站" style={{ height: '20px', marginRight: '8px' }} />
-                B站
-              </a>
-
+              {/* Follow Us Column */}
+              <div className="col-span-1">
+                <h3 className="text-base font-semibold text-center text-white mb-3">{t("follow_us")}</h3>
+                <div className="flex justify-center items-center gap-2 mb-3">
+                  <a
+                    href="https://www.xiaohongshu.com/user/profile/5fc6e9140000000001008c09"
+                    rel="noopener noreferrer"
+                    className="flex flex-col items-center gap-1 text-gray-300"
+                  >
+                    <img src="/icons/red_note.png" alt="小红书" className="w-6 h-6" />
+                  </a>
+                  <a
+                    href="https://space.bilibili.com/3546717257468817"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col items-center gap-1 text-gray-300"
+                  >
+                    <img src="/icons/bilibili.png" alt="B站" className="w-6 h-6" />
+                  </a>
+                  {/* <a
+                    href="#"
+                    className="flex flex-col items-center gap-1 text-gray-300"
+                  >
+                    <img src="/icons/instagram.png" alt="Instagram" className="w-6 h-6" />
+                  </a>
+                  <a
+                    href="#"
+                    className="flex flex-col items-center gap-1 text-gray-300"
+                  >
+                    <img src="/icons/instagram.png" alt="Instagram" className="w-6 h-6" />
+                  </a>
+                  <a
+                    href="#"
+                    className="flex flex-col items-center gap-1 text-gray-300"
+                  >
+                    <img src="/icons/instagram.png" alt="Instagram" className="w-6 h-6" />
+                  </a> */}
+                </div>
+                <div className="flex justify-center">
+                  <a
+                    href="/WechatOfficialAccount.png"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img src="/WechatOfficialAccount.png" alt="WeChat" className="w-24 h-12 object-contain" />
+                  </a>
+                </div>
+              </div>
             </div>
-            {/* <div className="d-flex gap-5 align-items-center w-100"> */}
 
-              {/* <a href="https://www.instagram.com/360media360media/" target="_blank" rel="noopener noreferrer" style={{fontSize:"12px"}} className="d-flex align-items-center text-white text-decoration-none">
-                <img src="/icons/instagram.png" alt="Instagram" style={{ height: '20px', marginRight: '8px' }} />
-                Instagram
-              </a> */}
+            {/* Desktop Bottom Section */}
+            <div className="border-t border-gray-600 pt-6">
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div className="text-sm text-gray-400">
+                  © 2024 Dream Overseas Group Pty Ltd. All rights reserved.
+                </div>
+                <div className="flex gap-6 text-sm">
+                  <DoTermsAndConditions defaultLang="en" />
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Mobile Layout */}
+            <div>
+              {/* Two Column Layout: Quick Links and Follow Us */}
+              <div className="grid grid-cols-2 gap-4 mb-2">
+                {/* Quick Links Section */}
+                <div>
+                  <h3 className="text-base font-semibold text-white mb-2">{t("quick_links")}</h3>
+                  <div className="flex align-items-start flex-col gap-2">
+                    <a href="/about-us" className="text-gray-300 text-xs text-white text-center text-decoration-none">
+                      {t("About_us")}
+                    </a>
+                    <a href="/networks" className="text-gray-300 text-xs text-white text-center text-decoration-none">
+                      {t("networks")}
+                    </a>
+                    <a href="/news" className="text-gray-300 text-xs text-white text-center text-decoration-none">
+                      {t("news")}
+                    </a>
+                    <a href="/events" className="text-gray-300 text-xs text-white text-center text-decoration-none">
+                      {t("event")}
+                    </a>
+                  </div>
+                </div>
 
-            {/* </div> */}
-          </Row>
-                
-          </div>
+                {/* Follow Us Section */}
+                <div>
+                  <h3 className="text-base font-semibold text-center text-white mb-2">{t("follow_us")}</h3>
+                  <div className="flex justify-center items-center gap-2 mb-3">
+                    <a
+                      href="https://www.xiaohongshu.com/user/profile/5fc6e9140000000001008c09"
+                      rel="noopener noreferrer"
+                      className="flex flex-col items-center gap-1 text-gray-300"
+                    >
+                      <img src="/icons/red_note.png" alt="小红书" className="w-6 h-6" />
+                    </a>
+                    <a
+                      href="https://space.bilibili.com/3546717257468817"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-col items-center gap-1 text-gray-300"
+                    >
+                      <img src="/icons/bilibili.png" alt="B站" className="w-6 h-6" />
+                    </a>
+                    {/* <a
+                      href="#"
+                      className="flex flex-col items-center gap-1 text-gray-300"
+                    >
+                      <img src="/icons/instagram.png" alt="Instagram" className="w-6 h-6" />
+                    </a>
+                    <a
+                      href="#"
+                      className="flex flex-col items-center gap-1 text-gray-300"
+                    >
+                      <img src="/icons/instagram.png" alt="Instagram" className="w-6 h-6" />
+                    </a>
+                    <a
+                      href="#"
+                      className="flex flex-col items-center gap-1 text-gray-300"
+                    >
+                      <img src="/icons/instagram.png" alt="Instagram" className="w-6 h-6" />
+                    </a> */}
+                  </div>
+                  <div className="flex justify-center">
+                    <a
+                      href="/WechatOfficialAccount.png"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img src="/WechatOfficialAccount.png" alt="WeChat" className="w-24 h-12 object-contain" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Us Section */}
+              <div className="pt-3 border-t border-gray-600 mb-2">
+                <h3 className="text-base font-semibold mb-2 text-center text-white">{t("contact")}</h3>
+                <div className="space-y-1">
+                  <div className="flex items-center justify-center gap-3">
+                    <a 
+                      href="https://www.google.com/maps/place/171+La+Trobe+St,+Melbourne+VIC+3000/@-37.8089628,144.9640887,1693m/data=!3m1!1e3!4m6!3m5!1s0x6ad642ceaaa1eafd:0x3639407fc162ca2a!8m2!3d-37.8089628!4d144.966669!16s%2Fg%2F11bzzrlw_s?entry=ttu&g_ep=EgoyMDI1MDYxNy4wIKXMDSoASAFQAw%3D%3D"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-gray-300 leading-tight text-center text-white"
+                    >
+                      L2 171 La Trobe Street, Melbourne VIC 3000
+                    </a>
+                  </div>
+                  <div className="flex items-center justify-center gap-3">
+                    <a href="tel:+61413168533" className="text-xs text-gray-300 text-white">
+                      +61 (0)413 168 533
+                    </a>
+                  </div>
+                  <div className="flex items-center justify-center gap-3">
+                    <a href="mailto:info@do360.com" className="text-xs text-gray-300 text-white">
+                      info@do360.com
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Join Us Button */}
+              <div className="flex items-center justify-center mt-3 mb-3">
+                <a href="/merchant/360-media-promotion-service">
+                  <button className="bg-blue-400 hover:bg-blue-500 text-white px-3 py-1.5 rounded transition-colors text-xs font-medium">
+                    {t("joinus")}
+                  </button>
+                </a>
+              </div>
+            </div>
+
+            {/* Mobile Bottom Section */}
+            <div className="border-t border-gray-600 pt-3">
+              <div className="text-center">
+                <div className="text-xs text-gray-400">
+                  <p className="mb-0">© 2024 Dream Overseas Group Pty Ltd.</p> 
+                  <p className="mb-0">All rights reserved.</p>
+                </div>
+                <div className="flex justify-center text-xs">
+                  <DoTermsAndConditions defaultLang="en" />
+                </div>
+              </div>
+            </div>
+          </>
         )}
-      </Container>
+      </div>
     </footer>
   );
 };

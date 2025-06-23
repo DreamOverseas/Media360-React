@@ -752,12 +752,9 @@ useEffect(() => {
                     </Link>
                   )}
                 </Row>
- 
-                {onDesktop ? (
-                  <></>
-                ) : (
-                  <>
-                    <AccordionItem
+
+                <>
+                  <AccordionItem
                       idx="detail-accordion"
                       header={DetailHeading}
                       detail={Detail}
@@ -775,9 +772,12 @@ useEffect(() => {
                     ):(
                       <></>
                     )}
-
-                    
-
+                </>
+ 
+                {onDesktop ? (
+                  <></>
+                ) : (
+                  <>
                     <Row>
                       <h4>查看相关信息</h4>
                       <Row>
@@ -863,20 +863,10 @@ useEffect(() => {
                         <span className='share-title'>分享此产品</span>
                       </button>
                     </Row> */}
-
-                    
                   </>
-
                   
                 )}
 
-              
-                <AccordionItem
-                  idx="detail-accordion"
-                  header={DetailHeading}
-                  detail={Detail}
-                  defaultOpen={false}
-                />
 
               </Container>
             </Col>
