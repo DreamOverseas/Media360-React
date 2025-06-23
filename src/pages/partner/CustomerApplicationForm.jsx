@@ -5,14 +5,14 @@ import axios from "axios";
 import "../../css/CustomerApplicationForm.css";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
-const CUSTOMER_URL = `${STRAPI_HOST}/api/customer-application-submissions`;
+const CUSTOMER_URL = `${STRAPI_HOST}/api/partner-application-forms`;
 const PARTNER_URL = `${STRAPI_HOST}/api/partner-application-submissions`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
 const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_CUSTOMER_APPLICATION_NOTIFICATION;
 
 const CustomerApplicationForm = () => {
   const { productName } = useParams();
-  const { partnerID, documentId } = Object.fromEntries(new URLSearchParams(useLocation().search));
+  const { partnerID } = Object.fromEntries(new URLSearchParams(useLocation().search));
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -25,15 +25,15 @@ const CustomerApplicationForm = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!productName || !partnerID || !documentId) {
+    if (!productName || !partnerID) {
       alert("缺少必要参数，非法访问！");
       navigate("/");
     }
-  }, [productName, partnerID, documentId, navigate]);
+  }, [productName, partnerID, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -44,56 +44,73 @@ const CustomerApplicationForm = () => {
 
     try {
       // 1. 创建 Customer 数据
-      const customerRes = await axios.post(CUSTOMER_URL, {
-        data: {
-          customerID: uuidv4(),
-          Name: formData.Name,
-          Email: formData.Email,
-          isInAustralia: formData.isInAustralia === "yes"
+      const customerRes = await axios.post(
+        CUSTOMER_URL,
+        {
+          data: {
+            customerID: uuidv4(),
+            Name: formData.Name,
+            Email: formData.Email,
+            isInAustralia: formData.isInAustralia === "yes",
+          },
+        },
+        {
+          headers: { Authorization: `Bearer ${API_TOKEN}` },
         }
-      }, {
-        headers: { Authorization: `Bearer ${API_TOKEN}` }
-      });
+      );
 
       const customerDocumentId = customerRes.data?.data?.documentId;
       if (!customerDocumentId) throw new Error("创建用户失败");
 
-      // 2. 通过 productName 和 partnerID 找到目标 Partner
-      const query = `?filters[productName][$eq]=${encodeURIComponent(productName)}&populate[Partner]=true`;
-      const productRes = await axios.get(`${PARTNER_URL}${query}`, {
-        headers: { Authorization: `Bearer ${API_TOKEN}` }
+      console.log("✅ Customer documentId:", customerDocumentId);
+
+      // 2. 查找目标 Partner documentId
+      const query = `?filters[productName][$eq]=${encodeURIComponent(
+        productName
+      )}&filters[partnerID][$eq]=${encodeURIComponent(partnerID)}&fields[0]=documentId`;
+
+      const partnerRes = await axios.get(`${PARTNER_URL}${query}`, {
+        headers: { Authorization: `Bearer ${API_TOKEN}` },
       });
 
-      const productEntry = productRes.data?.data?.[0];
-      if (!productEntry) throw new Error("未找到对应产品数据");
+      console.log("✅ Partner 查询结果:", partnerRes.data);
 
-      const matchedPartner = productEntry.Partner?.find(p => p.partnerID === partnerID);
-      if (!matchedPartner?.documentId) throw new Error("未找到对应合作伙伴");
+      const partnerEntry = partnerRes.data?.data?.[0];
+      if (!partnerEntry) throw new Error("未找到对应合作伙伴");
 
-      const partnerDocumentId = matchedPartner.documentId;
+      const partnerDocumentId = partnerEntry?.documentId;
+      if (!partnerDocumentId) throw new Error("合作伙伴缺少 documentId");
 
-      // 3. 用 connect 方式，把 Customer 关联到 Partner
-      await axios.put(`${PARTNER_URL}/${partnerDocumentId}`, {
-        data: {
-          Customer: {
-            connect: [customerDocumentId]
-          }
+      console.log("✅ Partner documentId:", partnerDocumentId);
+
+      // 3. 执行关联
+      console.log("✅ 最终 PUT 请求地址:", `${PARTNER_URL}/${partnerDocumentId}`);
+
+      await axios.put(
+        `${PARTNER_URL}/${partnerDocumentId}`,
+        {
+          data: {
+            Customer: {
+              connect: [customerDocumentId],
+            },
+          },
+        },
+        {
+          headers: { Authorization: `Bearer ${API_TOKEN}` },
         }
-      }, {
-        headers: { Authorization: `Bearer ${API_TOKEN}` }
-      });
+      );
 
       // 4. 邮件通知
-      axios.post(MAIL_NOTIFY_API, {
-        ...formData,
-        partnerID,
-        productName,
-        documentId
-      }).catch(err => console.warn("邮件通知失败", err));
+      axios
+        .post(MAIL_NOTIFY_API, {
+          ...formData,
+          partnerID,
+          productName,
+        })
+        .catch((err) => console.warn("邮件通知失败", err));
 
       setSuccess(true);
       setFormData({ Name: "", Email: "", isInAustralia: "yes" });
-
     } catch (err) {
       console.error(err);
       setError(err?.response?.data?.error?.message || "提交失败，请稍后重试");
