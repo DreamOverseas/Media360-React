@@ -5,7 +5,8 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
-const API_URL = `${STRAPI_HOST}/api/partner-application-submissions`;
+const PRODUCT_URL = `${STRAPI_HOST}/api/product-application-submissions`;
+const PARTNER_URL = `${STRAPI_HOST}/api/partner-application-submissions`;
 const UPLOAD_URL = `${STRAPI_HOST}/api/upload`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
 const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_PARTNER_APPLICATION_FORM_NOTIFICATION;
@@ -24,7 +25,7 @@ const initialFormData = {
 };
 
 const PartnerApplicationForm = () => {
-  const { productId } = useParams();  // ✅ 注意，这里通过URL传 product 的id
+  const { productName } = useParams();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState(initialFormData);
@@ -41,7 +42,22 @@ const PartnerApplicationForm = () => {
     const res = await axios.post(UPLOAD_URL, data, {
       headers: { Authorization: `Bearer ${API_TOKEN}` },
     });
-    return res.data[0]?.id;
+    return res.data?.[0]?.id || null;
+  };
+
+  const getOrCreateProductDocumentId = async () => {
+    const res = await axios.get(`${PRODUCT_URL}?filters[productName][$eq]=${encodeURIComponent(productName)}&fields[0]=documentId`, {
+      headers: { Authorization: `Bearer ${API_TOKEN}` },
+    });
+    const existing = res.data?.data?.[0];
+    if (existing?.documentId) return existing.documentId;
+
+    const createRes = await axios.post(PRODUCT_URL, {
+      data: { productName },
+    }, {
+      headers: { Authorization: `Bearer ${API_TOKEN}` },
+    });
+    return createRes.data?.data?.documentId;
   };
 
   const handleSubmit = async (e) => {
@@ -50,14 +66,13 @@ const PartnerApplicationForm = () => {
     setSuccess(false);
     setLoading(true);
 
-    if (!productId) {
-      setError("缺少产品信息，请从产品详情页正确跳转！");
+    if (!productName) {
+      setError("缺少产品信息，请正确跳转！");
       setLoading(false);
       return;
     }
-
     if (!formData.agreed) {
-      setError("请同意条款与条件后再提交！");
+      setError("请同意条款与条件再提交！");
       setLoading(false);
       return;
     }
@@ -66,9 +81,10 @@ const PartnerApplicationForm = () => {
       const logoId = await handleUpload(companyLogo);
       const certId = await handleUpload(asicCertificateFile);
       const licenseId = await handleUpload(formData.licenseFile);
+
       const partnerID = uuidv4();
 
-      const payload = {
+      const partnerRes = await axios.post(PARTNER_URL, {
         data: {
           companyName: formData.companyName,
           partnerID,
@@ -83,30 +99,42 @@ const PartnerApplicationForm = () => {
           approved: false,
           cityLocation: formData.cityLocation,
           experienceYears: formData.experienceYears,
-          order: 1,  // 你可以动态计算order，或者后端自动生成
-          product_application_submission: productId, // 关联到Product
         },
-      };
-
-      await axios.post(API_URL, payload, {
+      }, {
         headers: { Authorization: `Bearer ${API_TOKEN}` },
       });
 
-      // 邮件通知
+      const partnerDocumentId = partnerRes.data?.data?.documentId;
+      if (!partnerDocumentId) throw new Error("获取新 Partner documentId 失败");
+
+      const productDocumentId = await getOrCreateProductDocumentId();
+      if (!productDocumentId) throw new Error("获取或创建 Product documentId 失败");
+
+      // 用 documentId 规范更新关系
+      await axios.put(`${PRODUCT_URL}/${productDocumentId}`, {
+        data: {
+          Partner: {
+            connect: [partnerDocumentId],
+          },
+        },
+      }, {
+        headers: { Authorization: `Bearer ${API_TOKEN}` },
+      });
+
       axios.post(MAIL_NOTIFY_API, {
         ...formData,
-        productId,
+        partnerID,
+        productName,
       }).catch(err => console.warn("邮件通知失败", err));
 
       setSuccess(true);
       setFormData(initialFormData);
       setCompanyLogo(null);
       setAsicCertificateFile(null);
+
     } catch (err) {
-      setError(
-        err?.response?.data?.error?.message ||
-        JSON.stringify(err?.response?.data || err?.toJSON?.() || err)
-      );
+      console.error(err);
+      setError(err?.response?.data?.error?.message || "提交失败，请重试");
     } finally {
       setLoading(false);
     }
@@ -145,7 +173,6 @@ const PartnerApplicationForm = () => {
             required
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Label>ABN 编号</Form.Label>
           <Form.Control
@@ -154,7 +181,6 @@ const PartnerApplicationForm = () => {
             onChange={(e) => setFormData({ ...formData, abnNumber: e.target.value })}
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Label>公司地点（城市）</Form.Label>
           <Form.Control
@@ -182,12 +208,8 @@ const PartnerApplicationForm = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>牌照信息（PDF，最大10MB）</Form.Label>
-          <Form.Control
-            type="file"
-            accept=".pdf"
-            onChange={(e) => setFormData({ ...formData, licenseFile: e.target.files[0] })}
-          />
+          <Form.Label>牌照信息（PDF）</Form.Label>
+          <Form.Control type="file" accept=".pdf" onChange={(e) => setFormData({ ...formData, licenseFile: e.target.files[0] })} />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>公司 Logo</Form.Label>
@@ -206,7 +228,6 @@ const PartnerApplicationForm = () => {
             onChange={(e) => setFormData({ ...formData, Notes: e.target.value })}
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Check
             type="checkbox"
@@ -214,10 +235,7 @@ const PartnerApplicationForm = () => {
             label={
               <>
                 我已阅读并同意
-                <Link
-                  to={`/products/${encodeURIComponent(productId)}/PartnerApplicationForm/terms-and-conditions`}
-                  style={{ marginLeft: 4 }}
-                >
+                <Link to={`/products/${encodeURIComponent(productName)}/PartnerApplicationForm/terms-and-conditions`} style={{ marginLeft: 4 }}>
                   条款与条件
                 </Link>
               </>
