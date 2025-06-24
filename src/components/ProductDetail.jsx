@@ -372,7 +372,7 @@ useEffect(() => {
       text: document.title,
       url: window.location.href,
     };
-
+    
     if (navigator.share) {
       navigator
         .share(shareData)
@@ -382,6 +382,19 @@ useEffect(() => {
       alert("当前浏览器不支持分享功能，请手动复制链接分享。");
     }
   };
+
+const getPartnerLabel = () => {
+  const path = location.pathname.replace("/products/", "");
+  const segments = path.split('/').filter(Boolean);
+  const firstSegment = segments[0] || "";
+
+  return {
+    "roseneath-holidaypark": "旅游中介",
+    "nail-train": "加盟商",
+    "Studyfin": "留学中介",
+  }[firstSegment] || "合作伙伴";
+};
+
 
   // Fetch product data and save to sessionStorage
   useEffect(() => {
@@ -525,6 +538,14 @@ useEffect(() => {
                   <Row>
                     <h4>查看相关信息</h4>
                     <Row>
+                        {/* 合作伙伴按钮 */}
+                        <Col xs={4}>
+                          <Link to={`/products/${baseurl}/PartnerDetail`}>
+                            <Button className='product-detail-funtion-btn'>
+                              {getPartnerLabel()}
+                            </Button>
+                          </Link>
+                        </Col>
                       {founder.length > 0 && (
                         <Col xs={4}>
                           <Link
@@ -538,7 +559,7 @@ useEffect(() => {
                         </Col>
                       )}
                       {/* 合作伙伴按钮（根据当前产品名动态命名） */}
-                      <Col xs={4}>
+                      {/* <Col xs={4}>
                         <Link to={`/products/${baseurl}/PartnerDetail`}>
                           <Button className='product-detail-funtion-btn'>                           
                             {
@@ -550,7 +571,7 @@ useEffect(() => {
                             }
                           </Button>
                         </Link>
-                      </Col>
+                      </Col> */}
                       {kol.length > 0 && (
                         <Col xs={4}>
                           <Link
@@ -781,6 +802,14 @@ useEffect(() => {
                     <Row>
                       <h4>查看相关信息</h4>
                       <Row>
+                      {/* 合作伙伴按钮 */}
+                        <Col xs={4}>
+                          <Link to={`/products/${baseurl}/PartnerDetail`}>
+                            <Button className='product-detail-funtion-btn'>
+                              {getPartnerLabel()}
+                            </Button>
+                          </Link>
+                        </Col>
                         {founder.length > 0 && (
                           <Col xs={4}>
                             <Link
