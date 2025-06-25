@@ -384,15 +384,13 @@ useEffect(() => {
   };
 
 const getPartnerLabel = () => {
-  const path = location.pathname.replace("/products/", "");
-  const segments = path.split('/').filter(Boolean);
-  const firstSegment = segments[0] || "";
+  const productUrl = baseurl.split('/')[0] || "";
 
   return {
     "roseneath-holidaypark": "旅游中介",
     "nail-train": "加盟商",
     "Studyfin": "留学中介",
-  }[firstSegment] || "合作伙伴";
+  }[productUrl] || "合作伙伴";
 };
 
 
@@ -540,7 +538,7 @@ const getPartnerLabel = () => {
                     <Row>
                         {/* 合作伙伴按钮 */}
                         <Col xs={4}>
-                          <Link to={`/products/${baseurl}/PartnerDetail`}>
+                          <Link to={`/products/${baseurl.split('/')[0]}/PartnerDetail`}>
                             <Button className='product-detail-funtion-btn'>
                               {getPartnerLabel()}
                             </Button>
@@ -804,7 +802,7 @@ const getPartnerLabel = () => {
                       <Row>
                       {/* 合作伙伴按钮 */}
                         <Col xs={4}>
-                          <Link to={`/products/${baseurl}/PartnerDetail`}>
+                          <Link to={`/products/${baseurl.split('/')[0]}/PartnerDetail`}>
                             <Button className='product-detail-funtion-btn'>
                               {getPartnerLabel()}
                             </Button>
