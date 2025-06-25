@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-import "../../css/CustomerApplicationForm.css";
+import { Container, Form, Button, Alert, Spinner } from "react-bootstrap";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
 const CUSTOMER_URL = `${STRAPI_HOST}/api/partner-application-forms`;
@@ -21,7 +21,7 @@ const CustomerApplicationForm = () => {
     isInAustralia: "yes",
   });
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -39,11 +39,10 @@ const CustomerApplicationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccess(false);
-    setError(null);
+    setError("");
     setLoading(true);
 
     try {
-      // 1. 创建 Customer 数据
       const customerRes = await axios.post(
         CUSTOMER_URL,
         {
@@ -54,17 +53,12 @@ const CustomerApplicationForm = () => {
             isInAustralia: formData.isInAustralia === "yes",
           },
         },
-        {
-          headers: { Authorization: `Bearer ${API_TOKEN}` },
-        }
+        { headers: { Authorization: `Bearer ${API_TOKEN}` } }
       );
 
       const customerDocumentId = customerRes.data?.data?.documentId;
       if (!customerDocumentId) throw new Error("创建用户失败");
 
-      console.log("✅ Customer documentId:", customerDocumentId);
-
-      // 2. 查找目标 Partner documentId
       const query = `?filters[productName][$eq]=${encodeURIComponent(
         productName
       )}&filters[partnerID][$eq]=${encodeURIComponent(partnerID)}&fields[0]=documentId`;
@@ -73,18 +67,11 @@ const CustomerApplicationForm = () => {
         headers: { Authorization: `Bearer ${API_TOKEN}` },
       });
 
-      console.log("✅ Partner 查询结果:", partnerRes.data);
-
       const partnerEntry = partnerRes.data?.data?.[0];
       if (!partnerEntry) throw new Error("未找到对应合作伙伴");
 
       const partnerDocumentId = partnerEntry?.documentId;
       if (!partnerDocumentId) throw new Error("合作伙伴缺少 documentId");
-
-      console.log("✅ Partner documentId:", partnerDocumentId);
-
-      // 3. 执行关联
-      console.log("✅ 最终 PUT 请求地址:", `${PARTNER_URL}/${partnerDocumentId}`);
 
       await axios.put(
         `${PARTNER_URL}/${partnerDocumentId}`,
@@ -95,12 +82,9 @@ const CustomerApplicationForm = () => {
             },
           },
         },
-        {
-          headers: { Authorization: `Bearer ${API_TOKEN}` },
-        }
+        { headers: { Authorization: `Bearer ${API_TOKEN}` } }
       );
 
-      // 4. 邮件通知
       axios
         .post(MAIL_NOTIFY_API, {
           ...formData,
@@ -120,59 +104,64 @@ const CustomerApplicationForm = () => {
   };
 
   return (
-    <div className="partner-application-form">
-      <h2>补充申请信息</h2>
-      {success && <p className="success-message">✅ 提交成功！</p>}
-      {error && <p className="error-message">❌ {error}</p>}
+    <Container>
+      <h2 className="my-4">申请信息</h2>
 
-      <form onSubmit={handleSubmit}>
-        <label>姓名：</label>
-        <input
-          type="text"
-          name="Name"
-          value={formData.Name}
-          onChange={handleChange}
-          required
-        />
+      {error && <Alert variant="danger">{error}</Alert>}
+      {success && <Alert variant="success">✅ 提交成功！</Alert>}
 
-        <label>邮箱：</label>
-        <input
-          type="email"
-          name="Email"
-          value={formData.Email}
-          onChange={handleChange}
-          required
-        />
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3">
+          <Form.Label>姓名</Form.Label>
+          <Form.Control
+            type="text"
+            name="Name"
+            value={formData.Name}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
 
-        <label>是否在澳洲：</label>
-        <div className="radio-group">
-          <label>
-            <input
-              type="radio"
+        <Form.Group className="mb-3">
+          <Form.Label>邮箱</Form.Label>
+          <Form.Control
+            type="email"
+            name="Email"
+            value={formData.Email}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>是否在澳洲</Form.Label>
+          <div>
+            <Form.Check
+              inline
+              label="是"
               name="isInAustralia"
+              type="radio"
               value="yes"
               checked={formData.isInAustralia === "yes"}
               onChange={handleChange}
             />
-            是
-          </label>
-          <label>
-            <input
-              type="radio"
+            <Form.Check
+              inline
+              label="否"
               name="isInAustralia"
+              type="radio"
               value="no"
               checked={formData.isInAustralia === "no"}
               onChange={handleChange}
             />
-            否
-          </label>
-        </div>
+          </div>
+        </Form.Group>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "提交中..." : "提交补充信息"}
-        </button>
-      </form>
-    </div>
+        <Button type="submit" disabled={loading}>
+          {loading ? <Spinner animation="border" size="sm" /> : "提交申请信息"}
+        </Button>
+      </Form>
+    </Container>
   );
 };
 
