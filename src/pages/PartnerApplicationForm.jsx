@@ -3,6 +3,7 @@ import { Form, Button, Alert, Spinner, Container } from "react-bootstrap";
 import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import { FiX } from "react-icons/fi";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
 const PRODUCT_URL = `${STRAPI_HOST}/api/product-application-submissions`;
@@ -111,7 +112,6 @@ const PartnerApplicationForm = () => {
       const productDocumentId = await getOrCreateProductDocumentId();
       if (!productDocumentId) throw new Error("获取或创建 Product documentId 失败");
 
-      // 用 documentId 规范更新关系
       await axios.put(`${PRODUCT_URL}/${productDocumentId}`, {
         data: {
           Partner: {
@@ -133,6 +133,10 @@ const PartnerApplicationForm = () => {
       setCompanyLogo(null);
       setAsicCertificateFile(null);
 
+      setTimeout(() => {
+        navigate(`/products/${encodeURIComponent(productName)}/PartnerDetail`);
+      }, 1000);
+
     } catch (err) {
       console.error(err);
       setError(err?.response?.data?.error?.message || "提交失败，请重试");
@@ -142,10 +146,27 @@ const PartnerApplicationForm = () => {
   };
 
   return (
-    <Container>
+    <Container style={{ position: "relative" }}>
+      
+      {/* 右上角 X 关闭按钮 */}
+      <div
+        onClick={() => navigate(`/products/${encodeURIComponent(productName)}/PartnerDetail`)}
+        style={{
+          position: "absolute",
+          top: "20px",
+          right: "20px",
+          cursor: "pointer",
+          fontSize: "24px",
+          color: "#555",
+        }}
+        title="关闭"
+      >
+        <FiX />
+      </div>
+
       <h2 className="my-4">加入我们</h2>
       {error && <Alert variant="danger">{error}</Alert>}
-      {success && <Alert variant="success">提交成功！</Alert>}
+      {success && <Alert variant="success">✅ 提交成功，页面即将跳转！</Alert>}
 
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
@@ -157,6 +178,7 @@ const PartnerApplicationForm = () => {
             required
           />
         </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>电话</Form.Label>
           <Form.Control
@@ -165,6 +187,7 @@ const PartnerApplicationForm = () => {
             onChange={(e) => setFormData({ ...formData, Phone: e.target.value })}
           />
         </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>邮箱</Form.Label>
           <Form.Control
@@ -174,6 +197,7 @@ const PartnerApplicationForm = () => {
             required
           />
         </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>ABN 编号</Form.Label>
           <Form.Control
@@ -182,6 +206,7 @@ const PartnerApplicationForm = () => {
             onChange={(e) => setFormData({ ...formData, abnNumber: e.target.value })}
           />
         </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>公司地点（城市）</Form.Label>
           <Form.Control
@@ -191,6 +216,7 @@ const PartnerApplicationForm = () => {
             onChange={(e) => setFormData({ ...formData, cityLocation: e.target.value })}
           />
         </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>公司网站地址</Form.Label>
           <Form.Control
@@ -199,6 +225,7 @@ const PartnerApplicationForm = () => {
             onChange={(e) => setFormData({ ...formData, companyUrlLink: e.target.value })}
           />
         </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>从业经验</Form.Label>
           <Form.Control
@@ -208,18 +235,32 @@ const PartnerApplicationForm = () => {
             onChange={(e) => setFormData({ ...formData, experienceYears: e.target.value })}
           />
         </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>牌照信息（PDF）</Form.Label>
-          <Form.Control type="file" accept=".pdf" onChange={(e) => setFormData({ ...formData, licenseFile: e.target.files[0] })} />
+          <Form.Control
+            type="file"
+            accept=".pdf"
+            onChange={(e) => setFormData({ ...formData, licenseFile: e.target.files[0] })}
+          />
         </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>公司 Logo</Form.Label>
-          <Form.Control type="file" onChange={(e) => setCompanyLogo(e.target.files[0])} />
+          <Form.Control
+            type="file"
+            onChange={(e) => setCompanyLogo(e.target.files[0])}
+          />
         </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>ASIC 证书</Form.Label>
-          <Form.Control type="file" onChange={(e) => setAsicCertificateFile(e.target.files[0])} />
+          <Form.Control
+            type="file"
+            onChange={(e) => setAsicCertificateFile(e.target.files[0])}
+          />
         </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>备注</Form.Label>
           <Form.Control
@@ -229,6 +270,7 @@ const PartnerApplicationForm = () => {
             onChange={(e) => setFormData({ ...formData, Notes: e.target.value })}
           />
         </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Check
             type="checkbox"

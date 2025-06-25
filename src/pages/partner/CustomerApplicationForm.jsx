@@ -3,6 +3,7 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { Container, Form, Button, Alert, Spinner } from "react-bootstrap";
+import { FiX } from "react-icons/fi";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
 const CUSTOMER_URL = `${STRAPI_HOST}/api/partner-application-forms`;
@@ -95,6 +96,12 @@ const CustomerApplicationForm = () => {
 
       setSuccess(true);
       setFormData({ Name: "", Email: "", isInAustralia: "yes" });
+
+      // 1秒后跳转回 PartnerDetail 页面
+      setTimeout(() => {
+        navigate(`/products/${encodeURIComponent(productName)}/PartnerDetail`);
+      }, 1000);
+
     } catch (err) {
       console.error(err);
       setError(err?.response?.data?.error?.message || "提交失败，请稍后重试");
@@ -104,7 +111,24 @@ const CustomerApplicationForm = () => {
   };
 
   return (
-    <Container>
+    <Container style={{ position: "relative" }}>
+      
+      {/* 右上角 X 关闭按钮 */}
+      <div
+        onClick={() => navigate(`/products/${encodeURIComponent(productName)}/PartnerDetail`)}
+        style={{
+          position: "absolute",
+          top: "20px",
+          right: "20px",
+          cursor: "pointer",
+          fontSize: "24px",
+          color: "#555",
+        }}
+        title="关闭"
+      >
+        <FiX />
+      </div>
+
       <h2 className="my-4">申请信息</h2>
 
       {error && <Alert variant="danger">{error}</Alert>}
