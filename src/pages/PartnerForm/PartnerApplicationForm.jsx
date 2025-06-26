@@ -29,7 +29,7 @@ const initialFormData = {
 };
 
 const PartnerApplicationForm = () => {
-  const { productName } = useParams();
+  const { productName, partnerType } = useParams();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState(initialFormData);
@@ -147,7 +147,7 @@ const PartnerApplicationForm = () => {
       setAdvisorLicenseFile(null);
 
       setTimeout(() => {
-        navigate(`/products/${encodeURIComponent(productName)}/PartnerDetail`);
+        navigate(`/products/${encodeURIComponent(productName)}/${partnerType}/PartnerDetail`);
       }, 1000);
 
     } catch (err) {
@@ -163,7 +163,7 @@ const PartnerApplicationForm = () => {
       
       {/* 右上角 X 关闭按钮 */}
       <div
-        onClick={() => navigate(`/products/${encodeURIComponent(productName)}/PartnerDetail`)}
+        onClick={() => navigate(`/products/${encodeURIComponent(productName)}/${partnerType}/PartnerDetail`)}
         style={{
           position: "absolute",
           top: "20px",
@@ -171,10 +171,14 @@ const PartnerApplicationForm = () => {
           cursor: "pointer",
           fontSize: "24px",
           color: "#555",
+          display: "flex",
+          alignItems: "center",
+          gap: "6px", // 图标和文字间距
         }}
         title="返回"
       >
         <FiArrowLeft />
+        <span style={{ fontSize: "16px" }}>返回</span>
       </div>
 
       <h2 className="my-4">加入我们</h2>

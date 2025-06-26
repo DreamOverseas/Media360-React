@@ -7,10 +7,11 @@ import axios from "axios";
 import { FaUserPlus } from "react-icons/fa";
 import "../css/PartnerDetail.css";
 
-const productTitleMap = {
-  Studyfin: "留学中介",
-  "罗塞尼斯半岛度假村": "旅游中介",
-  "AI美甲": "加盟商",
+// 根据 partnerType 显示中文标题
+const partnerTypeLabelMap = {
+  lvyouchongjie: "旅游中介",
+  jiamengshang: "加盟商",
+  liuxuezhongjie: "留学中介",
 };
 
 function getMediaUrl(media) {
@@ -22,7 +23,7 @@ function getMediaUrl(media) {
 }
 
 const PartnerDetail = () => {
-  const { productName } = useParams();
+  const { productName, partnerType } = useParams();
   const decodedProductName = decodeURIComponent(productName);
   const navigate = useNavigate();
 
@@ -58,12 +59,12 @@ const PartnerDetail = () => {
 
   const approvedPartners = partners.filter(p => (p.attributes || p).approved);
   const visiblePartners = showAll ? approvedPartners : approvedPartners.slice(0, 2);
-  const title = productTitleMap[decodedProductName] || "合作伙伴";
+  const title = partnerTypeLabelMap[partnerType] || "合作伙伴";
 
   return (
     <Container style={{ paddingTop: "80px", paddingBottom: "40px", position: "relative" }}>
       <div
-        onClick={() => navigate(`/products/${encodeURIComponent(decodedProductName)}`)}
+        onClick={() => navigate(`/products/${encodeURIComponent(productName)}`)}
         style={{
           position: "absolute",
           top: "20px",
@@ -71,11 +72,17 @@ const PartnerDetail = () => {
           cursor: "pointer",
           fontSize: "24px",
           color: "#555",
+          display: "flex",
+          alignItems: "center",
+          gap: "6px", // 图标和文字间距
         }}
         title="返回"
       >
         <FiArrowLeft />
+        <span style={{ fontSize: "16px" }}>返回</span>
       </div>
+      
+      
 
       <h5 className="partner-section-title">{title}</h5>
 
@@ -119,7 +126,7 @@ const PartnerDetail = () => {
                   </div>
 
                   <div className="partner-join-button">
-                    <Link to={`/products/${encodeURIComponent(decodedProductName)}/CustomerApplicationForm?partnerID=${encodeURIComponent(attr.partnerID)}&documentId=${encodeURIComponent(documentId)}`}>
+                    <Link to={`/products/${encodeURIComponent(productName)}/${partnerType}/CustomerApplicationForm?partnerID=${encodeURIComponent(attr.partnerID)}&documentId=${encodeURIComponent(documentId)}`}>
                       <button className="custom-join-button">
                         <FaUserPlus style={{ marginRight: "6px" }} />
                         立即咨询
@@ -143,7 +150,7 @@ const PartnerDetail = () => {
 
       <Row className="mt-4 justify-content-start">
         <Col xs="auto">
-          <Link to={`/products/${encodeURIComponent(decodedProductName)}/PartnerDetail/PartnerApplicationForm`}>
+          <Link to={`/products/${encodeURIComponent(productName)}/${partnerType}/PartnerDetail/PartnerApplicationForm`}>
             <JoinUsButton />
           </Link>
         </Col>

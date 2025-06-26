@@ -381,16 +381,25 @@ useEffect(() => {
     }
   };
 
-const getPartnerLabel = () => {
-  const productUrl = baseurl.split('/')[0] || "";
+  const getPartnerLabel = () => {
+    const productUrl = baseurl.split('/')[0] || "";
 
-  return {
-    "roseneath-holidaypark": "旅游中介",
-    "nail-train": "加盟商",
-    "Studyfin": "留学中介",
-  }[productUrl] || "合作伙伴";
-};
+    return {
+      "roseneath-holidaypark": "旅游中介",
+      "nail-train": "加盟商",
+      "Studyfin": "留学中介",
+    }[productUrl] || "合作伙伴";
+  };
 
+  const getPartnerPathSegment = () => {
+    const productUrl = baseurl.split('/')[0] || "";
+
+    return {
+      "roseneath-holidaypark": "lvyouzhongjie",
+      "nail-train": "jiamengshang",
+      "Studyfin": "liuxuezhongjie",
+    }[productUrl] || "hezuohuoban";
+  };
 
   // Fetch product data and save to sessionStorage
   useEffect(() => {
@@ -536,7 +545,7 @@ const getPartnerLabel = () => {
                     <Row>
                         {/* 合作伙伴按钮 */}
                         <Col xs={4}>
-                          <Link to={`/products/${baseurl.split('/')[0]}/PartnerDetail`}>
+                          <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerPathSegment()}/PartnerDetail`}>
                             <Button className='product-detail-funtion-btn'>
                               {getPartnerLabel()}
                             </Button>
@@ -545,7 +554,7 @@ const getPartnerLabel = () => {
                         {/* 移民顾问按钮，产品为 Studyfin 时显示 */}
                         {Name === "Studyfin" && (
                           <Col xs={4}>
-                            <Link to={`/products/${baseurl.split('/')[0]}/MigrationAdvisor`}>
+                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerPathSegment()}/MigrationAdvisor`}>
                               <Button className='product-detail-funtion-btn'>移民顾问</Button>
                             </Link>
                           </Col>
@@ -808,7 +817,7 @@ const getPartnerLabel = () => {
                       <Row>
                       {/* 合作伙伴按钮 */}
                         <Col xs={4}>
-                          <Link to={`/products/${baseurl.split('/')[0]}/PartnerDetail`}>
+                          <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerPathSegment()}/PartnerDetail`}>
                             <Button className='product-detail-funtion-btn'>
                               {getPartnerLabel()}
                             </Button>
@@ -817,7 +826,7 @@ const getPartnerLabel = () => {
                         {/* 移民顾问按钮，产品为 Studyfin 时显示 */}
                         {Name === "Studyfin" && (
                           <Col xs={4}>
-                            <Link to={`/products/${baseurl.split('/')[0]}/MigrationAdvisor`}>
+                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerPathSegment()}/MigrationAdvisor`}>
                               <Button className='product-detail-funtion-btn'>移民顾问</Button>
                             </Link>
                           </Col>
