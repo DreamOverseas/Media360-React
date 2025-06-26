@@ -55,6 +55,7 @@ import PartnerApplicationForm from './pages/PartnerApplicationForm.jsx';
 import CustomerApplicationForm from "./pages/partner/CustomerApplicationForm.jsx";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import PartnerDetail from "./pages/PartnerDetail";
+import MigrationAdvisor from "./pages/MigrationAdvisor";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -176,6 +177,7 @@ function App() {
           <Route path='/join-us' element={<Recruitment />} />
           <Route path="/products/:productName/PartnerApplicationForm/terms-and-conditions" element={<TermsAndConditions />} />
           <Route path="/products/:productName/PartnerDetail" element={<PartnerDetail />} />
+          <Route path="/products/:productName/MigrationAdvisor" element={<MigrationAdvisor />} />
           <Route path='/networks' element={<Networks />} />
           <Route path='/media-center' element={<MediaCenter />} />
           <Route path='/news' element={<NewsPage />} />

@@ -24,8 +24,6 @@ import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
 import PayPalButton from "./PayPalButton.jsx";
 import WechatShare from './WechatShare.jsx';
-import JoinUsButton from './JoinUsButton';
-import PartnerList from './PartnerList';
 
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
@@ -544,6 +542,14 @@ const getPartnerLabel = () => {
                             </Button>
                           </Link>
                         </Col>
+                        {/* 移民顾问按钮，产品为 Studyfin 时显示 */}
+                        {Name === "Studyfin" && (
+                          <Col xs={4}>
+                            <Link to={`/products/${baseurl.split('/')[0]}/MigrationAdvisor`}>
+                              <Button className='product-detail-funtion-btn'>移民顾问</Button>
+                            </Link>
+                          </Col>
+                        )}
                       {founder.length > 0 && (
                         <Col xs={4}>
                           <Link
@@ -808,6 +814,14 @@ const getPartnerLabel = () => {
                             </Button>
                           </Link>
                         </Col>
+                        {/* 移民顾问按钮，产品为 Studyfin 时显示 */}
+                        {Name === "Studyfin" && (
+                          <Col xs={4}>
+                            <Link to={`/products/${baseurl.split('/')[0]}/MigrationAdvisor`}>
+                              <Button className='product-detail-funtion-btn'>移民顾问</Button>
+                            </Link>
+                          </Col>
+                        )}
                         {founder.length > 0 && (
                           <Col xs={4}>
                             <Link
@@ -898,16 +912,6 @@ const getPartnerLabel = () => {
               </Container>
             </Col>
           </Row>
-
-          {/* <Row>
-            <Col>
-              <PartnerList currentProductName={Name}/>
-            </Col>
-          </Row> */}
-
-          {/* <Link to={`/products/${encodeURIComponent(Name)}/PartnerApplicationForm`}>
-            <JoinUsButton />
-          </Link> */}
 
           {slides !== "N/A" ? (
             <div className="slide-section">

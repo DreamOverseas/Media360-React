@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { FiX } from "react-icons/fi";
+import { FiArrowLeft } from "react-icons/fi";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
 const PRODUCT_URL = `${STRAPI_HOST}/api/product-application-submissions`;
@@ -171,9 +172,9 @@ const PartnerApplicationForm = () => {
           fontSize: "24px",
           color: "#555",
         }}
-        title="关闭"
+        title="返回"
       >
-        <FiX />
+        <FiArrowLeft />
       </div>
 
       <h2 className="my-4">加入我们</h2>

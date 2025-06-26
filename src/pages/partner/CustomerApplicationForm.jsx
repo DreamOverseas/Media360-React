@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { Container, Form, Button, Alert, Spinner } from "react-bootstrap";
 import { FiX } from "react-icons/fi";
+import { FiArrowLeft } from "react-icons/fi";
+
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
 const CUSTOMER_URL = `${STRAPI_HOST}/api/partner-application-forms`;
@@ -124,9 +126,9 @@ const CustomerApplicationForm = () => {
           fontSize: "24px",
           color: "#555",
         }}
-        title="关闭"
+        title="返回"
       >
-        <FiX />
+        <FiArrowLeft />
       </div>
 
       <h2 className="my-4">申请信息</h2>

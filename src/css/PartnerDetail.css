@@ -9,3 +9,149 @@ h2 {
   color: #777;
   font-size: 15px;
 }
+
+
+/* ===== 容器布局 ===== */
+.partner-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ===== 卡片样式 ===== */
+.partner-card {
+  position: relative;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  transition: all 0.3s ease;
+  overflow: hidden; /* ✅ 避免子元素穿透 */
+  display: flex;
+  align-items: flex-start;
+}
+
+/* ===== Logo 显示区 ===== */
+.partner-logo-wrapper {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  background: #fff;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.partner-logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* ===== 信息分区 ===== */
+.partner-main-info {
+  margin-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.info-section {
+  padding: 12px 16px;
+  background-color: #f9f9f9;
+  border-left: 4px solid #007bff;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.info-section-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.partner-field {
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.partner-field a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.partner-field a:hover {
+  text-decoration: underline;
+}
+
+.field-label {
+  font-weight: 500;
+  color: #444;
+}
+
+/* ===== 加入按钮样式 ===== */
+.partner-join-button {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+.custom-join-button {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 123, 255, 0.2);
+}
+
+.custom-join-button:hover {
+  background: linear-gradient(135deg, #0056b3, #003f7f);
+  transform: scale(1.05);
+  box-shadow: 0 5px 12px rgba(0, 123, 255, 0.3);
+}
+
+/* ===== 显示全部按钮样式 ===== */
+.toggle-button-wrapper {
+  text-align: center;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .partner-logo-wrapper {
+    width: 100px;
+    height: 100px;
+  }
+
+  .partner-main-info {
+    margin-left: 16px;
+  }
+
+  .partner-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .partner-main-info {
+    margin-top: 16px;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .partner-join-button {
+    top: 16px;
+    right: 16px;
+  }
+}
