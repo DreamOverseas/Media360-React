@@ -3,7 +3,6 @@ import { Form, Button, Alert, Spinner, Container } from "react-bootstrap";
 import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { FiX } from "react-icons/fi";
 import { FiArrowLeft } from "react-icons/fi";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
@@ -113,6 +112,11 @@ const PartnerApplicationForm = () => {
 
       const partnerID = uuidv4();
 
+      // 先确保获取到 product documentId
+      const productDocumentId = await getOrCreateProductDocumentId();
+      if (!productDocumentId) throw new Error("获取或创建 Product documentId 失败");
+
+      // 提交 Partner 时一起上传 product 关联
       const partnerRes = await axios.post(PARTNER_URL, {
         data: {
           companyName: formData.companyName,
@@ -133,7 +137,8 @@ const PartnerApplicationForm = () => {
           cityLocation: formData.cityLocation,
           experienceYears: formData.experienceYears,
           productName,
-          partnerType: partnerTypeLabel,  // 中文类型
+          partnerType: partnerTypeLabel,
+          Product: productDocumentId,  // 互相关联，新增
         },
       }, {
         headers: { Authorization: `Bearer ${API_TOKEN}` },
@@ -142,9 +147,7 @@ const PartnerApplicationForm = () => {
       const partnerDocumentId = partnerRes.data?.data?.documentId;
       if (!partnerDocumentId) throw new Error("获取新 Partner documentId 失败");
 
-      const productDocumentId = await getOrCreateProductDocumentId();
-      if (!productDocumentId) throw new Error("获取或创建 Product documentId 失败");
-
+      // product 反向关联 partner
       await axios.put(`${PRODUCT_URL}/${productDocumentId}`, {
         data: {
           Partner: {
@@ -155,6 +158,7 @@ const PartnerApplicationForm = () => {
         headers: { Authorization: `Bearer ${API_TOKEN}` },
       });
 
+      // 邮件通知
       axios.post(MAIL_NOTIFY_API, {
         ...formData,
         partnerID,
