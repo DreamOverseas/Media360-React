@@ -96,25 +96,33 @@ const ProductDetail = () => {
     }, [videos]);
   
     // 合并所有媒体（图片 + 视频缩略图）
+    // const allMedia = useMemo(
+    //   () => [mainImage, ...subImages, ...videoThumbnails],
+    //   [mainImage, subImages, videoThumbnails]
+    // );
+
     const allMedia = useMemo(
-      () => [mainImage, ...subImages, ...videoThumbnails],
-      [mainImage, subImages, videoThumbnails]
+      () => [mainImage, ...subImages],
+      [mainImage, subImages]
     );
+
+
   
     // 视频起始索引和判断
-    const videoStart = 1 + subImages.length;
-    const isVideoIndex = idx => idx >= videoStart;
+    // const videoStart = 1 + subImages.length;
+    // const isVideoIndex = idx => idx >= videoStart;
   
     // 构建 Lightbox slides
-    const slides = useMemo(
-      () =>
-        allMedia.map((_, idx) =>
-          isVideoIndex(idx)
-            ? { html: videos[idx - videoStart].embedHtml }
-            : { src: allMedia[idx] }
-        ),
-      [allMedia, videos]
-    );
+    // const slides = useMemo(
+    //   () =>
+    //     allMedia.map((_, idx) =>
+    //       isVideoIndex(idx)
+    //         ? { html: videos[idx - videoStart].embedHtml }
+    //         : { src: allMedia[idx] }
+    //     ),
+    //   [allMedia, videos]
+    // );
+
   
     // 缩略图点击：打开对应媒体
     const handleThumbnailClick = idx => {
@@ -133,8 +141,15 @@ const ProductDetail = () => {
         {/* 主展示区 & 切换按钮 */}
         <div className="main-image-container">
           <button className="prev-button" onClick={prevMedia}>❮</button>
+
+          <Image
+              src={allMedia[currentIndex]}
+              alt={`Media ${currentIndex}`}
+              className="product-img"
+              onClick={() => setLightboxOpen(true)}
+            />
   
-          {isVideoIndex(currentIndex) ? (
+          {/* {isVideoIndex(currentIndex) ? (
             <div
               className="product-video"
               style={{ position: 'relative', width: '100%', paddingTop: '56.25%' }}
@@ -152,7 +167,7 @@ const ProductDetail = () => {
               className="product-img"
               onClick={() => setLightboxOpen(true)}
             />
-          )}
+          )} */}
   
           <button className="next-button" onClick={nextMedia}>❯</button>
         </div>
@@ -166,7 +181,7 @@ const ProductDetail = () => {
               onClick={() => handleThumbnailClick(idx+1)}
             >
               <Image src={src} alt={`Thumbnail ${idx}`} className="thumb-img" />
-              {isVideoIndex(idx)}
+              {/* {isVideoIndex(idx)} */}
             </div>
           ))}
           {allMedia.length > 8 && (
@@ -183,16 +198,17 @@ const ProductDetail = () => {
         <Lightbox
           open={lightboxOpen}
           close={() => setLightboxOpen(false)}
-          slides={slides}
+          // slides={slides}
+          slides={allMedia.map(src => ({ src }))}
           index={currentIndex}
-          render={{
-            slide: ({ slide }) =>
-              slide.html ? (
-                <div
-                  dangerouslySetInnerHTML={{ __html: slide.html }}
-                />
-              ) : undefined,
-          }}
+          // render={{
+          //   slide: ({ slide }) =>
+          //     slide.html ? (
+          //       <div
+          //         dangerouslySetInnerHTML={{ __html: slide.html }}
+          //       />
+          //     ) : undefined,
+          // }}
         />
       </Container>
     );
@@ -510,6 +526,7 @@ const getPartnerLabel = () => {
   // console.log("slide", slides);
 
   // console.log(productTag)
+  console.log("vvvv",videos);
 
   console.log("当前产品名称为：", Name);
 
@@ -909,10 +926,36 @@ const getPartnerLabel = () => {
             <JoinUsButton />
           </Link> */}
 
+          {videos.length > 0 ? (
+            <div className="slide-section">
+              <h4>相关视频</h4>
+              <div>
+                
+                {videos.map((video, index) => (
+                  <div key={index}>
+                    <div
+                      className="product-video"
+                      style={{ position: 'relative', width: '100%', paddingTop: '56.25%' }}
+                      dangerouslySetInnerHTML={{
+                        __html: video.videoEmbed.replace(
+                          '<iframe ',
+                          '<iframe style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allow="autoplay;encrypted-media;fullscreen;picture-in-picture" '
+                        ),
+                      }}
+                    />
+                    <br />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
+
           {slides !== "N/A" ? (
             <div className="slide-section">
+              <h4>图文详情</h4>
               <Container>
-                <h4>图文详情</h4>
                 <ReactMarkdown>{slides}</ReactMarkdown>
               </Container>
             </div>
