@@ -46,25 +46,8 @@ const CustomerApplicationForm = () => {
     setLoading(true);
 
     try {
-      const customerRes = await axios.post(
-        CUSTOMER_URL,
-        {
-          data: {
-            customerID: uuidv4(),
-            Name: formData.Name,
-            Email: formData.Email,
-            isInAustralia: formData.isInAustralia === "yes",
-          },
-        },
-        { headers: { Authorization: `Bearer ${API_TOKEN}` } }
-      );
-
-      const customerDocumentId = customerRes.data?.data?.documentId;
-      if (!customerDocumentId) throw new Error("创建用户失败");
-
-      const query = `?filters[productName][$eq]=${encodeURIComponent(
-        productName
-      )}&filters[partnerID][$eq]=${encodeURIComponent(partnerID)}&fields[0]=documentId`;
+      // 1. 获取 Partner 数据
+      const query = `?filters[productName][$eq]=${encodeURIComponent(productName)}&filters[partnerID][$eq]=${encodeURIComponent(partnerID)}&fields[0]=documentId`;
 
       const partnerRes = await axios.get(`${PARTNER_URL}${query}`, {
         headers: { Authorization: `Bearer ${API_TOKEN}` },
@@ -76,6 +59,25 @@ const CustomerApplicationForm = () => {
       const partnerDocumentId = partnerEntry?.documentId;
       if (!partnerDocumentId) throw new Error("合作伙伴缺少 documentId");
 
+      // 2. 创建 Customer 并绑定 Partner
+      const customerRes = await axios.post(
+        CUSTOMER_URL,
+        {
+          data: {
+            customerID: uuidv4(),
+            Name: formData.Name,
+            Email: formData.Email,
+            isInAustralia: formData.isInAustralia === "yes",
+            Partner: partnerDocumentId,  // 这里现在有值
+          },
+        },
+        { headers: { Authorization: `Bearer ${API_TOKEN}` } }
+      );
+
+      const customerDocumentId = customerRes.data?.data?.documentId;
+      if (!customerDocumentId) throw new Error("创建用户失败");
+
+      // 3. 反向绑定：Partner → Customer
       await axios.put(
         `${PARTNER_URL}/${partnerDocumentId}`,
         {
@@ -88,6 +90,7 @@ const CustomerApplicationForm = () => {
         { headers: { Authorization: `Bearer ${API_TOKEN}` } }
       );
 
+      // 4. 邮件通知
       axios
         .post(MAIL_NOTIFY_API, {
           ...formData,
@@ -96,10 +99,10 @@ const CustomerApplicationForm = () => {
         })
         .catch((err) => console.warn("邮件通知失败", err));
 
+      // 5. 成功处理
       setSuccess(true);
       setFormData({ Name: "", Email: "", isInAustralia: "yes" });
 
-      // 1秒后跳转回 PartnerDetail 页面
       setTimeout(() => {
         navigate(`/products/${encodeURIComponent(productName)}/${partnerType}/PartnerDetail`);
       }, 1000);
