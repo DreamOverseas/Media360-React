@@ -62,7 +62,6 @@ const PartnerList = ({ currentProductName }) => {
     if (currentProductName) fetchPartners();
   }, [currentProductName]);
 
-  // 先筛选 approved = true 的数据
   const approvedPartners = partners.filter(p => (p.attributes || p).approved);
   const visiblePartners = showAll ? approvedPartners : approvedPartners.slice(0, 2);
   const title = productTitleMap[currentProductName] || "合作伙伴";
@@ -78,15 +77,15 @@ const PartnerList = ({ currentProductName }) => {
             <div className="partner-list-container">
               {visiblePartners.map((item, idx) => {
                 const attr = item.attributes || item || {};
-                const logoUrl = getMediaUrl(attr.companyLogo);
+                const avatarUrl = getMediaUrl(attr.advisorAvatar);
                 const asicUrl = getMediaUrl(attr.asicCertificate);
                 const licenseUrl = getMediaUrl(attr.licenseFile);
 
                 return (
                   <div key={item.id || idx} className="partner-card">
                     <div className="partner-logo-wrapper">
-                      {logoUrl && (
-                        <img src={logoUrl} alt="公司Logo" className="partner-logo" />
+                      {avatarUrl && (
+                        <img src={avatarUrl} alt="顾问头像" className="partner-logo" />
                       )}
                     </div>
 

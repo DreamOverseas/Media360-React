@@ -22,6 +22,8 @@ const initialFormData = {
   cityLocation: "",
   experienceYears: "",
   licenseFile: "",
+  advisorFirstName: "",
+  advisorLastName: "",
   agreed: false,
 };
 
@@ -32,6 +34,8 @@ const PartnerApplicationForm = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [companyLogo, setCompanyLogo] = useState(null);
   const [asicCertificateFile, setAsicCertificateFile] = useState(null);
+  const [advisorAvatar, setAdvisorAvatar] = useState(null);
+  const [advisorLicenseFile, setAdvisorLicenseFile] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -82,6 +86,8 @@ const PartnerApplicationForm = () => {
       const logoId = await handleUpload(companyLogo);
       const certId = await handleUpload(asicCertificateFile);
       const licenseId = await handleUpload(formData.licenseFile);
+      const advisorAvatarId = await handleUpload(advisorAvatar);
+      const advisorLicenseId = await handleUpload(advisorLicenseFile);
 
       const partnerID = uuidv4();
 
@@ -97,6 +103,10 @@ const PartnerApplicationForm = () => {
           companyLogo: logoId,
           asicCertificate: certId,
           licenseFile: licenseId,
+          advisorFirstName: formData.advisorFirstName,
+          advisorLastName: formData.advisorLastName,
+          advisorAvatar: advisorAvatarId,
+          advisorLicenseFile: advisorLicenseId,
           approved: false,
           cityLocation: formData.cityLocation,
           experienceYears: formData.experienceYears,
@@ -132,6 +142,8 @@ const PartnerApplicationForm = () => {
       setFormData(initialFormData);
       setCompanyLogo(null);
       setAsicCertificateFile(null);
+      setAdvisorAvatar(null);
+      setAdvisorLicenseFile(null);
 
       setTimeout(() => {
         navigate(`/products/${encodeURIComponent(productName)}/PartnerDetail`);
@@ -169,6 +181,7 @@ const PartnerApplicationForm = () => {
       {success && <Alert variant="success">✅ 提交成功，页面即将跳转！</Alert>}
 
       <Form onSubmit={handleSubmit}>
+        
         <Form.Group className="mb-3">
           <Form.Label>公司名称</Form.Label>
           <Form.Control
@@ -177,6 +190,26 @@ const PartnerApplicationForm = () => {
             onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
             required
           />
+        </Form.Group>
+
+                <Form.Group className="mb-3">
+          <Form.Label>顾问姓名</Form.Label>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Form.Control
+              type="text"
+              placeholder="姓"
+              value={formData.advisorLastName}
+              onChange={(e) => setFormData({ ...formData, advisorLastName: e.target.value })}
+              required
+            />
+            <Form.Control
+              type="text"
+              placeholder="名"
+              value={formData.advisorFirstName}
+              onChange={(e) => setFormData({ ...formData, advisorFirstName: e.target.value })}
+              required
+            />
+          </div>
         </Form.Group>
 
         <Form.Group className="mb-3">
@@ -237,7 +270,7 @@ const PartnerApplicationForm = () => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>牌照信息（PDF）</Form.Label>
+          <Form.Label>牌照信息（文件不得大于10MB且文件格式为PDF）</Form.Label>
           <Form.Control
             type="file"
             accept=".pdf"
@@ -254,10 +287,28 @@ const PartnerApplicationForm = () => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>ASIC 证书</Form.Label>
+          <Form.Label>ASIC 证书（文件不得大于10MB且文件格式为PDF）</Form.Label>
           <Form.Control
             type="file"
             onChange={(e) => setAsicCertificateFile(e.target.files[0])}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>顾问头像</Form.Label>
+          <Form.Control
+            type="file"
+            accept="image/*"
+            onChange={(e) => setAdvisorAvatar(e.target.files[0])}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>留学生中介牌照（文件不得大于10MB且文件格式为PDF）</Form.Label>
+          <Form.Control
+            type="file"
+            accept=".pdf"
+            onChange={(e) => setAdvisorLicenseFile(e.target.files[0])}
           />
         </Form.Group>
 
