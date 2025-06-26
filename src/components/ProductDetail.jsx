@@ -92,7 +92,7 @@ const ProductDetail = () => {
   
     // 视频缩略图列表
     useEffect(() => {
-      setVideoThumbnails(videos.map(v => v.thumbnail || 'https://placehold.co/650x400'));
+      setVideoThumbnails(videos.map(v => v.thumbnail || 'https://placehold.co/80x80'));
     }, [videos]);
   
     // 合并所有媒体（图片 + 视频缩略图）
@@ -172,7 +172,7 @@ const ProductDetail = () => {
           <button className="next-button" onClick={nextMedia}>❯</button>
         </div>
   
-        {/* 缩略图列表（最多11项 + 占位符） */}
+        {/* 缩略图列表（最多8项 + 占位符） */}
         <div className="thumbnail-container">
           {allMedia.slice(1, 8).map((src, idx) => (
             <div
@@ -189,7 +189,8 @@ const ProductDetail = () => {
               className="thumb-container placeholder-thumb"
               onClick={() => handleThumbnailClick(8)}
             >
-              <div className="thumb-overlay">+{allMedia.length - 8}</div>
+              <div className="thumb-overlay">+ {allMedia.length - 8}</div>
+              
             </div>
           )}
         </div>
@@ -809,7 +810,7 @@ const getPartnerLabel = () => {
                       <></>
                     )}
                 </>
- 
+                
                 {onDesktop ? (
                   <></>
                 ) : (
@@ -915,6 +916,7 @@ const getPartnerLabel = () => {
               </Container>
             </Col>
           </Row>
+          <br/>
 
           {/* <Row>
             <Col>
@@ -929,8 +931,8 @@ const getPartnerLabel = () => {
           {videos.length > 0 ? (
             <div className="slide-section">
               <h4>相关视频</h4>
+              <br/>
               <div>
-                
                 {videos.map((video, index) => (
                   <div key={index}>
                     <div
@@ -955,6 +957,7 @@ const getPartnerLabel = () => {
           {slides !== "N/A" ? (
             <div className="slide-section">
               <h4>图文详情</h4>
+              <br/>
               <Container>
                 <ReactMarkdown>{slides}</ReactMarkdown>
               </Container>
