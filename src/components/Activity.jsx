@@ -412,6 +412,8 @@ const Activity = () => {
     };
 
   return (
+    <>
+    {paginatedProducts.length > 0 && (
     <Container className="my-4">
       <h1 className="text-3xl font-bold text-center !my-10">参加活动</h1>
       {/* Product grid for current page */}
@@ -686,7 +688,8 @@ const Activity = () => {
         />
       </Pagination>
 
-    </Container>
+    </Container>)}
+    </>
   );
 };
 
