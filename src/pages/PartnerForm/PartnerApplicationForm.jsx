@@ -13,6 +13,8 @@ const UPLOAD_URL = `${STRAPI_HOST}/api/upload`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
 const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_PARTNER_APPLICATION_FORM_NOTIFICATION;
 
+
+
 const initialFormData = {
   companyName: "",
   Phone: "",
@@ -26,6 +28,13 @@ const initialFormData = {
   advisorFirstName: "",
   advisorLastName: "",
   agreed: false,
+};
+
+
+const partnerTypeLabelMap = {
+  lvyouchongjie: "旅游中介",
+  jiamengshang: "加盟商",
+  liuxuezhongjie: "留学中介",
 };
 
 const PartnerApplicationForm = () => {
@@ -52,19 +61,26 @@ const PartnerApplicationForm = () => {
   };
 
   const getOrCreateProductDocumentId = async () => {
-    const res = await axios.get(`${PRODUCT_URL}?filters[productName][$eq]=${encodeURIComponent(productName)}&fields[0]=documentId`, {
-      headers: { Authorization: `Bearer ${API_TOKEN}` },
-    });
-    const existing = res.data?.data?.[0];
-    if (existing?.documentId) return existing.documentId;
+  const partnerTypeLabel = partnerTypeLabelMap[partnerType] || "合作伙伴";
 
-    const createRes = await axios.post(PRODUCT_URL, {
-      data: { productName },
-    }, {
-      headers: { Authorization: `Bearer ${API_TOKEN}` },
-    });
-    return createRes.data?.data?.documentId;
-  };
+  const res = await axios.get(`${PRODUCT_URL}?filters[productName][$eq]=${encodeURIComponent(productName)}&filters[partnerType][$eq]=${encodeURIComponent(partnerTypeLabel)}&fields[0]=documentId`, {
+    headers: { Authorization: `Bearer ${API_TOKEN}` },
+  });
+
+  const existing = res.data?.data?.[0];
+  if (existing?.documentId) return existing.documentId;
+
+  const createRes = await axios.post(PRODUCT_URL, {
+    data: {
+      productName,
+      partnerType: partnerTypeLabel,
+    },
+  }, {
+    headers: { Authorization: `Bearer ${API_TOKEN}` },
+  });
+
+  return createRes.data?.data?.documentId;
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
