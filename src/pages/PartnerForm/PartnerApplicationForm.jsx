@@ -32,10 +32,13 @@ const initialFormData = {
 
 
 const partnerTypeLabelMap = {
-  lvyouchongjie: "旅游中介",
+  lvyouzhongjie: "旅游中介",
   jiamengshang: "加盟商",
   liuxuezhongjie: "留学中介",
 };
+
+const getPartnerTypeLabel = (key) => partnerTypeLabelMap[key] || "合作伙伴";
+
 
 const PartnerApplicationForm = () => {
   const { productName, partnerType } = useParams();
@@ -61,32 +64,34 @@ const PartnerApplicationForm = () => {
   };
 
   const getOrCreateProductDocumentId = async () => {
-  const partnerTypeLabel = partnerTypeLabelMap[partnerType] || "合作伙伴";
+    const partnerTypeLabel = getPartnerTypeLabel(partnerType);
 
-  const res = await axios.get(`${PRODUCT_URL}?filters[productName][$eq]=${encodeURIComponent(productName)}&filters[partnerType][$eq]=${encodeURIComponent(partnerTypeLabel)}&fields[0]=documentId`, {
-    headers: { Authorization: `Bearer ${API_TOKEN}` },
-  });
+    const res = await axios.get(`${PRODUCT_URL}?filters[productName][$eq]=${encodeURIComponent(productName)}&filters[partnerType][$eq]=${encodeURIComponent(partnerTypeLabel)}&fields[0]=documentId`, {
+      headers: { Authorization: `Bearer ${API_TOKEN}` },
+    });
 
-  const existing = res.data?.data?.[0];
-  if (existing?.documentId) return existing.documentId;
+    const existing = res.data?.data?.[0];
+    if (existing?.documentId) return existing.documentId;
 
-  const createRes = await axios.post(PRODUCT_URL, {
-    data: {
-      productName,
-      partnerType: partnerTypeLabel,
-    },
-  }, {
-    headers: { Authorization: `Bearer ${API_TOKEN}` },
-  });
+    const createRes = await axios.post(PRODUCT_URL, {
+      data: {
+        productName,
+        partnerType: partnerTypeLabel,
+      },
+    }, {
+      headers: { Authorization: `Bearer ${API_TOKEN}` },
+    });
 
-  return createRes.data?.data?.documentId;
-};
+    return createRes.data?.data?.documentId;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess(false);
     setLoading(true);
+
+    const partnerTypeLabel = getPartnerTypeLabel(partnerType);
 
     if (!productName) {
       setError("缺少产品信息，请正确跳转！");
@@ -128,6 +133,7 @@ const PartnerApplicationForm = () => {
           cityLocation: formData.cityLocation,
           experienceYears: formData.experienceYears,
           productName,
+          partnerType: partnerTypeLabel,  // 中文类型
         },
       }, {
         headers: { Authorization: `Bearer ${API_TOKEN}` },
