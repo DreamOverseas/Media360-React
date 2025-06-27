@@ -18,8 +18,9 @@ const CustomerApplicationForm = () => {
   const navigate = useNavigate();
   
 
-  const [formData, setFormData] = useState({
-    Name: "",
+    const [formData, setFormData] = useState({
+    surname: "",
+    firstname: "",
     Email: "",
     isInAustralia: "yes",
   });
@@ -65,10 +66,11 @@ const CustomerApplicationForm = () => {
         {
           data: {
             customerID: uuidv4(),
-            Name: formData.Name,
+            surname: formData.surname,
+            firstname: formData.firstname,
             Email: formData.Email,
             isInAustralia: formData.isInAustralia === "yes",
-            Partner: partnerDocumentId,  // 这里现在有值
+            Partner: partnerDocumentId,
           },
         },
         { headers: { Authorization: `Bearer ${API_TOKEN}` } }
@@ -91,8 +93,7 @@ const CustomerApplicationForm = () => {
       );
 
       // 4. 邮件通知
-      axios
-        .post(MAIL_NOTIFY_API, {
+      axios.post(MAIL_NOTIFY_API, {
           ...formData,
           partnerID,
           productName,
@@ -146,13 +147,22 @@ const CustomerApplicationForm = () => {
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>姓名</Form.Label>
-          <Form.Control
-            type="text"
-            name="Name"
-            value={formData.Name}
-            onChange={handleChange}
-            required
-          />
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Form.Control
+              type="text"
+              placeholder="姓"
+              value={formData.surname}
+              onChange={(e) => setFormData({ ...formData, surname: e.target.value })}
+              required
+            />
+            <Form.Control
+              type="text"
+              placeholder="名"
+              value={formData.firstname}
+              onChange={(e) => setFormData({ ...formData, firstname: e.target.value })}
+              required
+            />
+          </div>
         </Form.Group>
 
         <Form.Group className="mb-3">
