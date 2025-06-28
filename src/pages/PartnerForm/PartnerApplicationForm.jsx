@@ -34,6 +34,7 @@ const partnerTypeLabelMap = {
   lvyouzhongjie: "旅游中介",
   jiamengshang: "加盟商",
   liuxuezhongjie: "留学中介",
+  yiminguwen: "移民顾问",
 };
 
 const getPartnerTypeLabel = (key) => partnerTypeLabelMap[key] || "合作伙伴";

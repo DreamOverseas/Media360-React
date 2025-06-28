@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
-import JoinUsButton from "../components/JoinUsButton";
-import axios from "axios";
 import { FaUserPlus } from "react-icons/fa";
+import axios from "axios";
 import "../css/PartnerDetail.css";
 
-// 根据 partnerType 显示中文标题
+// 拼音 → 中文映射
 const partnerTypeLabelMap = {
-  lvyouchongjie: "旅游中介",
+  lvyouzhongjie: "旅游中介",
   jiamengshang: "加盟商",
   liuxuezhongjie: "留学中介",
+  yiminguwen: "移民顾问",
 };
 
 function getMediaUrl(media) {
@@ -35,7 +35,10 @@ const PartnerDetail = () => {
     const fetchPartners = async () => {
       try {
         const params = new URLSearchParams();
+        const partnerTypeLabel = partnerTypeLabelMap[partnerType] || "合作伙伴";
+
         params.append("filters[productName][$eq]", decodedProductName);
+        params.append("filters[partnerType][$eq]", partnerTypeLabel);
         params.append("populate", "*");
 
         const url = `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submissions?${params.toString()}`;
@@ -55,7 +58,7 @@ const PartnerDetail = () => {
     };
 
     fetchPartners();
-  }, [decodedProductName]);
+  }, [decodedProductName, partnerType]);
 
   const approvedPartners = partners.filter(p => (p.attributes || p).approved);
   const visiblePartners = showAll ? approvedPartners : approvedPartners.slice(0, 2);
@@ -63,6 +66,8 @@ const PartnerDetail = () => {
 
   return (
     <Container style={{ paddingTop: "80px", paddingBottom: "40px", position: "relative" }}>
+      
+      {/* 右上角返回 */}
       <div
         onClick={() => navigate(`/products/${encodeURIComponent(productName)}`)}
         style={{
@@ -74,18 +79,18 @@ const PartnerDetail = () => {
           color: "#555",
           display: "flex",
           alignItems: "center",
-          gap: "6px", // 图标和文字间距
+          gap: "6px",
         }}
         title="返回"
       >
         <FiArrowLeft />
         <span style={{ fontSize: "16px" }}>返回</span>
       </div>
-      
-      
 
+      {/* 页面标题 */}
       <h5 className="partner-section-title">{title}</h5>
 
+      {/* 内容区域 */}
       {approvedPartners.length === 0 ? (
         <p>敬请期待</p>
       ) : (
@@ -148,13 +153,17 @@ const PartnerDetail = () => {
         </>
       )}
 
+      {/* 加入我们按钮 */}
       <Row className="mt-4 justify-content-start">
         <Col xs="auto">
           <Link to={`/products/${encodeURIComponent(productName)}/${partnerType}/PartnerDetail/PartnerApplicationForm`}>
-            <JoinUsButton />
+            <button className="modern-joinus-btn">
+              成为{title}
+            </button>
           </Link>
         </Col>
       </Row>
+
     </Container>
   );
 };

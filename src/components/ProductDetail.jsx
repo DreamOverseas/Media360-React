@@ -391,14 +391,23 @@ useEffect(() => {
     }[productUrl] || "合作伙伴";
   };
 
-  const getPartnerPathSegment = () => {
+  const getPartnerTypeForButton = (type) => {
     const productUrl = baseurl.split('/')[0] || "";
 
-    return {
-      "roseneath-holidaypark": "lvyouzhongjie",
-      "nail-train": "jiamengshang",
-      "Studyfin": "liuxuezhongjie",
-    }[productUrl] || "hezuohuoban";
+    const map = {
+      "roseneath-holidaypark": {
+        default: "lvyouzhongjie",
+      },
+      "nail-train": {
+        default: "jiamengshang",
+      },
+      "Studyfin": {
+        default: "liuxuezhongjie",
+        migration: "yiminguwen",
+      },
+    };
+
+    return map[productUrl]?.[type] || "hezuohuoban";
   };
 
   // Fetch product data and save to sessionStorage
@@ -545,16 +554,16 @@ useEffect(() => {
                     <Row>
                         {/* 合作伙伴按钮 */}
                         <Col xs={4}>
-                          <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerPathSegment()}/PartnerDetail`}>
+                          <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton("default")}/PartnerDetail`}>
                             <Button className='product-detail-funtion-btn'>
                               {getPartnerLabel()}
                             </Button>
                           </Link>
                         </Col>
                         {/* 移民顾问按钮，产品为 Studyfin 时显示 */}
-                        {Name === "Studyfin" && (
+                        { Name === "Studyfin" && (
                           <Col xs={4}>
-                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerPathSegment()}/MigrationAdvisor`}>
+                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton("migration")}/PartnerDetail`}>
                               <Button className='product-detail-funtion-btn'>移民顾问</Button>
                             </Link>
                           </Col>
@@ -817,16 +826,16 @@ useEffect(() => {
                       <Row>
                       {/* 合作伙伴按钮 */}
                         <Col xs={4}>
-                          <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerPathSegment()}/PartnerDetail`}>
+                          <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton("default")}/PartnerDetail`}>
                             <Button className='product-detail-funtion-btn'>
                               {getPartnerLabel()}
                             </Button>
                           </Link>
                         </Col>
                         {/* 移民顾问按钮，产品为 Studyfin 时显示 */}
-                        {Name === "Studyfin" && (
+                        { Name === "Studyfin" && (
                           <Col xs={4}>
-                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerPathSegment()}/MigrationAdvisor`}>
+                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton("migration")}/PartnerDetail`}>
                               <Button className='product-detail-funtion-btn'>移民顾问</Button>
                             </Link>
                           </Col>

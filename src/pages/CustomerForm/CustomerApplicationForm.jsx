@@ -12,6 +12,15 @@ const PARTNER_URL = `${STRAPI_HOST}/api/partner-application-submissions`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
 const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_CUSTOMER_APPLICATION_NOTIFICATION;
 
+
+const partnerTypeLabelMap = {
+  lvyouzhongjie: "旅游中介",
+  jiamengshang: "加盟商",
+  liuxuezhongjie: "留学中介",
+  yiminguwen: "移民顾问",
+};
+
+
 const CustomerApplicationForm = () => {
   const { productName, partnerType } = useParams();
   const { partnerID } = Object.fromEntries(new URLSearchParams(useLocation().search));
