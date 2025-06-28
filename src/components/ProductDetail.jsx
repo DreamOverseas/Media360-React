@@ -381,14 +381,23 @@ useEffect(() => {
     }
   };
 
-  const getPartnerLabel = () => {
+  const getPartnerLabels = () => {
     const productUrl = baseurl.split('/')[0] || "";
 
-    return {
-      "roseneath-holidaypark": "旅游中介",
-      "nail-train": "加盟商",
-      "Studyfin": "留学中介",
-    }[productUrl] || "合作伙伴";
+    const config = {
+      "roseneath-holidaypark": [
+        { type: "default", label: "旅游中介" },
+      ],
+      "nail-train": [
+        { type: "default", label: "加盟商" },
+      ],
+      "Studyfin": [
+        { type: "default", label: "留学中介" },
+        { type: "migration", label: "移民顾问" },
+      ],
+    };
+
+    return config[productUrl] || [{ type: "default", label: "合作伙伴" }];
   };
 
   const getPartnerTypeForButton = (type) => {
@@ -553,21 +562,21 @@ useEffect(() => {
                     <h4>查看相关信息</h4>
                     <Row>
                         {/* 合作伙伴按钮 */}
-                        <Col xs={4}>
-                          <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton("default")}/PartnerDetail`}>
-                            <Button className='product-detail-funtion-btn'>
-                              {getPartnerLabel()}
-                            </Button>
-                          </Link>
-                        </Col>
+                        {getPartnerLabels().map(({ type, label }, idx) => (
+                          <Col xs={4} key={idx}>
+                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
+                              <Button className="product-detail-funtion-btn">{label}</Button>
+                            </Link>
+                          </Col>
+                        ))}
                         {/* 移民顾问按钮，产品为 Studyfin 时显示 */}
-                        { Name === "Studyfin" && (
+                        {/* { Name === "Studyfin" && (
                           <Col xs={4}>
                             <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton("migration")}/PartnerDetail`}>
                               <Button className='product-detail-funtion-btn'>移民顾问</Button>
                             </Link>
                           </Col>
-                        )}
+                        )} */}
                       {founder.length > 0 && (
                         <Col xs={4}>
                           <Link
@@ -825,21 +834,21 @@ useEffect(() => {
                       <h4>查看相关信息</h4>
                       <Row>
                       {/* 合作伙伴按钮 */}
-                        <Col xs={4}>
-                          <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton("default")}/PartnerDetail`}>
-                            <Button className='product-detail-funtion-btn'>
-                              {getPartnerLabel()}
-                            </Button>
-                          </Link>
-                        </Col>
+                        {getPartnerLabels().map(({ type, label }, idx) => (
+                          <Col xs={4} key={idx}>
+                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
+                              <Button className="product-detail-funtion-btn">{label}</Button>
+                            </Link>
+                          </Col>
+                        ))}
                         {/* 移民顾问按钮，产品为 Studyfin 时显示 */}
-                        { Name === "Studyfin" && (
+                        {/* { Name === "Studyfin" && (
                           <Col xs={4}>
                             <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton("migration")}/PartnerDetail`}>
                               <Button className='product-detail-funtion-btn'>移民顾问</Button>
                             </Link>
                           </Col>
-                        )}
+                        )} */}
                         {founder.length > 0 && (
                           <Col xs={4}>
                             <Link
