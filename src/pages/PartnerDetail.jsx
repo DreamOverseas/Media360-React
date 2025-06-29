@@ -5,14 +5,7 @@ import { FiArrowLeft } from "react-icons/fi";
 import { FaUserPlus } from "react-icons/fa";
 import axios from "axios";
 import "../css/PartnerDetail.css";
-
-// 拼音 → 中文映射
-const partnerTypeLabelMap = {
-  lvyouzhongjie: "旅游中介",
-  jiamengshang: "加盟商",
-  liuxuezhongjie: "留学中介",
-  yiminguwen: "移民顾问",
-};
+import { getPartnerTypeLabel } from "../components/PartnerConfig";
 
 function getMediaUrl(media) {
   if (!media) return null;
@@ -35,7 +28,7 @@ const PartnerDetail = () => {
     const fetchPartners = async () => {
       try {
         const params = new URLSearchParams();
-        const partnerTypeLabel = partnerTypeLabelMap[partnerType] || "合作伙伴";
+        const partnerTypeLabel = getPartnerTypeLabel(partnerType) || "合作伙伴";
 
         params.append("filters[productName][$eq]", decodedProductName);
         params.append("filters[partnerType][$eq]", partnerTypeLabel);
@@ -62,7 +55,7 @@ const PartnerDetail = () => {
 
   const approvedPartners = partners.filter(p => (p.attributes || p).approved);
   const visiblePartners = showAll ? approvedPartners : approvedPartners.slice(0, 2);
-  const title = partnerTypeLabelMap[partnerType] || "合作伙伴";
+  const title = getPartnerTypeLabel[partnerType] || "合作伙伴";
 
   return (
     <Container style={{ paddingTop: "80px", paddingBottom: "40px", position: "relative" }}>

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { FiArrowLeft } from "react-icons/fi";
+import { partnerTypeLabelMap } from "../../components/PartnerConfig";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
 const PRODUCT_URL = `${STRAPI_HOST}/api/product-application-submissions`;
@@ -27,14 +28,6 @@ const initialFormData = {
   advisorFirstName: "",
   advisorLastName: "",
   agreed: false,
-};
-
-
-const partnerTypeLabelMap = {
-  lvyouzhongjie: "旅游中介",
-  jiamengshang: "加盟商",
-  liuxuezhongjie: "留学中介",
-  yiminguwen: "移民顾问",
 };
 
 const getPartnerTypeLabel = (key) => partnerTypeLabelMap[key] || "合作伙伴";

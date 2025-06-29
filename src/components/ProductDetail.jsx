@@ -405,18 +405,18 @@ useEffect(() => {
 
     const map = {
       "roseneath-holidaypark": {
-        default: "lvyouzhongjie",
+        default: "travel-agency",
       },
       "nail-train": {
-        default: "jiamengshang",
+        default: "franchise-partner",
       },
       "Studyfin": {
-        default: "liuxuezhongjie",
-        migration: "yiminguwen",
+        default: "study-abroad-agency",
+        migration: "immigration-advisor",
       },
     };
 
-    return map[productUrl]?.[type] || "hezuohuoban";
+    return map[productUrl]?.[type] || "partner";
   };
 
   // Fetch product data and save to sessionStorage
@@ -569,14 +569,6 @@ useEffect(() => {
                             </Link>
                           </Col>
                         ))}
-                        {/* 移民顾问按钮，产品为 Studyfin 时显示 */}
-                        {/* { Name === "Studyfin" && (
-                          <Col xs={4}>
-                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton("migration")}/PartnerDetail`}>
-                              <Button className='product-detail-funtion-btn'>移民顾问</Button>
-                            </Link>
-                          </Col>
-                        )} */}
                       {founder.length > 0 && (
                         <Col xs={4}>
                           <Link
@@ -841,14 +833,6 @@ useEffect(() => {
                             </Link>
                           </Col>
                         ))}
-                        {/* 移民顾问按钮，产品为 Studyfin 时显示 */}
-                        {/* { Name === "Studyfin" && (
-                          <Col xs={4}>
-                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton("migration")}/PartnerDetail`}>
-                              <Button className='product-detail-funtion-btn'>移民顾问</Button>
-                            </Link>
-                          </Col>
-                        )} */}
                         {founder.length > 0 && (
                           <Col xs={4}>
                             <Link
