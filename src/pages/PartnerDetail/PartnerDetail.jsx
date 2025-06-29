@@ -4,8 +4,8 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import { FaUserPlus } from "react-icons/fa";
 import axios from "axios";
-import "../css/PartnerDetail.css";
-import { getPartnerTypeLabel } from "../components/PartnerConfig";
+import "../../css/PartnerDetail.css";
+import { getPartnerTypeLabel } from "../../components/PartnerConfig";
 
 function getMediaUrl(media) {
   if (!media) return null;
@@ -15,6 +15,8 @@ function getMediaUrl(media) {
   return null;
 }
 
+
+
 const PartnerDetail = () => {
   const { productName, partnerType } = useParams();
   const decodedProductName = decodeURIComponent(productName);
@@ -23,39 +25,38 @@ const PartnerDetail = () => {
   const [partners, setPartners] = useState([]);
   const [documentId, setDocumentId] = useState("");
   const [showAll, setShowAll] = useState(false);
+  const title = getPartnerTypeLabel(partnerType); 
 
   useEffect(() => {
-    const fetchPartners = async () => {
-      try {
-        const params = new URLSearchParams();
-        const partnerTypeLabel = getPartnerTypeLabel(partnerType) || "合作伙伴";
+      const fetchPartners = async () => {
+        try {
+          const params = new URLSearchParams();
+          params.append("filters[productName][$eq]", decodedProductName);
+          params.append("filters[partnerType][$eq]", title);
+          params.append("populate", "*");
 
-        params.append("filters[productName][$eq]", decodedProductName);
-        params.append("filters[partnerType][$eq]", partnerTypeLabel);
-        params.append("populate", "*");
+          const url = `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submissions?${params.toString()}`;
+          const res = await axios.get(url, {
+            headers: { Authorization: `Bearer ${import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD}` },
+          });
 
-        const url = `${import.meta.env.VITE_STRAPI_HOST}/api/partner-application-submissions?${params.toString()}`;
-        const res = await axios.get(url, {
-          headers: { Authorization: `Bearer ${import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD}` },
-        });
+          const entries = res.data?.data || [];
+          setPartners(entries);
+          setDocumentId(entries[0]?.documentId || "");
 
-        const entries = res.data?.data || [];
-        setPartners(entries);
-        setDocumentId(entries[0]?.documentId || "");
+        } catch (err) {
+          console.error("拉取合作伙伴失败", err);
+          setPartners([]);
+          setDocumentId("");
+        }
+      };
 
-      } catch (err) {
-        console.error("拉取合作伙伴失败", err);
-        setPartners([]);
-        setDocumentId("");
-      }
-    };
-
-    fetchPartners();
-  }, [decodedProductName, partnerType]);
+      fetchPartners();
+  }, [decodedProductName, partnerType, title]);
 
   const approvedPartners = partners.filter(p => (p.attributes || p).approved);
   const visiblePartners = showAll ? approvedPartners : approvedPartners.slice(0, 2);
-  const title = getPartnerTypeLabel[partnerType] || "合作伙伴";
+  
 
   return (
     <Container style={{ paddingTop: "80px", paddingBottom: "40px", position: "relative" }}>

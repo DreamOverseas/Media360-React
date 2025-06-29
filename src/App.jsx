@@ -54,7 +54,7 @@ import Activity from "./components/Activity.jsx";
 import PartnerApplicationForm from './pages/PartnerForm/PartnerApplicationForm.jsx';
 import CustomerApplicationForm from "./pages/CustomerForm/CustomerApplicationForm.jsx";
 import TermsAndConditions from "./pages/TermsAndConditions";
-import PartnerDetail from "./pages/PartnerDetail";
+import PartnerDetail from "./pages/PartnerDetail/PartnerDetail.jsx";
 import MigrationAdvisor from "./pages/MigrationAdvisor";
 
 function App() {
