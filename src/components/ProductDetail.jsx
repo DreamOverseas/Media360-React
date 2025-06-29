@@ -24,7 +24,7 @@ import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
 import PayPalButton from "./PayPalButton.jsx";
 import WechatShare from './WechatShare.jsx';
-
+import { getPartnerTypeLabel } from "../components/PartnerConfig";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
@@ -403,18 +403,18 @@ useEffect(() => {
 
     const config = {
       "roseneath-holidaypark": [
-        { type: "default", label: "旅游中介" },
+        { type: "default", label: getPartnerTypeLabel("travel-agency") },
       ],
       "nail-train": [
-        { type: "default", label: "加盟商" },
+        { type: "default", label: getPartnerTypeLabel("franchise-partner") },
       ],
       "Studyfin": [
-        { type: "default", label: "留学中介" },
-        { type: "migration", label: "移民顾问" },
+        { type: "default", label: getPartnerTypeLabel("study-abroad-agency") },
+        { type: "migration", label: getPartnerTypeLabel("immigration-advisor") },
       ],
     };
 
-    return config[productUrl] || [{ type: "default", label: "合作伙伴" }];
+    return config[productUrl] || [{ type: "default", label: getPartnerTypeLabel("partner") }];
   };
 
   const getPartnerTypeForButton = (type) => {
