@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import { FaUserPlus } from "react-icons/fa";
-import "../../css/PartnerDetail.css";
+import "../../css/DefaultPartnerDetail.css";
 import { getPartnerTypeLabel } from "../../components/PartnerConfig";
 
 function getMediaUrl(media) {
@@ -23,25 +23,11 @@ const DefaultPartnerDetail = ({ partners, documentId, productName, partnerType }
   const title = getPartnerTypeLabel(partnerType);
 
   return (
-    <Container style={{ paddingTop: "80px", paddingBottom: "40px", position: "relative" }}>
+    <Container className="default-partner-container">
       
-      <div
-        onClick={() => navigate(`/products/${encodeURIComponent(productName)}`)}
-        style={{
-          position: "absolute",
-          top: "20px",
-          right: "20px",
-          cursor: "pointer",
-          fontSize: "24px",
-          color: "#555",
-          display: "flex",
-          alignItems: "center",
-          gap: "6px",
-        }}
-        title="返回"
-      >
+      <div onClick={() => navigate(`/products/${encodeURIComponent(productName)}`)} className="back-button">
         <FiArrowLeft />
-        <span style={{ fontSize: "16px" }}>返回</span>
+        <span className="small-text">返回</span>
       </div>
 
       <h5 className="partner-section-title">{title}</h5>
