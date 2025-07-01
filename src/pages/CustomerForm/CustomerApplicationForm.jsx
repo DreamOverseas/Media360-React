@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { Container, Form, Button, Alert, Spinner } from "react-bootstrap";
 import { FiArrowLeft } from "react-icons/fi";
-import { partnerTypeLabelMap } from "../../components/PartnerConfig";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
 const CUSTOMER_URL = `${STRAPI_HOST}/api/partner-application-forms`;
@@ -12,19 +11,24 @@ const PARTNER_URL = `${STRAPI_HOST}/api/partner-application-submissions`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
 const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_CUSTOMER_APPLICATION_NOTIFICATION;
 
-
 const CustomerApplicationForm = () => {
   const { productName, partnerType } = useParams();
   const { partnerID } = Object.fromEntries(new URLSearchParams(useLocation().search));
   const navigate = useNavigate();
-  
 
-    const [formData, setFormData] = useState({
+  const initialFormData = {
     surname: "",
     firstname: "",
     Email: "",
     isInAustralia: "yes",
-  });
+    address: "",
+    intakeTime: "",
+    needAccommodation: false,
+    needVisaAssist: false,
+    otherNeeds: "",
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,8 +41,11 @@ const CustomerApplicationForm = () => {
   }, [productName, partnerID, navigate]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -48,7 +55,6 @@ const CustomerApplicationForm = () => {
     setLoading(true);
 
     try {
-      // 1. 获取 Partner 数据
       const query = `?filters[productName][$eq]=${encodeURIComponent(productName)}&filters[partnerID][$eq]=${encodeURIComponent(partnerID)}&fields[0]=documentId`;
 
       const partnerRes = await axios.get(`${PARTNER_URL}${query}`, {
@@ -61,8 +67,8 @@ const CustomerApplicationForm = () => {
       const partnerDocumentId = partnerEntry?.documentId;
       if (!partnerDocumentId) throw new Error("合作伙伴缺少 documentId");
 
-      // 2. 创建 Customer 并绑定 Partner
-      const customerRes = await axios.post(
+      // 发送数据
+      await axios.post(
         CUSTOMER_URL,
         {
           data: {
@@ -71,39 +77,27 @@ const CustomerApplicationForm = () => {
             firstname: formData.firstname,
             Email: formData.Email,
             isInAustralia: formData.isInAustralia === "yes",
+            address: formData.address,
+            intakeTime: formData.intakeTime,
+            needAccommodation: formData.needAccommodation,
+            needVisaAssist: formData.needVisaAssist,
+            otherNeeds: formData.otherNeeds,
             Partner: partnerDocumentId,
           },
         },
         { headers: { Authorization: `Bearer ${API_TOKEN}` } }
       );
 
-      const customerDocumentId = customerRes.data?.data?.documentId;
-      if (!customerDocumentId) throw new Error("创建用户失败");
-
-      // 3. 反向绑定：Partner → Customer
-      await axios.put(
-        `${PARTNER_URL}/${partnerDocumentId}`,
-        {
-          data: {
-            Customer: {
-              connect: [customerDocumentId],
-            },
-          },
-        },
-        { headers: { Authorization: `Bearer ${API_TOKEN}` } }
-      );
-
-      // 4. 邮件通知
+      // 邮件通知
       axios.post(MAIL_NOTIFY_API, {
-          ...formData,
-          partnerID,
-          productName,
-        })
-        .catch((err) => console.warn("邮件通知失败", err));
+        ...formData,
+        partnerID,
+        productName,
+      }).catch((err) => console.warn("邮件通知失败", err));
 
-      // 5. 成功处理
+      // 成功重置
       setSuccess(true);
-      setFormData({ Name: "", Email: "", isInAustralia: "yes" });
+      setFormData(initialFormData);
 
       setTimeout(() => {
         navigate(`/products/${encodeURIComponent(productName)}/${partnerType}/PartnerDetail`);
@@ -119,8 +113,6 @@ const CustomerApplicationForm = () => {
 
   return (
     <Container style={{ position: "relative" }}>
-      
-      {/* 右上角 X 关闭按钮 */}
       <div
         onClick={() => navigate(`/products/${encodeURIComponent(productName)}/${partnerType}/PartnerDetail`)}
         style={{
@@ -132,7 +124,7 @@ const CustomerApplicationForm = () => {
           color: "#555",
           display: "flex",
           alignItems: "center",
-          gap: "6px", // 图标和文字间距
+          gap: "6px",
         }}
         title="返回"
       >
@@ -199,6 +191,58 @@ const CustomerApplicationForm = () => {
               onChange={handleChange}
             />
           </div>
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>现居住地址</Form.Label>
+          <Form.Control
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            placeholder="请输入您的详细居住地址"
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>计划入学时间</Form.Label>
+          <Form.Control
+            name="intakeTime"
+            value={formData.intakeTime}
+            onChange={handleChange}
+            placeholder="例如：2024年2月、2024年7月"
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Check
+            type="checkbox"
+            label="需要住宿安排"
+            name="needAccommodation"
+            checked={formData.needAccommodation}
+            onChange={handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Check
+            type="checkbox"
+            label="需要接机、签证协助"
+            name="needVisaAssist"
+            checked={formData.needVisaAssist}
+            onChange={handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>其他特别需求</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            name="otherNeeds"
+            value={formData.otherNeeds}
+            onChange={handleChange}
+            placeholder="请输入其他需求"
+          />
         </Form.Group>
 
         <Button type="submit" disabled={loading}>
