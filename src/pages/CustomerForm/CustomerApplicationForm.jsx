@@ -67,8 +67,8 @@ const CustomerApplicationForm = () => {
       const partnerDocumentId = partnerEntry?.documentId;
       if (!partnerDocumentId) throw new Error("合作伙伴缺少 documentId");
 
-      // 发送数据
-      await axios.post(
+      // 1. 创建 Customer 并绑定 Partner
+      const customerRes = await axios.post(
         CUSTOMER_URL,
         {
           data: {
@@ -88,14 +88,30 @@ const CustomerApplicationForm = () => {
         { headers: { Authorization: `Bearer ${API_TOKEN}` } }
       );
 
-      // 邮件通知
+      const customerDocumentId = customerRes.data?.data?.documentId;
+      if (!customerDocumentId) throw new Error("创建用户失败");
+
+      // 2. 反向绑定 Partner → Customer
+      await axios.put(
+        `${PARTNER_URL}/${partnerDocumentId}`,
+        {
+          data: {
+            Customer: {
+              connect: [customerDocumentId],
+            },
+          },
+        },
+        { headers: { Authorization: `Bearer ${API_TOKEN}` } }
+      );
+
+      // 3. 邮件通知
       axios.post(MAIL_NOTIFY_API, {
         ...formData,
         partnerID,
         productName,
       }).catch((err) => console.warn("邮件通知失败", err));
 
-      // 成功重置
+      // 4. 成功重置
       setSuccess(true);
       setFormData(initialFormData);
 
