@@ -12,7 +12,8 @@ import {
   Spinner,
   Tabs,
   Tab,
-  Accordion
+  Accordion,
+  Card
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
@@ -34,6 +35,7 @@ const ProductDetail = () => {
   const [name, setRecentSlug] = useState(null);
   const { t, i18n } = useTranslation();
   const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProduct] = useState([])
   const [people, setPeople] = useState(null);
   const [videos, setVideo] = useState([]);
   const [news, setNews] = useState([]);
@@ -254,7 +256,7 @@ const ProductDetail = () => {
         eventResponse,
       ] = await Promise.all([
         axios.get(
-          `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate=*`
+          `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[related_products][populate][products][populate]=ProductImage`
         ),
         axios.get(
           `${BACKEND_HOST}/api/products/?filters[url]=${path}&populate[people][populate]=Image`
@@ -277,6 +279,8 @@ const ProductDetail = () => {
       }
 
       setProduct(productData);
+      console.log("testing",productData.related_products?.products);
+      setRelatedProduct(productData.related_products?.products || [])
 
       const peopleData = peopleResponse.data?.data?.[0]?.people;
       setPeople(peopleData);
@@ -961,6 +965,35 @@ useEffect(() => {
                 ))}
               </div>
             </div>
+          ) : (
+            <></>
+          )}
+
+
+          {relatedProducts.length > 0 ? (
+            <div className="home-product-carousel-container">
+              <h4>相关产品</h4>
+              <br/>
+            <Row>
+              {relatedProducts.map((product) => {
+                const Name = language === "zh" ? product.Name_zh : product.Name_en;
+                return (
+                  <Col md={6} xs={12} key={product.id}>
+                    <Link to={`/products/${product.url}`} className="home-product-card-link">
+                      <Card className="product-card">
+                        <Card.Img src={`${BACKEND_HOST}${product.ProductImage?.url}`} alt={Name} />
+                        <hr />
+                        <Card.Body className="card-body">
+                          <Card.Title title={Name}>{Name}</Card.Title>
+                          <Card.Text>{product.Description_zh}</Card.Text>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                );
+              })}
+            </Row>
+          </div>
           ) : (
             <></>
           )}
