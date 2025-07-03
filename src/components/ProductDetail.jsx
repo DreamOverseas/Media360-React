@@ -24,9 +24,7 @@ import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
 import PayPalButton from "./PayPalButton.jsx";
 import WechatShare from './WechatShare.jsx';
-import JoinUsButton from './JoinUsButton';
-import PartnerList from './PartnerList';
-
+import { getPartnerTypeLabel } from "../components/PartnerConfig";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
@@ -400,16 +398,43 @@ useEffect(() => {
     }
   };
 
-const getPartnerLabel = () => {
-  const productUrl = baseurl.split('/')[0] || "";
+  const getPartnerLabels = () => {
+    const productUrl = baseurl.split('/')[0] || "";
 
-  return {
-    "roseneath-holidaypark": "旅游中介",
-    "nail-train": "加盟商",
-    "Studyfin": "留学中介",
-  }[productUrl] || "合作伙伴";
-};
+    const config = {
+      "roseneath-holidaypark": [
+        { type: "default", label: getPartnerTypeLabel("travel-agency") },
+      ],
+      "nail-train": [
+        { type: "default", label: getPartnerTypeLabel("franchise-partner") },
+      ],
+      "Studyfin": [
+        { type: "default", label: getPartnerTypeLabel("study-abroad-agency") },
+        { type: "migration", label: getPartnerTypeLabel("immigration-advisor") },
+      ],
+    };
 
+    return config[productUrl] || [{ type: "default", label: getPartnerTypeLabel("partner") }];
+  };
+
+  const getPartnerTypeForButton = (type) => {
+    const productUrl = baseurl.split('/')[0] || "";
+
+    const map = {
+      "roseneath-holidaypark": {
+        default: "travel-agency",
+      },
+      "nail-train": {
+        default: "franchise-partner",
+      },
+      "Studyfin": {
+        default: "study-abroad-agency",
+        migration: "immigration-advisor",
+      },
+    };
+
+    return map[productUrl]?.[type] || "partner";
+  };
 
   // Fetch product data and save to sessionStorage
   useEffect(() => {
@@ -555,13 +580,13 @@ const getPartnerLabel = () => {
                     <h4>查看相关信息</h4>
                     <Row>
                         {/* 合作伙伴按钮 */}
-                        <Col xs={4}>
-                          <Link to={`/products/${baseurl.split('/')[0]}/PartnerDetail`}>
-                            <Button className='product-detail-funtion-btn'>
-                              {getPartnerLabel()}
-                            </Button>
-                          </Link>
-                        </Col>
+                        {getPartnerLabels().map(({ type, label }, idx) => (
+                          <Col xs={4} key={idx}>
+                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
+                              <Button className="product-detail-funtion-btn">{label}</Button>
+                            </Link>
+                          </Col>
+                        ))}
                       {founder.length > 0 && (
                         <Col xs={4}>
                           <Link
@@ -574,20 +599,6 @@ const getPartnerLabel = () => {
                           </Link>
                         </Col>
                       )}
-                      {/* 合作伙伴按钮（根据当前产品名动态命名） */}
-                      {/* <Col xs={4}>
-                        <Link to={`/products/${baseurl}/PartnerDetail`}>
-                          <Button className='product-detail-funtion-btn'>                           
-                            {
-                              {
-                                Studyfin: "留学中介",
-                                "罗塞尼斯半岛度假村": "旅游中介",
-                                "AI美甲": "加盟商",
-                              }[Name] || "合作伙伴"
-                            }
-                          </Button>
-                        </Link>
-                      </Col> */}
                       {kol.length > 0 && (
                         <Col xs={4}>
                           <Link
@@ -819,13 +830,13 @@ const getPartnerLabel = () => {
                       <h4>查看相关信息</h4>
                       <Row>
                       {/* 合作伙伴按钮 */}
-                        <Col xs={4}>
-                          <Link to={`/products/${baseurl.split('/')[0]}/PartnerDetail`}>
-                            <Button className='product-detail-funtion-btn'>
-                              {getPartnerLabel()}
-                            </Button>
-                          </Link>
-                        </Col>
+                        {getPartnerLabels().map(({ type, label }, idx) => (
+                          <Col xs={4} key={idx}>
+                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
+                              <Button className="product-detail-funtion-btn">{label}</Button>
+                            </Link>
+                          </Col>
+                        ))}
                         {founder.length > 0 && (
                           <Col xs={4}>
                             <Link
