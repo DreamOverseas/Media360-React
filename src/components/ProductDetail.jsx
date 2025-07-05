@@ -24,6 +24,7 @@ import "yet-another-react-lightbox/styles.css";
 import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
 import PayPalButton from "./PayPalButton.jsx";
+import WechatShare from './WechatShare.jsx';
 import { getPartnerTypeLabel } from "../components/PartnerConfig";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
@@ -559,6 +560,13 @@ useEffect(() => {
   return (
     <div>
       <section>
+        <WechatShare
+          title={Name}
+          desc={Description}
+          link={shareLink}
+          imgUrl={shareImg}
+        />
+
         <Container>
           <Row className='product-detail-section'>
             <Col >
