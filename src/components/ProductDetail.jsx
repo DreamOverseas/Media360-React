@@ -24,7 +24,6 @@ import "yet-another-react-lightbox/styles.css";
 import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
 import PayPalButton from "./PayPalButton.jsx";
-import WechatShare from './WechatShare.jsx';
 import { getPartnerTypeLabel } from "../components/PartnerConfig";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
@@ -61,13 +60,10 @@ const ProductDetail = () => {
     const [videoThumbnails, setVideoThumbnails] = useState([]);
   
     // 主图 URL
-    const mainImage = useMemo(
-      () =>
-        product?.ProductImage
-          ? `${BACKEND_HOST}${product.ProductImage.url}`
-          : 'https://placehold.co/650x650',
-      [product]
-    );
+    const mainImage = product?.ProductImage?.url
+    ? `${BACKEND_HOST}${product.ProductImage.url}`
+    : 'https://placehold.co/650x650';
+
   
     // 子图 URL 列表
     const subImages = useMemo(
@@ -279,7 +275,7 @@ const ProductDetail = () => {
       }
 
       setProduct(productData);
-      console.log("testing",productData.related_products?.products);
+      // console.log("testing",productData.related_products?.products);
       setRelatedProduct(productData.related_products?.products || [])
 
       const peopleData = peopleResponse.data?.data?.[0]?.people;
@@ -348,7 +344,7 @@ useEffect(() => {
   }, [brand?.internal_url]);
 
   useEffect(() => {
-    console.log("🚀 people 数据更新:", people);
+    // console.log("🚀 people 数据更新:", people);
 
     if (Array.isArray(people) && people.length > 0) {
       const founders = people.filter(
@@ -526,7 +522,7 @@ useEffect(() => {
   // const display_price = Price === (0 || null) ? t("price_tbd") : `AU$${Price}`;
   const Name = language === "zh" ? product.Name_zh : product.Name_en;
   const ShortDetail = language === "zh" ? product.Short_zh || "N/A" : product.Short_en || "N/A";
-  console.log("short",ShortDetail)
+  // console.log("short",ShortDetail)
 
   const Detail = language === "zh" ? product.Detail_zh : product.Detail_en;
 
@@ -537,14 +533,14 @@ useEffect(() => {
   const slides = language === "zh" ? product.slides_zh || "N/A": product.slides_en || "N/A";
   const spots = language === "zh" ? product.spots_zh || "N/A": product.spots_en || "N/A";
   const shareLink = window.location.href;
-  console.log("This is product.ProductImage's parent");
-  console.log(product);
+  // console.log("This is product.ProductImage's parent");
+  console.log("final product",product);
   const shareImg = product.ProductImage
     ? (product.ProductImage.formats
       ? `${BACKEND_HOST}${product.ProductImage.formats.thumbnail.url}` 
       : `${BACKEND_HOST}${product.ProductImage.url}`)
     : `${BACKEND_HOST}/default-share.jpg`;
-  console.log(shareImg)
+  // console.log(shareImg)
   const DetailHeading = (product?.brand?.MainProduct_url===name)?"品牌简介":"产品简介"
   const SpotsHeading = language === "zh" ? "附近的景点" : "Nearby Spots";
   // console.log(shareLink)
@@ -556,19 +552,13 @@ useEffect(() => {
   // console.log("slide", slides);
 
   // console.log(productTag)
-  console.log("vvvv",videos);
+  // console.log("vvvv",videos);
 
-  console.log("当前产品名称为：", Name);
+  // console.log("当前产品名称为：", Name);
 
   return (
     <div>
       <section>
-        <WechatShare
-          title={Name}
-          desc={Description}
-          link={shareLink}
-          imgUrl={shareImg}
-        />
         <Container>
           <Row className='product-detail-section'>
             <Col >
