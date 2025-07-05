@@ -24,7 +24,6 @@ import "yet-another-react-lightbox/styles.css";
 import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
 import PayPalButton from "./PayPalButton.jsx";
-import WechatShare from './WechatShare.jsx';
 import { getPartnerTypeLabel } from "../components/PartnerConfig";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
@@ -59,21 +58,16 @@ const ProductDetail = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [videoThumbnails, setVideoThumbnails] = useState([]);
-  
-    // 主图 URL
+
     const mainImage = product?.ProductImage?.url
     ? `${BACKEND_HOST}${product.ProductImage.url}`
     : 'https://placehold.co/650x650';
 
   
     // 子图 URL 列表
-    const subImages = useMemo(
-      () =>
-        Array.isArray(product?.SubImages)
-          ? product.SubImages.map(img => `${BACKEND_HOST}${img.url}`)
-          : [],
-      [product]
-    );
+    const subImages = Array.isArray(product?.SubImages)
+    ? product.SubImages.map(img => `${BACKEND_HOST}${img.url}`)
+    : [];
   
     // 视频数据：embed HTML + 缩略图
     const videos = useMemo(
@@ -91,36 +85,9 @@ const ProductDetail = () => {
     useEffect(() => {
       setVideoThumbnails(videos.map(v => v.thumbnail || 'https://placehold.co/80x80'));
     }, [videos]);
-  
-    // 合并所有媒体（图片 + 视频缩略图）
-    // const allMedia = useMemo(
-    //   () => [mainImage, ...subImages, ...videoThumbnails],
-    //   [mainImage, subImages, videoThumbnails]
-    // );
 
-    const allMedia = useMemo(
-      () => [mainImage, ...subImages],
-      [mainImage, subImages]
-    );
+    const allMedia = subImages.length > 0 ? [mainImage, ...subImages] : [mainImage];
 
-
-  
-    // 视频起始索引和判断
-    // const videoStart = 1 + subImages.length;
-    // const isVideoIndex = idx => idx >= videoStart;
-  
-    // 构建 Lightbox slides
-    // const slides = useMemo(
-    //   () =>
-    //     allMedia.map((_, idx) =>
-    //       isVideoIndex(idx)
-    //         ? { html: videos[idx - videoStart].embedHtml }
-    //         : { src: allMedia[idx] }
-    //     ),
-    //   [allMedia, videos]
-    // );
-
-  
     // 缩略图点击：打开对应媒体
     const handleThumbnailClick = idx => {
       setCurrentIndex(idx);
@@ -560,21 +527,13 @@ useEffect(() => {
   return (
     <div>
       <section>
-        <WechatShare
-          title={Name}
-          desc={Description}
-          link={shareLink}
-          imgUrl={shareImg}
-        />
-
         <Container>
           <Row className='product-detail-section'>
             <Col >
-              <Row>
-                <ProductGallery product={product} />
-              </Row>
+                <Row>
+                  <ProductGallery product={product} />
+                </Row>
               <br/>
-
 
               {onDesktop ? (
                 <>
