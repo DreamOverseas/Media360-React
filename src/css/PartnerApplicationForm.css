@@ -1,0 +1,100 @@
+/* 提交按钮美化（缩小宽度+下方留白） */
+.submit-btn {
+  width: 220px;
+  max-width: 90%;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  margin-bottom: 50px; /* 留出底部空间，避免贴近 footer */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* 顶部返回按钮美化 */
+.back-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  color: #007bff;
+  transform: translateX(-2px);
+}
+
+/* 标题美化 + 蓝色横线 */
+.form-title {
+  margin: 40px 0 10px 0;
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+  color: #333;
+  position: relative;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #007bff;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 280px;
+}
+
+/* 输入框整体美化 */
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+}
+
+/* 文件上传区域提示美化 */
+input[type="file"] {
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #f9f9f9;
+}
+
+/* 提交按钮美化 */
+.submit-btn {
+  width: 220px;
+  max-width: 90%;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  margin-bottom: 50px; /* 与底部保持间距 */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(135deg, #0056b3, #003f7f);
+  transform: translateY(-2px);
+}

@@ -5,6 +5,8 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { FiArrowLeft } from "react-icons/fi";
 import { partnerTypeLabelMap } from "../../components/PartnerConfig";
+import "../../css/PartnerApplicationForm.css";
+
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
 const PRODUCT_URL = `${STRAPI_HOST}/api/product-application-submissions`;
@@ -181,27 +183,16 @@ const PartnerApplicationForm = () => {
   return (
     <Container style={{ position: "relative" }}>
       
-      {/* 右上角 X 关闭按钮 */}
       <div
         onClick={() => navigate(`/products/${encodeURIComponent(productName)}/${partnerType}/PartnerDetail`)}
-        style={{
-          position: "absolute",
-          top: "20px",
-          right: "20px",
-          cursor: "pointer",
-          fontSize: "24px",
-          color: "#555",
-          display: "flex",
-          alignItems: "center",
-          gap: "6px", // 图标和文字间距
-        }}
+        className="back-button"
         title="返回"
       >
         <FiArrowLeft />
         <span style={{ fontSize: "16px" }}>返回</span>
       </div>
 
-      <h2 className="my-4">加入我们</h2>
+      <h2 className="form-title">请完善信息</h2>
       {error && <Alert variant="danger">{error}</Alert>}
       {success && <Alert variant="success">✅ 提交成功，页面即将跳转！</Alert>}
 
@@ -365,7 +356,7 @@ const PartnerApplicationForm = () => {
           />
         </Form.Group>
 
-        <Button type="submit" disabled={loading || !formData.agreed}>
+        <Button type="submit" disabled={loading || !formData.agreed} className="submit-btn">
           {loading ? <Spinner animation="border" size="sm" /> : "提交"}
         </Button>
       </Form>

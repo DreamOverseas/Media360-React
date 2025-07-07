@@ -43,45 +43,56 @@ const DefaultPartnerDetail = ({ partners, documentId, productName, partnerType }
               const asicUrl = getMediaUrl(attr.asicCertificate);
               const licenseUrl = getMediaUrl(attr.licenseFile);
 
-              return (
-                <div key={item.id || idx} className="partner-card">
-                  <div className="partner-logo-wrapper">
-                    {avatarUrl && <img src={avatarUrl} alt="顾问头像" className="partner-logo" />}
-                  </div>
+              const fullName = `${attr.advisorLastName || ""}${attr.advisorFirstName || ""}`;
 
-                  <div className="partner-main-info">
-                    <div className="info-section">
-                      <div className="info-section-title">💼 专业资质</div>
-                      <div className="partner-field">
-                        <span className="field-label">从业经验：</span>
-                        {attr.experienceYears || "未填写"}
+                return (
+                  <div key={item.id || idx} className="partner-card">
+                    <div className="partner-logo-wrapper">
+                      {avatarUrl && <img src={avatarUrl} alt="顾问头像" className="partner-logo" />}
+                    </div>
+
+                    <div className="partner-main-info">
+                      <div className="info-section">
+                        
+                        <div className="partner-field name-field">
+                          <span className="field-label">顾问姓名：</span>
+                          {fullName || "未填写"}
+                        </div>
+
+                        <div className="info-section-title">💼 专业资质</div>
+                        
+                        <div className="partner-field">
+                          <span className="field-label">从业经验：</span>
+                          {attr.experienceYears || "未填写"}
+                        </div>
+
+                        {asicUrl && (
+                          <div className="partner-field">
+                            <span className="field-label">ASIC 证书：</span>
+                            <a href={asicUrl} target="_blank" rel="noopener noreferrer">📄 查看证书</a>
+                          </div>
+                        )}
+
+                        {licenseUrl && (
+                          <div className="partner-field">
+                            <span className="field-label">牌照文件：</span>
+                            <a href={licenseUrl} target="_blank" rel="noopener noreferrer">📎 查看牌照</a>
+                          </div>
+                        )}
                       </div>
-                      {asicUrl && (
-                        <div className="partner-field">
-                          <span className="field-label">ASIC 证书：</span>
-                          <a href={asicUrl} target="_blank" rel="noopener noreferrer">📄 查看证书</a>
-                        </div>
-                      )}
-                      {licenseUrl && (
-                        <div className="partner-field">
-                          <span className="field-label">牌照文件：</span>
-                          <a href={licenseUrl} target="_blank" rel="noopener noreferrer">📎 查看牌照</a>
-                        </div>
-                      )}
+                    </div>
+
+                    <div className="partner-join-button">
+                      <Link to={`/products/${encodeURIComponent(productName)}/${partnerType}/CustomerApplicationForm?partnerID=${encodeURIComponent(attr.partnerID)}&documentId=${encodeURIComponent(documentId)}`}>
+                        <button className="custom-join-button">
+                          <FaUserPlus style={{ marginRight: "6px" }} />
+                          立即咨询
+                        </button>
+                      </Link>
                     </div>
                   </div>
-
-                  <div className="partner-join-button">
-                    <Link to={`/products/${encodeURIComponent(productName)}/${partnerType}/CustomerApplicationForm?partnerID=${encodeURIComponent(attr.partnerID)}&documentId=${encodeURIComponent(documentId)}`}>
-                      <button className="custom-join-button">
-                        <FaUserPlus style={{ marginRight: "6px" }} />
-                        立即咨询
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
 
           {approvedPartners.length > 2 && (
