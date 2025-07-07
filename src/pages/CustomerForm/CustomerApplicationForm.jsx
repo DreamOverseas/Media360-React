@@ -130,24 +130,14 @@ const CustomerApplicationForm = () => {
 
   return (
     <Container className="customer-application-form" style={{ position: "relative" }}>
+    
       <div
+        className="back-button"
         onClick={() => navigate(`/products/${encodeURIComponent(productName)}/${partnerType}/PartnerDetail`)}
-        style={{
-          position: "absolute",
-          top: "20px",
-          right: "20px",
-          cursor: "pointer",
-          fontSize: "24px",
-          color: "#555",
-          display: "flex",
-          alignItems: "center",
-          gap: "6px",
-        }}
-        title="返回"
       >
         <FiArrowLeft />
-        <span style={{ fontSize: "16px" }}>返回</span>
-      </div>
+        <span className="back-text">返回</span>
+      </div>      
 
       <h2 className="form-title">请完善信息</h2>
 

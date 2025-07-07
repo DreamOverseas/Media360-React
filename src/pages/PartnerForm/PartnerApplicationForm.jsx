@@ -7,15 +7,12 @@ import { FiArrowLeft } from "react-icons/fi";
 import { partnerTypeLabelMap } from "../../components/PartnerConfig";
 import "../../css/PartnerApplicationForm.css";
 
-
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
 const PRODUCT_URL = `${STRAPI_HOST}/api/product-application-submissions`;
 const PARTNER_URL = `${STRAPI_HOST}/api/partner-application-submissions`;
 const UPLOAD_URL = `${STRAPI_HOST}/api/upload`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
 const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_PARTNER_APPLICATION_FORM_NOTIFICATION;
-
-
 
 const initialFormData = {
   companyName: "",
@@ -33,7 +30,6 @@ const initialFormData = {
 };
 
 const getPartnerTypeLabel = (key) => partnerTypeLabelMap[key] || "合作伙伴";
-
 
 const PartnerApplicationForm = () => {
   const { productName, partnerType } = useParams();
@@ -60,23 +56,14 @@ const PartnerApplicationForm = () => {
 
   const getOrCreateProductDocumentId = async () => {
     const partnerTypeLabel = getPartnerTypeLabel(partnerType);
-
     const res = await axios.get(`${PRODUCT_URL}?filters[productName][$eq]=${encodeURIComponent(productName)}&filters[partnerType][$eq]=${encodeURIComponent(partnerTypeLabel)}&fields[0]=documentId`, {
       headers: { Authorization: `Bearer ${API_TOKEN}` },
     });
-
     const existing = res.data?.data?.[0];
     if (existing?.documentId) return existing.documentId;
-
     const createRes = await axios.post(PRODUCT_URL, {
-      data: {
-        productName,
-        partnerType: partnerTypeLabel,
-      },
-    }, {
-      headers: { Authorization: `Bearer ${API_TOKEN}` },
-    });
-
+      data: { productName, partnerType: partnerTypeLabel },
+    }, { headers: { Authorization: `Bearer ${API_TOKEN}` } });
     return createRes.data?.data?.documentId;
   };
 
@@ -107,12 +94,9 @@ const PartnerApplicationForm = () => {
       const advisorLicenseId = await handleUpload(advisorLicenseFile);
 
       const partnerID = uuidv4();
-
-      // 先确保获取到 product documentId
       const productDocumentId = await getOrCreateProductDocumentId();
       if (!productDocumentId) throw new Error("获取或创建 Product documentId 失败");
 
-      // 提交 Partner 时一起上传 product 关联
       const partnerRes = await axios.post(PARTNER_URL, {
         data: {
           companyName: formData.companyName,
@@ -134,27 +118,17 @@ const PartnerApplicationForm = () => {
           experienceYears: formData.experienceYears,
           productName,
           partnerType: partnerTypeLabel,
-          Product: productDocumentId,  // 互相关联，新增
+          Product: productDocumentId,
         },
-      }, {
-        headers: { Authorization: `Bearer ${API_TOKEN}` },
-      });
+      }, { headers: { Authorization: `Bearer ${API_TOKEN}` } });
 
       const partnerDocumentId = partnerRes.data?.data?.documentId;
       if (!partnerDocumentId) throw new Error("获取新 Partner documentId 失败");
 
-      // product 反向关联 partner
       await axios.put(`${PRODUCT_URL}/${productDocumentId}`, {
-        data: {
-          Partner: {
-            connect: [partnerDocumentId],
-          },
-        },
-      }, {
-        headers: { Authorization: `Bearer ${API_TOKEN}` },
-      });
+        data: { Partner: { connect: [partnerDocumentId] } },
+      }, { headers: { Authorization: `Bearer ${API_TOKEN}` } });
 
-      // 邮件通知
       axios.post(MAIL_NOTIFY_API, {
         ...formData,
         partnerID,
@@ -181,18 +155,18 @@ const PartnerApplicationForm = () => {
   };
 
   return (
-    <Container style={{ position: "relative" }}>
-      
+    <Container className="partner-application-form" style={{ position: "relative" }}>
+
       <div
-        onClick={() => navigate(`/products/${encodeURIComponent(productName)}/${partnerType}/PartnerDetail`)}
         className="back-button"
-        title="返回"
+        onClick={() => navigate(`/products/${encodeURIComponent(productName)}/${partnerType}/PartnerDetail`)}
       >
         <FiArrowLeft />
-        <span style={{ fontSize: "16px" }}>返回</span>
+        <span className="back-text">返回</span>
       </div>
 
       <h2 className="form-title">请完善信息</h2>
+
       {error && <Alert variant="danger">{error}</Alert>}
       {success && <Alert variant="success">✅ 提交成功，页面即将跳转！</Alert>}
 
@@ -200,160 +174,79 @@ const PartnerApplicationForm = () => {
         
         <Form.Group className="mb-3">
           <Form.Label>公司名称</Form.Label>
-          <Form.Control
-            type="text"
-            value={formData.companyName}
-            onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-            required
-          />
+          <Form.Control type="text" value={formData.companyName} onChange={(e) => setFormData({ ...formData, companyName: e.target.value })} required />
         </Form.Group>
 
-                <Form.Group className="mb-3">
+        <Form.Group className="mb-3">
           <Form.Label>顾问姓名</Form.Label>
           <div style={{ display: "flex", gap: "10px" }}>
-            <Form.Control
-              type="text"
-              placeholder="姓"
-              value={formData.advisorLastName}
-              onChange={(e) => setFormData({ ...formData, advisorLastName: e.target.value })}
-              required
-            />
-            <Form.Control
-              type="text"
-              placeholder="名"
-              value={formData.advisorFirstName}
-              onChange={(e) => setFormData({ ...formData, advisorFirstName: e.target.value })}
-              required
-            />
+            <Form.Control type="text" placeholder="姓" value={formData.advisorLastName} onChange={(e) => setFormData({ ...formData, advisorLastName: e.target.value })} required />
+            <Form.Control type="text" placeholder="名" value={formData.advisorFirstName} onChange={(e) => setFormData({ ...formData, advisorFirstName: e.target.value })} required />
           </div>
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>电话</Form.Label>
-          <Form.Control
-            type="text"
-            value={formData.Phone}
-            onChange={(e) => setFormData({ ...formData, Phone: e.target.value })}
-          />
+          <Form.Control type="text" value={formData.Phone} onChange={(e) => setFormData({ ...formData, Phone: e.target.value })} />
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>邮箱</Form.Label>
-          <Form.Control
-            type="email"
-            value={formData.Email}
-            onChange={(e) => setFormData({ ...formData, Email: e.target.value })}
-            required
-          />
+          <Form.Control type="email" value={formData.Email} onChange={(e) => setFormData({ ...formData, Email: e.target.value })} required />
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>ABN 编号</Form.Label>
-          <Form.Control
-            type="text"
-            value={formData.abnNumber}
-            onChange={(e) => setFormData({ ...formData, abnNumber: e.target.value })}
-          />
+          <Form.Control type="text" value={formData.abnNumber} onChange={(e) => setFormData({ ...formData, abnNumber: e.target.value })} />
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>公司地点（城市）</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            value={formData.cityLocation}
-            onChange={(e) => setFormData({ ...formData, cityLocation: e.target.value })}
-          />
+          <Form.Control as="textarea" rows={3} value={formData.cityLocation} onChange={(e) => setFormData({ ...formData, cityLocation: e.target.value })} />
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>公司网站地址</Form.Label>
-          <Form.Control
-            type="text"
-            value={formData.companyUrlLink}
-            onChange={(e) => setFormData({ ...formData, companyUrlLink: e.target.value })}
-          />
+          <Form.Control type="text" value={formData.companyUrlLink} onChange={(e) => setFormData({ ...formData, companyUrlLink: e.target.value })} />
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>从业经验</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            value={formData.experienceYears}
-            onChange={(e) => setFormData({ ...formData, experienceYears: e.target.value })}
-          />
+          <Form.Control as="textarea" rows={3} value={formData.experienceYears} onChange={(e) => setFormData({ ...formData, experienceYears: e.target.value })} />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>牌照信息（文件不得大于10MB且文件格式为PDF）</Form.Label>
-          <Form.Control
-            type="file"
-            accept=".pdf"
-            onChange={(e) => setFormData({ ...formData, licenseFile: e.target.files[0] })}
-          />
+          <Form.Label>牌照信息（PDF，≤10MB）</Form.Label>
+          <Form.Control type="file" accept=".pdf" onChange={(e) => setFormData({ ...formData, licenseFile: e.target.files[0] })} />
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>公司 Logo</Form.Label>
-          <Form.Control
-            type="file"
-            onChange={(e) => setCompanyLogo(e.target.files[0])}
-          />
+          <Form.Control type="file" onChange={(e) => setCompanyLogo(e.target.files[0])} />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>ASIC 证书（文件不得大于10MB且文件格式为PDF）</Form.Label>
-          <Form.Control
-            type="file"
-            onChange={(e) => setAsicCertificateFile(e.target.files[0])}
-          />
+          <Form.Label>ASIC 证书（PDF，≤10MB）</Form.Label>
+          <Form.Control type="file" onChange={(e) => setAsicCertificateFile(e.target.files[0])} />
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>顾问头像</Form.Label>
-          <Form.Control
-            type="file"
-            accept="image/*"
-            onChange={(e) => setAdvisorAvatar(e.target.files[0])}
-          />
+          <Form.Control type="file" accept="image/*" onChange={(e) => setAdvisorAvatar(e.target.files[0])} />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>留学生中介牌照（文件不得大于10MB且文件格式为PDF）</Form.Label>
-          <Form.Control
-            type="file"
-            accept=".pdf"
-            onChange={(e) => setAdvisorLicenseFile(e.target.files[0])}
-          />
+          <Form.Label>留学生中介牌照（PDF，≤10MB）</Form.Label>
+          <Form.Control type="file" accept=".pdf" onChange={(e) => setAdvisorLicenseFile(e.target.files[0])} />
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>备注</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            value={formData.Notes}
-            onChange={(e) => setFormData({ ...formData, Notes: e.target.value })}
-          />
+          <Form.Control as="textarea" rows={3} value={formData.Notes} onChange={(e) => setFormData({ ...formData, Notes: e.target.value })} />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Check
-            type="checkbox"
-            id="agree-terms"
-            label={
-              <>
-                我已阅读并同意
-                <Link to={`/products/${encodeURIComponent(productName)}/PartnerApplicationForm/terms-and-conditions`} style={{ marginLeft: 4 }}>
-                  条款与条件
-                </Link>
-              </>
-            }
-            checked={formData.agreed}
-            onChange={(e) => setFormData({ ...formData, agreed: e.target.checked })}
-            required
-          />
+          <Form.Check type="checkbox" id="agree-terms" label={<>我已阅读并同意 <Link to={`/products/${encodeURIComponent(productName)}/PartnerApplicationForm/terms-and-conditions`} style={{ marginLeft: 4 }}>条款与条件</Link></>} checked={formData.agreed} onChange={(e) => setFormData({ ...formData, agreed: e.target.checked })} required />
         </Form.Group>
 
         <Button type="submit" disabled={loading || !formData.agreed} className="submit-btn">
