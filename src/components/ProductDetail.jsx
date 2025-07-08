@@ -6,7 +6,6 @@ import {
   Button,
   Col,
   Container,
-  Image,
   Modal,
   Row,
   Spinner,
