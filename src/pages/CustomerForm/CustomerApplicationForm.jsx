@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { Container, Form, Button, Alert, Spinner } from "react-bootstrap";
 import { FiArrowLeft } from "react-icons/fi";
+import "../../css/CustomerApplicationForm.css";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
 const CUSTOMER_URL = `${STRAPI_HOST}/api/partner-application-forms`;
@@ -128,27 +129,17 @@ const CustomerApplicationForm = () => {
   };
 
   return (
-    <Container style={{ position: "relative" }}>
+    <Container className="customer-application-form" style={{ position: "relative" }}>
+    
       <div
+        className="back-button"
         onClick={() => navigate(`/products/${encodeURIComponent(productName)}/${partnerType}/PartnerDetail`)}
-        style={{
-          position: "absolute",
-          top: "20px",
-          right: "20px",
-          cursor: "pointer",
-          fontSize: "24px",
-          color: "#555",
-          display: "flex",
-          alignItems: "center",
-          gap: "6px",
-        }}
-        title="返回"
       >
         <FiArrowLeft />
-        <span style={{ fontSize: "16px" }}>返回</span>
-      </div>
+        <span className="back-text">返回</span>
+      </div>      
 
-      <h2 className="my-4">申请信息</h2>
+      <h2 className="form-title">请完善信息</h2>
 
       {error && <Alert variant="danger">{error}</Alert>}
       {success && <Alert variant="success">✅ 提交成功！</Alert>}
@@ -261,9 +252,11 @@ const CustomerApplicationForm = () => {
           />
         </Form.Group>
 
-        <Button type="submit" disabled={loading}>
-          {loading ? <Spinner animation="border" size="sm" /> : "提交申请信息"}
-        </Button>
+        <div style={{ textAlign: "center" }}>
+          <Button type="submit" disabled={loading} className="primary-submit-btn">
+            {loading ? <Spinner animation="border" size="sm" /> : "提交"}
+          </Button>
+        </div>
       </Form>
     </Container>
   );
