@@ -57,6 +57,7 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import PartnerDetail from "./pages/PartnerDetail/PartnerDetail.jsx";
 import MigrationAdvisor from "./pages/MigrationAdvisor";
 import WeChatBlocker from "./utils/WeChatBlocker.jsx";
+import ToolLinkPage from "./pages/Admin/ToolLinks.jsx";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -222,6 +223,11 @@ function App() {
           <Route
             path='/brands/:id/related-product'
             element={<BrandRelatedProductsPage />}
+          />
+
+          <Route
+            path='/admin'
+            element={<ToolLinkPage />}
           />
         </Routes>
       </div>

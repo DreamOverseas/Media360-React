@@ -1,12 +1,11 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
-import React, { useContext, useEffect, useState, useMemo } from "react";
+import React, { useContext, useEffect, useState} from "react";
 import { useMediaQuery } from "react-responsive";
 import {
   Button,
   Col,
   Container,
-  Image,
   Modal,
   Row,
   Spinner,
@@ -19,12 +18,11 @@ import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from 'rehype-raw';
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import Lightbox from "yet-another-react-lightbox";
-import "yet-another-react-lightbox/styles.css";
 import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
 import PayPalButton from "./PayPalButton.jsx";
 import { getPartnerTypeLabel } from "../components/PartnerConfig";
+import ProductGallery from "./ProductGallery.jsx";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
@@ -53,131 +51,6 @@ const ProductDetail = () => {
   const [brand, setBrand] = useState({});
   const [variants, setVariants] = useState([]);
   const [subItemCategory, setSubItemCategory] = useState(null);
-
-  const ProductGallery = ({ product }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [lightboxOpen, setLightboxOpen] = useState(false);
-    const [videoThumbnails, setVideoThumbnails] = useState([]);
-
-    const mainImage = product?.ProductImage?.url
-    ? `${BACKEND_HOST}${product.ProductImage.url}`
-    : 'https://placehold.co/650x650';
-
-  
-    // 子图 URL 列表
-    const subImages = Array.isArray(product?.SubImages)
-    ? product.SubImages.map(img => `${BACKEND_HOST}${img.url}`)
-    : [];
-  
-    // 视频数据：embed HTML + 缩略图
-    const videos = useMemo(
-      () =>
-        Array.isArray(product?.videos?.data)
-          ? product.videos.data.map(v => ({
-              embedHtml: v.videoEmbed,
-              thumbnail: v.pic,
-            }))
-          : [],
-      [product]
-    );
-  
-    // 视频缩略图列表
-    useEffect(() => {
-      setVideoThumbnails(videos.map(v => v.thumbnail || 'https://placehold.co/80x80'));
-    }, [videos]);
-
-    const allMedia = subImages.length > 0 ? [mainImage, ...subImages] : [mainImage];
-
-    // 缩略图点击：打开对应媒体
-    const handleThumbnailClick = idx => {
-      setCurrentIndex(idx);
-      setLightboxOpen(true);
-    };
-  
-    // 切换媒体
-    const prevMedia = () =>
-      setCurrentIndex(i => (i === 0 ? allMedia.length - 1 : i - 1));
-    const nextMedia = () =>
-      setCurrentIndex(i => (i + 1) % allMedia.length);
-  
-    return (
-      <Container className="product-gallery">
-        {/* 主展示区 & 切换按钮 */}
-        <div className="main-image-container">
-          <button className="prev-button" onClick={prevMedia}>❮</button>
-
-          <Image
-              src={allMedia[currentIndex]}
-              alt={`Media ${currentIndex}`}
-              className="product-img"
-              onClick={() => setLightboxOpen(true)}
-            />
-  
-          {/* {isVideoIndex(currentIndex) ? (
-            <div
-              className="product-video"
-              style={{ position: 'relative', width: '100%', paddingTop: '56.25%' }}
-              dangerouslySetInnerHTML={{
-                __html: videos[currentIndex - videoStart].embedHtml.replace(
-                  '<iframe ',
-                  '<iframe style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allow="autoplay;encrypted-media;fullscreen;picture-in-picture" '
-                ),
-              }}
-            />
-          ) : (
-            <Image
-              src={allMedia[currentIndex]}
-              alt={`Media ${currentIndex}`}
-              className="product-img"
-              onClick={() => setLightboxOpen(true)}
-            />
-          )} */}
-  
-          <button className="next-button" onClick={nextMedia}>❯</button>
-        </div>
-  
-        {/* 缩略图列表（最多8项 + 占位符） */}
-        <div className="thumbnail-container">
-          {allMedia.slice(1, 8).map((src, idx) => (
-            <div
-              key={idx}
-              className={`thumb-container ${idx === currentIndex ? 'active-thumb' : ''}`}
-              onClick={() => handleThumbnailClick(idx+1)}
-            >
-              <Image src={src} alt={`Thumbnail ${idx}`} className="thumb-img" />
-              {/* {isVideoIndex(idx)} */}
-            </div>
-          ))}
-          {allMedia.length > 8 && (
-            <div
-              className="thumb-container placeholder-thumb"
-              onClick={() => handleThumbnailClick(8)}
-            >
-              <div className="thumb-overlay">+ {allMedia.length - 8}</div>
-              
-            </div>
-          )}
-        </div>
-  
-        {/* 全屏 Lightbox */}
-        <Lightbox
-          open={lightboxOpen}
-          close={() => setLightboxOpen(false)}
-          // slides={slides}
-          slides={allMedia.map(src => ({ src }))}
-          index={currentIndex}
-          // render={{
-          //   slide: ({ slide }) =>
-          //     slide.html ? (
-          //       <div
-          //         dangerouslySetInnerHTML={{ __html: slide.html }}
-          //       />
-          //     ) : undefined,
-          // }}
-        />
-      </Container>
-    );
-  };
 
   const ConsultationModal = ({ show, handleClose }) => {
     return (

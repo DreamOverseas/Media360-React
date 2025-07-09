@@ -17,7 +17,7 @@ const DoTermsAndConditions = ({ defaultLang = 'zh' }) => {
     const toggleLang = () => setLang(lang === 'zh' ? 'en' : 'zh');
     const toggleModal = () => setIsOpen(!isOpen);
 
-    const zhContent = `任何使用出国梦集团（Dream Overseas Group Pty Ltd - ABN: 531 191 108 60）网站的用户均应仔细阅读本条例：
+    const zhContent = `任何使用360媒体（360Media，隶属于出国梦集团 Dream Overseas Group Pty Ltd - ABN: 531 191 108 60）网站的用户均应仔细阅读本条例：
 - 服务协议
 第1条：服务条款的接受
 1、本服务条款所称的服务商、合作方是指完全同意所有条款并使用出国梦集团各项软件服务（以下称为“本服务”）的出国服务商、合作方及其他使用出国梦集团网络运营、操作平台的人员（以下称为“服务商、合作方”）。通过开通服务应用软件，服务商、合作方便表明其接受并同意受本服务条款及其他声明的约束；同时，服务商、合作方保证其提交的信息真实、合法、有效、准确、及时和完整。
@@ -47,6 +47,19 @@ const DoTermsAndConditions = ({ defaultLang = 'zh' }) => {
 第7条：条款的生效
 除非另行通知，本服务条款自2013年6月8日起生效。
 
+第8条：用户数据上传与使用说明  
+1、用户通过360媒体平台上传的内容（包括但不限于文字、图片、视频、音频、表单信息、评论等，以下统称“用户数据”），应确保其内容合法、真实、准确，不得侵犯任何第三方合法权益。  
+2、用户数据的所有权归用户本人所有，但用户在上传内容时，视为授权360媒体及其母公司出国梦集团在全球范围内以**非独占、永久、免费、可再许可**的方式使用该数据，包含但不限于展示、存储、分析、分类、训练AI模型、商业宣传等用途，前提是不违反隐私政策或法律规定。  
+3、360媒体承诺不向第三方出售或泄露用户数据，除非出于以下情况：  
+   - 根据用户主动同意；  
+   - 基于法律法规、司法机关或政府监管要求；  
+   - 为维护360媒体或用户的合法权益；  
+   - 在用户已匿名化、脱敏处理的前提下，用于产品优化或人工智能训练；  
+4、用户如发现其上传内容被误用或滥用，可通过官方渠道申请删除或限制使用。360媒体将在接到申请后尽快处理，并依据《出国梦集团用户服务协议》作出答复。
+
+第9条：平台归属声明  
+360媒体（360Media）为出国梦集团（Dream Overseas Group Pty Ltd - ABN: 531 191 108 60）旗下品牌之一，受其法律体系与服务条款全面约束。除非特别说明，360媒体上的所有服务、数据处理、合规责任与版权事务，均由出国梦集团承担。
+
 - 免责声明
 1.在出国梦集团网站发布、转载的资料、图片均由网站用户提供，其真实性、准确性和合法性由信息发布人负责,发布人兹此确认并同意承担全部责任。
 2.出国梦集团网站仅仅是互联网网络运营平台，不为发布人提供任何保证，并不承担任何法律责任。
@@ -63,7 +76,7 @@ const DoTermsAndConditions = ({ defaultLang = 'zh' }) => {
 出国梦集团网站用户发表、转载的所有文章及其它资料（如示例代码、图片等）的版权中署名权归原作者所有，已经上传出国梦集团网站，即视为同意出国梦集团无偿使用并同意出国梦集团做适合网站需要的修改、删减。出国梦集团用户同时保证上传、转载、发表的内容不侵犯他人版权，本网站保有使用权。其他任何单位或个人转载出国梦集团网站发表的文章的，需经原作者同意，并注明转载自出国梦集团网站。本网站保留追究非法转载者法律责任的权利。
 `;
 
-    const enContent = `All users of the Dream Overseas Group Pty Ltd (ABN: 531 191 108 60) websites are advised to read these terms and conditions carefully:
+    const enContent = `All users of the 360Media website (a platform operated by Dream Overseas Group Pty Ltd - ABN: 531 191 108 60) are advised to read these terms and conditions carefully:
 
 I. Service Agreement
 
@@ -95,6 +108,19 @@ These Terms serve as a crucial legal agreement between Dream Overseas Group and 
 
 Article 7: Effective Date
 Unless otherwise stated, these Terms of Service shall take effect as of June 8, 2013.
+
+Article 8: User Data Upload and Usage Policy  
+1. Content uploaded by users to the 360Media platform (including but not limited to text, images, videos, audio, form submissions, and comments—hereinafter referred to as "User Data") must be lawful, authentic, and accurate. Users must not infringe upon any third-party rights.  
+2. Users retain ownership of their uploaded data. However, by submitting content, the user grants 360Media and its parent company, Dream Overseas Group, a **non-exclusive, perpetual, royalty-free, sublicensable, and worldwide license** to use, display, store, analyze, categorize, or apply the data for AI training, business operations, or promotional purposes, in compliance with applicable privacy policies and regulations.  
+3. 360Media will not sell or disclose user data to third parties unless:  
+   - Explicit user consent is obtained;  
+   - Required by law, regulation, court order, or government authority;  
+   - Necessary to protect legal rights of 360Media or its users;  
+   - The data is anonymized and processed in a secure, privacy-preserving manner for internal improvements or AI training.  
+4. Users may request removal or restricted use of their content by contacting 360Media. Requests will be reviewed and responded to in accordance with the Dream Overseas Group User Service Agreement.
+
+Article 9: Platform Affiliation  
+360Media is a registered brand owned and operated by Dream Overseas Group Pty Ltd (ABN: 531 191 108 60). All services, data policies, and legal responsibilities on this platform fall under the governance of Dream Overseas Group, unless otherwise specified.
 
 II. Disclaimer
 All materials and images published or reposted on the Dream Overseas Group website are provided by users. The authenticity, accuracy, and legality of such content are the sole responsibility of the contributor, who acknowledges full liability.
