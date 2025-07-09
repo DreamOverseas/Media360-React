@@ -93,9 +93,9 @@ export default function ToolLinkPage() {
 
     // Render the main tool management UI
     return (
-        <div className="flex h-full">
+        <div className="flex flex-col md:flex-row h-full">
             {/* Sidebar navigation */}
-            <aside className="w-1/4 bg-gray-100 p-4 overflow-y-auto">
+            <aside className="w-full md:!w-1/4 bg-gray-100 p-4 overflow-y-auto">
                 {tools.map((tool) => (
                     <div
                         key={tool.id}
