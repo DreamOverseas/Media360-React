@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PriceListRHP from './PriceListRHP';
 
 export default function ToolLinkPage() {
     // State for admin password input
@@ -9,6 +10,10 @@ export default function ToolLinkPage() {
     const [tools, setTools] = useState([]);
     // Currently selected tool
     const [selectedTool, setSelectedTool] = useState(null);
+    // Custom components
+    const [selectedComp, setSelectedComp] = useState(null);
+    // Search text
+    const [searchTerm, setSearchTerm] = useState('');
 
     // Environment variables
     const CMS_ENDPOINT = import.meta.env.VITE_STRAPI_HOST;
@@ -49,6 +54,7 @@ export default function ToolLinkPage() {
                     platform: item.Platform,
                     url: item.URL,
                     description: item.Description,
+                    embedding: item.Embedding,
                     iconUrl:
                         item.Icon?.url || null,
                 }));
@@ -61,6 +67,32 @@ export default function ToolLinkPage() {
 
         fetchTools();
     }, [authenticated]);
+
+    // get custom component
+    function getCustomComp() {
+        if (selectedComp == "RHP Price List") {
+            return <PriceListRHP />
+        }
+        else {
+            return <h2 className='text-center'>Invalid Selection!</h2>
+        }
+    }
+
+    function selectTool(tool) {
+        setSelectedTool(tool);
+        setSelectedComp(null);
+    }
+
+    function selectComp(compName) {
+        setSelectedTool(null);
+        setSelectedComp(compName);
+    }
+
+    const filteredTools = tools.filter(tool =>
+    tool.platform
+        .toLowerCase()
+        .includes(searchTerm.trim().toLowerCase())
+    );
 
     // Render login form if not authenticated
     if (!authenticated) {
@@ -95,26 +127,44 @@ export default function ToolLinkPage() {
     return (
         <div className="flex flex-col md:flex-row h-full">
             {/* Sidebar navigation */}
-            <aside className="w-full md:!w-1/4 bg-gray-100 p-4 overflow-y-auto">
-                {tools.map((tool) => (
-                    <div
-                        key={tool.id}
-                        onClick={() => setSelectedTool(tool)}
-                        className={`flex items-center p-2 mb-2 rounded cursor-pointer hover:bg-gray-300 ${selectedTool?.id === tool.id ? 'bg-blue-300/50' : ''
-                            }`}
-                    >
-                        {tool.iconUrl ? (
-                            <img
-                                src={`${CMS_ENDPOINT}${tool.iconUrl}`}
-                                alt={`${tool.platform} icon`}
-                                className="w-6 h-6 mr-2"
-                            />
-                        ) : (
-                            <i className="bi bi-tools text-lg mr-2"></i>
-                        )}
-                        <span>{tool.platform}</span>
-                    </div>
-                ))}
+            <aside className="w-full md:!w-1/4 bg-gray-100 p-4 min-h-48 max-h-[50vh] md:max-h-[80vh] overflow-y-auto">
+                <div className="mb-2">
+                    <input
+                        type="text"
+                        placeholder="Search platforms…"
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+                        className="w-full px-3 py-1 border rounded focus:outline-none focus:ring"
+                    />
+                </div>
+                <div onClick={() => selectComp("RHP Price List")}
+                    className={`flex items-center p-2 mb-2 rounded cursor-pointer hover:bg-gray-300 ${selectedComp == "RHP Price List" ? 'bg-blue-300/50' : ''
+                        }`}>
+                    <i class="bi bi-ui-radios text-lg text-blue-900 text-shadow-2xs mr-2"></i>RHP Price List
+                </div>
+                {filteredTools.length > 0 ? (
+                    filteredTools.map((tool) => (
+                        <div
+                            key={tool.id}
+                            onClick={() => selectTool(tool)}
+                            className={`flex items-center p-2 mb-2 rounded cursor-pointer hover:bg-gray-300 ${selectedTool?.id === tool.id ? 'bg-blue-300/50' : ''
+                                }`}
+                        >
+                            {tool.iconUrl ? (
+                                <img
+                                    src={`${CMS_ENDPOINT}${tool.iconUrl}`}
+                                    alt={`${tool.platform} icon`}
+                                    className="w-6 h-6 mr-2"
+                                />
+                            ) : (
+                                <i className="bi bi-tools text-lg mr-2"></i>
+                            )}
+                            <span>{tool.platform}</span>
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-sm italic text-gray-500">No other platforms match '{searchTerm}''.</p>
+                )}
                 <a href='https://api.do360.com/admin/content-manager/collection-types/api::tool-link.tool-link' target='_blank' >
                     <button
                         type='button'
@@ -127,49 +177,56 @@ export default function ToolLinkPage() {
 
             {/* Main content area */}
             <main className="flex-1 flex-col items-center justify-center text-center p-6 overflow-y-auto">
-                {!selectedTool ? (
-                    <p className="text-gray-500">
-                        Please select a tool from the left side.
-                    </p>
-                ) : (
-                    <div className="max-w-lg mx-auto">
-                        {/* Tool Icon */}
-                        {selectedTool.iconUrl ? (
-                            <img
-                                src={`${CMS_ENDPOINT}${selectedTool.iconUrl}`}
-                                alt={`${selectedTool.platform} icon`}
-                                className="w-24 h-24 mb-4 mx-auto self-center"
-                            />
-                        ) : (
-                            <div className='my-auto h-24'>
-                            <i className="bi bi-tools text-7xl"></i>
-                            </div>
-                        )}
-
-                        {/* Tool Platform Title */}
-                        <h2 className="text-2xl font-bold mb-4">
-                            {selectedTool.platform}
-                        </h2>
-
-                        {/* Tool Description */}
-                        <p className="mb-4 min-h-48">{selectedTool.description}</p>
-
-                        {/* Open URL Button */}
-                        <button
-                            onClick={() =>
-                                window.open(selectedTool.url, '_blank', 'noopener')
-                            }
-                            className="px-4 py-2 bg-blue-600 text-white rounded"
-                        >
-                            Open in a new tab
-                        </button>
-
-                        {/* URL display */}
-                        <p className="text-gray-500 text-sm mt-2 break-all">
-                            {selectedTool.url}
+                {selectedComp ? getCustomComp() :
+                    !selectedTool ? (
+                        <p className="text-gray-500">
+                            Please select from the left side.
                         </p>
-                    </div>
-                )}
+                    ) : (
+                        selectedTool.embedding==true ?
+                            <iframe className="w-full h-full min-h-[60vh]"
+                                src={selectedTool.url}>
+                            </iframe>
+                            :
+                            <div className="max-w-lg mx-auto">
+                                {/* Tool Icon */}
+                                {selectedTool.iconUrl ? (
+                                    <img
+                                        src={`${CMS_ENDPOINT}${selectedTool.iconUrl}`}
+                                        alt={`${selectedTool.platform} icon`}
+                                        className="w-24 h-24 mb-4 mx-auto self-center"
+                                    />
+                                ) : (
+                                    <div className='my-auto h-24'>
+                                        <i className="bi bi-tools text-7xl"></i>
+                                    </div>
+                                )}
+
+                                {/* Tool Platform Title */}
+                                <h2 className="text-2xl font-bold mb-4">
+                                    {selectedTool.platform}
+                                </h2>
+
+                                {/* Tool Description */}
+                                <p className="mb-4 min-h-48">{selectedTool.description}</p>
+
+                                {/* Open URL Button */}
+                                <button
+                                    onClick={() =>
+                                        window.open(selectedTool.url, '_blank', 'noopener')
+                                    }
+                                    className="px-4 py-2 bg-blue-600 text-white rounded"
+                                >
+                                    Open in a new tab
+                                </button>
+
+                                {/* URL display */}
+                                <p className="text-gray-500 text-sm mt-2 break-all">
+                                    {selectedTool.url}
+                                </p>
+                            </div>
+                    )
+                }
             </main>
         </div>
     );
