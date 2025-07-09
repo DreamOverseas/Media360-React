@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
@@ -6,19 +6,61 @@ import "yet-another-react-lightbox/styles.css";
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
 const ProductGallery = ({ product }) => {
+  const [mainImageUrl, setMainImageUrl] = useState(null);
+  const [subImageUrls, setSubImageUrls] = useState([]);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  
-  const mainImage = product?.ProductImage?.url
-    ? `${BACKEND_HOST}${product.ProductImage.url}`
-    : 'https://placehold.co/650x650';
 
-  const subImages = Array.isArray(product?.SubImages)
-    ? product.SubImages.map((img) => `${BACKEND_HOST}${img.url}`)
-    : [];
+  // Step 1: 设置主图 URL
+  useEffect(() => {
+    if (!product || !product.ProductImage) return;
 
-  const allMedia = subImages.length > 0 ? [mainImage, ...subImages] : [mainImage];
-  const isSingleImage = allMedia.length === 1;
+    const rawUrl = product.ProductImage.url;
+    const thumbUrl = product.ProductImage.formats?.thumbnail?.url;
+
+    const resolvedUrl = rawUrl
+      ? `${BACKEND_HOST}${rawUrl}`
+      : thumbUrl
+      ? `${BACKEND_HOST}${thumbUrl}`
+      : null;
+
+    setMainImageUrl(resolvedUrl);
+
+    // 图片加载检测 + fallback
+    if (resolvedUrl) {
+      const img = new Image();
+      img.src = resolvedUrl;
+
+      const timeout = setTimeout(() => {
+        setImageLoaded(true); // fallback 放行
+      }, 2000); // 超时放行
+
+      img.onload = () => {
+        clearTimeout(timeout);
+        setImageLoaded(true);
+      };
+
+      img.onerror = () => {
+        clearTimeout(timeout);
+        console.warn("主图加载失败，使用占位图");
+        setMainImageUrl("https://placehold.co/650x650");
+        setImageLoaded(true);
+      };
+    }
+  }, [product]);
+
+  // Step 2: 设置子图 URL
+  useEffect(() => {
+    if (Array.isArray(product?.SubImages)) {
+      const urls = product.SubImages.map((img) => `${BACKEND_HOST}${img.url}`);
+      setSubImageUrls(urls);
+    }
+  }, [product]);
+
+  // Step 3: 所有图片合集
+  const allMedia = mainImageUrl ? [mainImageUrl, ...subImageUrls] : [];
+  const isSingleImage = allMedia.length <= 1;
 
   const handleThumbnailClick = (index) => {
     setCurrentIndex(index);
@@ -33,6 +75,14 @@ const ProductGallery = ({ product }) => {
     setCurrentIndex((i) => (i + 1) % allMedia.length);
   };
 
+  if (!imageLoaded) {
+    return (
+      <Container className="product-gallery">
+        <div className="loading">图片加载中...</div>
+      </Container>
+    );
+  }
+
   return (
     <Container className="product-gallery">
       <div className="main-image-container">
@@ -44,7 +94,10 @@ const ProductGallery = ({ product }) => {
           src={allMedia[currentIndex]}
           alt={`图片 ${currentIndex}`}
           className="product-img"
-          onClick={() => !isSingleImage && setLightboxOpen(true)}
+          onClick={() => setLightboxOpen(true)}
+          onError={(e) => {
+            e.target.src = "https://placehold.co/650x650";
+          }}
         />
 
         {!isSingleImage && (
