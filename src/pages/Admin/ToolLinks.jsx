@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Cookies from "js-cookie";
 import FolderGroup from './FolderGroup';
 
 export default function ToolLinkPage() {
@@ -10,8 +11,6 @@ export default function ToolLinkPage() {
     const [tools, setTools] = useState([]);
     // Currently selected tool
     const [selectedTool, setSelectedTool] = useState(null);
-    // Custom components
-    const [selectedComp, setSelectedComp] = useState(null);
     // Search text
     const [searchTerm, setSearchTerm] = useState('');
     // Track opened folders
@@ -29,6 +28,7 @@ export default function ToolLinkPage() {
         e.preventDefault();
         if (password === ADMIN_PWD) {
             setAuthenticated(true);
+            Cookies.set('adminauth', 'true', { expires: 3, sameSite: 'Strict', secure: true });
         } else {
             alert('Invalid password. Please try again.');
         }
@@ -38,6 +38,8 @@ export default function ToolLinkPage() {
      * Fetch tool data from Strapi once the user is authenticated.
      */
     useEffect(() => {
+        const auth = Cookies.get('adminauth') === 'true';
+        if (auth) setAuthenticated(true);
         if (!authenticated) return;
 
         const fetchTools = async () => {
