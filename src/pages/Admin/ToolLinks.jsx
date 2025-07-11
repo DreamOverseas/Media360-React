@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PriceListRHP from './PriceListRHP';
 import FolderGroup from './FolderGroup';
 
 export default function ToolLinkPage() {
@@ -76,31 +75,15 @@ export default function ToolLinkPage() {
         fetchTools();
     }, [authenticated]);
 
-    // get custom component
-    function getCustomComp() {
-        if (selectedComp == "RHP Price List") {
-            return <PriceListRHP />
-        }
-        else {
-            return <h2 className='text-center'>Invalid Selection!</h2>
-        }
-    }
-
     function selectTool(tool) {
         setSelectedTool(tool);
-        setSelectedComp(null);
-    }
-
-    function selectComp(compName) {
-        setSelectedTool(null);
-        setSelectedComp(compName);
     }
 
     // Tool search filtered
     const filteredTools = tools.filter(tool =>
-    tool.platform
-        .toLowerCase()
-        .includes(searchTerm.trim().toLowerCase())
+        tool.platform
+            .toLowerCase()
+            .includes(searchTerm.trim().toLowerCase())
     );
 
     // Group by folder
@@ -112,7 +95,7 @@ export default function ToolLinkPage() {
     }, {});
 
     const toggleFolder = name =>
-    setOpenFolders(prev => ({ ...prev, [name]: !prev[name] }));
+        setOpenFolders(prev => ({ ...prev, [name]: !prev[name] }));
 
     // Render login form if not authenticated
     if (!authenticated) {
@@ -157,11 +140,6 @@ export default function ToolLinkPage() {
                         className="w-full px-3 py-1 border rounded focus:outline-none focus:ring"
                     />
                 </div>
-                {/* <div onClick={() => selectComp("RHP Price List")}
-                    className={`flex items-center p-2 mb-2 rounded cursor-pointer hover:bg-gray-300 ${selectedComp == "RHP Price List" ? 'bg-blue-300/50' : ''
-                        }`}>
-                    <i class="bi bi-ui-radios text-lg text-blue-900 text-shadow-2xs mr-2"></i>RHP Price List
-                </div> */}
                 {filteredTools.length > 0 ? (
                     Object.entries(grouped).map(([folderName, toolsInFolder]) => (
                         <FolderGroup
@@ -173,7 +151,7 @@ export default function ToolLinkPage() {
                             selectedTool={selectedTool}
                             selectTool={selectTool}
                         />
-                        ))
+                    ))
                 ) : (
                     <p className="text-sm italic text-gray-500">No other platforms match '{searchTerm}''.</p>
                 )}
@@ -189,55 +167,54 @@ export default function ToolLinkPage() {
 
             {/* Main content area */}
             <main className="flex-1 flex-col items-center justify-center text-center p-6 overflow-y-auto">
-                {selectedComp ? getCustomComp() :
-                    !selectedTool ? (
-                        <p className="text-gray-500">
-                            Please select from the left side.
-                        </p>
-                    ) : (
-                        selectedTool.embedding==true ?
-                            <iframe className="w-full h-full min-h-[60vh]"
-                                src={selectedTool.url}>
-                            </iframe>
-                            :
-                            <div className="max-w-lg mx-auto">
-                                {/* Tool Icon */}
-                                {selectedTool.iconUrl ? (
-                                    <img
-                                        src={`${CMS_ENDPOINT}${selectedTool.iconUrl}`}
-                                        alt={`${selectedTool.platform} icon`}
-                                        className="w-24 h-24 mb-4 mx-auto self-center"
-                                    />
-                                ) : (
-                                    <div className='my-auto h-24'>
-                                        <i className="bi bi-tools text-7xl"></i>
-                                    </div>
-                                )}
+                {!selectedTool ? (
+                    <p className="text-gray-500">
+                        Please select from the left side.
+                    </p>
+                ) : (
+                    selectedTool.embedding == true ?
+                        <iframe className="w-full h-full min-h-[60vh]"
+                            src={selectedTool.url}>
+                        </iframe>
+                        :
+                        <div className="max-w-lg mx-auto">
+                            {/* Tool Icon */}
+                            {selectedTool.iconUrl ? (
+                                <img
+                                    src={`${CMS_ENDPOINT}${selectedTool.iconUrl}`}
+                                    alt={`${selectedTool.platform} icon`}
+                                    className="w-24 h-24 mb-4 mx-auto self-center"
+                                />
+                            ) : (
+                                <div className='my-auto h-24'>
+                                    <i className="bi bi-tools text-7xl"></i>
+                                </div>
+                            )}
 
-                                {/* Tool Platform Title */}
-                                <h2 className="text-2xl font-bold mb-4">
-                                    {selectedTool.platform}
-                                </h2>
+                            {/* Tool Platform Title */}
+                            <h2 className="text-2xl font-bold mb-4">
+                                {selectedTool.platform}
+                            </h2>
 
-                                {/* Tool Description */}
-                                <p className="mb-4 min-h-48">{selectedTool.description}</p>
+                            {/* Tool Description */}
+                            <p className="mb-4 min-h-12 md:min-h-48">{selectedTool.description}</p>
 
-                                {/* Open URL Button */}
-                                <button
-                                    onClick={() =>
-                                        window.open(selectedTool.url, '_blank', 'noopener')
-                                    }
-                                    className="px-4 py-2 bg-blue-600 text-white rounded"
-                                >
-                                    Open in a new tab
-                                </button>
+                            {/* Open URL Button */}
+                            <button
+                                onClick={() =>
+                                    window.open(selectedTool.url, '_blank', 'noopener')
+                                }
+                                className="px-4 py-2 bg-blue-600 text-white rounded"
+                            >
+                                Open in a new tab
+                            </button>
 
-                                {/* URL display */}
-                                <p className="text-gray-500 text-sm mt-2 break-all">
-                                    {selectedTool.url}
-                                </p>
-                            </div>
-                    )
+                            {/* URL display */}
+                            <p className="text-gray-500 text-sm mt-2 break-all">
+                                {selectedTool.url}
+                            </p>
+                        </div>
+                )
                 }
             </main>
         </div>
