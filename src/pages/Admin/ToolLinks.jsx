@@ -45,7 +45,7 @@ export default function ToolLinkPage() {
         const fetchTools = async () => {
             try {
                 const response = await fetch(
-                    `${CMS_ENDPOINT}/api/tool-links?populate=Icon`,
+                    `${CMS_ENDPOINT}/api/tool-links?populate=Icon&pagination[pageSize]=100`, // Current page size 100 (api.maxRate)
                     {
                         headers: { Authorization: `Bearer ${CMS_TOKEN}` },
                     }
