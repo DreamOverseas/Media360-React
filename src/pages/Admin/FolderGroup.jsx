@@ -19,11 +19,11 @@ export default function FolderGroup({
     const CMS_ENDPOINT = import.meta.env.VITE_STRAPI_HOST;
 
     return (
-        <div className="mb-4">
+        <div className="mb-2">
             {/* Folder header */}
             <button
                 onClick={onToggle}
-                className="flex justify-between items-center w-full p-2 font-medium rounded hover:bg-gray-200"
+                className={`flex justify-between items-center w-full p-2 font-medium rounded shadow-black/20 shadow-2xs hover:bg-gray-200 ${isOpen && "bg-amber-100/50"}`}
             >
                 <span>{name}</span>
                 <i className={`bi ${isOpen ? 'bi-chevron-down' : 'bi-chevron-right'}`}></i>
@@ -32,7 +32,7 @@ export default function FolderGroup({
             {/* Collapsible list */}
             <div
                 ref={contentRef}
-                className="overflow-hidden transition-all duration-300"
+                className="overflow-hidden transition-all duration-300 mt-2"
                 style={{
                     maxHeight: isOpen
                         ? `${contentRef.current?.scrollHeight}px`
@@ -46,7 +46,7 @@ export default function FolderGroup({
                         className={`
                 flex items-center p-2 pl-6 mb-2 rounded cursor-pointer
                 hover:bg-gray-300
-                ${selectedTool?.id === tool.id ? 'bg-blue-300/50' : ''}
+                ${selectedTool?.id === tool.id ? '!bg-blue-300/50' : ''}
             `}
                     >
                         {tool.iconUrl ? (
