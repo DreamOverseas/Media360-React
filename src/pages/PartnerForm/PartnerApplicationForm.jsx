@@ -246,7 +246,7 @@ const PartnerApplicationForm = () => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Check type="checkbox" id="agree-terms" label={<>我已阅读并同意 <Link to={`/products/${encodeURIComponent(productName)}/PartnerApplicationForm/terms-and-conditions`} style={{ marginLeft: 4 }}>条款与条件</Link></>} checked={formData.agreed} onChange={(e) => setFormData({ ...formData, agreed: e.target.checked })} required />
+          <Form.Check type="checkbox" id="agree-terms" label={<>我已阅读并同意 <Link to={`/products/${encodeURIComponent(productName)}/${partnerType}/PartnerDetail/PartnerApplicationForm/terms-and-conditions`} style={{ marginLeft: 4 }}>条款与条件</Link></>} checked={formData.agreed} onChange={(e) => setFormData({ ...formData, agreed: e.target.checked })} required />
         </Form.Group>
 
         <Button type="submit" disabled={loading || !formData.agreed} className="submit-btn">

@@ -178,7 +178,7 @@ function App() {
 
           <Route path="/products/:productName/:partnerType/CustomerApplicationForm" element={<CustomerApplicationForm />} />
           <Route path="/products/:productName/:partnerType/PartnerDetail/PartnerApplicationForm" element={<PartnerApplicationForm />} />
-          <Route path="/products/:productName/:partnerType/PartnerApplicationForm/terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="/products/:productName/:partnerType/PartnerDetail/PartnerApplicationForm/terms-and-conditions" element={<TermsAndConditions />} />
           <Route path="/products/:productName/:partnerType/PartnerDetail" element={<PartnerDetail />} />
           <Route path="/products/:productName/:partnerType/MigrationAdvisor" element={<MigrationAdvisor />} />
 
