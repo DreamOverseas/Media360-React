@@ -226,7 +226,7 @@ function App() {
           />
 
           <Route
-            path='/admin'
+            path='/dog'
             element={<ToolLinkPage />}
           />
         </Routes>
