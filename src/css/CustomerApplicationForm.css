@@ -1,33 +1,35 @@
-.partner-application-form {
+/* 表单整体容器 */
+.customer-application-form {
   padding: 24px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
   margin: 0 auto;
 }
 
-.partner-application-form h2 {
-  font-size: 20px;
-  margin-bottom: 16px;
-}
-
-.partner-application-form form {
+/* 表单布局美化 */
+.customer-application-form form {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.partner-application-form input,
-.partner-application-form textarea,
-.partner-application-form select {
+/* 输入框美化 */
+.customer-application-form input,
+.customer-application-form textarea,
+.customer-application-form select {
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   font-size: 14px;
+  transition: all 0.3s ease;
 }
 
-/* ✅ 单选按钮排列 */
+.customer-application-form input:focus,
+.customer-application-form textarea:focus,
+.customer-application-form select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+}
+
+/* 单选按钮美化 */
 .radio-group {
   display: flex;
   gap: 20px;
@@ -39,17 +41,67 @@
   margin-right: 6px;
 }
 
-/* ✅ 蓝色主按钮 */
+/* 蓝色主按钮美化，统一风格 */
 .primary-submit-btn {
-  padding: 10px 20px;
-  background-color: #0d6efd;
+  width: 220px;
+  max-width: 90%;
+  background: linear-gradient(135deg, #007bff, #0056b3);
   color: #fff;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
+  border-radius: 25px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  margin-bottom: 50px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .primary-submit-btn:hover {
-  background-color: #0b5ed7;
+  background: linear-gradient(90deg, #0056b3, #003f7f);
+  transform: translateY(-2px);
+}
+
+
+.form-title {
+  margin: 40px 0 10px 0;
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+  color: #333;
+  position: relative;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #007bff;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 280px;
+}
+
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.back-button:hover {
+  color: #007bff;
+  transform: translateX(-2px);
+}
+
+.back-text {
+  font-size: 16px;
 }
