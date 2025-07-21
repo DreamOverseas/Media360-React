@@ -52,6 +52,8 @@ const ProductDetail = () => {
   const [variants, setVariants] = useState([]);
   const [subItemCategory, setSubItemCategory] = useState(null);
 
+  const HIDE_PARTNER_BUTTON_PRODUCTS = ["IncubationPark", "AnotherProductName"];
+
   const ConsultationModal = ({ show, handleClose }) => {
     return (
       <Modal show={show} onHide={handleClose} centered>
@@ -414,12 +416,13 @@ useEffect(() => {
                     <h4>查看相关信息</h4>
                     <Row>
                         {/* 合作伙伴按钮 */}
-                        {getPartnerLabels().map(({ type, label }, idx) => (
-                          <Col xs={4} key={idx}>
-                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
-                              <Button className="product-detail-funtion-btn">{label}</Button>
-                            </Link>
-                          </Col>
+                        {!HIDE_PARTNER_BUTTON_PRODUCTS.includes(product.url) &&
+                          getPartnerLabels().map(({ type, label }, idx) => (
+                            <Col xs={4} key={idx}>
+                              <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
+                                <Button className="product-detail-funtion-btn">{label}</Button>
+                              </Link>
+                            </Col>
                         ))}
                       {founder.length > 0 && (
                         <Col xs={4}>
@@ -664,12 +667,13 @@ useEffect(() => {
                       <h4>查看相关信息</h4>
                       <Row>
                       {/* 合作伙伴按钮 */}
-                        {getPartnerLabels().map(({ type, label }, idx) => (
-                          <Col xs={4} key={idx}>
-                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
-                              <Button className="product-detail-funtion-btn">{label}</Button>
-                            </Link>
-                          </Col>
+                        {!HIDE_PARTNER_BUTTON_PRODUCTS.includes(product.url) &&
+                          getPartnerLabels().map(({ type, label }, idx) => (
+                            <Col xs={4} key={idx}>
+                              <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
+                                <Button className="product-detail-funtion-btn">{label}</Button>
+                              </Link>
+                            </Col>
                         ))}
                         {founder.length > 0 && (
                           <Col xs={4}>
