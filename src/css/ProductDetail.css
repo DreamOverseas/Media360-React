@@ -620,6 +620,14 @@
   justify-content: flex-start;
 }
 
+.consult-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 36px; /* 两个按钮的间距 */
+  margin-right: 40px;
+  margin-bottom: 40px;
+}
+
 .consult-top-row {
   display: flex;
   align-items: center;
@@ -690,7 +698,8 @@
 }
 
 .consult-banner {
-  width: 70%;
+  width: 65%; 
   height: auto;
-  border-radius: 12px;
+  object-fit: contain;
+  margin-bottom: 16px;
 }

@@ -52,7 +52,9 @@ const ProductDetail = () => {
   const [variants, setVariants] = useState([]);
   const [subItemCategory, setSubItemCategory] = useState(null);
 
-  const SHOW_PARTNER_BUTTON_PRODUCTS = ["roseneath-holidaypark", "nail-train", "Studyfin"];
+  // const SHOW_PARTNER_BUTTON_PRODUCTS = ["roseneath-holidaypark", "nail-train", "Studyfin"];
+  const SHOW_PARTNER_BUTTON_PRODUCTS = ["Studyfin"];
+
 
   const ConsultationModal = ({ show, handleClose }) => {
     return (
@@ -418,9 +420,14 @@ useEffect(() => {
                       {/* 横向排列区域：图片 + 按钮 */}
                       <div className="consult-top-row">
                         <img src="/joinuslogo.png" alt="Join Us Banner" className="consult-banner" />
-                        <button className="consult-button" onClick={() => navigate("/contact-us")}>
-                          我要咨询
-                        </button>
+                        <div className="consult-buttons">
+                          <button className="consult-button" onClick={() => navigate("/apply")}>
+                            我要申请
+                          </button>
+                          <button className="consult-button" onClick={() => navigate("/contact-us")}>
+                            我要咨询
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
