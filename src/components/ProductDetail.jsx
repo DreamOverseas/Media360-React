@@ -52,7 +52,7 @@ const ProductDetail = () => {
   const [variants, setVariants] = useState([]);
   const [subItemCategory, setSubItemCategory] = useState(null);
 
-  const HIDE_PARTNER_BUTTON_PRODUCTS = ["IncubationPark", "AnotherProductName"];
+  const SHOW_PARTNER_BUTTON_PRODUCTS = ["roseneath-holidaypark", "nail-train", "Studyfin"];
 
   const ConsultationModal = ({ show, handleClose }) => {
     return (
@@ -412,11 +412,25 @@ useEffect(() => {
 
               {onDesktop ? (
                 <>
+                {/* 咨询卡片区域 */}
+                  <div className="consult-card-wrapper">
+                    <div className="consult-card">
+                      {/* 横向排列区域：图片 + 按钮 */}
+                      <div className="consult-top-row">
+                        <img src="/joinuslogo.png" alt="Join Us Banner" className="consult-banner" />
+                        <button className="consult-button" onClick={() => navigate("/contact-us")}>
+                          我要咨询
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  {/* 咨询卡片区域 */}
+                      
                   <Row>
                     <h4>查看相关信息</h4>
                     <Row>
                         {/* 合作伙伴按钮 */}
-                        {!HIDE_PARTNER_BUTTON_PRODUCTS.includes(product.url) &&
+                        {SHOW_PARTNER_BUTTON_PRODUCTS.includes(product.url) &&
                           getPartnerLabels().map(({ type, label }, idx) => (
                             <Col xs={4} key={idx}>
                               <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
@@ -667,7 +681,7 @@ useEffect(() => {
                       <h4>查看相关信息</h4>
                       <Row>
                       {/* 合作伙伴按钮 */}
-                        {!HIDE_PARTNER_BUTTON_PRODUCTS.includes(product.url) &&
+                        {SHOW_PARTNER_BUTTON_PRODUCTS.includes(product.url) &&
                           getPartnerLabels().map(({ type, label }, idx) => (
                             <Col xs={4} key={idx}>
                               <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
