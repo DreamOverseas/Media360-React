@@ -43,16 +43,22 @@
 
 /* 蓝色主按钮美化，统一风格 */
 .primary-submit-btn {
-  width: 100%;
-  background: linear-gradient(90deg, #007bff, #0056b3);
+  width: 220px;
+  max-width: 90%;
+  background: linear-gradient(135deg, #007bff, #0056b3);
   color: #fff;
   border: none;
   border-radius: 25px;
-  padding: 10px;
+  padding: 12px 20px;
   font-size: 16px;
   font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
   margin-top: 20px;
+  margin-bottom: 50px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .primary-submit-btn:hover {
