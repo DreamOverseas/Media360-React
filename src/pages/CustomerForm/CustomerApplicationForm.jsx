@@ -63,6 +63,9 @@ const CustomerApplicationForm = () => {
       });
 
       const partnerEntry = partnerRes.data?.data?.[0];
+      const companyName = partnerEntry?.attributes?.companyName || "";
+      const advisorFirstName = partnerEntry?.attributes?.advisorFirstName || "";
+      const advisorLastName = partnerEntry?.attributes?.advisorLastName || "";
       if (!partnerEntry) throw new Error("未找到对应合作伙伴");
 
       const partnerDocumentId = partnerEntry?.documentId;
@@ -84,6 +87,14 @@ const CustomerApplicationForm = () => {
             needVisaAssist: formData.needVisaAssist,
             otherNeeds: formData.otherNeeds,
             Partner: partnerDocumentId,
+
+            // 新增字段 👇
+            productName,
+            partnerType,
+            partnerID,
+            companyName,
+            advisorFirstName,
+            advisorLastName,
           },
         },
         { headers: { Authorization: `Bearer ${API_TOKEN}` } }
@@ -110,6 +121,10 @@ const CustomerApplicationForm = () => {
         ...formData,
         partnerID,
         productName,
+        partnerType,
+        companyName,
+        advisorFirstName,
+        advisorLastName,
       }).catch((err) => console.warn("邮件通知失败", err));
 
       // 4. 成功重置
