@@ -56,16 +56,32 @@ const CustomerApplicationForm = () => {
     setLoading(true);
 
     try {
-      const query = `?filters[productName][$eq]=${encodeURIComponent(productName)}&filters[partnerID][$eq]=${encodeURIComponent(partnerID)}&fields[0]=documentId`;
+      const query = `?filters[productName][$eq]=${encodeURIComponent(productName)}&filters[partnerID][$eq]=${encodeURIComponent(partnerID)}&fields[0]=documentId&fields[1]=companyName&fields[2]=advisorFirstName&fields[3]=advisorLastName`;
+
 
       const partnerRes = await axios.get(`${PARTNER_URL}${query}`, {
         headers: { Authorization: `Bearer ${API_TOKEN}` },
       });
 
+      console.log("📦 partnerRes:", JSON.stringify(partnerRes.data, null, 2)); // 加上这句
+
       const partnerEntry = partnerRes.data?.data?.[0];
-      const companyName = partnerEntry?.attributes?.companyName || "";
-      const advisorFirstName = partnerEntry?.attributes?.advisorFirstName || "";
-      const advisorLastName = partnerEntry?.attributes?.advisorLastName || "";
+      if (!partnerEntry) throw new Error("未找到对应合作伙伴");
+
+      const documentId = partnerEntry.documentId;
+      const companyName = partnerEntry.companyName;
+      const advisorFirstName = partnerEntry.advisorFirstName;
+      const advisorLastName = partnerEntry.advisorLastName;
+
+      console.log("✅ 从 partnerEntry 中提取字段：", {
+        documentId,
+        companyName,
+        advisorFirstName,
+        advisorLastName
+      });
+
+
+
       if (!partnerEntry) throw new Error("未找到对应合作伙伴");
 
       const partnerDocumentId = partnerEntry?.documentId;
