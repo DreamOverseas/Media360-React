@@ -53,7 +53,7 @@ const ProductDetail = () => {
   const [subItemCategory, setSubItemCategory] = useState(null);
 
   // const SHOW_PARTNER_BUTTON_PRODUCTS = ["roseneath-holidaypark", "nail-train", "Studyfin"];
-  const SHOW_PARTNER_BUTTON_PRODUCTS = ["Studyfin"];
+  const SHOW_PARTNER_BUTTON_PRODUCTS = ["Studyfin", "IncubationPark"];
 
 
   const ConsultationModal = ({ show, handleClose }) => {
@@ -257,6 +257,9 @@ useEffect(() => {
         { type: "default", label: getPartnerTypeLabel("study-abroad-agency") },
         { type: "migration", label: getPartnerTypeLabel("immigration-advisor") },
       ],
+      "IncubationPark": [
+        { type: "default", label: getPartnerTypeLabel("recruitment-agency") },
+      ],
     };
 
     return config[productUrl] || [{ type: "default", label: getPartnerTypeLabel("partner") }];
@@ -275,6 +278,9 @@ useEffect(() => {
       "Studyfin": {
         default: "study-abroad-agency",
         migration: "immigration-advisor",
+      },
+      "IncubationPark": {
+        default: "recruitment-agency",
       },
     };
 
@@ -414,10 +420,9 @@ useEffect(() => {
 
               {onDesktop ? (
                 <>
-                {/* 咨询卡片区域 */}
+                {/* 咨询卡片区域
                   <div className="consult-card-wrapper">
                     <div className="consult-card">
-                      {/* 横向排列区域：图片 + 按钮 */}
                       <div className="consult-top-row">
                         <img src="/joinuslogo.png" alt="Join Us Banner" className="consult-banner" />
                         <div className="consult-buttons">
@@ -430,8 +435,7 @@ useEffect(() => {
                         </div>
                       </div>
                     </div>
-                  </div>
-                  {/* 咨询卡片区域 */}
+                  </div> */}
                       
                   <Row>
                     <h4>查看相关信息</h4>
