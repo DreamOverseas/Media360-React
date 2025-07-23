@@ -107,7 +107,7 @@ const RecruitmentAgencyForm = () => {
         headers: { Authorization: `Bearer ${API_TOKEN}` },
       });
 
-      console.log("📦 partnerRes:", JSON.stringify(partnerRes.data, null, 2)); // 加上这句
+    //   console.log("📦 partnerRes:", JSON.stringify(partnerRes.data, null, 2)); // 加上这句
 
       const partnerEntry = partnerRes.data?.data?.[0];
       if (!partnerEntry) throw new Error("未找到对应合作伙伴");
@@ -117,12 +117,12 @@ const RecruitmentAgencyForm = () => {
       const advisorFirstName = partnerEntry.advisorFirstName;
       const advisorLastName = partnerEntry.advisorLastName;
 
-      console.log("✅ 从 partnerEntry 中提取字段：", {
-        documentId,
-        companyName,
-        advisorFirstName,
-        advisorLastName
-      });
+    //   console.log("✅ 从 partnerEntry 中提取字段：", {
+    //     documentId,
+    //     companyName,
+    //     advisorFirstName,
+    //     advisorLastName
+    //   });
 
 
 
@@ -234,8 +234,8 @@ const RecruitmentAgencyForm = () => {
 
       <h2 className="form-title">请完善信息</h2>
 
-      {/* {error && <Alert variant="danger">{error}</Alert>}
-      {success && <Alert variant="success">✅ 提交成功！</Alert>} */}
+      {error && <Alert variant="danger">{error}</Alert>}
+      {success && <Alert variant="success">✅ 提交成功！</Alert>}
 
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
