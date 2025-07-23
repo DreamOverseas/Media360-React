@@ -23,13 +23,17 @@ const RecruitmentAgencyForm = () => {
     surname: "",
     firstname: "",
     Email: "",
-    isInAustralia: "yes",
     address: "",
-    intakeTime: "",
-    needAccommodation: false,
-    needVisaAssist: false,
-    otherNeeds: "",
-  };
+    region: "",
+    resume: null,
+    preferredPosition: "",
+    preferredIndustry: "",
+    preferredLocation: "",
+    preferredJobType: "",
+    certification: "",
+    workVisaStatus: "",
+    workRightsProof: null,
+    };
 
   const [formData, setFormData] = useState(initialFormData);
   const [success, setSuccess] = useState(false);
@@ -93,30 +97,35 @@ const RecruitmentAgencyForm = () => {
       const customerRes = await axios.post(
         CUSTOMER_URL,
         {
-          data: {
+            data: {
             customerID: uuidv4(),
             surname: formData.surname,
             firstname: formData.firstname,
             Email: formData.Email,
-            isInAustralia: formData.isInAustralia === "yes",
             address: formData.address,
-            intakeTime: formData.intakeTime,
-            needAccommodation: formData.needAccommodation,
-            needVisaAssist: formData.needVisaAssist,
+            region: formData.region,
+            resume: formData.resume,
+            preferredPosition: formData.preferredPosition,
+            preferredIndustry: formData.preferredIndustry,
+            preferredLocation: formData.preferredLocation,
+            preferredJobType: formData.preferredJobType,
+            certification: formData.certification,
+            workVisaStatus: formData.workVisaStatus,
+            workRightsProof: formData.workRightsProof,
             otherNeeds: formData.otherNeeds,
             Partner: partnerDocumentId,
 
-            // 新增字段
+            // 附加信息
             productName,
-            partnerType: partnerTypeLabel,  
+            partnerType: partnerTypeLabel,
             partnerID,
             companyName,
             advisorFirstName,
             advisorLastName,
-          },
+            },
         },
         { headers: { Authorization: `Bearer ${API_TOKEN}` } }
-      );
+        );
 
       const customerDocumentId = customerRes.data?.data?.documentId;
       if (!customerDocumentId) throw new Error("创建用户失败");
@@ -209,29 +218,19 @@ const RecruitmentAgencyForm = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Label>是否在澳洲</Form.Label>
-          <div>
-            <Form.Check
-              inline
-              label="是"
-              name="isInAustralia"
-              type="radio"
-              value="yes"
-              checked={formData.isInAustralia === "yes"}
-              onChange={handleChange}
-            />
-            <Form.Check
-              inline
-              label="否"
-              name="isInAustralia"
-              type="radio"
-              value="no"
-              checked={formData.isInAustralia === "no"}
-              onChange={handleChange}
-            />
-          </div>
-        </Form.Group>
+        <Form.Group controlId="region">
+        <Form.Label>所在区域</Form.Label>
+        <Form.Select
+            name="region"
+            value={formData.region}
+            onChange={handleChange}
+            required
+        >
+            <option value="">请选择所在区域</option>
+            <option value="NSW">新南威尔士州 (NSW)</option>
+            <option value="VIC">维多利亚州 (VIC)</option>
+        </Form.Select>
+        </Form.Group>      
 
         <Form.Group className="mb-3">
           <Form.Label>现居住地址</Form.Label>
@@ -243,34 +242,102 @@ const RecruitmentAgencyForm = () => {
           />
         </Form.Group>
 
+
+
+
+
+
+
+
+
+
+
+
         <Form.Group className="mb-3">
-          <Form.Label>计划入学时间</Form.Label>
-          <Form.Control
-            name="intakeTime"
-            value={formData.intakeTime}
-            onChange={handleChange}
-            placeholder="例如：2024年2月、2024年7月"
-          />
+        <Form.Label>上传简历</Form.Label>
+        <Form.Control
+            type="file"
+            name="resume"
+            onChange={(e) => setFormData({ ...formData, resume: e.target.files[0] })}
+        />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Check
-            type="checkbox"
-            label="需要住宿安排"
-            name="needAccommodation"
-            checked={formData.needAccommodation}
+        <Form.Label>期望职位</Form.Label>
+        <Form.Control
+            name="preferredPosition"
+            value={formData.preferredPosition}
             onChange={handleChange}
-          />
+            placeholder="例如：市场专员，前端开发"
+        />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Check
-            type="checkbox"
-            label="需要接机、签证协助"
-            name="needVisaAssist"
-            checked={formData.needVisaAssist}
+        <Form.Label>行业</Form.Label>
+        <Form.Control
+            name="preferredIndustry"
+            value={formData.preferredIndustry}
             onChange={handleChange}
-          />
+            placeholder="例如：教育，科技，零售"
+        />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+        <Form.Label>期望工作地点</Form.Label>
+        <Form.Control
+            name="preferredLocation"
+            value={formData.preferredLocation}
+            onChange={handleChange}
+            placeholder="例如：悉尼，墨尔本"
+        />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+        <Form.Label>工作类型</Form.Label>
+        <Form.Select
+            name="preferredJobType"
+            value={formData.preferredJobType}
+            onChange={handleChange}
+        >
+            <option value="">请选择</option>
+            <option value="full-time">全职</option>
+            <option value="part-time">兼职</option>
+            <option value="internship">实习</option>
+        </Form.Select>
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+        <Form.Label>资格证书</Form.Label>
+        <Form.Control
+            name="certifications"
+            value={formData.certifications}
+            onChange={handleChange}
+            placeholder="例如：CPA，驾照"
+        />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+        <Form.Label>工作签证状态</Form.Label>
+        <Form.Select
+            name="workVisaStatus"
+            value={formData.workVisaStatus}
+            onChange={handleChange}
+            required
+        >
+            <option value="">请选择</option>
+            <option value="工作签证">工作签证</option>
+            <option value="澳大利亚永久居留权">澳大利亚永久居留权</option>
+            <option value="澳大利亚公民身份">澳大利亚公民身份</option>
+        </Form.Select>
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+        <Form.Label>上传工作权利证明</Form.Label>
+        <Form.Control
+            type="file"
+            name="workRightsProof"
+            onChange={(e) => setFormData({ ...formData, workRightsProof: e.target.files[0] })}
+        />
         </Form.Group>
 
         <Form.Group className="mb-3">
