@@ -35,6 +35,21 @@ const RecruitmentAgencyForm = () => {
     workRightsProof: null,
     };
 
+    const requiredFields = {
+    surname: "姓氏",
+    firstname: "名字",
+    Email: "邮箱",
+    address: "地址",
+    region: "区域",
+    resume: "简历",
+    preferredPosition: "期望职位",
+    preferredIndustry: "行业",
+    preferredLocation: "期望工作地点",
+    preferredJobType: "工作类型",
+    workVisaStatus: "工作签证状态",
+    workRightsProof: "工作权利证明",
+    };
+
   const [formData, setFormData] = useState(initialFormData);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -70,6 +85,19 @@ const RecruitmentAgencyForm = () => {
     setSuccess(false);
     setError("");
     setLoading(true);
+
+    const missingFields = Object.entries(requiredFields)
+    .filter(([key]) => {
+        const value = formData[key];
+        return value === "" || value === null || value === undefined;
+    })
+    .map(([_, label]) => label);
+
+    if (missingFields.length > 0) {
+    setLoading(false);
+    setError(`请填写以下字段：${missingFields.join("、")}`);
+    return;
+    }
 
     try {
       const query = `?filters[productName][$eq]=${encodeURIComponent(productName)}&filters[partnerID][$eq]=${encodeURIComponent(partnerID)}&fields[0]=documentId&fields[1]=companyName&fields[2]=advisorFirstName&fields[3]=advisorLastName`;
@@ -206,8 +234,8 @@ const RecruitmentAgencyForm = () => {
 
       <h2 className="form-title">请完善信息</h2>
 
-      {error && <Alert variant="danger">{error}</Alert>}
-      {success && <Alert variant="success">✅ 提交成功！</Alert>}
+      {/* {error && <Alert variant="danger">{error}</Alert>}
+      {success && <Alert variant="success">✅ 提交成功！</Alert>} */}
 
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
@@ -262,6 +290,7 @@ const RecruitmentAgencyForm = () => {
             value={formData.address}
             onChange={handleChange}
             placeholder="请输入您的详细居住地址"
+            required
           />
         </Form.Group>
 
@@ -374,10 +403,16 @@ const RecruitmentAgencyForm = () => {
           />
         </Form.Group>
 
+        {error && (
+        <Alert variant="danger" style={{ marginTop: "20px" }}>
+            {error}
+        </Alert>
+        )}
+
         <div style={{ textAlign: "center" }}>
-          <Button type="submit" disabled={loading} className="primary-submit-btn">
+        <Button type="submit" disabled={loading} className="primary-submit-btn">
             {loading ? <Spinner animation="border" size="sm" /> : "提交"}
-          </Button>
+        </Button>
         </div>
       </Form>
     </Container>
