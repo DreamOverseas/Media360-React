@@ -5,6 +5,7 @@ import axios from "axios";
 import { Container, Form, Button, Alert, Spinner } from "react-bootstrap";
 import { FiArrowLeft } from "react-icons/fi";
 import "../../css/CustomerApplicationForm.css";
+import { getPartnerTypeLabel } from "../../components/PartnerConfig";
 
 const STRAPI_HOST = import.meta.env.VITE_STRAPI_HOST;
 const CUSTOMER_URL = `${STRAPI_HOST}/api/partner-application-forms`;
@@ -16,6 +17,7 @@ const RecruitmentAgencyForm = () => {
   const { productName, partnerType } = useParams();
   const { partnerID } = Object.fromEntries(new URLSearchParams(useLocation().search));
   const navigate = useNavigate();
+  const partnerTypeLabel = getPartnerTypeLabel(partnerType);
 
   const initialFormData = {
     surname: "",
@@ -104,9 +106,9 @@ const RecruitmentAgencyForm = () => {
             otherNeeds: formData.otherNeeds,
             Partner: partnerDocumentId,
 
-            // 新增字段 👇
+            // 新增字段
             productName,
-            partnerType,
+            partnerType: partnerTypeLabel,  
             partnerID,
             companyName,
             advisorFirstName,
@@ -170,7 +172,7 @@ const RecruitmentAgencyForm = () => {
         <span className="back-text">返回</span>
       </div>      
 
-      <h2 className="form-title">xin d neirong</h2>
+      <h2 className="form-title">请完善信息</h2>
 
       {error && <Alert variant="danger">{error}</Alert>}
       {success && <Alert variant="success">✅ 提交成功！</Alert>}
