@@ -30,7 +30,7 @@ const RecruitmentAgencyForm = () => {
     preferredIndustry: "",
     preferredLocation: "",
     preferredJobType: "",
-    certification: "",
+    certification: null,
     workVisaStatus: "",
     workRightsProof: null,
     };
@@ -54,6 +54,16 @@ const RecruitmentAgencyForm = () => {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
+
+  const handleUpload = async (file) => {
+    if (!file) return null;
+    const data = new FormData();
+    data.append("files", file);
+    const res = await axios.post(`${STRAPI_HOST}/api/upload`, data, {
+        headers: { Authorization: `Bearer ${API_TOKEN}` },
+    });
+    return res.data?.[0]?.id || null;
+    };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -94,38 +104,51 @@ const RecruitmentAgencyForm = () => {
       if (!partnerDocumentId) throw new Error("合作伙伴缺少 documentId");
 
       // 1. 创建 Customer 并绑定 Partner
-      const customerRes = await axios.post(
-        CUSTOMER_URL,
-        {
-            data: {
-            customerID: uuidv4(),
-            surname: formData.surname,
-            firstname: formData.firstname,
-            Email: formData.Email,
-            address: formData.address,
-            region: formData.region,
-            resume: formData.resume,
-            preferredPosition: formData.preferredPosition,
-            preferredIndustry: formData.preferredIndustry,
-            preferredLocation: formData.preferredLocation,
-            preferredJobType: formData.preferredJobType,
-            certification: formData.certification,
-            workVisaStatus: formData.workVisaStatus,
-            workRightsProof: formData.workRightsProof,
-            otherNeeds: formData.otherNeeds,
-            Partner: partnerDocumentId,
+      // 上传 resume 和 workRightsProof 文件，获取 fileId
+    const resumeFileId = await handleUpload(formData.resume);
+    const workRightsProofFileId = await handleUpload(formData.workRightsProof);
+    const certificationFileId = await handleUpload(formData.certification);
 
-            // 附加信息
-            productName,
-            partnerType: partnerTypeLabel,
-            partnerID,
-            companyName,
-            advisorFirstName,
-            advisorLastName,
-            },
+    // 创建 Customer 表单
+    const customerRes = await axios.post(
+    CUSTOMER_URL,
+    {
+        data: {
+        customerID: uuidv4(),
+        surname: formData.surname,
+        firstname: formData.firstname,
+        Email: formData.Email,
+        address: formData.address,
+        region: formData.region,
+        preferredPosition: formData.preferredPosition,
+        preferredIndustry: formData.preferredIndustry,
+        preferredLocation: formData.preferredLocation,
+        preferredJobType: formData.preferredJobType,
+        // certification: formData.certification,
+        workVisaStatus: formData.workVisaStatus,
+        otherNeeds: formData.otherNeeds,
+        Partner: partnerDocumentId,
+
+        // 文件字段：使用上传返回的 file.id
+        certification: certificationFileId,
+        resume: resumeFileId,
+        workRightsProof: workRightsProofFileId,
+
+        // 附加元数据
+        productName,
+        partnerType: partnerTypeLabel,
+        partnerID,
+        companyName,
+        advisorFirstName,
+        advisorLastName,
         },
-        { headers: { Authorization: `Bearer ${API_TOKEN}` } }
-        );
+    },
+    {
+        headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+        },
+    }
+    );
 
       const customerDocumentId = customerRes.data?.data?.documentId;
       if (!customerDocumentId) throw new Error("创建用户失败");
@@ -254,7 +277,7 @@ const RecruitmentAgencyForm = () => {
 
 
         <Form.Group className="mb-3">
-        <Form.Label>上传简历</Form.Label>
+        <Form.Label>上传简历 (上传文件大小不得大于10MB)</Form.Label>
         <Form.Control
             type="file"
             name="resume"
@@ -300,19 +323,18 @@ const RecruitmentAgencyForm = () => {
             onChange={handleChange}
         >
             <option value="">请选择</option>
-            <option value="full-time">全职</option>
-            <option value="part-time">兼职</option>
-            <option value="internship">实习</option>
+            <option value="全职">全职</option>
+            <option value="兼职">兼职</option>
+            <option value="实习">实习</option>
         </Form.Select>
         </Form.Group>
 
         <Form.Group className="mb-3">
-        <Form.Label>资格证书</Form.Label>
+        <Form.Label>资格证书 (上传文件大小不得大于10MB)</Form.Label>
         <Form.Control
-            name="certifications"
-            value={formData.certifications}
-            onChange={handleChange}
-            placeholder="例如：CPA，驾照"
+            type="file"
+            name="certification"
+            onChange={(e) => setFormData({ ...formData, certification: e.target.files[0] })}
         />
         </Form.Group>
 
@@ -332,7 +354,7 @@ const RecruitmentAgencyForm = () => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-        <Form.Label>上传工作权利证明</Form.Label>
+        <Form.Label>上传工作权利证明 (例如工作签证，上传文件大小不得大于10MB)</Form.Label>
         <Form.Control
             type="file"
             name="workRightsProof"
