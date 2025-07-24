@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { getPartnerTypeLabel } from "../../components/PartnerConfig";
 import DefaultPartnerDetail from "./DefaultPartnerDetail";
+import RecruitmentAgencyDetail from "./RecruitmentAgencyDetail";
+
 // import StudyAbroadDetail from "./StudyAbroadDetail";
 // import ImmigrationAdvisorDetail from "./ImmigrationAdvisorDetail";
 // import TravelAgencyDetail from "./TravelAgencyDetail";
@@ -50,25 +52,19 @@ const PartnerDetail = () => {
     partnerType,
   };
 
-  const renderComponent = () => {
-    switch (partnerType) {
-      // case "study-abroad-agency":
-      //   return <StudyAbroadDetail {...commonProps} />;
-      // case "immigration-advisor":
-      //   return <ImmigrationAdvisorDetail {...commonProps} />;
-      // case "travel-agency":
-      //   return <TravelAgencyDetail {...commonProps} />;
-      // case "franchise-partner":
-      //   return <FranchisePartnerDetail {...commonProps} />;
-
-      case "study-abroad-agency":
-        return <DefaultPartnerDetail {...commonProps} />;
-      case "immigration-advisor":
-        return <DefaultPartnerDetail {...commonProps} />;
-      default:
-        return <DefaultPartnerDetail {...commonProps} />;
-    }
-  };
+    const renderComponent = () => {
+      switch (partnerType) {
+        case "recruitment-agency":
+          return <RecruitmentAgencyDetail {...commonProps} />;
+        case "study-abroad-agency":
+        case "immigration-advisor":
+        case "travel-agency":
+        case "franchise-partner":
+          return <DefaultPartnerDetail {...commonProps} />;
+        default:
+          return <DefaultPartnerDetail {...commonProps} />;
+      }
+    };
 
   return <>{renderComponent()}</>;
 };

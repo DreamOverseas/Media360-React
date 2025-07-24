@@ -58,6 +58,7 @@ import PartnerDetail from "./pages/PartnerDetail/PartnerDetail.jsx";
 import MigrationAdvisor from "./pages/MigrationAdvisor";
 import WeChatBlocker from "./utils/WeChatBlocker.jsx";
 import ToolLinkPage from "./pages/Admin/ToolLinks.jsx";
+import RecruitmentAgencyForm from "./pages/CustomerForm/RecruitmentAgencyForm";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -181,6 +182,7 @@ function App() {
           <Route path="/products/:productName/:partnerType/PartnerDetail/PartnerApplicationForm/terms-and-conditions" element={<TermsAndConditions />} />
           <Route path="/products/:productName/:partnerType/PartnerDetail" element={<PartnerDetail />} />
           <Route path="/products/:productName/:partnerType/MigrationAdvisor" element={<MigrationAdvisor />} />
+          <Route path="/products/:productName/:partnerType/RecruitmentAgencyForm" element={<RecruitmentAgencyForm />}/>
 
           <Route path='/join-us' element={<Recruitment />} />
           <Route path='/networks' element={<Networks />} />

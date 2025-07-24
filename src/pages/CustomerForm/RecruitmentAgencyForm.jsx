@@ -13,7 +13,7 @@ const PARTNER_URL = `${STRAPI_HOST}/api/partner-application-submissions`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
 const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_CUSTOMER_APPLICATION_NOTIFICATION;
 
-const CustomerApplicationForm = () => {
+const RecruitmentAgencyForm = () => {
   const { productName, partnerType } = useParams();
   const { partnerID } = Object.fromEntries(new URLSearchParams(useLocation().search));
   const navigate = useNavigate();
@@ -23,13 +23,32 @@ const CustomerApplicationForm = () => {
     surname: "",
     firstname: "",
     Email: "",
-    isInAustralia: "yes",
     address: "",
-    intakeTime: "",
-    needAccommodation: false,
-    needVisaAssist: false,
-    otherNeeds: "",
-  };
+    region: "",
+    resume: null,
+    preferredPosition: "",
+    preferredIndustry: "",
+    preferredLocation: "",
+    preferredJobType: "",
+    certification: null,
+    workVisaStatus: "",
+    workRightsProof: null,
+    };
+
+    const requiredFields = {
+    surname: "姓氏",
+    firstname: "名字",
+    Email: "邮箱",
+    address: "地址",
+    region: "区域",
+    resume: "简历",
+    preferredPosition: "期望职位",
+    preferredIndustry: "行业",
+    preferredLocation: "期望工作地点",
+    preferredJobType: "工作类型",
+    workVisaStatus: "工作签证状态",
+    workRightsProof: "工作权利证明",
+    };
 
   const [formData, setFormData] = useState(initialFormData);
   const [success, setSuccess] = useState(false);
@@ -51,11 +70,34 @@ const CustomerApplicationForm = () => {
     }));
   };
 
+  const handleUpload = async (file) => {
+    if (!file) return null;
+    const data = new FormData();
+    data.append("files", file);
+    const res = await axios.post(`${STRAPI_HOST}/api/upload`, data, {
+        headers: { Authorization: `Bearer ${API_TOKEN}` },
+    });
+    return res.data?.[0]?.id || null;
+    };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccess(false);
     setError("");
     setLoading(true);
+
+    const missingFields = Object.entries(requiredFields)
+    .filter(([key]) => {
+        const value = formData[key];
+        return value === "" || value === null || value === undefined;
+    })
+    .map(([_, label]) => label);
+
+    if (missingFields.length > 0) {
+    setLoading(false);
+    setError(`请填写以下字段：${missingFields.join("、")}`);
+    return;
+    }
 
     try {
       const query = `?filters[productName][$eq]=${encodeURIComponent(productName)}&filters[partnerID][$eq]=${encodeURIComponent(partnerID)}&fields[0]=documentId&fields[1]=companyName&fields[2]=advisorFirstName&fields[3]=advisorLastName`;
@@ -65,7 +107,7 @@ const CustomerApplicationForm = () => {
         headers: { Authorization: `Bearer ${API_TOKEN}` },
       });
 
-      // console.log("📦 partnerRes:", JSON.stringify(partnerRes.data, null, 2)); // 加上这句
+    //   console.log("📦 partnerRes:", JSON.stringify(partnerRes.data, null, 2)); // 加上这句
 
       const partnerEntry = partnerRes.data?.data?.[0];
       if (!partnerEntry) throw new Error("未找到对应合作伙伴");
@@ -75,12 +117,12 @@ const CustomerApplicationForm = () => {
       const advisorFirstName = partnerEntry.advisorFirstName;
       const advisorLastName = partnerEntry.advisorLastName;
 
-      // console.log("✅ 从 partnerEntry 中提取字段：", {
-      //   documentId,
-      //   companyName,
-      //   advisorFirstName,
-      //   advisorLastName
-      // });
+    //   console.log("✅ 从 partnerEntry 中提取字段：", {
+    //     documentId,
+    //     companyName,
+    //     advisorFirstName,
+    //     advisorLastName
+    //   });
 
 
 
@@ -90,33 +132,51 @@ const CustomerApplicationForm = () => {
       if (!partnerDocumentId) throw new Error("合作伙伴缺少 documentId");
 
       // 1. 创建 Customer 并绑定 Partner
-      const customerRes = await axios.post(
-        CUSTOMER_URL,
-        {
-          data: {
-            customerID: uuidv4(),
-            surname: formData.surname,
-            firstname: formData.firstname,
-            Email: formData.Email,
-            isInAustralia: formData.isInAustralia === "yes",
-            address: formData.address,
-            intakeTime: formData.intakeTime,
-            needAccommodation: formData.needAccommodation,
-            needVisaAssist: formData.needVisaAssist,
-            otherNeeds: formData.otherNeeds,
-            Partner: partnerDocumentId,
+      // 上传 resume 和 workRightsProof 文件，获取 fileId
+    const resumeFileId = await handleUpload(formData.resume);
+    const workRightsProofFileId = await handleUpload(formData.workRightsProof);
+    const certificationFileId = await handleUpload(formData.certification);
 
-            // 新增字段
-            productName,
-            partnerType: partnerTypeLabel,  
-            partnerID,
-            companyName,
-            advisorFirstName,
-            advisorLastName,
-          },
+    // 创建 Customer 表单
+    const customerRes = await axios.post(
+    CUSTOMER_URL,
+    {
+        data: {
+        customerID: uuidv4(),
+        surname: formData.surname,
+        firstname: formData.firstname,
+        Email: formData.Email,
+        address: formData.address,
+        region: formData.region,
+        preferredPosition: formData.preferredPosition,
+        preferredIndustry: formData.preferredIndustry,
+        preferredLocation: formData.preferredLocation,
+        preferredJobType: formData.preferredJobType,
+        // certification: formData.certification,
+        workVisaStatus: formData.workVisaStatus,
+        otherNeeds: formData.otherNeeds,
+        Partner: partnerDocumentId,
+
+        // 文件字段：使用上传返回的 file.id
+        certification: certificationFileId,
+        resume: resumeFileId,
+        workRightsProof: workRightsProofFileId,
+
+        // 附加元数据
+        productName,
+        partnerType: partnerTypeLabel,
+        partnerID,
+        companyName,
+        advisorFirstName,
+        advisorLastName,
         },
-        { headers: { Authorization: `Bearer ${API_TOKEN}` } }
-      );
+    },
+    {
+        headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+        },
+    }
+    );
 
       const customerDocumentId = customerRes.data?.data?.documentId;
       if (!customerDocumentId) throw new Error("创建用户失败");
@@ -209,29 +269,19 @@ const CustomerApplicationForm = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Label>是否在澳洲</Form.Label>
-          <div>
-            <Form.Check
-              inline
-              label="是"
-              name="isInAustralia"
-              type="radio"
-              value="yes"
-              checked={formData.isInAustralia === "yes"}
-              onChange={handleChange}
-            />
-            <Form.Check
-              inline
-              label="否"
-              name="isInAustralia"
-              type="radio"
-              value="no"
-              checked={formData.isInAustralia === "no"}
-              onChange={handleChange}
-            />
-          </div>
-        </Form.Group>
+        <Form.Group controlId="region">
+        <Form.Label>所在区域</Form.Label>
+        <Form.Select
+            name="region"
+            value={formData.region}
+            onChange={handleChange}
+            required
+        >
+            <option value="">请选择所在区域</option>
+            <option value="NSW">新南威尔士州 (NSW)</option>
+            <option value="VIC">维多利亚州 (VIC)</option>
+        </Form.Select>
+        </Form.Group>      
 
         <Form.Group className="mb-3">
           <Form.Label>现居住地址</Form.Label>
@@ -240,37 +290,105 @@ const CustomerApplicationForm = () => {
             value={formData.address}
             onChange={handleChange}
             placeholder="请输入您的详细居住地址"
+            required
           />
         </Form.Group>
 
+
+
+
+
+
+
+
+
+
+
+
         <Form.Group className="mb-3">
-          <Form.Label>计划入学时间</Form.Label>
-          <Form.Control
-            name="intakeTime"
-            value={formData.intakeTime}
-            onChange={handleChange}
-            placeholder="例如：2024年2月、2024年7月"
-          />
+        <Form.Label>上传简历 (上传文件大小不得大于10MB)</Form.Label>
+        <Form.Control
+            type="file"
+            name="resume"
+            onChange={(e) => setFormData({ ...formData, resume: e.target.files[0] })}
+        />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Check
-            type="checkbox"
-            label="需要住宿安排"
-            name="needAccommodation"
-            checked={formData.needAccommodation}
+        <Form.Label>期望职位</Form.Label>
+        <Form.Control
+            name="preferredPosition"
+            value={formData.preferredPosition}
             onChange={handleChange}
-          />
+            placeholder="例如：市场专员，前端开发"
+        />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Check
-            type="checkbox"
-            label="需要接机、签证协助"
-            name="needVisaAssist"
-            checked={formData.needVisaAssist}
+        <Form.Label>行业</Form.Label>
+        <Form.Control
+            name="preferredIndustry"
+            value={formData.preferredIndustry}
             onChange={handleChange}
-          />
+            placeholder="例如：教育，科技，零售"
+        />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+        <Form.Label>期望工作地点</Form.Label>
+        <Form.Control
+            name="preferredLocation"
+            value={formData.preferredLocation}
+            onChange={handleChange}
+            placeholder="例如：悉尼，墨尔本"
+        />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+        <Form.Label>工作类型</Form.Label>
+        <Form.Select
+            name="preferredJobType"
+            value={formData.preferredJobType}
+            onChange={handleChange}
+        >
+            <option value="">请选择</option>
+            <option value="全职">全职</option>
+            <option value="兼职">兼职</option>
+            <option value="实习">实习</option>
+        </Form.Select>
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+        <Form.Label>资格证书 (上传文件大小不得大于10MB)</Form.Label>
+        <Form.Control
+            type="file"
+            name="certification"
+            onChange={(e) => setFormData({ ...formData, certification: e.target.files[0] })}
+        />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+        <Form.Label>工作签证状态</Form.Label>
+        <Form.Select
+            name="workVisaStatus"
+            value={formData.workVisaStatus}
+            onChange={handleChange}
+            required
+        >
+            <option value="">请选择</option>
+            <option value="工作签证">工作签证</option>
+            <option value="澳大利亚永久居留权">澳大利亚永久居留权</option>
+            <option value="澳大利亚公民身份">澳大利亚公民身份</option>
+        </Form.Select>
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+        <Form.Label>上传工作权利证明 (例如工作签证，上传文件大小不得大于10MB)</Form.Label>
+        <Form.Control
+            type="file"
+            name="workRightsProof"
+            onChange={(e) => setFormData({ ...formData, workRightsProof: e.target.files[0] })}
+        />
         </Form.Group>
 
         <Form.Group className="mb-3">
@@ -285,14 +403,20 @@ const CustomerApplicationForm = () => {
           />
         </Form.Group>
 
+        {error && (
+        <Alert variant="danger" style={{ marginTop: "20px" }}>
+            {error}
+        </Alert>
+        )}
+
         <div style={{ textAlign: "center" }}>
-          <Button type="submit" disabled={loading} className="primary-submit-btn">
+        <Button type="submit" disabled={loading} className="primary-submit-btn">
             {loading ? <Spinner animation="border" size="sm" /> : "提交"}
-          </Button>
+        </Button>
         </div>
       </Form>
     </Container>
   );
 };
 
-export default CustomerApplicationForm;
+export default RecruitmentAgencyForm;

@@ -52,6 +52,10 @@ const ProductDetail = () => {
   const [variants, setVariants] = useState([]);
   const [subItemCategory, setSubItemCategory] = useState(null);
 
+  // const SHOW_PARTNER_BUTTON_PRODUCTS = ["roseneath-holidaypark", "nail-train", "Studyfin"];
+  const SHOW_PARTNER_BUTTON_PRODUCTS = ["Studyfin", "IncubationPark"];
+
+
   const ConsultationModal = ({ show, handleClose }) => {
     return (
       <Modal show={show} onHide={handleClose} centered>
@@ -253,6 +257,9 @@ useEffect(() => {
         { type: "default", label: getPartnerTypeLabel("study-abroad-agency") },
         { type: "migration", label: getPartnerTypeLabel("immigration-advisor") },
       ],
+      "IncubationPark": [
+        { type: "default", label: getPartnerTypeLabel("recruitment-agency") },
+      ],
     };
 
     return config[productUrl] || [{ type: "default", label: getPartnerTypeLabel("partner") }];
@@ -271,6 +278,9 @@ useEffect(() => {
       "Studyfin": {
         default: "study-abroad-agency",
         migration: "immigration-advisor",
+      },
+      "IncubationPark": {
+        default: "recruitment-agency",
       },
     };
 
@@ -410,16 +420,34 @@ useEffect(() => {
 
               {onDesktop ? (
                 <>
+                {/* 咨询卡片区域
+                  <div className="consult-card-wrapper">
+                    <div className="consult-card">
+                      <div className="consult-top-row">
+                        <img src="/joinuslogo.png" alt="Join Us Banner" className="consult-banner" />
+                        <div className="consult-buttons">
+                          <button className="consult-button" onClick={() => navigate("/apply")}>
+                            我要申请
+                          </button>
+                          <button className="consult-button" onClick={() => navigate("/contact-us")}>
+                            我要咨询
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div> */}
+                      
                   <Row>
                     <h4>查看相关信息</h4>
                     <Row>
                         {/* 合作伙伴按钮 */}
-                        {getPartnerLabels().map(({ type, label }, idx) => (
-                          <Col xs={4} key={idx}>
-                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
-                              <Button className="product-detail-funtion-btn">{label}</Button>
-                            </Link>
-                          </Col>
+                        {SHOW_PARTNER_BUTTON_PRODUCTS.includes(product.url) &&
+                          getPartnerLabels().map(({ type, label }, idx) => (
+                            <Col xs={4} key={idx}>
+                              <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
+                                <Button className="product-detail-funtion-btn">{label}</Button>
+                              </Link>
+                            </Col>
                         ))}
                       {founder.length > 0 && (
                         <Col xs={4}>
@@ -664,12 +692,13 @@ useEffect(() => {
                       <h4>查看相关信息</h4>
                       <Row>
                       {/* 合作伙伴按钮 */}
-                        {getPartnerLabels().map(({ type, label }, idx) => (
-                          <Col xs={4} key={idx}>
-                            <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
-                              <Button className="product-detail-funtion-btn">{label}</Button>
-                            </Link>
-                          </Col>
+                        {SHOW_PARTNER_BUTTON_PRODUCTS.includes(product.url) &&
+                          getPartnerLabels().map(({ type, label }, idx) => (
+                            <Col xs={4} key={idx}>
+                              <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
+                                <Button className="product-detail-funtion-btn">{label}</Button>
+                              </Link>
+                            </Col>
                         ))}
                         {founder.length > 0 && (
                           <Col xs={4}>
