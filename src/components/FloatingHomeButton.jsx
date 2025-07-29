@@ -5,12 +5,8 @@ import CuteChatbot from "@dreamoverseas/cute-chatbot";
 import { Row, Col} from "react-bootstrap";
 import "../css/FloatingHomeButton.css";
 
-
-const API_URL = import.meta.env.VITE_OPENAI_API_URL
-const ASST_ID = import.meta.env.VITE_OPENAI_ASST_ID
-const API_KEY = import.meta.env.VITE_OPENAI_API_KEY
 const GOOGLE_API = import.meta.env.VITE_GOOGLE_API
-
+const CHAT_API = import.meta.env.VITE_CHAT_URL
 
 const FloatingHomeButton = () => {
   const navigate = useNavigate();
@@ -39,9 +35,7 @@ const FloatingHomeButton = () => {
       <CuteChatbot
           style={{ zIndex: 101, bottom:'75px !important' }}
           nickname='DoBot'
-          openai_api_url={`${API_URL}`}
-          openai_asst_id={`${ASST_ID}`}
-          openai_api_key={`${API_KEY}`}
+          backend_url={CHAT_API}
           google_api_key={`${GOOGLE_API}`}
         />
       </div>
