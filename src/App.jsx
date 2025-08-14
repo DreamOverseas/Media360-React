@@ -1,7 +1,6 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Row } from "react-bootstrap";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import { useMediaQuery } from "react-responsive";
 import { Route, Routes, useLocation } from "react-router-dom";
 
@@ -17,6 +16,7 @@ import Header from "./components/Header.jsx";
 import KolDetail from "./components/KolDetail.jsx";
 import NewsDetail from "./components/NewsDetail.jsx";
 import ProductDetail from "./components/ProductDetail.jsx";
+import RecentProductsBar from "./components/RecentProductsBar.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import AmbassadorPage from "./pages/AmbassadorPage.jsx";
 import BrandPage from "./pages/BrandPage.jsx";
@@ -24,14 +24,13 @@ import BrandRelatedNewsPage from "./pages/BrandRelatedNewsPage.jsx";
 import BrandRelatedPersonsPage from "./pages/BrandRelatedPersonsPage.jsx";
 import BrandRelatedProductsPage from "./pages/BrandRelatedProductsPage.jsx";
 import Events from "./pages/Events";
-import RecentProductsBar from "./components/RecentProductsBar.jsx";
 import FounderPage from "./pages/FounderPage.jsx";
 import Greeness from "./pages/Greeness.jsx";
-import Networks from "./pages/Networks.jsx";
 import KolPage from "./pages/KolPage.jsx";
 import MediaCenter from "./pages/MediaCenter.jsx";
 import MerchantPromotion from "./pages/MerchantPromotion.jsx";
 import MIVoting from "./pages/MI_VotingPage.jsx";
+import Networks from "./pages/Networks.jsx";
 import NewsPage from "./pages/NewsPage.jsx";
 import PersonRelatedBrands from "./pages/PersonRelatedBrands.jsx";
 import PersonRelatedNews from "./pages/PersonRelatedNews.jsx";
@@ -43,22 +42,23 @@ import ProductRelatedNews from "./pages/ProductRelatedNews.jsx";
 import ProductRelatedPerson from "./pages/ProductRelatedPerson.jsx";
 // import ProductRelatedProduct from "./pages/ProductRelatedProduct.jsx";
 // import Profile from "./pages/Profile.jsx";
+import Activity from "./components/Activity.jsx";
+import FloatingHomeButton from "./components/FloatingHomeButton.jsx";
+import ProductRouteGuard from "./components/ProductRouteGuard.jsx";
+import AboutUs from "./pages/AboutUsPage.jsx";
+import ToolLinkPage from "./pages/Admin/ToolLinks.jsx";
+import CustomerApplicationForm from "./pages/CustomerForm/CustomerApplicationForm.jsx";
+import RecruitmentAgencyForm from "./pages/CustomerForm/RecruitmentAgencyForm";
+import Home from "./pages/Home.jsx";
+import MigrationAdvisor from "./pages/MigrationAdvisor";
+import PartnerDetail from "./pages/PartnerDetail/PartnerDetail.jsx";
+import PartnerApplicationForm from "./pages/PartnerForm/PartnerApplicationForm.jsx";
+import InfluencerRanking from "./pages/Race/InfluencerRanking.jsx";
 import Recruitment from "./pages/Recruitment.jsx";
 import RegisterMiss from "./pages/RegisterMiss.jsx";
 import ShoppingCart from "./pages/ShoppingCart.jsx";
-import Home from "./pages/Home.jsx";
-import AboutUs from "./pages/AboutUsPage.jsx";
-import FloatingHomeButton from "./components/FloatingHomeButton.jsx";
-import ProductRouteGuard from "./components/ProductRouteGuard.jsx";
-import Activity from "./components/Activity.jsx";
-import PartnerApplicationForm from './pages/PartnerForm/PartnerApplicationForm.jsx';
-import CustomerApplicationForm from "./pages/CustomerForm/CustomerApplicationForm.jsx";
 import TermsAndConditions from "./pages/TermsAndConditions";
-import PartnerDetail from "./pages/PartnerDetail/PartnerDetail.jsx";
-import MigrationAdvisor from "./pages/MigrationAdvisor";
 import WeChatBlocker from "./utils/WeChatBlocker.jsx";
-import ToolLinkPage from "./pages/Admin/ToolLinks.jsx";
-import RecruitmentAgencyForm from "./pages/CustomerForm/RecruitmentAgencyForm";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -81,7 +81,7 @@ function App() {
       document.body.style.marginTop = "0px";
       setFooter(<></>);
       setHeader(<></>);
-    } 
+    }
   }, [location]);
 
   // Check if is on desktop
@@ -98,7 +98,7 @@ function App() {
       <div className='main-content'>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path="/products/:main" element={<ProductRouteGuard />}>
+          <Route path='/products/:main' element={<ProductRouteGuard />}>
             <Route index element={<ProductDetail />} />
             <Route path=':variant' element={<ProductDetail />} />
           </Route>
@@ -143,7 +143,7 @@ function App() {
             path='/products/:main/:variant/related-ambassador'
             element={<ProductRelatedPerson />}
           />
-          
+
           <Route
             path='/products/:main/related-news'
             element={<ProductRelatedNews />}
@@ -177,19 +177,44 @@ function App() {
           />
           <Route exact path='/events/:name' element={<EventDetail />} />
 
-          <Route path="/products/:productName/:partnerType/CustomerApplicationForm" element={<CustomerApplicationForm />} />
-          <Route path="/products/:productName/:partnerType/PartnerDetail/PartnerApplicationForm" element={<PartnerApplicationForm />} />
-          <Route path="/products/:productName/:partnerType/PartnerDetail/PartnerApplicationForm/terms-and-conditions" element={<TermsAndConditions />} />
-          <Route path="/products/:productName/:partnerType/PartnerDetail" element={<PartnerDetail />} />
-          <Route path="/products/:productName/:partnerType/MigrationAdvisor" element={<MigrationAdvisor />} />
-          <Route path="/products/:productName/:partnerType/RecruitmentAgencyForm" element={<RecruitmentAgencyForm />}/>
+          <Route
+            path='/products/:productName/:partnerType/CustomerApplicationForm'
+            element={<CustomerApplicationForm />}
+          />
+          <Route
+            path='/products/:productName/:partnerType/PartnerDetail/PartnerApplicationForm'
+            element={<PartnerApplicationForm />}
+          />
+          <Route
+            path='/products/:productName/:partnerType/PartnerDetail/PartnerApplicationForm/terms-and-conditions'
+            element={<TermsAndConditions />}
+          />
+          <Route
+            path='/products/:productName/:partnerType/PartnerDetail'
+            element={<PartnerDetail />}
+          />
+          <Route
+            path='/products/:productName/:partnerType/MigrationAdvisor'
+            element={<MigrationAdvisor />}
+          />
+          <Route
+            path='/products/:productName/:partnerType/RecruitmentAgencyForm'
+            element={<RecruitmentAgencyForm />}
+          />
 
           <Route path='/join-us' element={<Recruitment />} />
           <Route path='/networks' element={<Networks />} />
           <Route path='/media-center' element={<MediaCenter />} />
           <Route path='/news' element={<NewsPage />} />
-          <Route path='/events' element={
-            <><Activity /><Events /></>} />
+          <Route
+            path='/events'
+            element={
+              <>
+                <Activity />
+                <Events />
+              </>
+            }
+          />
           <Route path='/founders' element={<FounderPage />} />
           <Route path='/kols' element={<KolPage />} />
           <Route path='/ambassadors' element={<AmbassadorPage />} />
@@ -227,10 +252,9 @@ function App() {
             element={<BrandRelatedProductsPage />}
           />
 
-          <Route
-            path='/dog'
-            element={<ToolLinkPage />}
-          />
+          <Route path='/dog' element={<ToolLinkPage />} />
+          {/* ...test... */}
+          <Route path='/test-ranking' element={<InfluencerRanking />} />
         </Routes>
       </div>
       {footer}

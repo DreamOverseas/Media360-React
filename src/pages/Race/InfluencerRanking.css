@@ -1,0 +1,101 @@
+.influencer-ranking-container {
+  max-width: 600px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px #eee;
+  padding: 24px;
+}
+
+.circle-ranking {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: 0 auto 32px auto;
+  background: #f7f7fa;
+  border-radius: 50%;
+}
+
+.circle-item {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+}
+
+.circle-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #ff9800;
+  margin-bottom: 2px;
+}
+
+.circle-name {
+  font-size: 12px;
+  color: #333;
+}
+
+.circle-score {
+  font-size: 11px;
+  color: #888;
+}
+
+.circle-rank {
+  position: absolute;
+  top: -8px;
+  left: 22px;
+  background: #ff9800;
+  color: #fff;
+  font-size: 10px;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+}
+
+.circle-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  color: #ff9800;
+  font-size: 20px;
+}
+
+.other-ranking {
+  margin-top: 24px;
+}
+
+.other-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.other-rank {
+  width: 24px;
+  text-align: right;
+  margin-right: 8px;
+  color: #888;
+}
+
+.other-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  margin-right: 8px;
+  border: 1px solid #ff9800;
+}
+
+.other-name {
+  flex: 1;
+  font-size: 14px;
+}
+
+.other-score {
+  color: #ff9800;
+  font-size: 13px;
+  margin-left: 12px;
+}
