@@ -7,8 +7,8 @@ import {
   Form,
   Modal,
   Row,
-  Tab,
-  Nav,
+  // Tab,
+  // Nav,
   Image,
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -19,12 +19,12 @@ import "../css/LoginModal.css";
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
 const LoginModal = ({ show, handleClose }) => {
-  const [username, setUsername] = useState("");
+  // const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmedPassword, setConfirmedPassword] = useState("");
+  // const [confirmedPassword, setConfirmedPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [activeKey, setActiveKey] = useState("sign-in");
+  // const [activeKey, setActiveKey] = useState("sign-in");
   const [error, setError] = useState(null);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -48,36 +48,36 @@ const LoginModal = ({ show, handleClose }) => {
     }
   };
 
-  const handleSignup = async event => {
-    event.preventDefault();
-    setSubmitted(true);
-    setError(null);
+  // const handleSignup = async event => {
+  //   event.preventDefault();
+  //   setSubmitted(true);
+  //   setError(null);
 
-    if (email && password && confirmedPassword && password === confirmedPassword) {
-      try {
-        const response = await axios.post(
-          `${BACKEND_HOST}/api/auth/local/register`,
-          {
-            username,
-            email,
-            password
-          }
-        );
+  //   if (email && password && confirmedPassword && password === confirmedPassword) {
+  //     try {
+  //       const response = await axios.post(
+  //         `${BACKEND_HOST}/api/auth/local/register`,
+  //         {
+  //           username,
+  //           email,
+  //           password
+  //         }
+  //       );
 
-        await login(email, password);
-        Cookies.set("token", response.data.jwt, { expires: 7 });
-        navigate("/");
-        handleClose();
-      } catch (error) {
-        const errorMessage =
-          error.response?.data?.error?.message || t("error_occurred");
-        setError(errorMessage);
-      }
-    } else {
-      setError(t("password_mismatch"));
-      console.log(error);
-    }
-  };
+  //       await login(email, password);
+  //       Cookies.set("token", response.data.jwt, { expires: 7 });
+  //       navigate("/");
+  //       handleClose();
+  //     } catch (error) {
+  //       const errorMessage =
+  //         error.response?.data?.error?.message || t("error_occurred");
+  //       setError(errorMessage);
+  //     }
+  //   } else {
+  //     setError(t("password_mismatch"));
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <Modal
@@ -88,30 +88,30 @@ const LoginModal = ({ show, handleClose }) => {
       contentClassName="login-modal-custom-modal-content"
     >
       <Modal.Header closeButton>
-        <Modal.Title>{t(activeKey === "sign-in" ? "sign_in" : "sign_up")}</Modal.Title>
+        <Modal.Title>{t("sign_in")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row>
-          {/* show image based on activeKey */}
+          {/* show image for sign-in only */}
           <Col md={5} className="d-flex justify-content-center align-items-center">
             <Image
               className="login-modal-login-image-display"
-              src={activeKey === "sign-in" ? t("sign_in_image") : t("sign_up_image")}
+              src={t("sign_in_image")}
               fluid
             />
           </Col>
 
-          {/* form area */}
+          {/* form area - sign in only */}
           <Col md={7}>
-            <Tab.Container
+            {/* <Tab.Container
               activeKey={activeKey}
               onSelect={(key) => setActiveKey(key)}
-            >
+            > */}
               <Row className="justify-content-center">
-                <Tab.Content>
+                {/* <Tab.Content> */}
                   
                   {/* sign in form */}
-                  <Tab.Pane eventKey="sign-in">
+                  {/* <Tab.Pane eventKey="sign-in"> */}
                     <h4 style={{textAlign: "center"}}>{t("sign_in_panel_title")}</h4>
                     <Form onSubmit={handleSignin}>
                       <Form.Group controlId="userEmail" className="login-modal-form-group">
@@ -151,8 +151,8 @@ const LoginModal = ({ show, handleClose }) => {
                       </div>
                     </Form>
 
-                    {/* "Do not have an account?" */}
-                    <div className="text-center mt-3">
+                    {/* "Do not have an account?" - COMMENTED OUT */}
+                    {/* <div className="text-center mt-3">
                       <p>
                         {t("noAccount")}
                         <Nav.Link 
@@ -163,11 +163,11 @@ const LoginModal = ({ show, handleClose }) => {
                           {t("sign_up")}
                         </Nav.Link>
                       </p>
-                    </div>
-                  </Tab.Pane>
+                    </div> */}
+                  {/* </Tab.Pane> */}
 
-                  {/* sign up form */}
-                  <Tab.Pane eventKey="sign-up">
+                  {/* sign up form - COMMENTED OUT */}
+                  {/* <Tab.Pane eventKey="sign-up">
                     <h4 style={{textAlign: "center"}}>{t("sign_up_panel_title")}</h4>
                     <Form onSubmit={handleSignup}>
                       <Form.Group controlId="userUsername" className="login-modal-form-group">
@@ -237,7 +237,6 @@ const LoginModal = ({ show, handleClose }) => {
                       </div>
                     </Form>
 
-                    {/* "Already have an account?"*/}
                     <div className="text-center mt-3">
                       <p>
                         {t("hasAccount")}
@@ -250,10 +249,10 @@ const LoginModal = ({ show, handleClose }) => {
                         </Nav.Link>
                       </p>
                     </div>
-                  </Tab.Pane>
-                </Tab.Content>
+                  </Tab.Pane> */}
+                {/* </Tab.Content> */}
               </Row>
-            </Tab.Container>
+            {/* </Tab.Container> */}
           </Col>
         </Row>
       </Modal.Body>
