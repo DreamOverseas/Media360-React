@@ -83,7 +83,7 @@ const Header = () => {
               </>
             ) : (
               <Nav.Link onClick={() => setShowLoginModal(true)}>
-                <i className='bi bi-person nav-icon'></i>
+                <i className='bi bi-person nav-icon'>登录</i>
               </Nav.Link>
             )}
           </Nav>

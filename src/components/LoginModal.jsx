@@ -41,9 +41,10 @@ const LoginModal = ({ show, handleClose }) => {
         navigate("/"); 
         handleClose();
       } catch (error) {
-        const errorMessage =
-          error.response?.data?.error?.message || t("error_occurred");
-        setError(errorMessage);
+        // const errorMessage =
+        //   error.response?.data?.error?.message || t("error_occurred");
+        // setError(errorMessage);
+        setError(t("information_invalid"));
       }
     }
   };
@@ -143,6 +144,12 @@ const LoginModal = ({ show, handleClose }) => {
                           {t("password_required")}
                         </Form.Control.Feedback>
                       </Form.Group>
+
+                      {error && (
+                        <div className="alert alert-danger" role="alert">
+                          {error}
+                        </div>
+                      )}
 
                       <div className="login-modal-form-button-container">
                         <Button variant="primary" type="submit" className="login-modal-submit-btn">
