@@ -66,7 +66,7 @@ const Header = () => {
                 中文
               </NavDropdown.Item>
             </NavDropdown> */}
-            {/* {user ? (
+            {user ? (
               <>
                 <Nav.Link href='/cart'>
                   <i className='bi bi-cart nav-icon'></i>
@@ -83,17 +83,17 @@ const Header = () => {
               </>
             ) : (
               <Nav.Link onClick={() => setShowLoginModal(true)}>
-                <i className='bi bi-person nav-icon'></i>
+                <i className='bi bi-person nav-icon'>登录</i>
               </Nav.Link>
-            )} */}
+            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
       {/* 登录模态框 */}
-      {/* <LoginModal
+      <LoginModal
         show={showLoginModal}
         handleClose={() => setShowLoginModal(false)}
-      /> */}
+      />
     </div>
   );
 };
