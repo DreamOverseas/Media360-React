@@ -109,6 +109,10 @@ const Profile = () => {
       setPasswordMsg('两次新密码输入不一致');
       return;
     }
+    if (oldPassword === newPassword) {
+      setPasswordMsg('新密码不能与原密码相同');
+      return;
+    }
 
     try {
       const token = Cookies.get("token");
@@ -131,7 +135,6 @@ const Profile = () => {
 
   return (
     <Container className="profile-dashboard-container py-4" style={{ minHeight: "80vh" }}>
-      {/* 关键：同一行并置、顶部对齐 */}
       <Row className="gx-4 align-items-start">
         {/* 左侧菜单 */}
         <Col md={3} className="dashboard-sidebar">
@@ -145,7 +148,6 @@ const Profile = () => {
               />
               <div className="mt-2">{user?.username}</div>
             </div>
-
             <Nav
               variant="pills"
               className="flex-column"
@@ -158,11 +160,21 @@ const Profile = () => {
               <Nav.Item>
                 <Nav.Link eventKey="password">修改密码</Nav.Link>
               </Nav.Item>
+              {user?.roletype === "Influencer" && (
+                <Nav.Item>
+                  <Nav.Link eventKey="influencer">网红信息</Nav.Link>
+                </Nav.Item>
+              )}
+              {user?.roletype === "Seller" && (
+                <Nav.Item>
+                  <Nav.Link eventKey="seller">卖家信息</Nav.Link>
+                </Nav.Item>
+              )}
             </Nav>
           </div>
         </Col>
 
-        {/* 右侧内容：去掉顶部外边距，紧邻左侧 */}
+        {/* 右侧内容 */}
         <Col md={9} className="dashboard-content mt-0">
           {activeTab === "profile" && (
             <div className="profile-info-section" style={{ marginTop: 0 }}>
@@ -222,6 +234,24 @@ const Profile = () => {
 
                 <Button variant="primary" type="submit">保存</Button>
               </Form>
+            </div>
+          )}
+
+          {activeTab === "influencer" && user?.roletype === "Influencer" && (
+            <div className="influencer-section">
+              <h3>网红信息</h3>
+              <hr />
+              {/* 这里可以放网红专属信息表单或展示内容 */}
+              <p>这里是网红专属信息页面。</p>
+            </div>
+          )}
+
+          {activeTab === "seller" && user?.roletype === "Seller" && (
+            <div className="seller-section">
+              <h3>卖家信息</h3>
+              <hr />
+              {/* 这里可以放卖家专属信息表单或展示内容 */}
+              <p>这里是卖家专属信息页面。</p>
             </div>
           )}
         </Col>
