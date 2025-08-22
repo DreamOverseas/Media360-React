@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import moment from "moment-timezone";
+import { useEffect, useState } from "react";
+import { Card, Col, Container, Row } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import "../css/NewsPage.css";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
@@ -102,12 +102,7 @@ const NewsPage = () => {
               const newsUrl = `/news/${newsItem.url}`;
 
               return (
-                <Col
-                  key={newsItem.id}
-                  xs={12}
-                  sm={6}
-                  md={4}
-                >
+                <Col key={newsItem.id} xs={12} sm={6} md={4}>
                   <Link to={newsUrl} className='card-link-NewsPage'>
                     <Card className='newspage-news-card d-flex flex-column'>
                       <Card.Img
