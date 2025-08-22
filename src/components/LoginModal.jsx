@@ -38,7 +38,7 @@ const LoginModal = ({ show, handleClose }) => {
     if (email && password) {
       try {
         await login(email, password);
-        navigate("/"); 
+        navigate("/profile"); 
         handleClose();
       } catch (error) {
         // const errorMessage =
