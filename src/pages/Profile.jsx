@@ -13,6 +13,7 @@ import {
   Nav,
   Row,
 } from "react-bootstrap";
+import SellerCoupon from "../components/SellerCoupon.jsx";
 import { AuthContext } from "../context/AuthContext.jsx";
 import "../css/Profile.css";
 
@@ -543,7 +544,7 @@ const Profile = () => {
         {/* 左侧菜单 */}
         <Col md={3} className='dashboard-sidebar'>
           <div className='sidebar-menu'>
-            <div className='sidebar-avatar text-center mb-4'>
+            <div className='d-flex flex-column align-items-center sidebar-avatar text-center mb-4'>
               <img
                 src={avatarUrl}
                 alt='Profile'
@@ -682,7 +683,7 @@ const Profile = () => {
             <div className='seller-section'>
               <h3>卖家信息</h3>
               <hr />
-              <p>这里是卖家专属信息页面。</p>
+              <SellerCoupon user={user} />
             </div>
           )}
         </Col>
