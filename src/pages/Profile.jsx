@@ -120,7 +120,7 @@ const Profile = () => {
             console.groupEnd();
             return;
           }
-        } catch {}
+        } catch { }
 
         // B2) users_permissions_user.documentId（Strapi v5）
         try {
@@ -136,7 +136,7 @@ const Profile = () => {
             console.groupEnd();
             return;
           }
-        } catch {}
+        } catch { }
 
         // B3) 字段若叫 user
         try {
@@ -145,14 +145,14 @@ const Profile = () => {
             console.groupEnd();
             return;
           }
-        } catch {}
+        } catch { }
 
         setInfluencerProfile(null);
       } catch (err) {
         setInflError(
           err?.response?.data?.error?.message ||
-            err?.message ||
-            "Failed to load influencer profile."
+          err?.message ||
+          "Failed to load influencer profile."
         );
       } finally {
         setInflLoading(false);
@@ -162,6 +162,14 @@ const Profile = () => {
 
     fetchInfluencerProfile();
   }, [user, BACKEND_HOST]);
+
+  // 调试：观察 user/coupon 结构变化
+  useEffect(() => {
+    console.groupCollapsed("%c[Coupon] user change", "color:#6a5acd");
+    console.log("[Coupon] user.id =", user?.id, "roletype =", user?.roletype);
+    console.log("[Coupon] user.coupon =", user?.coupon);
+    console.groupEnd();
+  }, [user]);
 
   const handleFileChange = e => setAvatar(e.target.files[0]);
 
@@ -352,10 +360,10 @@ const Profile = () => {
               </div>
               {arr(languages).length
                 ? arr(languages).map((l, i) => (
-                    <Badge key={i} bg='secondary' className='me-2'>
-                      {l}
-                    </Badge>
-                  ))
+                  <Badge key={i} bg='secondary' className='me-2'>
+                    {l}
+                  </Badge>
+                ))
                 : "—"}
             </Col>
             <Col md={6}>
@@ -364,10 +372,10 @@ const Profile = () => {
               </div>
               {arr(categories).length
                 ? arr(categories).map((c, i) => (
-                    <Badge key={i} bg='info' className='me-2'>
-                      {c}
-                    </Badge>
-                  ))
+                  <Badge key={i} bg='info' className='me-2'>
+                    {c}
+                  </Badge>
+                ))
                 : "—"}
             </Col>
           </Row>
@@ -658,6 +666,68 @@ const Profile = () => {
             <div className='influencer-section'>
               <h3>网红信息</h3>
               <hr />
+
+              {/* 展示 coupon 信息 */}
+              {(() => {
+                console.groupCollapsed("%c[Coupon] render start", "color:#6a5acd");
+
+                // 1) 原始数据
+                const rawFromUser = user?.coupon ?? null;
+                console.log("[Coupon] user.coupon (raw) =", rawFromUser);
+
+                // 2) 归一化为单个记录
+                let couponRaw = rawFromUser;
+                if (couponRaw && couponRaw.data) {
+                  console.log("[Coupon] detected relation object with .data");
+                  couponRaw = couponRaw.data;
+                }
+                if (Array.isArray(couponRaw)) {
+                  console.log("[Coupon] detected relation array, length =", couponRaw.length);
+                  couponRaw = couponRaw[0] ?? null;
+                }
+                console.log("[Coupon] normalized record =", couponRaw);
+
+                // 3) attributes 层
+                const attrs = couponRaw?.attributes ?? couponRaw;
+                console.log("[Coupon] attrs =", attrs);
+
+                if (!attrs) {
+                  console.warn("[Coupon] no coupon attrs, show empty alert");
+                  console.groupEnd();
+                  return <Alert variant="info">暂无专属优惠券信息</Alert>;
+                }
+
+                // 4) 同时兼容大写/小写字段名
+                const title = attrs.Title ?? attrs.title ?? null;
+                const hash = attrs.Hash ?? attrs.hash ?? null;
+                const expiry = attrs.Expiry ?? attrs.expiry ?? null;
+                const usesLeft = attrs.UsesLeft ?? attrs.usesLeft ?? attrs.uses_left ?? null;
+                const type = attrs.Type ?? attrs.type ?? null;
+                const description = attrs.Description ?? attrs.description ?? null;
+
+                console.log("[Coupon] fields ->", {
+                  title, hash, expiry, usesLeft, type, description,
+                  keys: Object.keys(attrs || {})
+                });
+
+                console.groupEnd();
+
+                return (
+                  <Card className="mb-3">
+                    <Card.Header>专属优惠券</Card.Header>
+                    <Card.Body>
+                      <div><strong>标题：</strong>{title ?? "—"}</div>
+                      <div><strong>Hash：</strong>{hash ?? "—"}</div>
+                      <div><strong>到期时间：</strong>{expiry ?? "—"}</div>
+                      <div><strong>剩余次数：</strong>{usesLeft ?? "—"}</div>
+                      <div><strong>类型：</strong>{type ?? "—"}</div>
+                      {description && (
+                        <div><strong>描述：</strong>{description}</div>
+                      )}
+                    </Card.Body>
+                  </Card>
+                );
+              })()}
 
               {inflLoading && <div>正在加载网红资料...</div>}
               {inflError && <Alert variant='danger'>{inflError}</Alert>}
