@@ -41,7 +41,7 @@ import ProductRelatedEvent from "./pages/ProductRelatedEvent.jsx";
 import ProductRelatedNews from "./pages/ProductRelatedNews.jsx";
 import ProductRelatedPerson from "./pages/ProductRelatedPerson.jsx";
 // import ProductRelatedProduct from "./pages/ProductRelatedProduct.jsx";
-// import Profile from "./pages/Profile.jsx";
+import Profile from "./pages/Profile.jsx";
 import Activity from "./components/Activity.jsx";
 import FloatingHomeButton from "./components/FloatingHomeButton.jsx";
 import ProductRouteGuard from "./components/ProductRouteGuard.jsx";
@@ -123,7 +123,7 @@ function App() {
             path='/products/:main/:variant/related-founder'
             element={<ProductRelatedPerson />}
           />
-
+<Route path='/profile' element={<Profile />} />
           <Route
             path='/products/:main/related-kol'
             element={<ProductRelatedPerson />}

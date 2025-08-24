@@ -53,7 +53,18 @@ const InfluencerRanking = () => {
 
   return (
     <div className='influencer-ranking-container'>
-      <h2>网红比赛动态排名</h2>
+      {/* Banner 区域 */}
+      <div className="ranking-banner">
+        <img src="/banner/influencer-ranking-banner.jpg" alt="Influencer Ranking Banner" className="ranking-banner-img" />
+      </div>
+      {/* 介绍文字 */}
+      <div className="ranking-intro">
+        <h1>网红比赛动态排名</h1>
+        <p>
+          这里是网红比赛的实时动态排名页面。您可以看到前十名网红的最新排名和分数，更多精彩内容敬请期待！
+        </p>
+      </div>
+      {/* 排名展示 */}
       <div className='circle-ranking'>
         {top10.map((inf, idx) => {
           // 让第一名在正上方

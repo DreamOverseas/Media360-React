@@ -68,9 +68,11 @@ const Header = () => {
             </NavDropdown> */}
             {user ? (
               <>
+                {/*
                 <Nav.Link href='/cart'>
                   <i className='bi bi-cart nav-icon'></i>
-                </Nav.Link>
+                </Nav.Link>*/}
+
                 <NavDropdown title={user.username} id='basic-nav-dropdown'>
                   <NavDropdown.Item href='/profile'>
                     {t("myProfile")}

@@ -1,81 +1,146 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import React, { createContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 // Load Backend Host for API calls
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    // Check if user is logged in
-    const checkUserLoggedIn = async () => {
-      const token = Cookies.get("token");
-      console.log("Checking if user is logged in, token:", token);
-      if (token) {
-        try {
-          const response = await axios.get(
-            `${BACKEND_HOST}/api/users/me?populate=avatar`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          console.log("User data from token:", response.data);
-          if (response.data) {
-            setUser(response.data);
-          }
-        } catch (error) {
-          console.error(
-            "Error fetching user:",
-            error.response?.data || error.message
-          );
-        }
+  /**
+   * 拉取当前用户信息（方法A：populate 需要的关系）
+   * - avatar
+   * - coupon
+   * - influencer_profile
+   */
+  const fetchMe = useCallback(async () => {
+    const token = Cookies.get("token");
+    console.log("[Auth] fetchMe: token exists =", !!token);
+    if (!token) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await axios.get(`${BACKEND_HOST}/api/users/me`, {
+        params: {
+          "populate[avatar]": "*",
+          "populate[coupons][populate]": "*",
+          "populate[influencer_profile][populate]": "*",
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("[Auth] /users/me data =", response.data);
+      if (response.data) {
+        setUser(response.data);
+      } else {
+        setUser(null);
       }
-    };
-    checkUserLoggedIn();
+    } catch (err) {
+      console.error(
+        "[Auth] fetchMe error:",
+        err?.response?.data || err.message
+      );
+      setError(
+        err?.response?.data?.error?.message ||
+          err.message ||
+          "Failed to fetch current user."
+      );
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const login = async (email, password) => {
-    try {
-      console.log("Attempting to log in with:", email, password);
-      const response = await axios.post(
-        `${BACKEND_HOST}/api/auth/local`,
-        {
-          identifier: email,
-          password: password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("Login response:", response.data);
-      setUser(response.data.user);
-      Cookies.set("token", response.data.jwt, { expires: 7 });
-    } catch (error) {
-      console.error("Error logging in:", error.response?.data || error.message);
-      throw error;
-    }
-  };
+  /**
+   * 初始化：进入应用时尝试获取用户
+   */
+  useEffect(() => {
+    fetchMe();
+  }, [fetchMe]);
 
-  const logout = () => {
-    console.log("Logging out user:", user);
-    setUser(null);
-    Cookies.remove("token");
-  };
+  /**
+   * 登录：成功后写 cookie，再调用 fetchMe 获取带 populate 的用户对象
+   */
+  const login = useCallback(
+    async (email, password) => {
+      try {
+        console.log("[Auth] login with:", email);
+        const response = await axios.post(
+          `${BACKEND_HOST}/api/auth/local`,
+          { identifier: email, password },
+          { headers: { "Content-Type": "application/json" } }
+        );
 
-  return (
-    <AuthContext.Provider value={{ user, setUser, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+        console.log("[Auth] login response:", response.data);
+        const jwt = response?.data?.jwt;
+        if (!jwt) throw new Error("No JWT returned from /auth/local");
+
+        // 保存 token
+        Cookies.set("token", jwt, { expires: 7, sameSite: "Lax" });
+
+        // 重新获取用户（带 coupon/influencer_profile/avatar）
+        await fetchMe();
+        return true;
+      } catch (error) {
+        console.error(
+          "[Auth] login error:",
+          error?.response?.data || error.message
+        );
+        setError(
+          error?.response?.data?.error?.message ||
+            error.message ||
+            "Login failed."
+        );
+        setUser(null);
+        return false;
+      }
+    },
+    [fetchMe]
   );
+
+  /**
+   * 登出：清除 token & 用户状态
+   */
+  const logout = useCallback(() => {
+    console.log("[Auth] logout user:", user);
+    Cookies.remove("token");
+    setUser(null);
+  }, [user]);
+
+  const value = useMemo(
+    () => ({
+      user,
+      setUser,
+      loading,
+      error,
+      login,
+      logout,
+      refetchMe: fetchMe,
+    }),
+    [user, loading, error, login, logout, fetchMe]
+  );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export { AuthContext, AuthProvider };
+export { AuthProvider };
