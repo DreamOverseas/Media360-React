@@ -1,6 +1,12 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 // Load Backend Host for API calls
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
@@ -31,20 +37,17 @@ const AuthProvider = ({ children }) => {
       setLoading(true);
       setError("");
 
-      const response = await axios.get(
-        `${BACKEND_HOST}/api/users/me`,
-        {
-          params: {
-            "populate[avatar]": "*",
-            "populate[coupon][populate]": "*",
-            "populate[influencer_profile][populate]": "*",
-          },
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.get(`${BACKEND_HOST}/api/users/me`, {
+        params: {
+          "populate[avatar]": "*",
+          "populate[coupons][populate]": "*",
+          "populate[influencer_profile][populate]": "*",
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       console.log("[Auth] /users/me data =", response.data);
       if (response.data) {
@@ -53,8 +56,15 @@ const AuthProvider = ({ children }) => {
         setUser(null);
       }
     } catch (err) {
-      console.error("[Auth] fetchMe error:", err?.response?.data || err.message);
-      setError(err?.response?.data?.error?.message || err.message || "Failed to fetch current user.");
+      console.error(
+        "[Auth] fetchMe error:",
+        err?.response?.data || err.message
+      );
+      setError(
+        err?.response?.data?.error?.message ||
+          err.message ||
+          "Failed to fetch current user."
+      );
       setUser(null);
     } finally {
       setLoading(false);
@@ -71,32 +81,42 @@ const AuthProvider = ({ children }) => {
   /**
    * 登录：成功后写 cookie，再调用 fetchMe 获取带 populate 的用户对象
    */
-  const login = useCallback(async (email, password) => {
-    try {
-      console.log("[Auth] login with:", email);
-      const response = await axios.post(
-        `${BACKEND_HOST}/api/auth/local`,
-        { identifier: email, password },
-        { headers: { "Content-Type": "application/json" } }
-      );
+  const login = useCallback(
+    async (email, password) => {
+      try {
+        console.log("[Auth] login with:", email);
+        const response = await axios.post(
+          `${BACKEND_HOST}/api/auth/local`,
+          { identifier: email, password },
+          { headers: { "Content-Type": "application/json" } }
+        );
 
-      console.log("[Auth] login response:", response.data);
-      const jwt = response?.data?.jwt;
-      if (!jwt) throw new Error("No JWT returned from /auth/local");
+        console.log("[Auth] login response:", response.data);
+        const jwt = response?.data?.jwt;
+        if (!jwt) throw new Error("No JWT returned from /auth/local");
 
-      // 保存 token
-      Cookies.set("token", jwt, { expires: 7, sameSite: "Lax" });
+        // 保存 token
+        Cookies.set("token", jwt, { expires: 7, sameSite: "Lax" });
 
-      // 重新获取用户（带 coupon/influencer_profile/avatar）
-      await fetchMe();
-      return true;
-    } catch (error) {
-      console.error("[Auth] login error:", error?.response?.data || error.message);
-      setError(error?.response?.data?.error?.message || error.message || "Login failed.");
-      setUser(null);
-      return false;
-    }
-  }, [fetchMe]);
+        // 重新获取用户（带 coupon/influencer_profile/avatar）
+        await fetchMe();
+        return true;
+      } catch (error) {
+        console.error(
+          "[Auth] login error:",
+          error?.response?.data || error.message
+        );
+        setError(
+          error?.response?.data?.error?.message ||
+            error.message ||
+            "Login failed."
+        );
+        setUser(null);
+        return false;
+      }
+    },
+    [fetchMe]
+  );
 
   /**
    * 登出：清除 token & 用户状态
@@ -107,21 +127,20 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   }, [user]);
 
-  const value = useMemo(() => ({
-    user,
-    setUser,
-    loading,
-    error,
-    login,
-    logout,
-    refetchMe: fetchMe,
-  }), [user, loading, error, login, logout, fetchMe]);
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      setUser,
+      loading,
+      error,
+      login,
+      logout,
+      refetchMe: fetchMe,
+    }),
+    [user, loading, error, login, logout, fetchMe]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export { AuthProvider };

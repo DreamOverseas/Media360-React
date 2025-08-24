@@ -120,7 +120,7 @@ const Profile = () => {
             console.groupEnd();
             return;
           }
-        } catch { }
+        } catch {}
 
         // B2) users_permissions_user.documentId（Strapi v5）
         try {
@@ -136,7 +136,7 @@ const Profile = () => {
             console.groupEnd();
             return;
           }
-        } catch { }
+        } catch {}
 
         // B3) 字段若叫 user
         try {
@@ -145,14 +145,14 @@ const Profile = () => {
             console.groupEnd();
             return;
           }
-        } catch { }
+        } catch {}
 
         setInfluencerProfile(null);
       } catch (err) {
         setInflError(
           err?.response?.data?.error?.message ||
-          err?.message ||
-          "Failed to load influencer profile."
+            err?.message ||
+            "Failed to load influencer profile."
         );
       } finally {
         setInflLoading(false);
@@ -360,10 +360,10 @@ const Profile = () => {
               </div>
               {arr(languages).length
                 ? arr(languages).map((l, i) => (
-                  <Badge key={i} bg='secondary' className='me-2'>
-                    {l}
-                  </Badge>
-                ))
+                    <Badge key={i} bg='secondary' className='me-2'>
+                      {l}
+                    </Badge>
+                  ))
                 : "—"}
             </Col>
             <Col md={6}>
@@ -372,10 +372,10 @@ const Profile = () => {
               </div>
               {arr(categories).length
                 ? arr(categories).map((c, i) => (
-                  <Badge key={i} bg='info' className='me-2'>
-                    {c}
-                  </Badge>
-                ))
+                    <Badge key={i} bg='info' className='me-2'>
+                      {c}
+                    </Badge>
+                  ))
                 : "—"}
             </Col>
           </Row>
@@ -669,63 +669,99 @@ const Profile = () => {
 
               {/* 展示 coupon 信息 */}
               {(() => {
-                console.groupCollapsed("%c[Coupon] render start", "color:#6a5acd");
+                console.groupCollapsed(
+                  "%c[Coupon] render start",
+                  "color:#6a5acd"
+                );
 
-                // 1) 原始数据
-                const rawFromUser = user?.coupon ?? null;
-                console.log("[Coupon] user.coupon (raw) =", rawFromUser);
+                // 1) 从 user.coupons 读取（多对多）
+                let list = user?.coupons ?? null;
+                console.log("[Coupon] user.coupons (raw) =", list);
 
-                // 2) 归一化为单个记录
-                let couponRaw = rawFromUser;
-                if (couponRaw && couponRaw.data) {
-                  console.log("[Coupon] detected relation object with .data");
-                  couponRaw = couponRaw.data;
+                // 2) 归一化为数组
+                if (list && list.data) {
+                  console.log(
+                    "[Coupon] detected relation object with .data (array)"
+                  );
+                  list = list.data; // [{id, attributes}, ...]
                 }
-                if (Array.isArray(couponRaw)) {
-                  console.log("[Coupon] detected relation array, length =", couponRaw.length);
-                  couponRaw = couponRaw[0] ?? null;
+                if (!Array.isArray(list)) {
+                  console.log("[Coupon] normalized -> empty array");
+                  list = [];
+                } else {
+                  console.log(
+                    "[Coupon] normalized -> array length =",
+                    list.length
+                  );
                 }
-                console.log("[Coupon] normalized record =", couponRaw);
-
-                // 3) attributes 层
-                const attrs = couponRaw?.attributes ?? couponRaw;
-                console.log("[Coupon] attrs =", attrs);
-
-                if (!attrs) {
-                  console.warn("[Coupon] no coupon attrs, show empty alert");
-                  console.groupEnd();
-                  return <Alert variant="info">暂无专属优惠券信息</Alert>;
-                }
-
-                // 4) 同时兼容大写/小写字段名
-                const title = attrs.Title ?? attrs.title ?? null;
-                const hash = attrs.Hash ?? attrs.hash ?? null;
-                const expiry = attrs.Expiry ?? attrs.expiry ?? null;
-                const usesLeft = attrs.UsesLeft ?? attrs.usesLeft ?? attrs.uses_left ?? null;
-                const type = attrs.Type ?? attrs.type ?? null;
-                const description = attrs.Description ?? attrs.description ?? null;
-
-                console.log("[Coupon] fields ->", {
-                  title, hash, expiry, usesLeft, type, description,
-                  keys: Object.keys(attrs || {})
-                });
 
                 console.groupEnd();
 
+                if (!list.length) {
+                  return <Alert variant='info'>暂无专属优惠券信息</Alert>;
+                }
+
+                // ✅ 字段兼容逻辑放到 map 内部
                 return (
-                  <Card className="mb-3">
-                    <Card.Header>专属优惠券</Card.Header>
-                    <Card.Body>
-                      <div><strong>标题：</strong>{title ?? "—"}</div>
-                      <div><strong>Hash：</strong>{hash ?? "—"}</div>
-                      <div><strong>到期时间：</strong>{expiry ?? "—"}</div>
-                      <div><strong>剩余次数：</strong>{usesLeft ?? "—"}</div>
-                      <div><strong>类型：</strong>{type ?? "—"}</div>
-                      {description && (
-                        <div><strong>描述：</strong>{description}</div>
-                      )}
-                    </Card.Body>
-                  </Card>
+                  <Row className='mb-3'>
+                    {list.map((item, idx) => {
+                      const rec = item?.attributes ?? item;
+                      const title = rec.Title ?? rec.title ?? "—";
+                      const hash = rec.Hash ?? rec.hash ?? "—";
+                      const expiry = rec.Expiry ?? rec.expiry ?? "—";
+                      const usesLeft =
+                        rec.UsesLeft ?? rec.usesLeft ?? rec.uses_left ?? "—";
+                      const type = rec.Type ?? rec.type ?? "—";
+                      const description =
+                        rec.Description ?? rec.description ?? null;
+
+                      console.log("[Coupon] fields ->", {
+                        title,
+                        hash,
+                        expiry,
+                        usesLeft,
+                        type,
+                        description,
+                        keys: Object.keys(rec || {}),
+                      });
+
+                      return (
+                        <Col md={6} key={item?.id ?? idx} className='mb-3'>
+                          <Card className='h-100'>
+                            <Card.Header>专属优惠券</Card.Header>
+                            <Card.Body>
+                              <div>
+                                <strong>标题：</strong>
+                                {title}
+                              </div>
+                              <div>
+                                <strong>Hash：</strong>
+                                {hash}
+                              </div>
+                              <div>
+                                <strong>到期时间：</strong>
+                                {expiry}
+                              </div>
+                              <div>
+                                <strong>剩余次数：</strong>
+                                {usesLeft}
+                              </div>
+                              <div>
+                                <strong>类型：</strong>
+                                {type}
+                              </div>
+                              {description && (
+                                <div>
+                                  <strong>描述：</strong>
+                                  {description}
+                                </div>
+                              )}
+                            </Card.Body>
+                          </Card>
+                        </Col>
+                      );
+                    })}
+                  </Row>
                 );
               })()}
 
