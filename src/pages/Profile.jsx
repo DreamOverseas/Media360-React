@@ -39,6 +39,11 @@ const Profile = () => {
   const [inflError, setInflError] = useState("");
   const [influencerProfile, setInfluencerProfile] = useState(null);
 
+  // 商家优惠（网红可见）
+  const [sellerData, setSellerData] = useState([]);
+  const [sellerLoading, setSellerLoading] = useState(false);
+  const [sellerError, setSellerError] = useState("");
+
   const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
   const maxNameLen = 16;
   const maxBioLen = 500;
@@ -161,6 +166,42 @@ const Profile = () => {
     };
 
     fetchInfluencerProfile();
+  }, [user, BACKEND_HOST]);
+
+  // —— 拉取商家优惠（仅网红可见，无 Mock，空则提示“暂无商家”）
+  useEffect(() => {
+    const fetchSellerData = async () => {
+      if (!user || user?.roletype !== "Influencer") return;
+      try {
+        setSellerLoading(true);
+        setSellerError("");
+        const token = Cookies.get("token");
+        const r = await axios.get(`${BACKEND_HOST}/api/seller-profiles`, {
+          params: {
+            "fields[0]": "company_details",
+            "fields[1]": "campaign_preferences",
+          },
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        let list = r?.data?.data ?? [];
+        list = list
+          .map(item => item?.attributes ?? item)
+          .map(a => ({
+            company_details: a?.company_details ?? null,
+            campaign_preferences: Array.isArray(a?.campaign_preferences)
+              ? a.campaign_preferences
+              : (a?.campaign_preferences ? [a.campaign_preferences] : []),
+          }));
+        setSellerData(list);
+      } catch (e) {
+        console.error("[SellerCampaigns] fetch error:", e?.response || e);
+        setSellerError(e?.response?.data?.error?.message || e?.message || "Failed to load seller campaigns.");
+        setSellerData([]);
+      } finally {
+        setSellerLoading(false);
+      }
+    };
+    fetchSellerData();
   }, [user, BACKEND_HOST]);
 
   // 调试：观察 user/coupon 结构变化
@@ -578,6 +619,11 @@ const Profile = () => {
                   <Nav.Link eventKey='influencer'>网红信息</Nav.Link>
                 </Nav.Item>
               )}
+              {user?.roletype === "Influencer" && (
+                <Nav.Item>
+                  <Nav.Link eventKey='sellerCampaigns'>商家优惠</Nav.Link>
+                </Nav.Item>
+              )}
               {user?.roletype === "Seller" && (
                 <Nav.Item>
                   <Nav.Link eventKey='seller'>卖家信息</Nav.Link>
@@ -669,62 +715,19 @@ const Profile = () => {
 
               {/* 展示 coupon 信息 */}
               {(() => {
-                console.groupCollapsed(
-                  "%c[Coupon] render start",
-                  "color:#6a5acd"
-                );
-
-                // 1) 从 user.coupons 读取（多对多）
+                // 兼容多种 coupons 字段结构
                 let list = user?.coupons ?? null;
-                console.log("[Coupon] user.coupons (raw) =", list);
-
-                // 2) 归一化为数组
-                if (list && list.data) {
-                  console.log(
-                    "[Coupon] detected relation object with .data (array)"
-                  );
-                  list = list.data; // [{id, attributes}, ...]
-                }
-                if (!Array.isArray(list)) {
-                  console.log("[Coupon] normalized -> empty array");
-                  list = [];
-                } else {
-                  console.log(
-                    "[Coupon] normalized -> array length =",
-                    list.length
-                  );
-                }
-
-                console.groupEnd();
-
+                if (list && list.data) list = list.data;
+                if (!Array.isArray(list)) list = [];
                 if (!list.length) {
                   return <Alert variant='info'>暂无专属优惠券信息</Alert>;
                 }
-
-                // ✅ 字段兼容逻辑放到 map 内部
                 return (
                   <Row className='mb-3'>
                     {list.map((item, idx) => {
                       const rec = item?.attributes ?? item;
                       const title = rec.Title ?? rec.title ?? "—";
                       const hash = rec.Hash ?? rec.hash ?? "—";
-                      const expiry = rec.Expiry ?? rec.expiry ?? "—";
-                      const usesLeft =
-                        rec.UsesLeft ?? rec.usesLeft ?? rec.uses_left ?? "—";
-                      const type = rec.Type ?? rec.type ?? "—";
-                      const description =
-                        rec.Description ?? rec.description ?? null;
-
-                      console.log("[Coupon] fields ->", {
-                        title,
-                        hash,
-                        expiry,
-                        usesLeft,
-                        type,
-                        description,
-                        keys: Object.keys(rec || {}),
-                      });
-
                       return (
                         <Col md={6} key={item?.id ?? idx} className='mb-3'>
                           <Card className='h-100'>
@@ -738,24 +741,6 @@ const Profile = () => {
                                 <strong>Hash：</strong>
                                 {hash}
                               </div>
-                              <div>
-                                <strong>到期时间：</strong>
-                                {expiry}
-                              </div>
-                              <div>
-                                <strong>剩余次数：</strong>
-                                {usesLeft}
-                              </div>
-                              <div>
-                                <strong>类型：</strong>
-                                {type}
-                              </div>
-                              {description && (
-                                <div>
-                                  <strong>描述：</strong>
-                                  {description}
-                                </div>
-                              )}
                             </Card.Body>
                           </Card>
                         </Col>
@@ -765,9 +750,9 @@ const Profile = () => {
                 );
               })()}
 
+              {/* 下面继续你的网红资料展示 */}
               {inflLoading && <div>正在加载网红资料...</div>}
               {inflError && <Alert variant='danger'>{inflError}</Alert>}
-
               {!inflLoading &&
                 !inflError &&
                 (influencerProfile ? (
@@ -782,6 +767,64 @@ const Profile = () => {
                     <code> social_platforms </code> 两个 JSON 字段。
                   </Alert>
                 ))}
+            </div>
+          )}
+
+          {activeTab === "sellerCampaigns" && user?.roletype === "Influencer" && (
+            <div className='seller-campaigns-section'>
+              <h3>商家优惠</h3>
+              <hr />
+              {sellerLoading && <div>正在加载商家优惠...</div>}
+              {sellerError && <Alert variant='warning'>{sellerError}</Alert>}
+              {!sellerLoading && (
+                sellerData?.length ? (
+                  sellerData.map((shop, idx) => {
+                    const cd = shop.company_details || {};
+                    const cps = Array.isArray(shop.campaign_preferences) ? shop.campaign_preferences : [];
+                    return (
+                      <Card className='mb-4' key={idx}>
+                        <Card.Header>
+                          <strong>{cd.company_name || "未命名商家"}</strong>
+                          {cd.industry && <Badge bg='secondary' className='ms-2'>{cd.industry}</Badge>}
+                        </Card.Header>
+                        <Card.Body>
+                          <Row className='mb-2'>
+                            <Col md={6}><div><strong>地址：</strong>{cd.address || "—"}</div></Col>
+                            <Col md={6}><div><strong>ABN：</strong>{cd.abn || "—"}</div></Col>
+                          </Row>
+                          <Row className='mb-2'>
+                            <Col md={6}><div><strong>邮箱：</strong>{cd.contact_email ? <a href={`mailto:${cd.contact_email}`}>{cd.contact_email}</a> : "—"}</div></Col>
+                            <Col md={6}><div><strong>电话：</strong>{cd.contact_phone || "—"}</div></Col>
+                          </Row>
+                          <div className='mb-3'><strong>官网：</strong>{cd.website ? <a href={cd.website} target='_blank' rel='noreferrer'>{cd.website}</a> : "—"}</div>
+
+                          <h5 className='mt-3'>活动优惠</h5>
+                          <Row>
+                            {cps.length ? cps.map((cp, i) => (
+                              <Col md={6} key={i} className='mb-3'>
+                                <Card className='h-100'>
+                                  <Card.Body>
+                                    <div className='d-flex justify-content-between align-items-center mb-2'>
+                                      <strong>{cp.title || "未命名优惠"}</strong>
+                                      {cp.type && <Badge bg='info'>{cp.type}</Badge>}
+                                    </div>
+                                    <div className='mb-2'>{cp.description || "—"}</div>
+                                    <div className='small text-muted'>有效期至：{cp.valid_until || "—"}</div>
+                                  </Card.Body>
+                                </Card>
+                              </Col>
+                            )) : (
+                              <Col><Alert variant='light'>暂无优惠活动</Alert></Col>
+                            )}
+                          </Row>
+                        </Card.Body>
+                      </Card>
+                    );
+                  })
+                ) : (
+                  <Alert variant='info'>暂无商家</Alert>
+                )
+              )}
             </div>
           )}
 
