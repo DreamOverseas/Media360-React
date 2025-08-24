@@ -1,13 +1,26 @@
+import axios from "axios";
 import React, { useState, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Row, Col, Card, Button, Pagination, Container, Modal, Form, InputGroup } from 'react-bootstrap';
+import { Row, Col, Card, Button, Pagination, Container, Modal, Alert, Spinner, Tabs, Tab } from 'react-bootstrap';
+import MerchantRegistrationForm from '../Forms/MerchantRegistrationForm';
+import InfluencerRegistrationForm from'../Forms/InfluencerRegistrationForm';
 import Cookies from "js-cookie";
+
+const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const API_KEY_UPLOAD = import.meta.env.VITE_API_KEY_REGISTRATION_UPLOAD
+const MERCHANT_UPLOAD_EMAIL_NOTIFY = import.meta.env.VITE_360_MEDIA_WHDS_BIZ_UPLOAD_NOTIFICATION;
+const INF_UPLOAD_EMAIL_NOTIFY = import.meta.env.VITE_360_MEDIA_WHDS_INF_UPLOAD_NOTIFICATION;
 
 const Activity = () => {
 
     const [WtcActivities, setWtcActivities] = useState([])
+    const [Activities, setActivities] = useState([])
+    const [allActivities, setAllActivities] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [activeTab, setActiveTab] = useState("merchant");
+
+    
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -15,19 +28,16 @@ const Activity = () => {
     const [contact, setContact] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-    const [showPurchaseModal, setShowPurchaseModal] = useState(false);
-    const [purchaseProduct, setPurchaseProduct] = useState(null);
-    const [currDeduction, setCurrDeduction] = useState(0);
-    const [loadingPurchase, setLoadingPurchase] = useState(false);
+    const [showSuccessSubmissionModal, setShowSuccessSubmissionModal] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const handleUpload = () => setShowModal(true);
+    const handleClose = () => setShowModal(false);
 
-    // const maxDeduction = useMemo(() => {
-    //   return purchaseProduct ? Math.min(purchaseProduct.WtcActivityPrice, purchaseProduct.WtcActivityPrice) : 0;
-    // }, [purchaseProduct]);
-
-    // useEffect(() => {
-    //   if (WtcActivities != null)
-    //     console.log(WtcActivities)
-    // },[WtcActivities])
+    // const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+    // const [purchaseProduct, setPurchaseProduct] = useState(null);
+    // const [currDeduction, setCurrDeduction] = useState(0);
+    // const [loadingPurchase, setLoadingPurchase] = useState(false);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -36,7 +46,7 @@ const Activity = () => {
 
       const userCookie = Cookies.get("user");
       
-      if (product.WtcActivityPrice > 0){
+      if (product.WtcActivityPrice > 0 || product.ActivityPrice > 0){
         if (!userCookie) {
           if (userCookie.is_member){
   
@@ -55,118 +65,20 @@ const Activity = () => {
       navigate(location.pathname, { replace: true });
     };
 
-    // Function for handling deduction changes
-    // const handleDeductionChange = (value) => {
-    //   let newValue = Number(value);
-    //   if (newValue > maxDeduction) {
-    //     alert(`最大抵扣 ${maxDeduction}`);
-    //     newValue = maxDeduction;
-    //   }
-    //   if (newValue < 0) newValue = 0;
-    //   setCurrDeduction(newValue);
-    // };
-
-    // Function for updating user points
-    // const updateUserPoints = async () => {
-    //   const endpoint = import.meta.env.VITE_CMS_ENDPOINT;
-    //   const apiKey = import.meta.env.VITE_CMS_TOKEN;
-
-    //   const currUser = JSON.parse(Cookies.get('user'));
-    //   const userQueryUrl = `${endpoint}/api/ww-memberships?filters[Email][$eq]=${currUser.email}`;
-
-    //   try {
-    //     const userResponse = await fetch(userQueryUrl, {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         "Authorization": `Bearer ${apiKey}`
-    //       }
-    //     });
-    //     const userData = await userResponse.json();
-
-    //     if (userResponse.ok && userData.data && userData.data.length > 0) {
-    //       const userRecord = userData.data[0];
-    //       const documentId = userRecord.documentId;
-    //       const oldPoints = userRecord.Point;
-    //       const oldDiscountPoint = userRecord.DiscountPoint;
-
-    //       const newPoints = oldPoints - (purchaseProduct.WtcActivityPrice - currDeduction);
-    //       const newDiscountPoints = oldDiscountPoint - currDeduction;
-
-    //       const updatePayload = {
-    //         data: {
-    //           Point: newPoints,
-    //           DiscountPoint: newDiscountPoints
-    //         }
-    //       };
-
-    //       const updateResponse = await fetch(`${endpoint}/api/ww-memberships/${documentId}`, {
-    //         method: "PUT",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //           "Authorization": `Bearer ${apiKey}`
-    //         },
-    //         body: JSON.stringify(updatePayload)
-    //       });
-
-    //       if (updateResponse.ok) {
-    //         console.log("Updated successfully");
-    //       } else {
-    //         const updateError = await updateResponse.json();
-    //         console.log("Error updating user info:", updateError.message);
-    //       }
-
-    //       // Update Cookie
-    //       Cookies.set('user', JSON.stringify({
-    //         ...currUser,
-    //         point: newPoints,
-    //         discount_p: newDiscountPoints,
-    //       }), { expires: 7 });
-    //     } else {
-    //       console.log("User not found or error fetching user data");
-    //     }
-    //   } catch (error) {
-    //     console.log("Error updating user info:", error);
-    //   }
-    // };
-
-    // Function for purchase confirmation
-    // const confirmPurchaseNow = async (selectedProduct, e) => {
-    //   setLoadingPurchase(true);
-      
-    //   try {
-    //     // Just create the attendance record - sendConfirmationEmail will handle the coupon
-    //     await createAttendMember(selectedProduct, e);
-        
-    //     // Update user points after successful registration
-    //     await updateUserPoints();
-        
-    //     console.log("Purchased successfully.");
-    //     setLoadingPurchase(false);
-    //     setCurrDeduction(0);
-    //     setShowPurchaseModal(false);
-    //     setShowSuccessModal(true);
-        
-    //   } catch (error) {
-    //     console.error('Error in confirmPurchaseNow():', error);
-    //     alert('系统错误，请稍后再试');
-    //     setLoadingPurchase(false);
-    //     setCurrDeduction(0);
-    //   }
-    // };
-
     useEffect(() => {
       const params = new URLSearchParams(location.search);
       const activityId = params.get("activityId");
 
-      if (activityId && WtcActivities.length > 0) {
-        const matched = WtcActivities.find(p => p.documentId === activityId);
+      if (activityId && allActivities.length > 0) {
+        const matched = allActivities.find(p => p.documentId === activityId);
         if (matched) {
           setSelectedProduct(matched);
           setShowModal(true);
         }
       }
-    }, [location.search, WtcActivities]);
+    }, [location.search, allActivities]);
 
+    
     useEffect(() => {
       const fetchActivities = async () => {
           const endpoint = import.meta.env.VITE_STRAPI_HOST;
@@ -197,6 +109,7 @@ const Activity = () => {
                       WtcActivityDate: entry.WtcActivityDate,
                       WtcActivityDescription: entry.WtcActivityDescription,
                       WtcActivityPrice: entry.WtcActivityPrice,
+                      type: 'wtc',
                       ww_memberships: entry.ww_memberships ? (
                       Array.isArray(entry.ww_memberships) 
                           ? entry.ww_memberships.map(member => ({
@@ -216,20 +129,79 @@ const Activity = () => {
               setWtcActivities(tepActivities);
 
           } catch (error) {
-              console.error('Error fetching disabled dates:', error);
+              console.error('Error fetching WTC activities:', error);
           }
       };
   
       fetchActivities();
     }, []);
 
-    const pageSize = 6;
 
+
+
+    
+    useEffect(() => {
+      const fetchRegularActivities = async () => {
+          const endpoint = import.meta.env.VITE_STRAPI_HOST;
+          const apiKey = import.meta.env.VITE_CMS_TOKEN;
+      
+          const url = `${endpoint}/api/activities?populate=*`;
+      
+          try {
+              const response = await fetch(url, {
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${apiKey}`
+                  }
+              });
+              const data = await response.json();
+      
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+
+              const regularActivities = data.data
+                  .filter(entry => {
+                      const activityDate = new Date(entry.ActivityDate);
+                      return activityDate >= today && entry.publishedAt;
+                  })
+                  .map(entry => ({
+                      documentId: entry.documentId,
+                      ActivityTitle: entry.ActivityTitle,
+                      ActivityDate: entry.ActivityDate,
+                      ActivityDescription: entry.ActivityDescription,
+                      ActivityPrice: entry.ActivityPrice || 0,
+                      type: 'regular',
+                      organizer: entry.organizer ? {
+                          firstName: entry.organizer.FirstName,
+                          lastName: entry.organizer.LastName,
+                      } : null,
+                      ActivityIcon: entry.ActivityIcon,
+                  }));
+              setActivities(regularActivities);
+
+          } catch (error) {
+              console.error('Error fetching regular activities:', error);
+          }
+      };
+  
+      fetchRegularActivities();
+    }, []);
+
+    useEffect(() => {
+      const merged = [...WtcActivities, ...Activities].sort((a, b) => {
+        const dateA = new Date(a.WtcActivityDate || a.ActivityDate);
+        const dateB = new Date(b.WtcActivityDate || b.ActivityDate);
+        return dateA - dateB;
+      });
+      setAllActivities(merged);
+    }, [WtcActivities, Activities]);
+
+    const pageSize = 6;
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = Math.ceil(WtcActivities.length / pageSize);
-    const paginatedProducts = WtcActivities.slice(
+    const totalPages = Math.ceil(allActivities.length / pageSize);
+    const paginatedProducts = allActivities.slice(
         (currentPage - 1) * pageSize,
         currentPage * pageSize
     );
@@ -241,7 +213,8 @@ const Activity = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const createAttendMember = async (selectedProduct, e) => {
+    
+    const createWtcAttendMember = async (selectedProduct, e) => {
       e.preventDefault();
       
       const endpoint = import.meta.env.VITE_STRAPI_HOST;
@@ -305,7 +278,7 @@ const Activity = () => {
         
         if (updateResponse.ok) {
           // Send confirmation email
-          await sendConfirmationEmail(selectedProduct, newAttender);
+          await sendWtcConfirmationEmail(selectedProduct, newAttender);
 
           // Reset form fields
           setFirstName('');
@@ -328,14 +301,18 @@ const Activity = () => {
         return;
       }
     
-      if (selectedProduct.WtcActivityPrice == 0) {
+      const activityPrice = selectedProduct.WtcActivityPrice || selectedProduct.ActivityPrice || 0;
+      
+      if (activityPrice == 0) {
         try {
-          await createAttendMember(selectedProduct, e);
+          if (selectedProduct.type === 'wtc') {
+            await createWtcAttendMember(selectedProduct, e);
+          }
           setShowSuccessModal(true);
           handleModalClose();
         } catch (error) {
           console.error('Registration error:', error);
-          // Error handling is already in createAttendMember
+          // Error handling is already in individual functions
         }
       } else {
         setPurchaseProduct(selectedProduct);
@@ -344,8 +321,7 @@ const Activity = () => {
       } 
     }
 
-    // Function for sending confirmation emails
-    const sendConfirmationEmail = async (activity, attendee) => {
+    const sendWtcConfirmationEmail = async (activity, attendee) => {
       const couponSysEndpoint = import.meta.env.VITE_COUPON_SYS_ENDPOINT;
       const emailApiEndpoint = import.meta.env.VITE_EMAIL_API_ENDPOINT;
       
@@ -411,6 +387,336 @@ const Activity = () => {
       }
     };
 
+
+    
+    const handleMerchantRegistrationSubmit = async (formData) => {
+    
+      setLoading(true);
+
+      const uploadFiles = async (files) => {
+        if (!files || files.length === 0) return { urls: [], ids: [] };
+      
+        const uploadPromises = files.map(async (file) => {
+          const formDataToUpload = new FormData();
+          formDataToUpload.append("files", file);
+      
+          try {
+            const uploadResponse = await fetch(`${BACKEND_HOST}/api/upload`, {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${API_KEY_UPLOAD}`,
+              },
+              body: formDataToUpload,
+            });
+      
+            const uploadResult = await uploadResponse.json();
+            if (uploadResponse.ok && uploadResult.length > 0) {
+              return { url: uploadResult[0].url, id: uploadResult[0].id };
+            } else {
+              console.error("Upload failed:", uploadResult);
+              return null;
+            }
+          } catch (error) {
+            console.error("Error during file upload:", error);
+            return null;
+          }
+        });
+      
+        const uploadedFiles = (await Promise.all(uploadPromises)).filter(Boolean);
+      
+        return {
+          urls: uploadedFiles.map((f) => f.url),
+          ids: uploadedFiles.map((f) => f.id),
+        };
+      };
+    
+      const [businessLicenseData, productImageData] = await Promise.all([
+        uploadFiles(formData.businessLicense),
+        uploadFiles(formData.productImages),
+      ]);
+  
+      const cleanData = (data) =>
+        Object.fromEntries(Object.entries(data).filter(([_, value]) => value && value.length > 0));
+  
+      const finalFormData = cleanData({
+        Company_Name: formData.companyName,
+        Business_License: businessLicenseData.ids,
+        Industry_Category: formData.industryCategory,
+        Contact_Person_First_Name: formData.contactPersonFirstName,
+        Contact_Person_Last_Name: formData.contactPersonLastName,
+        Email: formData.email,
+        Phone: formData.phone,
+        Company_Description: formData.companyDescription,
+        Company_Website: formData.companyWebsite,
+        Product_Description: formData.productDescription,
+        Product_Images: productImageData.ids,
+        Target_Audience: formData.targetAudience,
+        Marketing_Budget: formData.marketingBudget,
+        Campaign_Goals: formData.campaignGoals,
+        Additional_Requirements: formData.additionalRequirements,
+        From: formData.from
+      });
+  
+      try {
+        const response = await fetch(`${BACKEND_HOST}/api/influencer-contest-merchant-registrations`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${API_KEY_UPLOAD}`,
+          },
+          body: JSON.stringify({data: finalFormData}),
+        });
+  
+      const result = await response.json();
+      console.log(result);
+      if (response.ok) {
+        const firstName = finalFormData.Contact_Person_First_Name;
+        const lastName = finalFormData.Contact_Person_Last_Name;
+        const name = firstName + " " + lastName;
+        const email = finalFormData.Email;
+        try {
+          await axios.post(MERCHANT_UPLOAD_EMAIL_NOTIFY, {
+            name,
+            email
+          });
+        } catch (error) {
+          alert(`${error}, Email not sent... But you are recorded if no other errors occured!`);
+        }
+        setShowSuccessSubmissionModal(true);
+      } 
+    } catch (error) {
+      console.error('Error during form submission:', error);
+      setShowErrorModal(true);
+    } 
+
+    handleClose();
+    setLoading(false);
+  };
+
+
+  const handleInfluencerRegistrationSubmit = async (formData) => {
+    
+      setLoading(true);
+
+      const uploadFiles = async (files) => {
+        if (!files || files.length === 0) return { urls: [], ids: [] };
+      
+        const uploadPromises = files.map(async (file) => {
+          const formDataToUpload = new FormData();
+          formDataToUpload.append("files", file);
+      
+          try {
+            const uploadResponse = await fetch(`${BACKEND_HOST}/api/upload`, {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${API_KEY_UPLOAD}`,
+              },
+              body: formDataToUpload,
+            });
+      
+            const uploadResult = await uploadResponse.json();
+            if (uploadResponse.ok && uploadResult.length > 0) {
+              return { url: uploadResult[0].url, id: uploadResult[0].id };
+            } else {
+              console.error("Upload failed:", uploadResult);
+              return null;
+            }
+          } catch (error) {
+            console.error("Error during file upload:", error);
+            return null;
+          }
+        });
+      
+        const uploadedFiles = (await Promise.all(uploadPromises)).filter(Boolean);
+      
+        return {
+          urls: uploadedFiles.map((f) => f.url),
+          ids: uploadedFiles.map((f) => f.id),
+        };
+      };
+
+      
+      const portfolioFilesData = await uploadFiles(formData.portfolioFiles);
+      const personalImagesData = await uploadFiles(formData.personalImages);
+
+      const cleanData = (data) =>
+        Object.fromEntries(Object.entries(data).filter(([_, value]) => {
+          
+          if (Array.isArray(value) && value.length === 0) {
+            return false;
+          }
+          
+          if (Array.isArray(value)) {
+            return value.length > 0;
+          }
+          
+          if (typeof value === 'boolean') {
+            return true;
+          }
+          
+          if (value === null || value === undefined) {
+            return false;
+          }
+          
+          return value && value.toString().trim().length > 0;
+        }));
+
+      const finalFormData = cleanData({
+        
+        Name: formData.name,
+        Gender: formData.gender,
+        Age: formData.age ? parseInt(formData.age) : null,
+        Phone: formData.phone,
+        Email: formData.email,
+        Location: formData.location,
+        
+        
+        Social_Media: formData.socialMedia,
+        Content_Categories: formData.contentCategories,
+        Past_Collaborations: formData.pastCollaborations,
+        Portfolio_Links: formData.portfolioLinks,
+        Portfolio_Files: portfolioFilesData.ids,
+        Personal_Introduction: formData.personalIntroduction,
+        Personal_Images:personalImagesData.ids,
+        
+        
+        Preferred_Product_Categories: formData.preferredProductCategories,
+        Accepted_Promotion_Formats: formData.acceptedPromotionFormats,
+        Agree_To_Rules: formData.agreeToRules,
+        Allow_Content_Usage: formData.allowContentUsage,
+        
+        From: formData.from
+      });
+
+      try {
+        const response = await fetch(`${BACKEND_HOST}/api/influencer-contest-registrations`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${API_KEY_UPLOAD}`,
+          },
+          body: JSON.stringify({data: finalFormData}),
+        });
+
+        const result = await response.json();
+        console.log(result);
+        
+        if (response.ok) {
+          const name = finalFormData.Name;
+          const email = finalFormData.Email;
+          
+          try {
+            await axios.post(INF_UPLOAD_EMAIL_NOTIFY, {
+              name,
+              email
+            });
+          } catch (error) {
+            alert(`${error}, Email not sent... But you are recorded if no other errors occurred!`);
+          }
+          
+          setShowSuccessSubmissionModal(true);
+        } 
+      } catch (error) {
+        console.error('Error during form submission:', error);
+        setShowErrorModal(true);
+      } 
+
+      handleClose();
+      setLoading(false);
+  };
+
+
+  const renderSuccessModal = () => (
+    <Modal show={showSuccessSubmissionModal} onHide={() => setShowSuccessSubmissionModal(false)} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>提交成功</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Alert variant="success">您的资料已成功上传！</Alert>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="success" onClick={() => setShowSuccessSubmissionModal(false)}>
+          关闭
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+
+  const renderErrorModal = () => (
+    <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>提交失败</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Alert variant="danger">资料提交失败，请检查网络或稍后重试！</Alert>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="danger" onClick={() => handleUpload()}>
+          重试
+        </Button>
+        <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
+          关闭
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+  
+
+    
+    const getActivityTitle = (product) => {
+      return product.WtcActivityTitle || product.ActivityTitle || '未命名活动';
+    };
+
+    
+    const getActivityDate = (product) => {
+      return product.WtcActivityDate || product.ActivityDate || '';
+    };
+
+    
+    const getActivityPrice = (product) => {
+      return product.WtcActivityPrice || product.ActivityPrice || 0;
+    };
+
+    
+    const getActivityDescription = (product) => {
+      return product.WtcActivityDescription || product.ActivityDescription || '';
+    };
+
+    
+    const getOrganizerInfo = (product) => {
+      if (product.type === 'wtc') {
+        return Array.isArray(product.ww_memberships) && product.ww_memberships.length > 0 
+          ? product.ww_memberships.map(member => `${member.firstName} ${member.lastName}`).join(", ")
+          : "未知主办方";
+      } else {
+        return product.organizer 
+          ? `${product.organizer.firstName} ${product.organizer.lastName}`
+          : "未知主办方";
+      }
+    };
+
+    
+    const getActivityIcon = (product) => {
+      if (product.type === 'wtc') {
+        return product.member_product?.icon?.url
+          ? `${import.meta.env.VITE_STRAPI_HOST}${product.member_product.icon.url}`
+          : '';
+      } else {
+        return product.ActivityIcon?.url
+          ? `${import.meta.env.VITE_STRAPI_HOST}${product.ActivityIcon.url}`
+          : '';
+      }
+    };
+
+    
+    const getProductName = (product) => {
+      if (product.type === 'wtc') {
+        return product.member_product?.name || '';
+      } else {
+        return '';
+      }
+    };
+
   return (
     <>
     {paginatedProducts.length > 0 && (
@@ -419,41 +725,48 @@ const Activity = () => {
       {/* Product grid for current page */}
       <Row>
         {paginatedProducts.map(product => {
-          const { WtcActivityTitle, WtcActivityDate, WtcActivityPrice, ww_memberships, member_product, id } = product;
-          const iconUrl = member_product.icon?.url
-            ? `${import.meta.env.VITE_STRAPI_HOST}${member_product.icon.url}`
-            : '';
+          const title = getActivityTitle(product);
+          const date = getActivityDate(product);
+          const price = getActivityPrice(product);
+          const organizer = getOrganizerInfo(product);
+          const iconUrl = getActivityIcon(product);
+          const productName = getProductName(product);
 
           return (
-            <Col md={4} key={id} className="mb-4">
+            <Col md={4} key={product.documentId} className="mb-4">
               <Card>
                 <Card.Body
                   onClick={() => handleCardClick(product)}
                   style={{ cursor: 'pointer' }}
                 >
                   
-                    <Card.Title className="overflow-hidden text-center flex items-center justify-center">{WtcActivityTitle}</Card.Title>
+                    <Card.Title className="overflow-hidden text-center flex items-center justify-center">
+                      {title}
+                      {product.type === 'wtc' && (
+                        <span className="badge bg-primary ms-2 text-xs">WTC</span>
+                      )}
+                    </Card.Title>
                     
-                    <Card.Text className="h-12 overflow-hidden text-center flex items-center justify-center"> {WtcActivityDate + " " + member_product.name} </Card.Text>
+                    <Card.Text className="h-12 overflow-hidden text-center flex items-center justify-center"> 
+                      {date + (productName ? " " + productName : "")} 
+                    </Card.Text>
 
                     <Card.Text className="overflow-hidden text-center flex items-center justify-center"> 
-                        {"由 " + (Array.isArray(ww_memberships) && ww_memberships.length > 0 
-                            ? ww_memberships.map(member => `${member.firstName} ${member.lastName}`).join(", ")
-                            : "未知主办方") + " 主办"} 
+                        {"由 " + organizer + " 主办"} 
                     </Card.Text>
 
                     {iconUrl && (
                         <Card.Img
                         variant="top"
                         src={iconUrl}
-                        alt={member_product.icon.id}
+                        alt="Activity Icon"
                         className="mb-3"
                         style={{ objectFit: 'cover', height: '200px' }}
                         />
                     )}
 
                     <div className="text-center justify-content-center">
-                      {WtcActivityPrice > 0 ? "仅供会员" : "免费参加！"}
+                      {price > 0 ? "仅供会员" : "免费参加！"}
                     </div>
                 </Card.Body>
 
@@ -472,21 +785,23 @@ const Activity = () => {
         })}
       </Row>
 
-      {selectedProduct && (
+
+
+      {selectedProduct && selectedProduct.type == "wtc" && (
         <Modal size="lg" show={showModal} onHide={handleModalClose}>
             <Modal.Header closeButton>
-                <Modal.Title className='ms-auto'>{selectedProduct.WtcActivityTitle}</Modal.Title>
+                <Modal.Title className='ms-auto'>{getActivityTitle(selectedProduct)}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <div className='relative w-2/3 top-0 gap-2 mx-auto'>
-                  {selectedProduct.member_product.icon && (
+                  {getActivityIcon(selectedProduct) && (
                     <img
-                        src={`${import.meta.env.VITE_STRAPI_HOST}${selectedProduct.member_product.icon.url}`}
-                        alt={selectedProduct.member_product.Name}
+                        src={getActivityIcon(selectedProduct)}
+                        alt="Activity"
                         className="img-fluid mb-3"
                     />
                   )}
-                  <div dangerouslySetInnerHTML={{__html: selectedProduct.WtcActivityDescription || "暂无简介"}}/>
+                  <div dangerouslySetInnerHTML={{__html: getActivityDescription(selectedProduct) || "暂无简介"}}/>
               </div>
               {/* Form */}
 
@@ -545,7 +860,66 @@ const Activity = () => {
         </Modal> 
     )}
 
-    {showSuccessModal && (
+
+    {selectedProduct && selectedProduct.type == "regular" && (
+      <>
+        <Modal size="lg" show={showModal} onHide={handleModalClose}>
+            <Modal.Header closeButton>
+                <Modal.Title className='ms-auto'>{getActivityTitle(selectedProduct)}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div className='relative w-2/3 top-0 gap-2 mx-auto'>
+                  {getActivityIcon(selectedProduct) && (
+                    <img
+                        src={getActivityIcon(selectedProduct)}
+                        alt="Activity"
+                        className="img-fluid mb-3"
+                    />
+                  )}
+                  <div dangerouslySetInnerHTML={{__html: getActivityDescription(selectedProduct) || "暂无简介"}}/>
+              </div>
+              <div className="container mt-4">
+                <Tabs
+                  id="registration-tabs"
+                  activeKey={activeTab}
+                  onSelect={(k) => setActiveTab(k)}
+                  className="mb-4"
+                >
+                  <Tab eventKey="merchant" title="商家/赞助商注册">
+                    {loading ? (
+                      <div className="text-center py-5">
+                        <Spinner animation="border" size="lg" />
+                        <p className="mt-3">正在上传，请稍候...</p>
+                      </div>
+                    ) : (
+                      <MerchantRegistrationForm onSubmit={handleMerchantRegistrationSubmit} />
+                    )}
+                  </Tab>
+                  
+                  <Tab eventKey="influencer" title="网红达人注册">
+                    {loading ? (
+                      <div className="text-center py-5">
+                        <Spinner animation="border" size="lg" />
+                        <p className="mt-3">正在上传，请稍候...</p>
+                      </div>
+                    ) : (
+                      <InfluencerRegistrationForm onSubmit={handleInfluencerRegistrationSubmit} />
+                    )}
+                  </Tab>
+                </Tabs>
+              </div>
+              
+            </Modal.Body>
+        </Modal>
+        {renderSuccessModal()}
+        {renderErrorModal()}
+      </>
+
+    )}
+
+
+
+    {showSuccessModal && selectedProduct.type == "wtc" && (
       <Modal
         show={showSuccessModal}
         onHide={() => setShowSuccessModal(false)}
@@ -570,95 +944,7 @@ const Activity = () => {
       </Modal>
     )}
 
-      {/* {purchaseProduct && (
-        <Modal
-          show={showPurchaseModal}
-          onHide={() => {
-            setShowPurchaseModal(false);
-            setPurchaseProduct(null);
-            setCurrDeduction(0);
-          }}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>购买活动门票</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p>活动：{purchaseProduct.WtcActivityTitle}</p>
-            <p>价格：{purchaseProduct.WtcActivityPrice} 会员点数</p>
-            {(() => {
-              const userData = JSON.parse(Cookies.get('user'));
-              const cookiePoints = userData.point || 0;
-              const cookieDiscountPoints = userData.discount_p || 0;
-              return (
-                <>
-                  <p>
-                    余额：{cookiePoints} → <b>{cookiePoints - purchaseProduct.WtcActivityPrice + currDeduction}</b>
-                  </p>
-                  <p>
-                    折扣点数：{cookieDiscountPoints} → <b>{cookieDiscountPoints - currDeduction}</b>
-                  </p>
-                  <hr />
-                  {maxDeduction > 0 ? (
-                    <Form.Group>
-                      <Row className='d-flex'>
-                        <Col md={7}>
-                          <Form.Label>折扣点数 ({currDeduction}/{maxDeduction})</Form.Label>
-                        </Col>
-                        <Col md={5}>
-                          <Row>
-                            <InputGroup>
-                              <Form.Control
-                                type="number"
-                                value={currDeduction}
-                                onChange={(e) => handleDeductionChange(e.target.value)}
-                              />
-                              <Button
-                                variant="dark"
-                                onClick={() => handleDeductionChange(Math.min(maxDeduction, cookieDiscountPoints))}
-                              >
-                                Max
-                              </Button>
-                            </InputGroup>
-                          </Row>
-                        </Col>
-                      </Row>
-                      <Form.Control
-                        type="range"
-                        min="0"
-                        max={maxDeduction}
-                        value={currDeduction}
-                        onChange={(e) => handleDeductionChange(e.target.value)}
-                        className="deduction-range"
-                      />
-                    </Form.Group>
-                  ) : (<></>)}
-                </>
-              );
-            })()}
-          </Modal.Body>
-          <Modal.Footer>
-            {(() => {
-              const cookiePoints = JSON.parse(Cookies.get('user')).point || 0;
-              const cookieDiscountPoint = JSON.parse(Cookies.get('user')).discount_p || 0;
-              const sufficientPoints = cookiePoints >= (purchaseProduct.WtcActivityPrice - currDeduction);
-              const sufficientDiscountPoint = (cookieDiscountPoint - currDeduction) >= 0;
-              return (
-                <Button
-                  variant={(sufficientPoints && sufficientDiscountPoint) ? "primary" : "secondary"}
-                  className="w-100"
-                  disabled={!(sufficientPoints && sufficientDiscountPoint)}
-                  onClick={(e) => confirmPurchaseNow(purchaseProduct, e)}
-                >
-                  {(sufficientPoints && sufficientDiscountPoint) ?
-                    (loadingPurchase ? `正在购买` : `购买`)
-                    :
-                    (sufficientPoints ? `折扣点不足` : `会员点不足`)}
-                </Button>
-              );
-            })()}
-          </Modal.Footer>
-        </Modal>
-      )} */}
+
 
       <Pagination className="justify-content-center">
         {/* 1. Prev */}
