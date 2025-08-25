@@ -17,6 +17,8 @@ import SellerCoupon from "../components/SellerCoupon.jsx";
 import { AuthContext } from "../context/AuthContext.jsx";
 import "../css/Profile.css";
 
+const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+
 const Profile = () => {
   const { user, setUser } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState("profile");
@@ -39,12 +41,62 @@ const Profile = () => {
   const [inflError, setInflError] = useState("");
   const [influencerProfile, setInfluencerProfile] = useState(null);
 
+  // 优惠券（可能多张，反向从 coupon 查 user）
+  const [couponList, setCouponList] = useState([]);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponError, setCouponError] = useState("");
+  // —— 拉取优惠券（反向：coupon -> user，支持多张）
+  useEffect(() => {
+    const fetchCouponForUser = async () => {
+      if (!user?.id) return;
+      try {
+        setCouponLoading(true);
+        setCouponError("");
+        const token = Cookies.get("token");
+
+        const tryFetch = async (filters) => {
+          return axios.get(`${BACKEND_HOST}/api/coupons`, {
+            params: {
+              ...filters,
+              populate: "*",
+              "pagination[pageSize]": 100,
+            },
+            headers: { Authorization: `Bearer ${token}` },
+          });
+        };
+
+        let res;
+        // 1) 常见：users_permissions_user.id
+        try {
+          res = await tryFetch({ "filters[users_permissions_user][id][$eq]": user.id });
+        } catch {}
+        // 2) 备选：user.id（若你的关系字段名为 user）
+        if (!res?.data?.data?.length) {
+          try { res = await tryFetch({ "filters[user][id][$eq]": user.id }); } catch {}
+        }
+        // 3) v5：users_permissions_user.documentId
+        if (!res?.data?.data?.length && user.documentId) {
+          try { res = await tryFetch({ "filters[users_permissions_user][documentId][$eq]": user.documentId }); } catch {}
+        }
+
+        const items = res?.data?.data ?? [];
+        setCouponList(items);
+      } catch (e) {
+        console.error("[Coupon] fetch error:", e?.response || e);
+        setCouponError(e?.response?.data?.error?.message || e?.message || "Failed to load coupon.");
+        setCouponList([]);
+      } finally {
+        setCouponLoading(false);
+      }
+    };
+    fetchCouponForUser();
+  }, [user, BACKEND_HOST]);
+
   // 商家优惠（网红可见）
   const [sellerData, setSellerData] = useState([]);
   const [sellerLoading, setSellerLoading] = useState(false);
   const [sellerError, setSellerError] = useState("");
 
-  const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
   const maxNameLen = 16;
   const maxBioLen = 500;
 
@@ -713,34 +765,32 @@ const Profile = () => {
               <h3>网红信息</h3>
               <hr />
 
-              {/* 展示 coupon 信息 */}
+              {/* 展示 coupon 信息（反向查询：coupon -> user，支持多张） */}
               {(() => {
-                // 兼容多种 coupons 字段结构
-                let list = user?.coupons ?? null;
-                if (list && list.data) list = list.data;
-                if (!Array.isArray(list)) list = [];
-                if (!list.length) {
+                if (couponLoading) return <div>正在加载专属优惠券...</div>;
+                if (couponError) return <Alert variant='warning'>{couponError}</Alert>;
+
+                if (!Array.isArray(couponList) || couponList.length === 0) {
                   return <Alert variant='info'>暂无专属优惠券信息</Alert>;
                 }
+
+                // 渲染所有券
                 return (
                   <Row className='mb-3'>
-                    {list.map((item, idx) => {
-                      const rec = item?.attributes ?? item;
+                    {couponList.map((recItem, idx) => {
+                      const rec = recItem?.attributes ?? recItem;
                       const title = rec.Title ?? rec.title ?? "—";
                       const hash = rec.Hash ?? rec.hash ?? "—";
+                      const expiry = rec.Expiry ?? rec.expiry ?? null;
+
                       return (
-                        <Col md={6} key={item?.id ?? idx} className='mb-3'>
+                        <Col md={6} className='mb-3' key={recItem?.id ?? idx}>
                           <Card className='h-100'>
                             <Card.Header>专属优惠券</Card.Header>
                             <Card.Body>
-                              <div>
-                                <strong>标题：</strong>
-                                {title}
-                              </div>
-                              <div>
-                                <strong>Hash：</strong>
-                                {hash}
-                              </div>
+                              <div><strong>标题：</strong>{title}</div>
+                              <div><strong>Hash：</strong>{hash}</div>
+                              {expiry && <div><strong>到期时间：</strong>{expiry}</div>}
                             </Card.Body>
                           </Card>
                         </Col>
