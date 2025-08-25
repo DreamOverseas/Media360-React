@@ -48,11 +48,12 @@ const Profile = () => {
   // —— 拉取优惠券（反向：coupon -> user，支持多张）
   useEffect(() => {
     const fetchCouponForUser = async () => {
-      if (!user?.id) return;
+      if (!user?.id || user?.roletype !== "Influencer") return;
       try {
         setCouponLoading(true);
         setCouponError("");
         const token = Cookies.get("token");
+        if (!token) { setCouponList([]); setCouponError("未登录或 token 缺失"); setCouponLoading(false); return; }
 
         const tryFetch = async (filters) => {
           return axios.get(`${BACKEND_HOST}/api/coupons`, {
