@@ -131,6 +131,12 @@ body.menu-open {
   .dropdown-menu .dropdown-item:hover {
     background-color: #f8f9fa !important;
   }
+
+  .dropdown-menu {
+    background: #fff !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 8px;
+  }
 } */
 
 /* Basic navbar styling */
@@ -140,9 +146,8 @@ body.menu-open {
   z-index: 1000;
   background-color: rgb(170, 214, 250);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height:70px;
+  height: 70px;
 }
-
 
 .nav-logo {
   height: 45px;
@@ -151,20 +156,19 @@ body.menu-open {
 #basic-navbar-nav.collapse {
   justify-content: end;
   visibility: visible !important;
-  width:50%;
+  width: 50%;
   margin-right: 10%;
 }
 
 .navbar-brand-custom {
-    margin-right: auto;
-    margin-left:8%;
-  }
+  margin-right: auto;
+  margin-left: 8%;
+}
 
 @media (max-width: 768px) {
   #basic-navbar-nav.collapse {
-  visibility: visible !important;
-  width:50%;
-
+    visibility: visible !important;
+    width: 50%;
   }
   .navbar-brand-custom {
     order: 1;
@@ -188,11 +192,11 @@ body.menu-open {
     transform: translateX(-100%); /* Starts off-screen to the left */
     transition: transform 0.3s ease;
   }
-  
+
   .navbar-collapse.show {
     transform: translateX(0); /* Slides in from left to normal position */
   }
-  
+
   .nav-custom {
     padding: 1rem;
   }
