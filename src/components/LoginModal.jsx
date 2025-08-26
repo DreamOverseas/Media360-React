@@ -1,15 +1,13 @@
-import axios from "axios";
-import Cookies from "js-cookie";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import {
   Button,
   Col,
   Form,
-  Modal,
-  Row,
   // Tab,
   // Nav,
   Image,
+  Modal,
+  Row,
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -38,13 +36,12 @@ const LoginModal = ({ show, handleClose }) => {
     if (email && password) {
       try {
         await login(email, password);
-        navigate("/profile"); 
+        // 登录成功才跳转
         handleClose();
+        navigate("/profile");
       } catch (error) {
-        // const errorMessage =
-        //   error.response?.data?.error?.message || t("error_occurred");
-        // setError(errorMessage);
         setError(t("information_invalid"));
+        // 登录失败不跳转
       }
     }
   };
@@ -85,8 +82,8 @@ const LoginModal = ({ show, handleClose }) => {
       show={show}
       onHide={handleClose}
       centered
-      dialogClassName="login-modal-custom-modal-dialog"
-      contentClassName="login-modal-custom-modal-content"
+      dialogClassName='login-modal-custom-modal-dialog'
+      contentClassName='login-modal-custom-modal-content'
     >
       <Modal.Header closeButton>
         <Modal.Title>{t("sign_in")}</Modal.Title>
@@ -94,9 +91,12 @@ const LoginModal = ({ show, handleClose }) => {
       <Modal.Body>
         <Row>
           {/* show image for sign-in only */}
-          <Col md={5} className="d-flex justify-content-center align-items-center">
+          <Col
+            md={5}
+            className='d-flex justify-content-center align-items-center'
+          >
             <Image
-              className="login-modal-login-image-display"
+              className='login-modal-login-image-display'
               src={t("sign_in_image")}
               fluid
             />
@@ -108,58 +108,80 @@ const LoginModal = ({ show, handleClose }) => {
               activeKey={activeKey}
               onSelect={(key) => setActiveKey(key)}
             > */}
-              <Row className="justify-content-center">
-                {/* <Tab.Content> */}
-                  
-                  {/* sign in form */}
-                  {/* <Tab.Pane eventKey="sign-in"> */}
-                    <h4 style={{textAlign: "center"}}>{t("sign_in_panel_title")}</h4>
-                    <Form onSubmit={handleSignin}>
-                      <Form.Group controlId="userEmail" className="login-modal-form-group">
-                        <Form.Label className="login-modal-form-label">{t("email")}</Form.Label>
-                        <Form.Control
-                          type="email"
-                          placeholder={t("enter_email")}
-                          value={email}
-                          onChange={e => setEmail(e.target.value)}
-                          isInvalid={submitted && !email}
-                          className="login-modal-form-control"
-                        />
-                        <Form.Control.Feedback type="invalid" className="login-modal-invalid-feedback">
-                          {t("email_invalid")}
-                        </Form.Control.Feedback>
-                      </Form.Group>
+            <Row className='justify-content-center'>
+              {/* <Tab.Content> */}
 
-                      <Form.Group controlId="userPassword" className="login-modal-form-group">
-                        <Form.Label className="login-modal-form-label">{t("password")}</Form.Label>
-                        <Form.Control
-                          type="password"
-                          placeholder={t("enter_password")}
-                          value={password}
-                          onChange={e => setPassword(e.target.value)}
-                          isInvalid={submitted && !password}
-                          className="login-modal-form-control"
-                        />
-                        <Form.Control.Feedback type="invalid" className="login-modal-invalid-feedback">
-                          {t("password_required")}
-                        </Form.Control.Feedback>
-                      </Form.Group>
+              {/* sign in form */}
+              {/* <Tab.Pane eventKey="sign-in"> */}
+              <h4 style={{ textAlign: "center" }}>
+                {t("sign_in_panel_title")}
+              </h4>
+              <Form onSubmit={handleSignin}>
+                <Form.Group
+                  controlId='userEmail'
+                  className='login-modal-form-group'
+                >
+                  <Form.Label className='login-modal-form-label'>
+                    {t("email")}
+                  </Form.Label>
+                  <Form.Control
+                    type='email'
+                    placeholder={t("enter_email")}
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    isInvalid={submitted && !email}
+                    className='login-modal-form-control'
+                  />
+                  <Form.Control.Feedback
+                    type='invalid'
+                    className='login-modal-invalid-feedback'
+                  >
+                    {t("email_invalid")}
+                  </Form.Control.Feedback>
+                </Form.Group>
 
-                      {error && (
-                        <div className="alert alert-danger" role="alert">
-                          {error}
-                        </div>
-                      )}
+                <Form.Group
+                  controlId='userPassword'
+                  className='login-modal-form-group'
+                >
+                  <Form.Label className='login-modal-form-label'>
+                    {t("password")}
+                  </Form.Label>
+                  <Form.Control
+                    type='password'
+                    placeholder={t("enter_password")}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    isInvalid={submitted && !password}
+                    className='login-modal-form-control'
+                  />
+                  <Form.Control.Feedback
+                    type='invalid'
+                    className='login-modal-invalid-feedback'
+                  >
+                    {t("password_required")}
+                  </Form.Control.Feedback>
+                </Form.Group>
 
-                      <div className="login-modal-form-button-container">
-                        <Button variant="primary" type="submit" className="login-modal-submit-btn">
-                          {t("sign_in")}
-                        </Button>
-                      </div>
-                    </Form>
+                {error && (
+                  <div className='alert alert-danger' role='alert'>
+                    {error}
+                  </div>
+                )}
 
-                    {/* "Do not have an account?" - COMMENTED OUT */}
-                    {/* <div className="text-center mt-3">
+                <div className='login-modal-form-button-container'>
+                  <Button
+                    variant='primary'
+                    type='submit'
+                    className='login-modal-submit-btn'
+                  >
+                    {t("sign_in")}
+                  </Button>
+                </div>
+              </Form>
+
+              {/* "Do not have an account?" - COMMENTED OUT */}
+              {/* <div className="text-center mt-3">
                       <p>
                         {t("noAccount")}
                         <Nav.Link 
@@ -171,10 +193,10 @@ const LoginModal = ({ show, handleClose }) => {
                         </Nav.Link>
                       </p>
                     </div> */}
-                  {/* </Tab.Pane> */}
+              {/* </Tab.Pane> */}
 
-                  {/* sign up form - COMMENTED OUT */}
-                  {/* <Tab.Pane eventKey="sign-up">
+              {/* sign up form - COMMENTED OUT */}
+              {/* <Tab.Pane eventKey="sign-up">
                     <h4 style={{textAlign: "center"}}>{t("sign_up_panel_title")}</h4>
                     <Form onSubmit={handleSignup}>
                       <Form.Group controlId="userUsername" className="login-modal-form-group">
@@ -257,8 +279,8 @@ const LoginModal = ({ show, handleClose }) => {
                       </p>
                     </div>
                   </Tab.Pane> */}
-                {/* </Tab.Content> */}
-              </Row>
+              {/* </Tab.Content> */}
+            </Row>
             {/* </Tab.Container> */}
           </Col>
         </Row>

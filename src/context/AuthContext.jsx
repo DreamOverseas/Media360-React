@@ -94,10 +94,7 @@ const AuthProvider = ({ children }) => {
         const jwt = response?.data?.jwt;
         if (!jwt) throw new Error("No JWT returned from /auth/local");
 
-        // 保存 token
         Cookies.set("token", jwt, { expires: 7, sameSite: "Lax" });
-
-        // 重新获取用户（带 coupon/influencer_profile/avatar）
         await fetchMe();
         return true;
       } catch (error) {
@@ -111,7 +108,12 @@ const AuthProvider = ({ children }) => {
             "Login failed."
         );
         setUser(null);
-        return false;
+        // 关键：登录失败时抛出异常
+        throw new Error(
+          error?.response?.data?.error?.message ||
+            error.message ||
+            "Login failed."
+        );
       }
     },
     [fetchMe]
