@@ -14,15 +14,19 @@ const CouponDisplay = ({ couponList, couponLoading, couponError }) => {
         const rec = recItem?.attributes ?? recItem;
         const title = rec.Title ?? rec.title ?? "—";
         const hash = rec.Hash ?? rec.hash ?? "—";
+        const UsesLeft = rec.UsesLeft ?? null;
+        const Active = rec.Active ?? null;
+        const Hide = rec.Hide ?? null;
         const expiry = rec.Expiry ?? rec.expiry ?? null;
 
         return (
           <Col md={6} className='mb-3' key={recItem?.id ?? idx}>
             <Card className='h-100'>
-              <Card.Header>专属优惠券</Card.Header>
+              <Card.Header>{title}</Card.Header>
               <Card.Body>
-                <div><strong>标题：</strong>{title}</div>
                 <div><strong>Hash：</strong>{hash}</div>
+                <div><strong>被扫次数：</strong>{9999 - UsesLeft}</div>
+                <div><strong>状态：</strong>{Active ? "已激活" : "未激活"}</div>
                 {expiry && <div><strong>到期时间：</strong>{expiry}</div>}
               </Card.Body>
             </Card>
