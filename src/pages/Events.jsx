@@ -62,7 +62,7 @@ const Events = () => {
         ),
         axios.get(`${BACKEND_HOST}/api/events`, 
           { params: 
-            { "filters[TimeLine][$eq]": "In Progress", 
+            { "filters[TimeLine][$eq]": "In progress", 
               "sort": "Order:desc",
               "populate": "*" 
             } 
