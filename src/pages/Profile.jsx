@@ -4,7 +4,6 @@ import SellerCoupon from "../components/SellerCoupon.jsx";
 import { AuthContext } from "../context/AuthContext.jsx";
 
 // 导入拆分的组件
-import ProfileInfoSection from "../components/Profile/profile_info_section.jsx";
 import PasswordSection from "../components/Profile/password_section.jsx";
 import CouponDisplay from "../components/Profile/coupon_display.jsx";
 import InfluencerProfileSection from "../components/Profile/influencer_profile_section.jsx";
@@ -139,7 +138,7 @@ const Profile = () => {
 
   // 使用自定义hooks管理状态
   const { inflLoading, inflError, influencerProfile } = useInfluencerProfile(user, BACKEND_HOST);
-  const { couponList, couponLoading, couponError } = useCoupons(user, BACKEND_HOST);
+  const { couponList, couponLoading, couponError, refreshCoupons } = useCoupons(user, BACKEND_HOST);
   const { sellerData, sellerLoading, sellerError } = useSellerData(user, BACKEND_HOST);
   
   const profileEditProps = useProfileEdit(user, BACKEND_HOST, setUser);
@@ -199,6 +198,7 @@ const Profile = () => {
                       couponList={couponList}
                       couponLoading={couponLoading}
                       couponError={couponError}
+                      onCouponUpdate={refreshCoupons}
                     />
                   </div>
 
