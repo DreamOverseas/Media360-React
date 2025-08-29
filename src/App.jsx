@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 // import { useMediaQuery } from "react-responsive";
 import { Route, Routes, useLocation } from "react-router-dom";
 
-import "slick-carousel/slick/slick-theme.css";
-import "slick-carousel/slick/slick.css";
 import "./App.css";
 import BrandDetail from "./components/BrandDetail.jsx";
 import Breadcrumbs from "./components/Breadcrumbs.jsx";
@@ -59,6 +57,7 @@ import RegisterMiss from "./pages/RegisterMiss.jsx";
 import ShoppingCart from "./pages/ShoppingCart.jsx";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import WeChatBlocker from "./utils/WeChatBlocker.jsx";
+import Whds from "./specialPage/Whds.jsx";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -176,6 +175,7 @@ function App() {
             element={<MerchantPromotion />}
           />
           <Route exact path='/events/:name' element={<EventDetail />} />
+          <Route exact path='/events/2025-Influencer-Contest' element={<Whds />} />
 
           <Route
             path='/products/:productName/:partnerType/CustomerApplicationForm'

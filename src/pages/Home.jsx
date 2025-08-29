@@ -4,6 +4,7 @@ import { Card, Col, Container, Row, Button, Image} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
+import Banner from "../components/Banner";
 // import {formatDateTime, calculateTime} from "./Events.jsx";
 import "../css/Home.css";
 
@@ -350,6 +351,9 @@ const HomePage = ()=> {
 
   return (
     <div className="homepage-background">
+      <section>
+        <Banner/>
+      </section>
       <section>
         {/* <Image className='home-banner' src='/homepage/Home_Banner.png' alt='360 Media' /> */}
           <ProductCarousel
