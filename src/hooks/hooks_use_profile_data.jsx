@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 export const useInfluencerProfile = (user, BACKEND_HOST) => {
   const [inflLoading, setInflLoading] = useState(false);
@@ -83,7 +83,7 @@ export const useInfluencerProfile = (user, BACKEND_HOST) => {
           }
         } catch {}
 
-        // B3) 字段若叫 user
+        // B3) 字段若含 user
         try {
           const p3 = await fetchByFilter({ "filters[user][id][$eq]": user.id });
           if (setFromRecord(p3, "B3:/influencer-profiles by user.id")) {
@@ -116,59 +116,66 @@ export const useCoupons = (user, BACKEND_HOST) => {
   const [couponLoading, setCouponLoading] = useState(false);
   const [couponError, setCouponError] = useState("");
 
-  useEffect(() => {
-    const fetchCouponForUser = async () => {
-      if (!user?.id || user?.roletype !== "Influencer") return;
-      try {
-        setCouponLoading(true);
-        setCouponError("");
-        const token = Cookies.get("token");
-        if (!token) { 
-          setCouponList([]); 
-          setCouponError("未登录或 token 缺失"); 
-          setCouponLoading(false); 
-          return; 
-        }
-
-        const tryFetch = async (filters) => {
-          return axios.get(`${BACKEND_HOST}/api/coupons`, {
-            params: {
-              ...filters,
-              populate: "*",
-              "pagination[pageSize]": 100,
-            },
-            headers: { Authorization: `Bearer ${token}` },
-          });
-        };
-
-        let res;
-        // 1) 常见：users_permissions_user.id
-        try {
-          res = await tryFetch({ "filters[users_permissions_user][id][$eq]": user.id });
-        } catch {}
-        // 2) 备选：user.id（若你的关系字段名为 user）
-        if (!res?.data?.data?.length) {
-          try { res = await tryFetch({ "filters[user][id][$eq]": user.id }); } catch {}
-        }
-        // 3) v5：users_permissions_user.documentId
-        if (!res?.data?.data?.length && user.documentId) {
-          try { res = await tryFetch({ "filters[users_permissions_user][documentId][$eq]": user.documentId }); } catch {}
-        }
-
-        const items = res?.data?.data ?? [];
-        setCouponList(items);
-      } catch (e) {
-        console.error("[Coupon] fetch error:", e?.response || e);
-        setCouponError(e?.response?.data?.error?.message || e?.message || "Failed to load coupon.");
-        setCouponList([]);
-      } finally {
-        setCouponLoading(false);
+  const fetchCouponForUser = useCallback(async () => {
+    if (!user?.id || user?.roletype !== "Influencer") return;
+    try {
+      setCouponLoading(true);
+      setCouponError("");
+      const token = Cookies.get("token");
+      if (!token) { 
+        setCouponList([]); 
+        setCouponError("未登录或 token 缺失"); 
+        setCouponLoading(false); 
+        return; 
       }
-    };
-    fetchCouponForUser();
+
+      const tryFetch = async (filters) => {
+        return axios.get(`${BACKEND_HOST}/api/coupons`, {
+          params: {
+            ...filters,
+            populate: "*",
+            "pagination[pageSize]": 100,
+          },
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      };
+
+      let res;
+      // 1) 常见：users_permissions_user.id
+      try {
+        res = await tryFetch({ "filters[users_permissions_user][id][$eq]": user.id });
+      } catch {}
+      // 2) 备选：user.id（若你的关系字段名为 user）
+      if (!res?.data?.data?.length) {
+        try { res = await tryFetch({ "filters[user][id][$eq]": user.id }); } catch {}
+      }
+      // 3) v5：users_permissions_user.documentId
+      if (!res?.data?.data?.length && user.documentId) {
+        try { res = await tryFetch({ "filters[users_permissions_user][documentId][$eq]": user.documentId }); } catch {}
+      }
+
+      const items = res?.data?.data ?? [];
+      setCouponList(items);
+    } catch (e) {
+      console.error("[Coupon] fetch error:", e?.response || e);
+      setCouponError(e?.response?.data?.error?.message || e?.message || "Failed to load coupon.");
+      setCouponList([]);
+    } finally {
+      setCouponLoading(false);
+    }
   }, [user, BACKEND_HOST]);
 
-  return { couponList, couponLoading, couponError };
+  useEffect(() => {
+    fetchCouponForUser();
+  }, [fetchCouponForUser]);
+
+  // Return the refresh function along with the state
+  return { 
+    couponList, 
+    couponLoading, 
+    couponError, 
+    refreshCoupons: fetchCouponForUser 
+  };
 };
 
 export const useSellerData = (user, BACKEND_HOST) => {

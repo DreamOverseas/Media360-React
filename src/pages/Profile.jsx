@@ -138,7 +138,7 @@ const Profile = () => {
 
   // 使用自定义hooks管理状态
   const { inflLoading, inflError, influencerProfile } = useInfluencerProfile(user, BACKEND_HOST);
-  const { couponList, couponLoading, couponError } = useCoupons(user, BACKEND_HOST);
+  const { couponList, couponLoading, couponError, refreshCoupons } = useCoupons(user, BACKEND_HOST);
   const { sellerData, sellerLoading, sellerError } = useSellerData(user, BACKEND_HOST);
   
   const profileEditProps = useProfileEdit(user, BACKEND_HOST, setUser);
@@ -198,6 +198,7 @@ const Profile = () => {
                       couponList={couponList}
                       couponLoading={couponLoading}
                       couponError={couponError}
+                      onCouponUpdate={refreshCoupons}
                     />
                   </div>
 
