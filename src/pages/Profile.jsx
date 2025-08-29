@@ -4,7 +4,6 @@ import SellerCoupon from "../components/SellerCoupon.jsx";
 import { AuthContext } from "../context/AuthContext.jsx";
 
 // 导入拆分的组件
-import ProfileInfoSection from "../components/Profile/profile_info_section.jsx";
 import PasswordSection from "../components/Profile/password_section.jsx";
 import CouponDisplay from "../components/Profile/coupon_display.jsx";
 import InfluencerProfileSection from "../components/Profile/influencer_profile_section.jsx";
