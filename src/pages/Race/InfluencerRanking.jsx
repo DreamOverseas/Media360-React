@@ -1,110 +1,203 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import "./InfluencerRanking.css";
 
-// 模拟网红数据
-const mockData = [
-  { id: 1, name: "Alice", avatar: "/avatars/1.png", score: 120 },
-  { id: 2, name: "Bob", avatar: "/avatars/2.png", score: 110 },
-  { id: 3, name: "Cathy", avatar: "/avatars/3.png", score: 105 },
-  { id: 4, name: "David", avatar: "/avatars/4.png", score: 100 },
-  { id: 5, name: "Eva", avatar: "/avatars/5.png", score: 98 },
-  { id: 6, name: "Frank", avatar: "/avatars/6.png", score: 95 },
-  { id: 7, name: "Grace", avatar: "/avatars/7.png", score: 93 },
-  { id: 8, name: "Helen", avatar: "/avatars/8.png", score: 90 },
-  { id: 9, name: "Ivan", avatar: "/avatars/9.png", score: 88 },
-  { id: 10, name: "Jack", avatar: "/avatars/10.png", score: 85 },
-  { id: 11, name: "Kim", avatar: "/avatars/11.png", score: 80 },
-  { id: 12, name: "Leo", avatar: "/avatars/12.png", score: 75 },
-  // ...更多数据
-];
+const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+
+// 获取所有 roletype 为 Influencer 的用户，并展开 influencer_profile
+const fetchAllInfluencers = async () => {
+  try {
+    const res = await axios.get(
+      `${BACKEND_HOST}/api/users?filters[roletype][$eq]=Influencer&populate[influencer_profile][populate]=*&pagination[pageSize]=100`
+    );
+    // 适配数据结构
+    return (res.data || []).map(u => {
+      const profile = u.influencer_profile;
+      const details = profile?.personal_details;
+      let avatar = profile?.avatar?.url
+        ? profile.avatar.url.startsWith("http")
+          ? profile.avatar.url
+          : BACKEND_HOST + profile.avatar.url
+        : "https://placehold.co/100x100";
+      // 如果 personal_details 里有头像字段，也可以用 details.avatar
+      if (details?.avatar) avatar = details.avatar;
+
+      return {
+        id: u.id,
+        name: details?.name || u.username || "未知",
+        avatar,
+        score: 100,
+        category: Array.isArray(details?.categories)
+          ? details.categories.join(", ")
+          : "未知",
+        followers:
+          typeof details?.followers === "object"
+            ? Object.entries(details.followers)
+                .map(([k, v]) => `${k}: ${v}`)
+                .join(" / ")
+            : "0",
+        location: details?.location || "",
+        contact_email: details?.contact_email || "",
+        gender: details?.gender || "",
+        age: details?.age || "",
+        languages: Array.isArray(details?.languages)
+          ? details.languages.join(", ")
+          : "",
+      };
+    });
+  } catch (e) {
+    console.error("Failed to fetch influencers from API", e);
+    return [];
+  }
+};
 
 const fetchInfluencerData = async () => {
-  // 这里可以替换为真实接口
-  return mockData;
+  return await fetchAllInfluencers();
 };
 
 const InfluencerRanking = () => {
   const [influencers, setInfluencers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // 模拟实时数据变化
   useEffect(() => {
-    let timer = setInterval(async () => {
-      // 模拟分数变化
-      const updated = (await fetchInfluencerData()).map(item => ({
-        ...item,
-        score: item.score + Math.floor(Math.random() * 3 - 1), // 随机变化
-      }));
-      // 按分数排序
-      updated.sort((a, b) => b.score - a.score);
-      setInfluencers(updated);
-    }, 2000);
-
-    // 首次加载
     fetchInfluencerData().then(data => {
       data.sort((a, b) => b.score - a.score);
       setInfluencers(data);
+      setIsLoading(false);
     });
+
+    const timer = setInterval(async () => {
+      const updated = (await fetchInfluencerData()).map(item => ({
+        ...item,
+        score: Math.max(0, item.score + Math.floor(Math.random() * 6 - 3)),
+      }));
+      updated.sort((a, b) => b.score - a.score);
+      setInfluencers(updated);
+    }, 3000);
 
     return () => clearInterval(timer);
   }, []);
-  console.log("组件已加载");
-  const top10 = influencers.slice(0, 10);
-  const others = influencers.slice(10);
+
+  const top3 = influencers.slice(0, 3);
+  const others = influencers.slice(3);
+
+  if (isLoading) {
+    return (
+      <div className='loading-container'>
+        <div className='loading-spinner'></div>
+      </div>
+    );
+  }
 
   return (
     <div className='influencer-ranking-container'>
-      {/* Banner 区域 */}
-      <div className="ranking-banner">
-        <img src="/banner/influencer-ranking-banner.jpg" alt="Influencer Ranking Banner" className="ranking-banner-img" />
+      {/* Hero Section */}
+      <div className='hero-section'>
+        <div className='hero-content'>
+          <div className='hero-icon'>
+            <svg viewBox='0 0 24 24' fill='currentColor'>
+              <path d='M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z' />
+            </svg>
+          </div>
+          <h1 className='hero-title'>Influencer Competition</h1>
+          <p className='hero-description'>
+            Real-time dynamic ranking of top influencers. Watch the scores
+            change live and see who's leading the competition!
+          </p>
+          <div className='live-indicator'>
+            <div className='live-dot'></div>
+            <span>Live Updates</span>
+          </div>
+        </div>
       </div>
-      {/* 介绍文字 */}
-      <div className="ranking-intro">
-        <h1>网红比赛动态排名</h1>
-        <p>
-          这里是网红比赛的实时动态排名页面。您可以看到前十名网红的最新排名和分数，更多精彩内容敬请期待！
-        </p>
-      </div>
-      {/* 排名展示 */}
-      <div className='circle-ranking'>
-        {top10.map((inf, idx) => {
-          // 让第一名在正上方
-          const angle = -90 + (360 / top10.length) * idx;
-          const rad = (angle * Math.PI) / 180;
-          const radius = 120;
-          const centerX = 140,
-            centerY = 140;
-          const x = centerX + radius * Math.cos(rad) - 30;
-          const y = centerY + radius * Math.sin(rad) - 30;
-          return (
+
+      {/* Podium Section */}
+      <div className='podium-section'>
+        <div className='section-header'>
+          <h2>Top Performers</h2>
+          <div className='section-divider'></div>
+        </div>
+        <div className='podium-container'>
+          {top3.map((inf, idx) => (
             <div
               key={inf.id}
-              className='circle-item'
-              style={{
-                left: `${x}px`,
-                top: `${y}px`,
-              }}
+              className={`podium-item podium-${
+                ["first", "second", "third"][idx]
+              }`}
             >
-              <img src={inf.avatar} alt={inf.name} className='circle-avatar' />
-              <div className='circle-name'>{inf.name}</div>
-              <div className='circle-score'>{inf.score}</div>
-              <div className='circle-rank'>{idx + 1}</div>
+              <div className='podium-rank'>{idx + 1}</div>
+              <div className='podium-avatar-container'>
+                <img
+                  src={inf.avatar}
+                  alt={inf.name}
+                  className='podium-avatar'
+                />
+                <div className='podium-glow'></div>
+              </div>
+              <div className='podium-info'>
+                <h3 className='podium-name'>{inf.name}</h3>
+                <p className='podium-category'>{inf.category}</p>
+                <p className='podium-followers'>{inf.followers}</p>
+                <p className='podium-location'>{inf.location}</p>
+                <div className='podium-score'>{inf.score}</div>
+              </div>
             </div>
-          );
-        })}
-        <div className='circle-center'>TOP 10</div>
-      </div>
-      <div className='other-ranking'>
-        <h3>其他网红</h3>
-        <ul>
-          {others.map((inf, idx) => (
-            <li key={inf.id} className='other-item'>
-              <span className='other-rank'>{idx + 11}</span>
-              <img src={inf.avatar} alt={inf.name} className='other-avatar' />
-              <span className='other-name'>{inf.name}</span>
-              <span className='other-score'>{inf.score}</span>
-            </li>
           ))}
-        </ul>
+        </div>
+      </div>
+
+      {/* Leaderboard Section */}
+      {others.length > 0 && (
+        <div className='leaderboard-section'>
+          <div className='section-header'>
+            <h2>Leaderboard</h2>
+            <div className='section-divider'></div>
+          </div>
+          <div className='leaderboard-container'>
+            {others.map((inf, idx) => (
+              <div key={inf.id} className='leaderboard-item'>
+                <div className='leaderboard-rank'>{idx + 4}</div>
+                <div className='leaderboard-avatar-container'>
+                  <img
+                    src={inf.avatar}
+                    alt={inf.name}
+                    className='leaderboard-avatar'
+                  />
+                </div>
+                <div className='leaderboard-info'>
+                  <h4 className='leaderboard-name'>{inf.name}</h4>
+                  <p className='leaderboard-category'>{inf.category}</p>
+                  <p className='leaderboard-followers'>{inf.followers}</p>
+                  <p className='leaderboard-location'>{inf.location}</p>
+                </div>
+                <div className='leaderboard-score'>{inf.score}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Stats Section */}
+      <div className='stats-section'>
+        <div className='stats-container'>
+          <div className='stat-item'>
+            <div className='stat-number'>{influencers.length}</div>
+            <div className='stat-label'>Total Participants</div>
+          </div>
+          <div className='stat-item'>
+            <div className='stat-number'>{influencers[0]?.score || 0}</div>
+            <div className='stat-label'>Highest Score</div>
+          </div>
+          <div className='stat-item'>
+            <div className='stat-number'>Live</div>
+            <div className='stat-label'>Real-time Updates</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className='footer'>
+        <p>Rankings update every 3 seconds • Live Competition</p>
       </div>
     </div>
   );
