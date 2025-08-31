@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Button, Modal } from "react-bootstrap";
 import "./InfluencerRanking.css";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
@@ -58,6 +59,8 @@ const fetchInfluencerData = async () => {
 const InfluencerRanking = () => {
   const [influencers, setInfluencers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     fetchInfluencerData().then(data => {
@@ -77,6 +80,16 @@ const InfluencerRanking = () => {
 
     return () => clearInterval(timer);
   }, []);
+
+  const handleShowModal = inf => {
+    setSelected(inf);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelected(null);
+  };
 
   const top3 = influencers.slice(0, 3);
   const others = influencers.slice(3);
@@ -124,6 +137,8 @@ const InfluencerRanking = () => {
               className={`podium-item podium-${
                 ["first", "second", "third"][idx]
               }`}
+              onClick={() => handleShowModal(inf)}
+              style={{ cursor: "pointer" }}
             >
               <div className='podium-rank'>{idx + 1}</div>
               <div className='podium-avatar-container'>
@@ -155,7 +170,12 @@ const InfluencerRanking = () => {
           </div>
           <div className='leaderboard-container'>
             {others.map((inf, idx) => (
-              <div key={inf.id} className='leaderboard-item'>
+              <div
+                key={inf.id}
+                className='leaderboard-item'
+                onClick={() => handleShowModal(inf)}
+                style={{ cursor: "pointer" }}
+              >
                 <div className='leaderboard-rank'>{idx + 4}</div>
                 <div className='leaderboard-avatar-container'>
                   <img
@@ -199,6 +219,63 @@ const InfluencerRanking = () => {
       <div className='footer'>
         <p>Rankings update every 3 seconds • Live Competition</p>
       </div>
+
+      {/* 人物信息弹窗 */}
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Header
+          closeButton
+          className='!border-b-0 !pb-0'
+          style={{ border: "none" }}
+        >
+          <Modal.Title>
+            <span className='text-xl font-bold text-gray-800'>
+              {selected?.name || "人物信息"}
+            </span>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selected && (
+            <div className='flex flex-col items-center gap-2'>
+              <img
+                src={selected.avatar}
+                alt={selected.name}
+                className='w-24 h-24 rounded-full shadow-lg border-4 border-blue-200 mb-2'
+              />
+              <div className='grid grid-cols-2 gap-x-4 gap-y-2 w-full max-w-xs text-sm'>
+                <span className='font-semibold text-gray-600'>姓名：</span>
+                <span className='text-gray-800'>{selected.name}</span>
+                <span className='font-semibold text-gray-600'>性别：</span>
+                <span className='text-gray-800'>{selected.gender}</span>
+                <span className='font-semibold text-gray-600'>年龄：</span>
+                <span className='text-gray-800'>{selected.age}</span>
+                <span className='font-semibold text-gray-600'>所在地：</span>
+                <span className='text-gray-800'>{selected.location}</span>
+                <span className='font-semibold text-gray-600'>类别：</span>
+                <span className='text-gray-800'>{selected.category}</span>
+                <span className='font-semibold text-gray-600'>语言：</span>
+                <span className='text-gray-800'>{selected.languages}</span>
+                <span className='font-semibold text-gray-600'>粉丝：</span>
+                <span className='text-gray-800'>{selected.followers}</span>
+                <span className='font-semibold text-gray-600'>邮箱：</span>
+                <span className='text-gray-800'>{selected.contact_email}</span>
+                <span className='font-semibold text-gray-600'>分数：</span>
+                <span className='text-blue-600 font-bold'>
+                  {selected.score}
+                </span>
+              </div>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer className='!border-t-0 !pt-0 flex justify-center'>
+          <Button
+            variant='secondary'
+            onClick={handleCloseModal}
+            className='bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded shadow'
+          >
+            关闭
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
