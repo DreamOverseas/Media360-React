@@ -3,6 +3,18 @@ import { Eye, EyeOff, ChevronDown, ChevronUp, Search, X } from "lucide-react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useState } from "react";
+import QRCode from "qrcode";
+
+// Helper for QR downloading
+async function downloadQR(hash, filename) {
+  const canvas = document.createElement("canvas");
+  await QRCode.toCanvas(canvas, hash, { width: 512, margin: 1 });
+
+  const link = document.createElement("a");
+  link.download = `${filename}.png`;
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+}
 
 const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate }) => {
   const [updating, setUpdating] = useState(new Set());
@@ -21,7 +33,7 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
     try {
       const token = Cookies.get("token");
       const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
-      
+
       await axios.put(
         `${BACKEND_HOST}/api/coupons/${documentId}`,
         {
@@ -71,7 +83,7 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
   // 根据搜索词过滤优惠券
   const filterCouponsBySearch = (coupons) => {
     if (!searchTerm.trim()) return coupons;
-    
+
     return coupons.filter(item => {
       const rec = item?.attributes ?? item;
       const title = rec.Title ?? rec.title ?? "";
@@ -87,6 +99,7 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
     const title = rec.Title ?? rec.title ?? "—";
     const hash = rec.Hash ?? rec.hash ?? "—";
     const UsesLeft = rec.UsesLeft ?? null;
+    const scanned = rec.Scanned ?? 0;
     const Active = rec.Active ?? null;
     const expiry = rec.Expiry ?? rec.expiry ?? null;
     const documentId = recItem?.documentId;
@@ -102,12 +115,12 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
           return 'danger'; // 红色 - 已过期
         }
       }
-      
+
       // 检查是否激活
       if (!Active) {
         return 'warning'; // 黄色 - 未激活
       }
-      
+
       return 'success'; // 绿色 - 正常状态
     };
 
@@ -141,15 +154,31 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
             </Button>
           </Card.Header>
           <Card.Body>
-            <div><strong>Hash：</strong>{hash}</div>
-            <div><strong>被扫次数：</strong>{9999 - UsesLeft}</div>
-            <div><strong>状态：</strong>
-              <span className={`fw-bold text-${cardVariant}`}>
-                {Active ? "已激活" : "未激活"}
-                {expiry && new Date(expiry) < new Date() && " (已过期)"}
-              </span>
-            </div>
-            {expiry && <div><strong>到期时间：</strong>{expiry}</div>}
+            {/* <div><strong>Hash：</strong>{hash}</div> */}
+            <Row>
+              <Col sm={6} md={8}>
+                <div><strong>被扫次数：</strong>{scanned}</div>
+                <div><strong>剩余可用次数：</strong>{UsesLeft}</div>
+                <div><strong>状态：</strong>
+                  <span className={`fw-bold text-${cardVariant}`}>
+                    {Active ? "已激活" : "未激活"}
+                    {expiry && new Date(expiry) < new Date() && " (已过期)"}
+                  </span>
+                </div>
+                {expiry && <div><strong>到期时间：</strong>{expiry}</div>}
+              </Col>
+              <Col sm={6} md={4} className="d-flex justify-content-center align-items-start">
+                <Button
+                  variant="light"
+                  size="sm"
+                  onClick={() => { downloadQR(hash, title) }}
+                  className="text-dark"
+                >
+                  <i className="bi bi-box-arrow-in-down text-4xl me-1"></i>
+                  <p className="mb-0">二维码下载</p>
+                </Button>
+              </Col>
+            </Row>
           </Card.Body>
         </Card>
       </Col>
@@ -226,7 +255,7 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
               )}
             </Button>
           </div>
-          
+
           {showHiddenCoupons && (
             <Row>
               {filteredHiddenCoupons.map((item, idx) => renderCouponCard(item, idx, true))}
