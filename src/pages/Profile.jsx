@@ -9,6 +9,7 @@ import CouponDisplay from "../components/Profile/coupon_display.jsx";
 import InfluencerProfileSection from "../components/Profile/influencer_profile_section.jsx";
 import SellerCampaignsSection from "../components/Profile/seller_campaigns_section.jsx";
 import ProfileEditModal from "../components/Profile/profile_edit_modal.jsx";
+import SellerProfileSection from "../components/Profile/seller_profile_section.jsx";
 
 // 导入自定义hooks
 import { useInfluencerProfile, useCoupons, useSellerData } from "../hooks/hooks_use_profile_data.jsx";
@@ -143,12 +144,66 @@ const Profile = () => {
   
   const profileEditProps = useProfileEdit(user, BACKEND_HOST, setUser);
 
+  // ===== 仅 Seller 使用：本人卖家资料 =====
+  const [sellerProfileSelf, setSellerProfileSelf] = useState(null);
+  const [sellerProfileLoading, setSellerProfileLoading] = useState(false);
+  const [sellerProfileError, setSellerProfileError] = useState("");
+
   // 调试：观察 user/coupon 结构变化
   useEffect(() => {
     console.groupCollapsed("%c[Coupon] user change", "color:#6a5acd");
     console.log("[Coupon] user.id =", user?.id, "roletype =", user?.roletype);
     console.log("[Coupon] user.coupon =", user?.coupon);
     console.groupEnd();
+  }, [user]);
+
+  // 拉取当前 Seller 的资料（company_details + campaign_preferences）
+  useEffect(() => {
+    const fetchSellerProfileSelf = async () => {
+      if (!user?.id || user?.roletype !== "Seller") return;
+      try {
+        setSellerProfileLoading(true);
+        setSellerProfileError("");
+        const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        if (!token) {
+          setSellerProfileError("未登录或 token 缺失");
+          setSellerProfileSelf(null);
+          return;
+        }
+        const tryFetch = async (filters) => {
+          const qs = new URLSearchParams({
+            ...filters,
+            populate: "*",
+            "pagination[pageSize]": "1",
+          }).toString();
+          const res = await fetch(`${BACKEND_HOST}/api/seller-profiles?${qs}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data?.error?.message || `HTTP ${res.status}`);
+          }
+          return data;
+        };
+        let data;
+        try {
+          // 常见：关系字段为 user
+          data = await tryFetch({ "filters[user][id][$eq]": String(user.id) });
+        } catch (e) {
+          // 兼容：关系字段为 users_permissions_user
+          data = await tryFetch({ "filters[users_permissions_user][id][$eq]": String(user.id) });
+        }
+        const first = data?.data?.[0] || null;
+        setSellerProfileSelf(first ? (first.attributes ?? first) : null);
+      } catch (e) {
+        console.error("[SellerProfileSelf] fetch error:", e);
+        setSellerProfileError(e.message || "加载卖家资料失败");
+        setSellerProfileSelf(null);
+      } finally {
+        setSellerProfileLoading(false);
+      }
+    };
+    fetchSellerProfileSelf();
   }, [user]);
 
   return (
@@ -244,6 +299,13 @@ const Profile = () => {
                     </div>
                     <SellerCoupon user={user} />
                   </div>
+
+                  {/* 卖家资料（company_details + campaign_preferences） */}
+                  <SellerProfileSection
+                    sellerProfileLoading={sellerProfileLoading || sellerLoading}
+                    sellerProfileError={sellerProfileError || sellerError}
+                    sellerProfile={sellerProfileSelf}
+                  />
                 </div>
               )}
             </div>
