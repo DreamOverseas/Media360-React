@@ -186,37 +186,57 @@ export const useSellerData = (user, BACKEND_HOST) => {
   useEffect(() => {
     const fetchSellerData = async () => {
       if (!user || user?.roletype !== "Influencer") return;
+
       try {
         setSellerLoading(true);
         setSellerError("");
+
         const token = Cookies.get("token");
+
         const r = await axios.get(`${BACKEND_HOST}/api/seller-profiles`, {
-          params: {
-            "fields[0]": "company_details",
-            "fields[1]": "campaign_preferences",
-          },
+          params: { populate: "*" }, // 展开所有关联，包括 media
           headers: { Authorization: `Bearer ${token}` },
         });
+
         let list = r?.data?.data ?? [];
-        list = list
-          .map(item => item?.attributes ?? item)
-          .map(a => ({
-            company_details: a?.company_details ?? null,
-            campaign_preferences: Array.isArray(a?.campaign_preferences)
-              ? a.campaign_preferences
-              : (a?.campaign_preferences ? [a.campaign_preferences] : []),
-          }));
+
+        list = list.map(a => ({
+          company_details: a?.company_details ?? null,
+          campaign_preferences: Array.isArray(a?.campaign_preferences)
+            ? a.campaign_preferences
+            : a?.campaign_preferences
+            ? [a.campaign_preferences]
+            : [],
+          documentId: a?.documentId ?? null,
+          // media 处理：null -> 空数组，url 拼接完整地址
+          media: Array.isArray(a?.media)
+            ? a.media.map(m => ({
+                ...m,
+                url: m.url.startsWith("http")
+                  ? m.url
+                  : `${BACKEND_HOST}${m.url}`,
+              }))
+            : [],
+        }));
+
         setSellerData(list);
       } catch (e) {
         console.error("[SellerCampaigns] fetch error:", e?.response || e);
-        setSellerError(e?.response?.data?.error?.message || e?.message || "Failed to load seller campaigns.");
+        setSellerError(
+          e?.response?.data?.error?.message ||
+            e?.message ||
+            "Failed to load seller campaigns."
+        );
         setSellerData([]);
       } finally {
         setSellerLoading(false);
       }
     };
+
     fetchSellerData();
   }, [user, BACKEND_HOST]);
+
+  console.log(sellerData)
 
   return { sellerData, sellerLoading, sellerError };
 };
