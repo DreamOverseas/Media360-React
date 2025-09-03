@@ -19,7 +19,7 @@ const CouponManager = () => {
       
       // Fetch all data in parallel
       const [couponsRes, accountsRes, usersRes] = await Promise.all([
-        fetch(`${API_BASE}/Coupons`),
+        fetch(`${API_BASE}/Coupons?populate=users_permissions_user&populate=AssignedFrom`),
         fetch(`${API_BASE}/coupon-sys-accounts`),
         fetch(`${API_BASE}/users`)
       ]);
@@ -49,14 +49,14 @@ const CouponManager = () => {
   };
 
   // Helper function to find coupon for a specific account and user
-  const findCoupon = (accountDocumentId, username) => {
+  const findCoupon = (accountDocumentId, userDcumentId) => {
     return coupons.find(coupon => {
       // Find the account by documentId to get the name
       const account = accounts.find(acc => acc.documentId === accountDocumentId);
       if (!account) return false;
       
       // Check if coupon title contains account name and is assigned to the user
-      return coupon.Title?.includes(account.Name) && coupon.AssignedTo === username;
+      return coupon.AssignedFrom?.documentId === account.documentId && coupon.users_permissions_user?.documentId === userDcumentId;
     });
   };
 
@@ -119,7 +119,7 @@ const CouponManager = () => {
                     </div>
                   </td>
                   {users.map(user => {
-                    const coupon = findCoupon(account.documentId, user.username);
+                    const coupon = findCoupon(account.documentId, user.documentId);
                     return (
                       <td key={`${account.documentId}-${user.documentId}`} className="px-4 py-4 border-r border-gray-200">
                         {coupon ? (
