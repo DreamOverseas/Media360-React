@@ -146,8 +146,11 @@ const Profile = () => {
 
   // ===== 仅 Seller 使用：本人卖家资料 =====
   const [sellerProfileSelf, setSellerProfileSelf] = useState(null);
+  const [relatedInfluencer, setRelatedInfluencer] = useState([]);
   const [sellerProfileLoading, setSellerProfileLoading] = useState(false);
+  const [relatedInfluencerLoading, setRelatedInfluencerLoading] = useState(false);
   const [sellerProfileError, setSellerProfileError] = useState("");
+  const [relatedInfluencerError, setRelatedInfluencerError] = useState("");
 
   // 调试：观察 user/coupon 结构变化
   useEffect(() => {
@@ -173,7 +176,8 @@ const Profile = () => {
         const tryFetch = async (filters) => {
           const qs = new URLSearchParams({
             ...filters,
-            populate: "*",
+            // "populate[user][populate][influencer_profiles][populate]": "avatar",
+            populate:'*',
             "pagination[pageSize]": "1",
           }).toString();
           const res = await fetch(`${BACKEND_HOST}/api/seller-profiles?${qs}`, {
@@ -203,7 +207,54 @@ const Profile = () => {
         setSellerProfileLoading(false);
       }
     };
+
+
+    const fetchRelatedInfluencer = async () => {
+      if (!user?.id || user?.roletype !== "Seller") return;
+      try {
+        setRelatedInfluencerLoading(true);
+        setRelatedInfluencer("");
+        const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        if (!token) {
+          setSellerProfileError("未登录或 token 缺失");
+          setRelatedInfluencer(null);
+          return;
+        }
+        const tryFetch = async (filters) => {
+          const qs = new URLSearchParams({
+            ...filters,
+             "populate[AssignedFrom][populate]": "*",
+             "populate[users_permissions_user][populate][influencer_profile][populate]":"avatar"
+          }).toString();
+          const res = await fetch(`${BACKEND_HOST}/api/coupons?${qs}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data?.error?.message || `HTTP ${res.status}`);
+          }
+          return data;
+        };
+        let data;
+        data = await tryFetch({"filters[AssignedFrom][users_permissions_user][id][$eq]": String(user.id) });
+        const first = data?.data || [];
+        const processed_data = first.map(entry=> entry.users_permissions_user.influencer_profile)
+        // console.log("first", first);
+        // console.log("processed_data", processed_data);
+
+        setRelatedInfluencer(processed_data ? (processed_data.attributes ?? processed_data) : []);
+      } catch (e) {
+        console.error("[SellerProfileSelf] fetch error:", e);
+        setRelatedInfluencerError(e.message || "加载相关网红失败");
+        setRelatedInfluencer([]);
+      } finally {
+        setSellerProfileLoading(false);
+      }
+    };
+
     fetchSellerProfileSelf();
+    fetchRelatedInfluencer();
+
   }, [user]);
 
   return (
@@ -303,8 +354,9 @@ const Profile = () => {
                   {/* 卖家资料（company_details + campaign_preferences） */}
                   <SellerProfileSection
                     sellerProfileLoading={sellerProfileLoading || sellerLoading}
-                    sellerProfileError={sellerProfileError || sellerError}
+                    sellerProfileError={sellerProfileError || sellerError || relatedInfluencerError}
                     sellerProfile={sellerProfileSelf}
+                    relatedInfluencerList = {relatedInfluencer}
                   />
                 </div>
               )}

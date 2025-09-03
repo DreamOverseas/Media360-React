@@ -2,6 +2,7 @@ const SellerProfileSection = ({
   sellerProfileLoading,
   sellerProfileError,
   sellerProfile,
+  relatedInfluencerList
 }) => {
   if (sellerProfileLoading)
     return <div className='text-gray-500'>加载中...</div>;
@@ -23,6 +24,7 @@ const SellerProfileSection = ({
 
   const details = normalizeDetails(sellerProfile.company_details);
   const campaigns = normalizeCampaigns(sellerProfile.campaign_preferences);
+  const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
   // 字段名容错（大小写/不同命名）
   const companyName = details.company_name || details.name || "—";
@@ -31,6 +33,8 @@ const SellerProfileSection = ({
   const contactEmail = details.contact_email || details.email || "—";
   const contactPhone = details.contact_phone || details.phone || "—";
   const abn = details.abn || "—";
+  const influencerList = relatedInfluencerList;
+  // console.log("22222",influencerList)
 
   const website = (() => {
     const v = details.website || details.site || "";
@@ -136,6 +140,45 @@ const SellerProfileSection = ({
           </div>
         )}
       </div>
+
+      {influencerList.length === 0 ? (
+          <div className='text-gray-500'>暂无活动</div>
+        ) : (
+      <div className="bg-blue-50 rounded-xl p-6 border border-blue-100">
+        <h3 className="text-lg font-semibold text-blue-700 mb-6">代言网红</h3>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {influencerList.map((inf) => (
+            <div
+              key={inf.id}
+              className="bg-white rounded-lg shadow flex flex-col items-center text-center"
+            >
+              {/* 头像 */}
+              <img
+                src={`${BACKEND_HOST}${inf.avatar.url}`}
+                alt={inf.name}
+                className="w-20 h-20 rounded-full object-cover mb-3"
+              />
+
+              {/* 姓名 & 性别 */}
+              <h4 className="text-md font-semibold text-gray-800">{inf.personal_details.name}</h4>
+
+              {/* 平台列表 */}
+              <ul className="grid grid-cols-2 gap-4 text-sm text-gray-600 w-full p-0">
+                {Object.entries(inf.personal_details.followers).map(([platform, count], i) => (
+                  <li
+                    key={i}
+                    className="flex flex-col items-center bg-gray-50 px-3 py-2 rounded"
+                  >
+                    <span className="font-medium capitalize">{platform}</span>
+                    <span className="text-gray-800">{count.toLocaleString()}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+      )}
     </div>
   );
 };

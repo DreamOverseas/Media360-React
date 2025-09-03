@@ -236,7 +236,7 @@ export const useSellerData = (user, BACKEND_HOST) => {
     fetchSellerData();
   }, [user, BACKEND_HOST]);
 
-  console.log(sellerData)
+  // console.log(sellerData)
 
   return { sellerData, sellerLoading, sellerError };
 };
