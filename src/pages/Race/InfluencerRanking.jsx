@@ -5,47 +5,100 @@ import "./InfluencerRanking.css";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
+// === Coupon fetching helper (user → coupons via coupon relation) ===
+const COUPON_PAGE_SIZE = 1000;
+const getCouponsForUser = async (userId) => {
+  try {
+    // Try server-side filter by relation key `users_permissions_user`
+    const url = `${BACKEND_HOST}/api/coupons?filters[users_permissions_user][id][$eq]=${userId}&populate=*&pagination[pageSize]=${COUPON_PAGE_SIZE}`;
+    const res = await axios.get(url);
+    const raw = Array.isArray(res.data?.data) ? res.data.data : (Array.isArray(res.data) ? res.data : []);
+    if (raw?.length) return raw;
+
+    // Fallback: fetch a page and filter by common relation keys on client
+    const resAll = await axios.get(`${BACKEND_HOST}/api/coupons?populate=*&pagination[pageSize]=${COUPON_PAGE_SIZE}`);
+    const all = Array.isArray(resAll.data?.data) ? resAll.data.data : (Array.isArray(resAll.data) ? resAll.data : []);
+    const belongsTo = (c) => {
+      const a = c?.attributes || c || {};
+      const relId =
+        a?.users_permissions_user?.data?.id ??
+        a?.user?.data?.id ??
+        a?.influencer?.data?.id ??
+        a?.owner?.data?.id ??
+        a?.users_permissions_user?.id ??
+        a?.user?.id ??
+        a?.influencer?.id ??
+        a?.owner?.id;
+      return relId === userId;
+    };
+    return all.filter(belongsTo);
+  } catch (e) {
+    console.error("Failed to fetch coupons for user", userId, e);
+    return [];
+  }
+};
+
+// Calculate score by summing the 'Scanned' field from all coupons of the user
+const calcScoreFromCoupons = (coupons) => {
+  if (!Array.isArray(coupons)) return 0;
+  return coupons.reduce((total, c) => {
+    const a = c?.attributes || c || {};
+    const scanned =
+      a?.Scanned ?? a?.scanned ?? a?.scans ?? 0;
+    const n = Number(scanned);
+    return total + (Number.isFinite(n) ? n : 0);
+  }, 0);
+};
+
 // 获取所有 roletype 为 Influencer 的用户，并展开 influencer_profile
 const fetchAllInfluencers = async () => {
   try {
     const res = await axios.get(
       `${BACKEND_HOST}/api/users?filters[roletype][$eq]=Influencer&populate[influencer_profile][populate]=*&pagination[pageSize]=100`
     );
-    // 适配数据结构
-    return (res.data || []).map(u => {
-      const profile = u.influencer_profile;
-      const details = profile?.personal_details;
-      let avatar = profile?.avatar?.url
-        ? profile.avatar.url.startsWith("http")
-          ? profile.avatar.url
-          : BACKEND_HOST + profile.avatar.url
-        : "https://placehold.co/100x100";
-      // 如果 personal_details 里有头像字段，也可以用 details.avatar
-      if (details?.avatar) avatar = details.avatar;
+    const users = (res.data || []);
 
-      return {
-        id: u.id,
-        name: details?.name || u.username || "未知",
-        avatar,
-        score: 100,
-        category: Array.isArray(details?.categories)
-          ? details.categories.join(", ")
-          : "未知",
-        followers:
-          typeof details?.followers === "object"
-            ? Object.entries(details.followers)
-                .map(([k, v]) => `${k}: ${v}`)
-                .join(" / ")
-            : "0",
-        location: details?.location || "",
-        contact_email: details?.contact_email || "",
-        gender: details?.gender || "",
-        age: details?.age || "",
-        languages: Array.isArray(details?.languages)
-          ? details.languages.join(", ")
-          : "",
-      };
-    });
+    // For each influencer, fetch coupons via coupon→user relation and compute score
+    const enriched = await Promise.all(
+      users.map(async (u) => {
+        const profile = u.influencer_profile;
+        const details = profile?.personal_details;
+        let avatar = profile?.avatar?.url
+          ? profile.avatar.url.startsWith("http")
+            ? profile.avatar.url
+            : BACKEND_HOST + profile.avatar.url
+          : "https://placehold.co/100x100";
+        if (details?.avatar) avatar = details.avatar;
+
+        const coupons = await getCouponsForUser(u.id);
+        const score = calcScoreFromCoupons(coupons);
+
+        return {
+          id: u.id,
+          name: details?.name || u.username || "未知",
+          avatar,
+          score,
+          category: Array.isArray(details?.categories)
+            ? details.categories.join(", ")
+            : "未知",
+          followers:
+            typeof details?.followers === "object"
+              ? Object.entries(details.followers)
+                  .map(([k, v]) => `${k}: ${v}`)
+                  .join(" / ")
+              : "0",
+          location: details?.location || "",
+          contact_email: details?.contact_email || "",
+          gender: details?.gender || "",
+          age: details?.age || "",
+          languages: Array.isArray(details?.languages)
+            ? details.languages.join(", ")
+            : "",
+        };
+      })
+    );
+
+    return enriched;
   } catch (e) {
     console.error("Failed to fetch influencers from API", e);
     return [];
@@ -63,22 +116,27 @@ const InfluencerRanking = () => {
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
-    fetchInfluencerData().then(data => {
+    let isMounted = true;
+
+    const load = async () => {
+      const data = await fetchAllInfluencers();
       data.sort((a, b) => b.score - a.score);
-      setInfluencers(data);
-      setIsLoading(false);
-    });
+      if (isMounted) {
+        setInfluencers(data);
+        setIsLoading(false);
+      }
+    };
 
-    const timer = setInterval(async () => {
-      const updated = (await fetchInfluencerData()).map(item => ({
-        ...item,
-        score: Math.max(0, item.score + Math.floor(Math.random() * 6 - 3)),
-      }));
-      updated.sort((a, b) => b.score - a.score);
-      setInfluencers(updated);
-    }, 3000);
+    // Initial load
+    load();
 
-    return () => clearInterval(timer);
+    // Periodic refresh from backend
+    const timer = setInterval(load, 10000); // 10s
+
+    return () => {
+      isMounted = false;
+      clearInterval(timer);
+    };
   }, []);
 
   const handleShowModal = inf => {
@@ -217,7 +275,7 @@ const InfluencerRanking = () => {
 
       {/* Footer */}
       <div className='footer'>
-        <p>Rankings update every 3 seconds • Live Competition</p>
+        <p>Rankings update every 10 seconds • Live Competition</p>
       </div>
 
       {/* 人物信息弹窗 */}
