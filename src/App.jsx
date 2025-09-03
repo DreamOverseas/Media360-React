@@ -43,6 +43,7 @@ import Profile from "./pages/Profile.jsx";
 import Activity from "./components/Activity.jsx";
 import FloatingHomeButton from "./components/FloatingHomeButton.jsx";
 import ProductRouteGuard from "./components/ProductRouteGuard.jsx";
+import CouponManager from "./components/CouponManager.jsx";
 import AboutUs from "./pages/AboutUsPage.jsx";
 import ToolLinkPage from "./pages/Admin/ToolLinks.jsx";
 import CustomerApplicationForm from "./pages/CustomerForm/CustomerApplicationForm.jsx";
@@ -109,6 +110,7 @@ function App() {
           <Route exact path='/productLife' element={<ProductPage />} /> */}
           {/* <Route path='/products/:name' element={<ProductDetail />} /> */}
           <Route path='/about-us' element={<AboutUs />} />
+          <Route path='/test' element={<CouponManager />} />
           {/* <Route
             path='/products/:name/related-product'
             element={<ProductRelatedProduct />}
