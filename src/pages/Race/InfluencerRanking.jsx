@@ -50,6 +50,25 @@ const calcScoreFromCoupons = (coupons) => {
   }, 0);
 };
 
+// Extract possible shop/brand name from a coupon record (best-effort across schemas)
+const getShopNameFromCoupon = (c) => {
+  const a = c?.attributes || c || {};
+  // AssignedFrom relation (common)
+  const af = a.AssignedFrom?.data?.attributes || a.assignedFrom?.data?.attributes || a.assigned_from?.data?.attributes;
+  const afName = af?.name || af?.Name || af?.title || af?.Title;
+  if (afName) return afName;
+  // coupon_sys_account relation sometimes carries a title/name
+  const csa = a.coupon_sys_account?.data?.attributes || a.couponSysAccount?.data?.attributes;
+  const csaName = csa?.title || csa?.Title || csa?.name || csa?.Name;
+  if (csaName) return csaName;
+  // Fallback to coupon title containing shop name pattern
+  const t = a.title || a.Title || "";
+  if (t) return t;
+  return null;
+};
+
+const dedupe = (arr) => Array.from(new Set(arr.filter(Boolean)));
+
 // 获取所有 roletype 为 Influencer 的用户，并展开 influencer_profile
 const fetchAllInfluencers = async () => {
   try {
@@ -114,6 +133,29 @@ const InfluencerRanking = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [selectedShops, setSelectedShops] = useState([]);
+  const [selectedCouponsLoading, setSelectedCouponsLoading] = useState(false);
+
+  const handleShowModal = async (inf) => {
+    setSelected(inf);
+    setShowModal(true);
+    setSelectedCouponsLoading(true);
+    try {
+      const coupons = await getCouponsForUser(inf.id);
+      const shops = dedupe(coupons.map(getShopNameFromCoupon));
+      setSelectedShops(shops);
+    } catch (e) {
+      console.error("[Ranking] failed to fetch coupons for selected influencer", e);
+      setSelectedShops([]);
+    } finally {
+      setSelectedCouponsLoading(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelected(null);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -138,16 +180,6 @@ const InfluencerRanking = () => {
       clearInterval(timer);
     };
   }, []);
-
-  const handleShowModal = inf => {
-    setSelected(inf);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelected(null);
-  };
 
   const top3 = influencers.slice(0, 3);
   const others = influencers.slice(3);
@@ -320,6 +352,28 @@ const InfluencerRanking = () => {
                 <span className='text-blue-600 font-bold'>
                   {selected.score}
                 </span>
+              </div>
+              <div className='w-full mt-4'>
+                <div className='flex items-center justify-between mb-2'>
+                  <span className='font-semibold text-gray-700'>关联商家</span>
+                  {selectedCouponsLoading && (
+                    <span className='text-xs text-gray-400'>加载中…</span>
+                  )}
+                </div>
+                {selectedShops.length === 0 && !selectedCouponsLoading ? (
+                  <div className='text-sm text-gray-500'>暂无关联商家</div>
+                ) : (
+                  <div className='flex flex-wrap gap-2'>
+                    {selectedShops.map((s, i) => (
+                      <span
+                        key={`${s}-${i}`}
+                        className='px-2 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded text-xs'
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           )}
