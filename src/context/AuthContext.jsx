@@ -40,7 +40,6 @@ const AuthProvider = ({ children }) => {
       const response = await axios.get(`${BACKEND_HOST}/api/users/me`, {
         params: {
           "populate[avatar]": "*",
-          "populate[influencer_profile][populate]": "*",
         },
         headers: {
           Authorization: `Bearer ${token}`,
