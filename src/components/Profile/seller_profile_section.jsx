@@ -23,6 +23,7 @@ const SellerProfileSection = ({
 
   const details = normalizeDetails(sellerProfile.company_details);
   const campaigns = normalizeCampaigns(sellerProfile.campaign_preferences);
+  const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
   // 字段名容错（大小写/不同命名）
   const companyName = details.company_name || details.name || "—";

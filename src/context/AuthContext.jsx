@@ -41,6 +41,7 @@ const AuthProvider = ({ children }) => {
         params: {
           "populate[avatar]": "*",
           "populate[influencer_profile][populate]": "*",
+          "populate[seller_profile][populate]": "*"
         },
         headers: {
           Authorization: `Bearer ${token}`,
