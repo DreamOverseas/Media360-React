@@ -38,6 +38,7 @@ const ProfileSidebar = ({ user, avatarUrl, activeTab, setActiveTab }) => {
           {user?.roletype === "Seller" && (
             <Nav.Item>
               <Nav.Link eventKey='seller'>卖家信息</Nav.Link>
+              <Nav.Link eventKey='relatedInfluencer'>相关网红</Nav.Link>
             </Nav.Item>
           )}
         </Nav>
