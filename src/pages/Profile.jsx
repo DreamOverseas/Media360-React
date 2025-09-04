@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { User, Settings, Lock, Star, ShoppingBag, Edit3, Camera, Mail, Phone, MapPin, Calendar } from "lucide-react";
+import { User, Settings, Lock, Star, ShoppingBag, Edit3, Camera, Mail, Phone, MapPin, Calendar, Contact } from "lucide-react";
 import SellerCoupon from "../components/SellerCoupon.jsx";
 import { AuthContext } from "../context/AuthContext.jsx";
 
@@ -10,6 +10,7 @@ import InfluencerProfileSection from "../components/Profile/influencer_profile_s
 import SellerCampaignsSection from "../components/Profile/seller_campaigns_section.jsx";
 import ProfileEditModal from "../components/Profile/profile_edit_modal.jsx";
 import SellerProfileSection from "../components/Profile/seller_profile_section.jsx";
+import RelatedInfluencerSection from "../components/Profile/related_influencer_section.jsx";
 
 // 导入自定义hooks
 import { useInfluencerProfile, useCoupons, useSellerData } from "../hooks/hooks_use_profile_data.jsx";
@@ -20,15 +21,18 @@ const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 // 美化的侧边栏组件
 const ProfileSidebar = ({ user, avatarUrl, activeTab, setActiveTab }) => {
   const menuItems = [
-    { id: "profile", label: "个人资料", icon: User },
+    { id: "profile", label: "账号信息", icon: User },
     { id: "password", label: "密码设置", icon: Lock },
     ...(user?.roletype === "Influencer" ? [
       { id: "influencer", label: "网红信息", icon: Star },
       { id: "sellerCampaigns", label: "商家优惠", icon: ShoppingBag }
     ] : []),
     ...(user?.roletype === "Seller" ? [
-      { id: "seller", label: "卖家信息", icon: ShoppingBag }
-    ] : [])
+      { id: "seller", label: "店铺信息", icon: ShoppingBag }
+    ] : []),
+    ...(user?.roletype === "Seller" ? [
+      { id: "relatedInfluencer", label: "代言网红", icon: Contact }
+    ] : []),
   ];
 
   return (
@@ -79,7 +83,7 @@ const ProfileSidebar = ({ user, avatarUrl, activeTab, setActiveTab }) => {
 const EnhancedProfileInfoSection = ({ user, openEdit }) => (
   <div className="space-y-6">
     <div className="flex items-center justify-between mb-6">
-      <h2 className="text-2xl font-bold text-gray-900">个人资料</h2>
+      <h2 className="text-2xl font-bold text-gray-900">账号信息</h2>
       <button
         onClick={openEdit}
         className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-sm"
@@ -342,11 +346,10 @@ const Profile = () => {
 
               {activeTab === "seller" && user?.roletype === "Seller" && (
                 <div className="space-y-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">卖家信息</h2>
-                  <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl p-6 border border-orange-100">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">店铺信息</h2>
+                  <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl p-3 sm:p-6 border border-orange-100">
                     <div className="flex items-center mb-4">
-                      <ShoppingBag className="text-orange-500 mr-2" size={20} />
-                      <h3 className="text-lg font-semibold text-gray-900">商店管理</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">二维码信息</h3>
                     </div>
                     <SellerCoupon user={user} />
                   </div>
@@ -354,8 +357,19 @@ const Profile = () => {
                   {/* 卖家资料（company_details + campaign_preferences） */}
                   <SellerProfileSection
                     sellerProfileLoading={sellerProfileLoading || sellerLoading}
-                    sellerProfileError={sellerProfileError || sellerError || relatedInfluencerError}
+                    sellerProfileError={sellerProfileError || sellerError}
                     sellerProfile={sellerProfileSelf}
+                  />
+                </div>
+              )}
+
+              {activeTab === "relatedInfluencer" && user?.roletype === "Seller" && (
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">代言网红</h2>
+                  {/* 卖家资料（company_details + campaign_preferences） */}
+                  <RelatedInfluencerSection
+                    relatedProfileLoading={relatedInfluencerLoading}
+                    relatedProfileError={relatedInfluencerError}
                     relatedInfluencerList = {relatedInfluencer}
                   />
                 </div>
