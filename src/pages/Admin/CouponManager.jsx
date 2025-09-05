@@ -22,7 +22,9 @@ const CouponManager = () => {
   const scrollContainerRef = useRef(null);
   const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
+  const startYRef = useRef(0);
   const scrollLeftRef = useRef(0);
+  const scrollTopRef = useRef(0);
 
   const API_BASE = 'https://api.do360.com/api';
 
@@ -36,7 +38,9 @@ const CouponManager = () => {
     
     isDraggingRef.current = true;
     startXRef.current = e.pageX - scrollContainerRef.current.offsetLeft;
+    startYRef.current = e.pageY - scrollContainerRef.current.offsetTop;
     scrollLeftRef.current = scrollContainerRef.current.scrollLeft;
+    scrollTopRef.current = scrollContainerRef.current.scrollTop;
     
     scrollContainerRef.current.style.cursor = 'grabbing';
     scrollContainerRef.current.style.userSelect = 'none';
@@ -58,8 +62,12 @@ const CouponManager = () => {
     
     e.preventDefault();
     const x = e.pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startXRef.current) * 2;
-    scrollContainerRef.current.scrollLeft = scrollLeftRef.current - walk;
+    const y = e.pageY - scrollContainerRef.current.offsetTop;
+    const walkX = (x - startXRef.current) * 2; // Horizontal scroll multiplier
+    const walkY = (y - startYRef.current) * 2; // Vertical scroll multiplier
+    
+    scrollContainerRef.current.scrollLeft = scrollLeftRef.current - walkX;
+    scrollContainerRef.current.scrollTop = scrollTopRef.current - walkY;
   }, []);
 
   // Add global event listeners for mouse events
@@ -253,26 +261,27 @@ const CouponManager = () => {
         </form>
       </div>
 
-      {/* Coupons table with drag-to-scroll */}
+      {/* Coupons table with 2D drag-to-scroll */}
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="mb-2 px-4 py-2 bg-gray-50 text-sm text-gray-600 border-b flex items-center gap-2">
-          <span className="text-lg">👆</span>
-          <span>Click and drag to scroll horizontally through the table</span>
+          <span className="text-lg">🖱️</span>
+          <span>Click and drag to scroll horizontally and vertically through the table</span>
         </div>
         <div 
           ref={scrollContainerRef}
-          className="overflow-x-auto select-none"
+          className="overflow-auto select-none"
           onMouseDown={handleMouseDown}
           style={{ 
             cursor: isDraggingRef.current ? 'grabbing' : 'grab',
             scrollbarWidth: 'thin',
-            scrollbarColor: '#cbd5e0 #f7fafc'
+            scrollbarColor: '#cbd5e0 #f7fafc',
+            maxHeight: '70vh' // Limit height to enable vertical scrolling
           }}
         >
           <table className="min-w-full" style={{ pointerEvents: 'none' }}>
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-50 sticky top-0 z-20">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200 sticky left-0 bg-gray-50 z-10">Account / User</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200 sticky left-0 bg-gray-50 z-30">Account / User</th>
                 {users.map(user => (
                   <th key={user.documentId} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase border-r border-gray-200 min-w-48">
                     <div className="flex flex-col">
