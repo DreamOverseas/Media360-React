@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from "js-cookie";
 import FolderGroup from './FolderGroup';
-import CouponManager from './CouponManager'; // ✅ Import CouponManager
+import CouponManager from './CouponManager';
+import { Menu, X } from "lucide-react"; //
 
 export default function ToolLinkPage() {
     const [password, setPassword] = useState('');
@@ -10,6 +11,7 @@ export default function ToolLinkPage() {
     const [selectedTool, setSelectedTool] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [openFolders, setOpenFolders] = useState({});
+    const [sidebarOpen, setSidebarOpen] = useState(true);
 
     const CMS_ENDPOINT = import.meta.env.VITE_STRAPI_HOST;
     const CMS_TOKEN = import.meta.env.VITE_CMS_TOKEN;
@@ -50,7 +52,6 @@ export default function ToolLinkPage() {
                     folder: item.Folder || 'Ungrouped',
                 }));
 
-                // ✅ Add CouponManager as a pseudo-tool
                 formattedTools.push({
                     id: 'coupon-manager',
                     platform: 'Coupon Manager',
@@ -126,43 +127,61 @@ export default function ToolLinkPage() {
     return (
         <div className="flex flex-col md:flex-row h-full">
             {/* Sidebar */}
-            <aside className="w-full md:!w-1/4 bg-gray-100 p-4 min-h-48 max-h-[50vh] md:max-h-[80vh] overflow-y-auto">
-                <div className="mb-2">
-                    <input
-                        type="text"
-                        placeholder="Search platforms…"
-                        value={searchTerm}
-                        onChange={e => setSearchTerm(e.target.value)}
-                        className="w-full px-3 py-1 border rounded focus:outline-none focus:ring"
-                    />
-                </div>
-                {filteredTools.length > 0 ? (
-                    Object.entries(grouped).map(([folderName, toolsInFolder]) => (
-                        <FolderGroup
-                            key={folderName}
-                            name={folderName}
-                            tools={toolsInFolder}
-                            isOpen={openFolders[folderName]}
-                            onToggle={() => toggleFolder(folderName)}
-                            selectedTool={selectedTool}
-                            selectTool={selectTool}
+            {sidebarOpen && (
+                <aside className="w-full md:!w-1/4 bg-gray-100 p-4 min-h-48 max-h-[50vh] md:max-h-[80vh] overflow-y-auto transition-all duration-300">
+                    <div className="mb-2 flex justify-between items-center">
+                        <input
+                            type="text"
+                            placeholder="Search platforms…"
+                            value={searchTerm}
+                            onChange={e => setSearchTerm(e.target.value)}
+                            className="w-full px-3 py-1 border rounded focus:outline-none focus:ring"
                         />
-                    ))
-                ) : (
-                    <p className="text-sm italic text-gray-500">No other platforms match '{searchTerm}'.</p>
-                )}
-                <a href='https://api.do360.com/admin/content-manager/collection-types/api::tool-link.tool-link' target='_blank' >
-                    <button
-                        type='button'
-                        className='w-full bg-blue-500 hover:bg-blue-700 rounded text-white py-1.5'
-                    >
-                        Manage Tools
-                    </button>
-                </a>
-            </aside>
+                        <button
+                            onClick={() => setSidebarOpen(false)}
+                            className="ml-2 text-gray-600 hover:text-red-600"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+                    {filteredTools.length > 0 ? (
+                        Object.entries(grouped).map(([folderName, toolsInFolder]) => (
+                            <FolderGroup
+                                key={folderName}
+                                name={folderName}
+                                tools={toolsInFolder}
+                                isOpen={openFolders[folderName]}
+                                onToggle={() => toggleFolder(folderName)}
+                                selectedTool={selectedTool}
+                                selectTool={selectTool}
+                            />
+                        ))
+                    ) : (
+                        <p className="text-sm italic text-gray-500">No other platforms match '{searchTerm}'.</p>
+                    )}
+                    <a href='https://api.do360.com/admin/content-manager/collection-types/api::tool-link.tool-link' target='_blank' >
+                        <button
+                            type='button'
+                            className='w-full bg-blue-500 hover:bg-blue-700 rounded text-white py-1.5'
+                        >
+                            Manage Tools
+                        </button>
+                    </a>
+                </aside>
+            )}
 
             {/* Main content */}
-            <main className="flex-1 flex-col items-center justify-center text-center p-6 overflow-y-auto">
+            <main className="flex-1 flex-col items-center justify-center text-center p-6 overflow-y-auto relative">
+                {/* Sidebar toggle button (when sidebar hidden) */}
+                {!sidebarOpen && (
+                    <button
+                        onClick={() => setSidebarOpen(true)}
+                        className="absolute top-4 left-4 bg-blue-600 text-white p-2 rounded-full shadow-md hover:bg-blue-800"
+                    >
+                        <Menu size={20} />
+                    </button>
+                )}
+
                 {!selectedTool ? (
                     <p className="text-gray-500">
                         Please select from the left side.
