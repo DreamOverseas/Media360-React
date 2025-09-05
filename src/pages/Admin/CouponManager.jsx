@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 const CouponManager = () => {
   const [coupons, setCoupons] = useState([]);
@@ -18,11 +18,72 @@ const CouponManager = () => {
   const [selectedAccount, setSelectedAccount] = useState('');
   const [selectedUser, setSelectedUser] = useState('');
 
+  // Drag-to-scroll states and ref
+  const scrollContainerRef = useRef(null);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+
   const API_BASE = 'https://api.do360.com/api';
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Drag-to-scroll event handlers
+  const handleMouseDown = useCallback((e) => {
+    if (!scrollContainerRef.current) return;
+    
+    isDraggingRef.current = true;
+    startXRef.current = e.pageX - scrollContainerRef.current.offsetLeft;
+    scrollLeftRef.current = scrollContainerRef.current.scrollLeft;
+    
+    scrollContainerRef.current.style.cursor = 'grabbing';
+    scrollContainerRef.current.style.userSelect = 'none';
+    
+    // Prevent default to avoid text selection
+    e.preventDefault();
+  }, []);
+
+  const handleMouseUp = useCallback(() => {
+    isDraggingRef.current = false;
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.style.cursor = 'grab';
+      scrollContainerRef.current.style.userSelect = '';
+    }
+  }, []);
+
+  const handleMouseMove = useCallback((e) => {
+    if (!isDraggingRef.current || !scrollContainerRef.current) return;
+    
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startXRef.current) * 2;
+    scrollContainerRef.current.scrollLeft = scrollLeftRef.current - walk;
+  }, []);
+
+  // Add global event listeners for mouse events
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      if (isDraggingRef.current) {
+        handleMouseUp();
+      }
+    };
+
+    const handleGlobalMouseMove = (e) => {
+      if (isDraggingRef.current) {
+        handleMouseMove(e);
+      }
+    };
+
+    document.addEventListener('mouseup', handleGlobalMouseUp);
+    document.addEventListener('mousemove', handleGlobalMouseMove);
+
+    return () => {
+      document.removeEventListener('mouseup', handleGlobalMouseUp);
+      document.removeEventListener('mousemove', handleGlobalMouseMove);
+    };
+  }, [handleMouseUp, handleMouseMove]);
 
   const fetchData = async () => {
     try {
@@ -192,13 +253,26 @@ const CouponManager = () => {
         </form>
       </div>
 
-      {/* Coupons table */}
+      {/* Coupons table with drag-to-scroll */}
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full">
+        <div className="mb-2 px-4 py-2 bg-gray-50 text-sm text-gray-600 border-b flex items-center gap-2">
+          <span className="text-lg">👆</span>
+          <span>Click and drag to scroll horizontally through the table</span>
+        </div>
+        <div 
+          ref={scrollContainerRef}
+          className="overflow-x-auto select-none"
+          onMouseDown={handleMouseDown}
+          style={{ 
+            cursor: isDraggingRef.current ? 'grabbing' : 'grab',
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#cbd5e0 #f7fafc'
+          }}
+        >
+          <table className="min-w-full" style={{ pointerEvents: 'none' }}>
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Account / User</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200 sticky left-0 bg-gray-50 z-10">Account / User</th>
                 {users.map(user => (
                   <th key={user.documentId} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase border-r border-gray-200 min-w-48">
                     <div className="flex flex-col">
@@ -212,7 +286,7 @@ const CouponManager = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {accounts.map((account, accountIndex) => (
                 <tr key={account.documentId} className={accountIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                  <td className="px-4 py-4 whitespace-nowrap border-r border-gray-200">
+                  <td className="px-4 py-4 whitespace-nowrap border-r border-gray-200 sticky left-0 z-10" style={{ backgroundColor: accountIndex % 2 === 0 ? 'white' : '#f9fafb' }}>
                     <div className="flex flex-col">
                       <div className="text-sm font-medium text-gray-900">{account.Name}</div>
                       <div className="text-xs text-gray-500">{account.Role}</div>
