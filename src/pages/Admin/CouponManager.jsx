@@ -186,6 +186,7 @@ const CouponManager = () => {
             Hide: false,
             Type: 'NetRed',
             Scanned: 0,
+            AssignedTo: usr.username,
             AssignedFrom: acc.documentId,
             users_permissions_user: usr.documentId
           };
