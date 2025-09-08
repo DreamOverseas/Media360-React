@@ -96,26 +96,48 @@ const CouponManager = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [couponsRes, accountsRes, usersRes] = await Promise.all([
-        fetch(`${API_BASE}/Coupons?populate=users_permissions_user&populate=AssignedFrom`),
-        fetch(`${API_BASE}/coupon-sys-accounts`),
-        fetch(`${API_BASE}/users`)
-      ]);
+      
+      // Helper function to fetch all pages for a given endpoint
+      const fetchAllPages = async (endpoint) => {
+        let allData = [];
+        let page = 1;
+        let hasMorePages = true;
+        
+        while (hasMorePages) {
+          const response = await fetch(`${API_BASE}${endpoint}&pagination[page]=${page}&pagination[pageSize]=100`);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch data from ${endpoint}`);
+          }
+          
+          const data = await response.json();
+          const items = data.data || data;
+          allData = [...allData, ...items];
+          
+          // Check if there are more pages
+          if (data.meta && data.meta.pagination) {
+            hasMorePages = page < data.meta.pagination.pageCount;
+            page++;
+          } else {
+            // If no pagination meta, assume no more pages
+            hasMorePages = false;
+          }
+        }
+        
+        return allData;
+      };
 
-      if (!couponsRes.ok || !accountsRes.ok || !usersRes.ok) {
-        throw new Error('Failed to fetch data');
-      }
-
+      // Fetch all data with pagination
       const [couponsData, accountsData, usersData] = await Promise.all([
-        couponsRes.json(),
-        accountsRes.json(),
-        usersRes.json()
+        fetchAllPages('/Coupons?populate=users_permissions_user&populate=AssignedFrom'),
+        fetchAllPages('/coupon-sys-accounts?'),
+        fetchAllPages('/users?')
       ]);
 
-      setCoupons(couponsData.data || couponsData);
-      setAccounts(accountsData.data || accountsData);
-      const influencers = (usersData.data || usersData).filter(user => user.roletype === 'Influencer');
+      setCoupons(couponsData);
+      setAccounts(accountsData);
+      const influencers = usersData.filter(user => user.roletype === 'Influencer');
       setUsers(influencers);
+      
     } catch (err) {
       setError(err.message);
     } finally {
