@@ -1,8 +1,21 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { RefreshCw, Hash, Eye, User } from 'lucide-react';
+import { RefreshCw, Eye, User, Hash } from 'lucide-react';
 import { AuthContext } from "../context/AuthContext";
+import QRCode from "qrcode";
+import QRDisplay from '../utils/QRDisplay';
+
+// Helper for QR downloading
+async function downloadQR(hash, filename) {
+    const canvas = document.createElement("canvas");
+    await QRCode.toCanvas(canvas, hash, { width: 512, margin: 1 });
+
+    const link = document.createElement("a");
+    link.download = `${filename}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+}
 
 const SellerCoupon = () => {
     const { user } = useContext(AuthContext);
@@ -170,18 +183,22 @@ const SellerCoupon = () => {
                             className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-3"
                             >
                             <div className="grid md:grid-cols-2 gap-6">
-                                {/* Left Column - Hash */}
+                                {/* Left Column */}
                                 <div className="space-y-3">
-                                <div className="flex items-center gap-2 mb-3">
-                                    <Hash className="w-5 h-5 max-[400px]:w-3 max-[400px]:h-3 text-indigo-600" />
+                                <div className="flex items-center gap-2 mb-2">
                                     <h3 className="font-semibold text-gray-800 text-xs max-[400px]:text-[10px] sm:text-base">
-                                    Coupon Hash
+                                    {coupon.Title}
                                     </h3>
                                 </div>
-                                <div className="bg-gray-50 rounded-lg p-4">
-                                    <code className="text-xs max-[400px]:text-[9px] sm:text-sm font-mono text-gray-800 break-all">
-                                    {coupon.Hash || "No hash available"}
-                                    </code>
+                                <div className="bg-gray-50 rounded-lg p-2 flex items-center gap-3">
+                                    <QRDisplay hash={coupon.Hash} className="w-20" />
+                                    <a
+                                        onClick={() => { downloadQR(coupon.Hash, coupon.Title) }}
+                                        className="text-dark bg-blue-200/50 rounded-xl p-2 flex items-center gap-1"
+                                        >
+                                        <i className="bi bi-box-arrow-in-down text-2xl me-1"></i>
+                                        <p className="mb-0 !no-underline">二维码下载</p>
+                                    </a>
                                 </div>
                                 </div>
 
