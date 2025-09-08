@@ -215,7 +215,7 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
                 placeholder="https://www.example.com"
                 value={formData.companyWebsite}
                 onChange={handleChange}
-                isInvalid={!!errors.companyDescription}
+                isInvalid={!!errors.companyWebsite}
               />
             </Form.Group>
           </Col>
