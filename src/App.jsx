@@ -254,7 +254,7 @@ function App() {
 
           <Route path='/dog' element={<ToolLinkPage />} />
           {/* ...test... */}
-          <Route path='/test-ranking' element={<InfluencerRanking />} />
+          <Route path='/ranking' element={<InfluencerRanking />} />
         </Routes>
       </div>
       {footer}
