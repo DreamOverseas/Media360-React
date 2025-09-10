@@ -29,16 +29,21 @@ const EventDetail = () => {
 
   const [showSuccessSubmissionModal, setShowSuccessSubmissionModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [targetLink, setTargetLink] = useState(null);
   const [loading, setLoading] = useState(false);
   const handleUpload = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
   useEffect(() => {
     const path = location.pathname.replace("/events/", "");
+    const clean_path = path.split('/')[0];
+    const link_target = path.split('/')[1];
+    setTargetLink(link_target);
+    console.log("Link", link_target);
     axios
       .get(`${BACKEND_HOST}/api/events`, {
         params: {
-          "filters[url]": path,
+          "filters[url]": clean_path,
           populate: "Image",
         },
       })
@@ -240,8 +245,8 @@ const EventDetail = () => {
       };
 
       
-      const portfolioFilesData = await uploadFiles(formData.portfolioFiles);
-      const personalImagesData = await uploadFiles(formData.personalImages);
+      // const portfolioFilesData = await uploadFiles(formData.portfolioFiles);
+      // const personalImagesData = await uploadFiles(formData.personalImages);
 
       const cleanData = (data) =>
         Object.fromEntries(Object.entries(data).filter(([_, value]) => {
@@ -276,16 +281,16 @@ const EventDetail = () => {
         
         
         Social_Media: formData.socialMedia,
-        Content_Categories: formData.contentCategories,
-        Past_Collaborations: formData.pastCollaborations,
-        Portfolio_Links: formData.portfolioLinks,
-        Portfolio_Files: portfolioFilesData.ids,
-        Personal_Introduction: formData.personalIntroduction,
-        Personal_Images:personalImagesData.ids,
+        // Content_Categories: formData.contentCategories,
+        // Past_Collaborations: formData.pastCollaborations,
+        // Portfolio_Links: formData.portfolioLinks,
+        // Portfolio_Files: portfolioFilesData.ids,
+        // Personal_Introduction: formData.personalIntroduction,
+        // Personal_Images:personalImagesData.ids,
         
         
         Preferred_Product_Categories: formData.preferredProductCategories,
-        Accepted_Promotion_Formats: formData.acceptedPromotionFormats,
+        // Accepted_Promotion_Formats: formData.acceptedPromotionFormats,
         Agree_To_Rules: formData.agreeToRules,
         Allow_Content_Usage: formData.allowContentUsage,
         
@@ -433,7 +438,7 @@ const EventDetail = () => {
 
       <div className="container mt-4">
         <h2 className="text-2xl font-bold mb-6">报名方式</h2>
-        <Tabs
+        {/* <Tabs
           id="registration-tabs"
           activeKey={activeTab}
           onSelect={(k) => setActiveTab(k)}
@@ -461,10 +466,76 @@ const EventDetail = () => {
             )}
           </Tab>
         </Tabs>
+        <div>
+          {loading ? (
+            <div className="text-center py-5">
+              <Spinner animation="border" size="lg" />
+              <p className="mt-3">正在上传，请稍候...</p>
+            </div>
+          ) : (
+            <>
+              {targetLink === "Merchant" ? (
+                <MerchantRegistrationForm onSubmit={handleMerchantRegistrationSubmit} />
+              ) : (
+                <InfluencerRegistrationForm onSubmit={handleInfluencerRegistrationSubmit} />
+              )}
+            </>
+          )}
+        </div> */}
+        {targetLink ? (
+          // 如果 targetLink 不为空，显示对应的单个表单
+          <div>
+            {loading ? (
+              <div className="text-center py-5">
+                <Spinner animation="border" size="lg" />
+                <p className="mt-3">正在上传，请稍候...</p>
+              </div>
+            ) : (
+              <>
+                {targetLink === "Merchant" ? (
+                  <MerchantRegistrationForm onSubmit={handleMerchantRegistrationSubmit} />
+                ) : (
+                  <InfluencerRegistrationForm onSubmit={handleInfluencerRegistrationSubmit} />
+                )}
+              </>
+            )}
+          </div>
+        ) : (
+          // 如果 targetLink 为空，显示 Tabs
+          <Tabs
+            id="registration-tabs"
+            activeKey={activeTab}
+            onSelect={(k) => setActiveTab(k)}
+            className="mb-4"
+          >
+            <Tab eventKey="merchant" title="商家/赞助商注册">
+              {loading ? (
+                <div className="text-center py-5">
+                  <Spinner animation="border" size="lg" />
+                  <p className="mt-3">正在上传，请稍候...</p>
+                </div>
+              ) : (
+                <MerchantRegistrationForm onSubmit={handleMerchantRegistrationSubmit} />
+              )}
+            </Tab>
+            
+            <Tab eventKey="influencer" title="网红达人注册">
+              {loading ? (
+                <div className="text-center py-5">
+                  <Spinner animation="border" size="lg" />
+                  <p className="mt-3">正在上传，请稍候...</p>
+                </div>
+              ) : (
+                <InfluencerRegistrationForm onSubmit={handleInfluencerRegistrationSubmit} />
+              )}
+            </Tab>
+          </Tabs>
+        )}
 
         {renderSuccessModal()}
         {renderErrorModal()}
       </div>
+      <br/>
     </div>
   );
 };
