@@ -5,107 +5,93 @@ import "./InfluencerRanking.css";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 
-// === Coupon fetching helper (user → coupons via coupon relation) ===
+// Coupon fetching helper
 const COUPON_PAGE_SIZE = 1000;
-const getCouponsForUser = async (userId) => {
-  try {
-    // Try server-side filter by relation key `users_permissions_user`
-    const url = `${BACKEND_HOST}/api/coupons?filters[users_permissions_user][id][$eq]=${userId}&populate=*&pagination[pageSize]=${COUPON_PAGE_SIZE}`;
-    const res = await axios.get(url);
-    const raw = Array.isArray(res.data?.data) ? res.data.data : (Array.isArray(res.data) ? res.data : []);
-    if (raw?.length) return raw;
 
-    // Fallback: fetch a page and filter by common relation keys on client
+const getCouponsForUser = async (userDocumentId) => {
+  try {
+    // Fetch coupons using documentId for user relation
+    const url = `${BACKEND_HOST}/api/coupons?filters[users_permissions_user][documentId][$eq]=${userDocumentId}&populate=*&pagination[pageSize]=${COUPON_PAGE_SIZE}`;
+    const res = await axios.get(url);
+    const coupons = res.data?.data || [];
+    
+    if (coupons.length) return coupons;
+
+    // Fallback: fetch all and filter client-side
     const resAll = await axios.get(`${BACKEND_HOST}/api/coupons?populate=*&pagination[pageSize]=${COUPON_PAGE_SIZE}`);
-    const all = Array.isArray(resAll.data?.data) ? resAll.data.data : (Array.isArray(resAll.data) ? resAll.data : []);
-    const belongsTo = (c) => {
-      const a = c?.attributes || c || {};
-      const relId =
-        a?.users_permissions_user?.data?.id ??
-        a?.user?.data?.id ??
-        a?.influencer?.data?.id ??
-        a?.owner?.data?.id ??
-        a?.users_permissions_user?.id ??
-        a?.user?.id ??
-        a?.influencer?.id ??
-        a?.owner?.id;
-      return relId === userId;
-    };
-    return all.filter(belongsTo);
+    const allCoupons = resAll.data?.data || [];
+    
+    return allCoupons.filter(coupon => 
+      coupon.users_permissions_user?.documentId === userDocumentId
+    );
   } catch (e) {
-    console.error("Failed to fetch coupons for user", userId, e);
+    console.error("Failed to fetch coupons for user", userDocumentId, e);
     return [];
   }
 };
 
-// Calculate score by summing the 'Scanned' field from all coupons of the user
+// Calculate score from Scanned field
 const calcScoreFromCoupons = (coupons) => {
   if (!Array.isArray(coupons)) return 0;
-  return coupons.reduce((total, c) => {
-    const a = c?.attributes || c || {};
-    const scanned =
-      a?.Scanned ?? a?.scanned ?? a?.scans ?? 0;
-    const n = Number(scanned);
-    return total + (Number.isFinite(n) ? n : 0);
+  
+  return coupons.reduce((total, coupon) => {
+    const scanned = coupon.Scanned || 0;
+    return total + (Number.isFinite(scanned) ? scanned : 0);
   }, 0);
 };
 
-// Extract possible shop/brand name from a coupon record (best-effort across schemas)
-const getShopNameFromCoupon = (c) => {
-  const a = c?.attributes || c || {};
-  // AssignedFrom relation (common)
-  const af = a.AssignedFrom?.data?.attributes || a.assignedFrom?.data?.attributes || a.assigned_from?.data?.attributes;
-  const afName = af?.name || af?.Name || af?.title || af?.Title;
-  if (afName) return afName;
-  // coupon_sys_account relation sometimes carries a title/name
-  const csa = a.coupon_sys_account?.data?.attributes || a.couponSysAccount?.data?.attributes;
-  const csaName = csa?.title || csa?.Title || csa?.name || csa?.Name;
-  if (csaName) return csaName;
-  // Fallback to coupon title containing shop name pattern
-  const t = a.title || a.Title || "";
-  if (t) return t;
-  return null;
+// Extract shop name from coupon
+const getShopNameFromCoupon = (coupon) => {
+  // From AssignedFrom relation
+  const assignedFromName = coupon.AssignedFrom?.Name;
+  if (assignedFromName) return assignedFromName;
+  
+  // From coupon title as fallback
+  const title = coupon.Title || "";
+  if (title) return title;
+  
+  return "未知商家";
 };
 
 const dedupe = (arr) => Array.from(new Set(arr.filter(Boolean)));
 
-// 获取所有 roletype 为 Influencer 的用户，并展开 influencer_profile
+// Fetch all influencers
 const fetchAllInfluencers = async () => {
   try {
     const res = await axios.get(
       `${BACKEND_HOST}/api/users?filters[roletype][$eq]=Influencer&populate[influencer_profile][populate]=*&pagination[pageSize]=100`
     );
-    const users = (res.data || []);
+    const users = res.data || [];
 
-    // For each influencer, fetch coupons via coupon→user relation and compute score
     const enriched = await Promise.all(
-      users.map(async (u) => {
-        const profile = u.influencer_profile;
+      users.map(async (user) => {
+        const profile = user.influencer_profile;
         const details = profile?.personal_details;
-        let avatar = profile?.avatar?.url
-          ? profile.avatar.url.startsWith("http")
-            ? profile.avatar.url
-            : BACKEND_HOST + profile.avatar.url
-          : "https://placehold.co/100x100";
-        if (details?.avatar) avatar = details.avatar;
+        
+        let avatar = profile?.avatar?.url;
+        if (avatar && !avatar.startsWith("http")) {
+          avatar = BACKEND_HOST + avatar;
+        }
+        if (!avatar) {
+          avatar = details?.avatar || "https://placehold.co/100x100";
+        }
 
-        const coupons = await getCouponsForUser(u.id);
+        const coupons = await getCouponsForUser(user.documentId);
         const score = calcScoreFromCoupons(coupons);
 
         return {
-          id: u.id,
-          name: details?.name || u.username || "未知",
+          documentId: user.documentId,
+          name: details?.name || user.username || "未知",
           avatar,
           score,
           category: Array.isArray(details?.categories)
             ? details.categories.join(", ")
             : "未知",
-          followers:
-            typeof details?.followers === "object"
-              ? Object.entries(details.followers)
-                  .map(([k, v]) => `${k}: ${v}`)
-                  .join(" / ")
-              : "0",
+          followers: typeof details?.followers === "object"
+            ? Object.entries(details.followers)
+                .map(([platform, count]) => `${platform}: ${count}`)
+                .join(" / ")
+            : "0",
           location: details?.location || "",
           contact_email: details?.contact_email || "",
           gender: details?.gender || "",
@@ -124,10 +110,6 @@ const fetchAllInfluencers = async () => {
   }
 };
 
-const fetchInfluencerData = async () => {
-  return await fetchAllInfluencers();
-};
-
 const InfluencerRanking = () => {
   const [influencers, setInfluencers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -136,16 +118,17 @@ const InfluencerRanking = () => {
   const [selectedShops, setSelectedShops] = useState([]);
   const [selectedCouponsLoading, setSelectedCouponsLoading] = useState(false);
 
-  const handleShowModal = async (inf) => {
-    setSelected(inf);
+  const handleShowModal = async (influencer) => {
+    setSelected(influencer);
     setShowModal(true);
     setSelectedCouponsLoading(true);
+    
     try {
-      const coupons = await getCouponsForUser(inf.id);
+      const coupons = await getCouponsForUser(influencer.documentId);
       const shops = dedupe(coupons.map(getShopNameFromCoupon));
       setSelectedShops(shops);
     } catch (e) {
-      console.error("[Ranking] failed to fetch coupons for selected influencer", e);
+      console.error("Failed to fetch coupons for selected influencer", e);
       setSelectedShops([]);
     } finally {
       setSelectedCouponsLoading(false);
@@ -155,14 +138,16 @@ const InfluencerRanking = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setSelected(null);
+    setSelectedShops([]);
   };
 
   useEffect(() => {
     let isMounted = true;
 
-    const load = async () => {
+    const loadInfluencers = async () => {
       const data = await fetchAllInfluencers();
       data.sort((a, b) => b.score - a.score);
+      
       if (isMounted) {
         setInfluencers(data);
         setIsLoading(false);
@@ -170,10 +155,10 @@ const InfluencerRanking = () => {
     };
 
     // Initial load
-    load();
+    loadInfluencers();
 
-    // Periodic refresh from backend
-    const timer = setInterval(load, 10000); // 10s
+    // Periodic refresh every 10 seconds
+    const timer = setInterval(loadInfluencers, 10000);
 
     return () => {
       isMounted = false;
@@ -221,30 +206,30 @@ const InfluencerRanking = () => {
           <div className='section-divider'></div>
         </div>
         <div className='podium-container'>
-          {top3.map((inf, idx) => (
+          {top3.map((influencer, idx) => (
             <div
-              key={inf.id}
+              key={influencer.documentId}
               className={`podium-item podium-${
                 ["first", "second", "third"][idx]
               }`}
-              onClick={() => handleShowModal(inf)}
+              onClick={() => handleShowModal(influencer)}
               style={{ cursor: "pointer" }}
             >
               <div className='podium-rank'>{idx + 1}</div>
               <div className='podium-avatar-container'>
                 <img
-                  src={inf.avatar}
-                  alt={inf.name}
+                  src={influencer.avatar}
+                  alt={influencer.name}
                   className='podium-avatar'
                 />
                 <div className='podium-glow'></div>
               </div>
               <div className='podium-info'>
-                <h3 className='podium-name'>{inf.name}</h3>
-                <p className='podium-category'>{inf.category}</p>
-                <p className='podium-followers'>{inf.followers}</p>
-                <p className='podium-location'>{inf.location}</p>
-                <div className='podium-score'>{inf.score}</div>
+                <h3 className='podium-name'>{influencer.name}</h3>
+                <p className='podium-category'>{influencer.category}</p>
+                <p className='podium-followers'>{influencer.followers}</p>
+                <p className='podium-location'>{influencer.location}</p>
+                <div className='podium-score'>{influencer.score}</div>
               </div>
             </div>
           ))}
@@ -259,28 +244,28 @@ const InfluencerRanking = () => {
             <div className='section-divider'></div>
           </div>
           <div className='leaderboard-container'>
-            {others.map((inf, idx) => (
+            {others.map((influencer, idx) => (
               <div
-                key={inf.id}
+                key={influencer.documentId}
                 className='leaderboard-item'
-                onClick={() => handleShowModal(inf)}
+                onClick={() => handleShowModal(influencer)}
                 style={{ cursor: "pointer" }}
               >
                 <div className='leaderboard-rank'>{idx + 4}</div>
                 <div className='leaderboard-avatar-container'>
                   <img
-                    src={inf.avatar}
-                    alt={inf.name}
+                    src={influencer.avatar}
+                    alt={influencer.name}
                     className='leaderboard-avatar'
                   />
                 </div>
                 <div className='leaderboard-info'>
-                  <h4 className='leaderboard-name'>{inf.name}</h4>
-                  <p className='leaderboard-category'>{inf.category}</p>
-                  <p className='leaderboard-followers'>{inf.followers}</p>
-                  <p className='leaderboard-location'>{inf.location}</p>
+                  <h4 className='leaderboard-name'>{influencer.name}</h4>
+                  <p className='leaderboard-category'>{influencer.category}</p>
+                  <p className='leaderboard-followers'>{influencer.followers}</p>
+                  <p className='leaderboard-location'>{influencer.location}</p>
                 </div>
-                <div className='leaderboard-score'>{inf.score}</div>
+                <div className='leaderboard-score'>{influencer.score}</div>
               </div>
             ))}
           </div>
@@ -310,13 +295,9 @@ const InfluencerRanking = () => {
         <p>Rankings update every 10 seconds • Live Competition</p>
       </div>
 
-      {/* 人物信息弹窗 */}
+      {/* Influencer Details Modal */}
       <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Header
-          closeButton
-          className='!border-b-0 !pb-0'
-          style={{ border: "none" }}
-        >
+        <Modal.Header closeButton className='!border-b-0 !pb-0' style={{ border: "none" }}>
           <Modal.Title>
             <span className='text-xl font-bold text-gray-800'>
               {selected?.name || "人物信息"}
@@ -349,9 +330,7 @@ const InfluencerRanking = () => {
                 <span className='font-semibold text-gray-600'>邮箱：</span>
                 <span className='text-gray-800'>{selected.contact_email}</span>
                 <span className='font-semibold text-gray-600'>分数：</span>
-                <span className='text-blue-600 font-bold'>
-                  {selected.score}
-                </span>
+                <span className='text-blue-600 font-bold'>{selected.score}</span>
               </div>
               <div className='w-full mt-4'>
                 <div className='flex items-center justify-between mb-2'>
@@ -364,12 +343,12 @@ const InfluencerRanking = () => {
                   <div className='text-sm text-gray-500'>暂无关联商家</div>
                 ) : (
                   <div className='flex flex-wrap gap-2'>
-                    {selectedShops.map((s, i) => (
+                    {selectedShops.map((shop, i) => (
                       <span
-                        key={`${s}-${i}`}
+                        key={`${shop}-${i}`}
                         className='px-2 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded text-xs'
                       >
-                        {s}
+                        {shop}
                       </span>
                     ))}
                   </div>
