@@ -13,16 +13,16 @@ const initialInfluencerFormData = {
   socialMedia: [], // 多选平台
   
   // 内容及经验
-  contentCategories: [],
-  pastCollaborations: "",
-  portfolioLinks: "",
-  portfolioFiles: [],
-  personalIntroduction: "",
-  personalImages: [],
+  // contentCategories: [],
+  // pastCollaborations: "",
+  // portfolioLinks: "",
+  // portfolioFiles: [],
+  // personalIntroduction: "",
+  // personalImages: [],
   
   // 大赛相关信息
   preferredProductCategories: [],
-  acceptedPromotionFormats: [], // checkbox形式
+  // acceptedPromotionFormats: [], // checkbox形式
   agreeToRules: false, // checkbox
   allowContentUsage: false, // checkbox
   
@@ -197,27 +197,27 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
       });
     }
 
-    // 内容及经验验证
-    if (formData.contentCategories.length === 0) {
-      newErrors.contentCategories = "请至少选择一个主要创作领域";
-    }
+    // // 内容及经验验证
+    // if (formData.contentCategories.length === 0) {
+    //   newErrors.contentCategories = "请至少选择一个主要创作领域";
+    // }
 
-    if (!formData.personalIntroduction.trim()) {
-      newErrors.personalIntroduction = "个人介绍不能为空";
-    }
+    // if (!formData.personalIntroduction.trim()) {
+    //   newErrors.personalIntroduction = "个人介绍不能为空";
+    // }
 
-    if (formData.personalImages.length < 3) {
-      newErrors.personalImages = "请上传至少三张个人形象照片";
-    }
+    // if (formData.personalImages.length < 3) {
+    //   newErrors.personalImages = "请上传至少三张个人形象照片";
+    // }
 
     // 大赛相关信息验证
     if (formData.preferredProductCategories.length === 0) {
       newErrors.preferredProductCategories = "请至少选择一个愿意宣传的商品/服务类别";
     }
 
-    if (formData.acceptedPromotionFormats.length === 0) {
-      newErrors.acceptedPromotionFormats = "请至少选择一种接受的推广形式";
-    }
+    // if (formData.acceptedPromotionFormats.length === 0) {
+    //   newErrors.acceptedPromotionFormats = "请至少选择一种接受的推广形式";
+    // }
 
     if (!formData.agreeToRules) {
       newErrors.agreeToRules = "请同意遵守比赛规则";
@@ -427,7 +427,7 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
       </div>
 
       {/* 内容及经验 */}
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <h4>内容及经验</h4>
         
         <Form.Group className="mb-3">
@@ -582,7 +582,7 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
           )}
         </Form.Group>
 
-      </div>
+      </div> */}
 
       {/* 大赛相关信息 */}
       <div className="mb-4">
@@ -619,7 +619,7 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
           {errors.preferredProductCategories && <div className="text-danger small">{errors.preferredProductCategories}</div>}
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        {/* <Form.Group className="mb-3">
           <Form.Label>接受的推广形式 * (可多选)</Form.Label>
           <div className={`border rounded p-3 ${errors.acceptedPromotionFormats ? 'border-danger' : ''}`}>
             <Form.Check
@@ -648,7 +648,7 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
             />
           </div>
           {errors.acceptedPromotionFormats && <div className="text-danger small">{errors.acceptedPromotionFormats}</div>}
-        </Form.Group>
+        </Form.Group> */}
 
         <div className="mb-3">
           <h5>参赛承诺</h5>

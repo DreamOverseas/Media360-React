@@ -175,6 +175,7 @@ function App() {
             element={<MerchantPromotion />}
           />
           <Route exact path='/events/:name' element={<EventDetail />} />
+          <Route exact path='/events/2025-Influencer-Contest/:name' element={<Whds />} />
           <Route exact path='/events/2025-Influencer-Contest' element={<Whds />} />
 
           <Route
