@@ -84,6 +84,7 @@ const fetchAllInfluencers = async () => {
           name: details?.name || user.username || "未知",
           avatar,
           score,
+          admin_score: user.admin_score,
           category: Array.isArray(details?.categories)
             ? details.categories.join(", ")
             : "未知",
@@ -146,7 +147,7 @@ const InfluencerRanking = () => {
 
     const loadInfluencers = async () => {
       const data = await fetchAllInfluencers();
-      data.sort((a, b) => b.score - a.score);
+      data.sort((a, b) => (b.score + b.admin_score) - (a.score + a.admin_score));
       
       if (isMounted) {
         setInfluencers(data);
@@ -229,7 +230,7 @@ const InfluencerRanking = () => {
                 <p className='podium-category'>{influencer.category}</p>
                 <p className='podium-followers'>{influencer.followers}</p>
                 <p className='podium-location'>{influencer.location}</p>
-                <div className='podium-score'>{influencer.score}</div>
+                <div className='podium-score'>{influencer.score + influencer.admin_score}</div>
               </div>
             </div>
           ))}
@@ -265,7 +266,7 @@ const InfluencerRanking = () => {
                   <p className='leaderboard-followers'>{influencer.followers}</p>
                   <p className='leaderboard-location'>{influencer.location}</p>
                 </div>
-                <div className='leaderboard-score'>{influencer.score}</div>
+                <div className='leaderboard-score'>{influencer.score + influencer.admin_score}</div>
               </div>
             ))}
           </div>
@@ -329,8 +330,12 @@ const InfluencerRanking = () => {
                 <span className='text-gray-800'>{selected.followers}</span>
                 <span className='font-semibold text-gray-600'>邮箱：</span>
                 <span className='text-gray-800'>{selected.contact_email}</span>
-                <span className='font-semibold text-gray-600'>分数：</span>
+                <span className='font-semibold text-gray-600'>总分：</span>
+                <span className='text-blue-600 font-bold'>{selected.score + selected.admin_score}</span>
+                <span className='font-semibold text-gray-600'>商家扫码分：</span>
                 <span className='text-blue-600 font-bold'>{selected.score}</span>
+                <span className='font-semibold text-gray-600'>组委会加分：</span>
+                <span className='text-blue-600 font-bold'>{selected.admin_score}</span>
               </div>
               <div className='w-full mt-4'>
                 <div className='flex items-center justify-between mb-2'>
