@@ -3,7 +3,7 @@ import { Button, Row, Col, Form } from "react-bootstrap";
 
 const initialMerchantFormData = {
   companyName: "",
-  businessLicense: [],
+  // businessLicense: [],
   industryCategory: "",
   contactPersonFirstName: "",
   contactPersonLastName: "",
@@ -11,12 +11,12 @@ const initialMerchantFormData = {
   phone: "",
   companyDescription: "",
   companyWebsite: "",
-  productDescription: "",
-  productImages: [],
-  targetAudience: "",
-  marketingBudget: "",
-  campaignGoals: "",
-  additionalRequirements: "",
+  // productDescription: "",
+  // productImages: [],
+  // targetAudience: "",
+  // marketingBudget: "",
+  // campaignGoals: "",
+  // additionalRequirements: "",
   from: "360 Influencer Contest merchant registration"
 }
 
@@ -129,18 +129,18 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
     }
 
     // 资格证书验证
-    if (formData.businessLicense.length === 0) {
-      newErrors.businessLicense = "请上传至少一张资格证书";
-    }
+    // if (formData.businessLicense.length === 0) {
+    //   newErrors.businessLicense = "请上传至少一张资格证书";
+    // }
 
     // 产品信息验证
-    if (!formData.productDescription.trim()) {
-      newErrors.productDescription = "产品/服务描述不能为空";
-    }
+    // if (!formData.productDescription.trim()) {
+    //   newErrors.productDescription = "产品/服务描述不能为空";
+    // }
     
-    if (formData.productImages.length < 3) {
-      newErrors.productImages = "请上传至少三张产品图片";
-    }
+    // if (formData.productImages.length < 3) {
+    //   newErrors.productImages = "请上传至少三张产品图片";
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -224,7 +224,7 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
         <Row className="mb-3">
           <Col md={12}>
             <Form.Group>
-              <Form.Label>公司描述</Form.Label>
+              <Form.Label>公司描述 *</Form.Label>
               <Form.Control
                 as="textarea"
                 name="companyDescription"
@@ -232,6 +232,7 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
                 placeholder="简要描述您的公司业务、品牌理念和发展历程"
                 value={formData.companyDescription}
                 onChange={handleChange}
+                isInvalid={!!errors.companyDescription}
               />
             </Form.Group>
           </Col>
@@ -305,7 +306,7 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
       </div>
 
       {/* 资格证书 */}
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <h4>资格证书</h4>
         <Form.Group className="mb-3">
           <Form.Label>营业执照/资格证书 *</Form.Label>
@@ -342,10 +343,10 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
             </div>
           )}
         </Form.Group>
-      </div>
+      </div> */}
 
       {/* 产品/服务信息 */}
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <h4>推广产品/服务</h4>
         <Form.Group className="mb-3">
           <Form.Label>产品/服务描述 *</Form.Label>
@@ -396,10 +397,10 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
             </div>
           )}
         </Form.Group>
-      </div>
+      </div> */}
 
       {/* 推广需求 */}
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <h4>推广需求</h4>
         <Row className="mb-3">
           <Col md={6}>
@@ -456,7 +457,7 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
             onChange={handleChange}
           />
         </Form.Group>
-      </div>
+      </div> */}
 
       <div className="d-grid gap-2">
         <Button variant="primary" type="submit" size="lg">
