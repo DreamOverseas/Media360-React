@@ -139,17 +139,17 @@ const EventDetail = () => {
         };
       };
     
-      const [businessLicenseData, productImageData] = await Promise.all([
-        uploadFiles(formData.businessLicense),
-        uploadFiles(formData.productImages),
-      ]);
+      // const [businessLicenseData, productImageData] = await Promise.all([
+      //   uploadFiles(formData.businessLicense),
+      //   uploadFiles(formData.productImages),
+      // ]);
   
       const cleanData = (data) =>
         Object.fromEntries(Object.entries(data).filter(([_, value]) => value && value.length > 0));
   
       const finalFormData = cleanData({
         Company_Name: formData.companyName,
-        Business_License: businessLicenseData.ids,
+        // Business_License: businessLicenseData.ids,
         Industry_Category: formData.industryCategory,
         Contact_Person_First_Name: formData.contactPersonFirstName,
         Contact_Person_Last_Name: formData.contactPersonLastName,
@@ -157,12 +157,12 @@ const EventDetail = () => {
         Phone: formData.phone,
         Company_Description: formData.companyDescription,
         Company_Website: formData.companyWebsite,
-        Product_Description: formData.productDescription,
-        Product_Images: productImageData.ids,
-        Target_Audience: formData.targetAudience,
-        Marketing_Budget: formData.marketingBudget,
-        Campaign_Goals: formData.campaignGoals,
-        Additional_Requirements: formData.additionalRequirements,
+        // Product_Description: formData.productDescription,
+        // Product_Images: productImageData.ids,
+        // Target_Audience: formData.targetAudience,
+        // Marketing_Budget: formData.marketingBudget,
+        // Campaign_Goals: formData.campaignGoals,
+        // Additional_Requirements: formData.additionalRequirements,
         From: formData.from
       });
   
@@ -177,7 +177,7 @@ const EventDetail = () => {
         });
   
       const result = await response.json();
-      console.log(result);
+      // console.log(result);
       if (response.ok) {
         const firstName = finalFormData.Contact_Person_First_Name;
         const lastName = finalFormData.Contact_Person_Last_Name;
@@ -438,53 +438,9 @@ const EventDetail = () => {
 
       <div className="container mt-4">
         <h2 className="text-2xl font-bold mb-6">报名方式</h2>
-        {/* <Tabs
-          id="registration-tabs"
-          activeKey={activeTab}
-          onSelect={(k) => setActiveTab(k)}
-          className="mb-4"
-        >
-          <Tab eventKey="merchant" title="商家/赞助商注册">
-            {loading ? (
-              <div className="text-center py-5">
-                <Spinner animation="border" size="lg" />
-                <p className="mt-3">正在上传，请稍候...</p>
-              </div>
-            ) : (
-              <MerchantRegistrationForm onSubmit={handleMerchantRegistrationSubmit} />
-            )}
-          </Tab>
-          
-          <Tab eventKey="influencer" title="网红达人注册">
-            {loading ? (
-              <div className="text-center py-5">
-                <Spinner animation="border" size="lg" />
-                <p className="mt-3">正在上传，请稍候...</p>
-              </div>
-            ) : (
-              <InfluencerRegistrationForm onSubmit={handleInfluencerRegistrationSubmit} />
-            )}
-          </Tab>
-        </Tabs>
-        <div>
-          {loading ? (
-            <div className="text-center py-5">
-              <Spinner animation="border" size="lg" />
-              <p className="mt-3">正在上传，请稍候...</p>
-            </div>
-          ) : (
-            <>
-              {targetLink === "Merchant" ? (
-                <MerchantRegistrationForm onSubmit={handleMerchantRegistrationSubmit} />
-              ) : (
-                <InfluencerRegistrationForm onSubmit={handleInfluencerRegistrationSubmit} />
-              )}
-            </>
-          )}
-        </div> */}
         {targetLink ? (
           // 如果 targetLink 不为空，显示对应的单个表单
-          <div>
+          <div className="border-gray-200 border p-3 rounded">
             {loading ? (
               <div className="text-center py-5">
                 <Spinner animation="border" size="lg" />
