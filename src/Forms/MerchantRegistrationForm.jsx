@@ -245,20 +245,6 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
         <Row className="mb-3">
           <Col md={6}>
             <Form.Group>
-              <Form.Label>负责人名字 *</Form.Label>
-              <Form.Control
-                type="text"
-                name="contactPersonFirstName"
-                placeholder="输入名字"
-                value={formData.contactPersonFirstName}
-                onChange={handleChange}
-                isInvalid={!!errors.contactPersonFirstName}
-              />
-              <Form.Control.Feedback type="invalid">{errors.contactPersonFirstName}</Form.Control.Feedback>
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group>
               <Form.Label>负责人姓 *</Form.Label>
               <Form.Control
                 type="text"
@@ -271,6 +257,21 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
               <Form.Control.Feedback type="invalid">{errors.contactPersonLastName}</Form.Control.Feedback>
             </Form.Group>
           </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>负责人名 *</Form.Label>
+              <Form.Control
+                type="text"
+                name="contactPersonFirstName"
+                placeholder="输入名"
+                value={formData.contactPersonFirstName}
+                onChange={handleChange}
+                isInvalid={!!errors.contactPersonFirstName}
+              />
+              <Form.Control.Feedback type="invalid">{errors.contactPersonFirstName}</Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+          
         </Row>
 
         <Row className="mb-3">
