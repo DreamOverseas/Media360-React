@@ -262,7 +262,7 @@ const Profile = () => {
   }, [user]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* 左侧菜单 */}
@@ -277,7 +277,7 @@ const Profile = () => {
 
           {/* 右侧内容 */}
           <div className="lg:col-span-3">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
               {activeTab === "profile" && (
                 <EnhancedProfileInfoSection 
                   user={user} 
