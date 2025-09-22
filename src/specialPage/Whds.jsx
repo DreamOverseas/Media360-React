@@ -379,7 +379,7 @@ const EventDetail = () => {
           alt="Event Banner"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+        <div className="absolute p-4 inset-0 bg-black/40 flex items-center justify-center">
           <h1 className="text-3xl md:text-5xl font-bold text-white drop-shadow-lg">
             {language === "zh"
               ? eventAttributes.Name_zh || "N/A"
