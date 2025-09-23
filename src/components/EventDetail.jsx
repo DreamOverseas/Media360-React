@@ -89,26 +89,21 @@ const EventDetail = () => {
   };
 
   return (
-    <div>
-      {/* <section className='event-detail-background-image-container'>
-        <Container className='event-banner-wrapper'>
-          <Image
-            src={`${BACKEND_HOST}${EventImage}`}
-            alt='Event Banner'
-            className='event-banner-image'
-          /> */}
-          {/* <div className='banner-text'>
-            <h1 className='event-title'>
-              {language === "zh"
-                ? eventAttributes.Name_zh || "N/A"
-                : eventAttributes.Name_en || "N/A"}
-            </h1>
-            <h2 className='event-subtitle'>{t("The Lifetimes Tour")}</h2>
-          </div> */}
-        {/* </Container>
-      </section>
-
-      <br /> */}
+    <div className="w-full bg-gray-50">
+      <div className="relative w-full h-[300px] md:h-[400px] overflow-hidden">
+        <img
+          src={`${BACKEND_HOST}${EventImage}`}
+          alt="Event Banner"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute p-4 inset-0 bg-black/40 flex items-center justify-center">
+          <h1 className="text-3xl md:text-5xl font-bold text-white drop-shadow-lg">
+            {language === "zh"
+              ? eventAttributes.Name_zh || "N/A"
+              : eventAttributes.Name_en || "N/A"}
+          </h1>
+        </div>
+      </div>
 
       {/* Main Content Section */}
       <section>
@@ -182,14 +177,6 @@ const EventDetail = () => {
           </Row>
         </Container>
       </section>
-
-      <div className="floating-register-btn">
-        {isEventEnded() ? (
-          <Button variant="secondary" disabled>{t("eventEnded")}</Button>
-        ) : (
-          <Button variant="primary">{t("registerNow")}</Button>
-        )}
-      </div>
     </div>
   );
 };
