@@ -172,9 +172,9 @@ const EventDetail = () => {
             </h1>
           </Row>
           <Row>
-            <div className='markdown-content'>
+            <div className="prose prose-lg prose-indigo max-w-none">
               {Description !== "N/A" ? (
-                <ReactMarkdown>{Description}</ReactMarkdown>
+                <div dangerouslySetInnerHTML={{ __html: Description }} />
               ) : (
                 <p>{t("noDescription")}</p>
               )}
