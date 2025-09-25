@@ -193,7 +193,7 @@ const resources = {
       kol: "意见领袖",
       event: "活动",
       contact: "联系我们",
-      networks: "人脉资源",
+      networks: "资源",
       follow_us:"关注我们",
       quick_links:"快捷链接",
       joinus: "加入我们",
