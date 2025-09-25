@@ -50,7 +50,15 @@ const Header = () => {
               <NavDropdown.Item href='/news'>新闻</NavDropdown.Item>
               <NavDropdown.Item href='/events'>活动</NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href='/networks'>{t("人脉资源")}</Nav.Link>
+            <NavDropdown
+              title={t("资源")}
+              id='networks-dropdown'
+              className='dropdown-container'
+            >
+              <NavDropdown.Item href='/influencer'>网红</NavDropdown.Item>
+              <NavDropdown.Item href='/group'>社团</NavDropdown.Item>
+            </NavDropdown>
+            {/* <Nav.Link href='/networks'>{t("资源")}</Nav.Link> */}
             <Nav.Link href='/about-us'>{t("About_us")}</Nav.Link>
             {/* <Nav.Link href='/join-us'>{t("joinus")}</Nav.Link> */}
 

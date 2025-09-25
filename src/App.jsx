@@ -58,6 +58,7 @@ import ShoppingCart from "./pages/ShoppingCart.jsx";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import WeChatBlocker from "./utils/WeChatBlocker.jsx";
 import Whds from "./specialPage/Whds.jsx";
+import Group from "./pages/Group.jsx";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -204,7 +205,9 @@ function App() {
           />
 
           <Route path='/join-us' element={<Recruitment />} />
-          <Route path='/networks' element={<Networks />} />
+          {/* <Route path='/networks' element={<Networks />} /> */}
+          <Route path='/influencer' element={<Networks />} />
+          <Route path='/group' element={<Group />} />
           <Route path='/media-center' element={<MediaCenter />} />
           <Route path='/news' element={<NewsPage />} />
           <Route
