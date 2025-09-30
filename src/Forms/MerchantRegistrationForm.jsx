@@ -11,12 +11,15 @@ const initialMerchantFormData = {
   phone: "",
   companyDescription: "",
   companyWebsite: "",
+  sponsorshipFormat: "",
+  exclusive: "",
+  reference: "",
   // productDescription: "",
   // productImages: [],
   // targetAudience: "",
   // marketingBudget: "",
   // campaignGoals: "",
-  // additionalRequirements: "",
+  additionalRequirements: "",
   from: "360 Influencer Contest merchant registration"
 }
 
@@ -127,6 +130,8 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
     } else if (!/^\d{10,15}$/.test(formData.phone)) {
       newErrors.phone = "电话格式不正确";
     }
+
+    if (!formData.sponsorshipFormat.trim()) newErrors.sponsorshipFormat = "请填写赞助形式";
 
     // 资格证书验证
     // if (formData.businessLicense.length === 0) {
@@ -400,11 +405,11 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
         </Form.Group>
       </div> */}
 
-      {/* 推广需求 */}
-      {/* <div className="mb-4">
-        <h4>推广需求</h4>
-        <Row className="mb-3">
-          <Col md={6}>
+      {/* 代言条款 */}
+      <div className="mb-4">
+        <h4>入驻条款</h4>
+        {/* <Row className="mb-3"> */}
+          {/* <Col md={6}>
             <Form.Group>
               <Form.Label>目标受众</Form.Label>
               <Form.Control
@@ -432,33 +437,59 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
                 <option value="Over_100k">100000元以上</option>
               </Form.Select>
             </Form.Group>
-          </Col>
-        </Row>
+          </Col> */}
+        {/* </Row> */}
 
         <Form.Group className="mb-3">
-          <Form.Label>推广目标</Form.Label>
+          <Form.Label>赞助形式 *</Form.Label>
           <Form.Control
             as="textarea"
-            name="campaignGoals"
+            name="sponsorshipFormat"
             rows={3}
-            placeholder="请描述您希望通过网红推广达到的目标，如品牌曝光、销量提升、用户增长等"
-            value={formData.campaignGoals}
+            placeholder="填写您意向的赞助方式:商品/服务，法币，数字货币并填写实际估值的价格"
+            value={formData.sponsorshipFormat}
+            onChange={handleChange}
+            isInvalid={!!errors.sponsorshipFormat}
+          />
+          <Form.Control.Feedback type="invalid">{errors.sponsorshipFormat}</Form.Control.Feedback>
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>独家赞助</Form.Label>
+          <Form.Control
+            as="textarea"
+            name="exclusive"
+            rows={3}
+            placeholder="如您希望就某个领域独家赞助，请填写实际估值的价格 （选填）"
+            value={formData.exclusive}
             onChange={handleChange}
           />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>其他要求</Form.Label>
+          <Form.Label>推荐网红</Form.Label>
+          <Form.Control
+            as="textarea"
+            name="reference"
+            rows={2}
+            placeholder="如您希望自己推荐网红，请填写网红的信息以及联系方式（选填）"
+            value={formData.reference}
+            onChange={handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>赞助额外条件</Form.Label>
           <Form.Control
             as="textarea"
             name="additionalRequirements"
             rows={2}
-            placeholder="对网红的特殊要求或合作期望（选填）"
+            placeholder="如您有特殊的赞助方式请填写详细信息例如分红、形式（选填）"
             value={formData.additionalRequirements}
             onChange={handleChange}
           />
         </Form.Group>
-      </div> */}
+      </div>
 
       <div className="d-grid gap-2">
         <Button variant="primary" type="submit" size="lg">

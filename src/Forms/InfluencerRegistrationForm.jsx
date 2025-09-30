@@ -14,7 +14,7 @@ const initialInfluencerFormData = {
   
   // 内容及经验
   // contentCategories: [],
-  // pastCollaborations: "",
+  pastCollaborations: "",
   // portfolioLinks: "",
   // portfolioFiles: [],
   // personalIntroduction: "",
@@ -23,9 +23,10 @@ const initialInfluencerFormData = {
   // 大赛相关信息
   preferredProductCategories: [],
   // acceptedPromotionFormats: [], // checkbox形式
+  training: "",
+  additionalRequirements: "",
   agreeToRules: false, // checkbox
   allowContentUsage: false, // checkbox
-  
   from: "360 Influencer Contest influencer registration"
 };
 
@@ -82,6 +83,13 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
     });
     
     setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "" }));
+  };
+
+  const handleCheckbox = (value) => {
+    setFormData({
+      ...formData,
+      training: value,
+    });
   };
 
   // 处理作品文件上传
@@ -211,13 +219,16 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
     // }
 
     // 大赛相关信息验证
-    if (formData.preferredProductCategories.length === 0) {
-      newErrors.preferredProductCategories = "请至少选择一个愿意宣传的商品/服务类别";
-    }
+    // if (formData.preferredProductCategories.length === 0) {
+    //   newErrors.preferredProductCategories = "请至少选择一个愿意宣传的商品/服务类别";
+    // }
 
     // if (formData.acceptedPromotionFormats.length === 0) {
     //   newErrors.acceptedPromotionFormats = "请至少选择一种接受的推广形式";
     // }
+    if (!formData.training || (formData.training !== 'need' && formData.training !== 'no_need')) {
+      newErrors.training = '请选择是否需要培训服务';
+    }
 
     if (!formData.agreeToRules) {
       newErrors.agreeToRules = "请同意遵守比赛规则";
@@ -287,8 +298,6 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
                 type="number"
                 name="age"
                 placeholder="年龄"
-                min="13"
-                max="100"
                 value={formData.age}
                 onChange={handleChange}
                 isInvalid={!!errors.age}
@@ -350,7 +359,6 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
       {/* 社交媒体信息 */}
       <div className="mb-4">
         <h4>社交媒体信息</h4>
-        
         <Form.Group className="mb-3">
           <Form.Label>媒体账号 *</Form.Label>
           {formData.socialMedia.map((account, index) => (
@@ -376,7 +384,6 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
                 <option value="X(Twitter)" />
                 <option value="Youtube" />
               </datalist>
-
               <Form.Control
                 type="text"
                 name="PlatformNickname"
@@ -386,7 +393,6 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
                 onChange={(e) => handleSocialMediaChange(index, e)}
                 style={{ flex: 1 }}
               />
-              
               <Form.Control
                 type="number"
                 name="Fans"
@@ -396,9 +402,6 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
                 onChange={(e) => handleSocialMediaChange(index, e)}
                 style={{ flex: 1 }}
               />
-
-              
-              
               <Button
                 variant="danger"
                 size="sm"
@@ -427,10 +430,10 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
       </div>
 
       {/* 内容及经验 */}
-      {/* <div className="mb-4">
+      <div className="mb-4">
         <h4>内容及经验</h4>
         
-        <Form.Group className="mb-3">
+        {/* <Form.Group className="mb-3">
           <Form.Label>主要创作领域 * (可多选)</Form.Label>
           <div className={`border rounded p-3 ${errors.contentCategories ? 'border-danger' : ''}`}>
             {[
@@ -459,7 +462,7 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
             ))}
           </div>
           {errors.contentCategories && <div className="text-danger small">{errors.contentCategories}</div>}
-        </Form.Group>
+        </Form.Group> */}
 
         <Form.Group className="mb-3">
           <Form.Label>过往合作品牌/案例（可选）</Form.Label>
@@ -473,7 +476,7 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        {/* <Form.Group className="mb-3">
           <Form.Label>代表作品链接</Form.Label>
           <Form.Control
             as="textarea"
@@ -486,9 +489,9 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
           <Form.Text className="text-muted">
             可以是视频链接、社交媒体帖子链接等
           </Form.Text>
-        </Form.Group>
+        </Form.Group> */}
 
-        <Form.Group className="mb-3">
+        {/* <Form.Group className="mb-3">
           <Form.Label>作品上传（可选）</Form.Label>
           <Form.Control
             type="file"
@@ -523,9 +526,9 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
               </ul>
             </div>
           )}
-        </Form.Group>
+        </Form.Group> */}
 
-        <Form.Group className="mb-3">
+        {/* <Form.Group className="mb-3">
           <Form.Label>个人介绍 / 自我推荐 *</Form.Label>
           <Form.Control
             as="textarea"
@@ -537,9 +540,9 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
             isInvalid={!!errors.personalIntroduction}
           />
           <Form.Control.Feedback type="invalid">{errors.personalIntroduction}</Form.Control.Feedback>
-        </Form.Group>
+        </Form.Group> */}
 
-        <Form.Group className="mb-3">
+        {/* <Form.Group className="mb-3">
           <Form.Label>个人形象照片上传 *</Form.Label>
           <Form.Control
             type="file"
@@ -580,15 +583,39 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
               </ul>
             </div>
           )}
-        </Form.Group>
-
-      </div> */}
+        </Form.Group> */}
+      </div>
 
       {/* 大赛相关信息 */}
       <div className="mb-4">
-        <h4>大赛相关信息</h4>
-        
+        <h5>网红培训</h5>
         <Form.Group className="mb-3">
+          <Form.Label>您是否需要付费专业网红培训 *</Form.Label>
+          <div className={`border rounded p-3 ${errors.training ? 'border-danger' : ''}`}>
+            <Form.Check
+              type="radio"
+              name="training"
+              label="需要"
+              value="need"
+              checked={formData.training === 'need'}
+              onChange={(e) => handleCheckbox(e.target.value)}
+              className="mb-2"
+            />
+            <Form.Check
+              type="radio"
+              name="training"
+              label="不需要"
+              value="no_need"
+              checked={formData.training === 'no_need'}
+              onChange={(e) => handleCheckbox(e.target.value)}
+              className="mb-2"
+            />
+          </div>
+          {errors.training && <div className="text-danger small mt-2">{errors.training}</div>}
+        </Form.Group>
+
+        
+         <Form.Group className="mb-3">
           <Form.Label>愿意宣传的商品/服务类别 * (可多选)</Form.Label>
           <div className={`border rounded p-3 ${errors.preferredProductCategories ? 'border-danger' : ''}`}>
             {[
@@ -603,7 +630,8 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
               { value: 'finance', label: '金融服务' },
               { value: 'entertainment', label: '娱乐游戏' },
               { value: 'automotive', label: '汽车用品' },
-              { value: 'mother_baby', label: '母婴用品' }
+              { value: 'mother_baby', label: '母婴用品' },
+              { value: 'othera', label: '其他' }
             ].map((category) => (
               <Form.Check
                 key={category.value}
@@ -649,6 +677,21 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
           </div>
           {errors.acceptedPromotionFormats && <div className="text-danger small">{errors.acceptedPromotionFormats}</div>}
         </Form.Group> */}
+
+        <div className="mb-3">
+          <h5>代言条款</h5>
+          <Form.Group className="mb-3">
+          <Form.Control
+            as="textarea"
+            name="additionalRequirements"
+            rows={3}
+            placeholder="如您接受来自主办方和商家的代言，请具体填写详细信息例如分红、额外条件"
+            value={formData.additionalRequirements}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        </div>
+
 
         <div className="mb-3">
           <h5>参赛承诺</h5>

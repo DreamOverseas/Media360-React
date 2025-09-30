@@ -23,7 +23,7 @@ const RelatedInfluencerSection = ({
   const influencerList = relatedInfluencerList;
 
 
-  console.log("22222",selected)
+  console.log("22222",influencerList)
 
 
 
@@ -57,21 +57,21 @@ const RelatedInfluencerSection = ({
                     {/* 头像 */}
                     <div className="relative mb-3 sm:mb-4">
                     <img
-                        src={`${BACKEND_HOST}${inf.avatar.url}`}
-                        alt={inf.personal_details.name}
+                        src={`${BACKEND_HOST}${inf?.avatar?.url}`}
+                        alt={inf?.personal_details?.name}
                         className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-gray-100"
                     />
                     </div>
 
                     {/* 姓名 */}
                     <h4 className="text-sm sm:text-md font-semibold text-gray-800 mb-3 sm:mb-4 line-clamp-2">
-                    {inf.personal_details.name}
+                    {inf?.personal_details?.name}
                     </h4>
 
                     {/* 平台列表 */}
                     <div className="w-full">
                     <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 sm:gap-3 text-xs sm:text-sm">
-                        {Object.entries(inf.social_platforms).map(([name, entry], i) => (
+                        {Object.entries(inf?.social_platforms).map(([name, entry], i) => (
                         <div
                             key={i}
                             className="flex flex-col items-center bg-gray-50 transition-colors duration-200 px-2 sm:px-3 py-2 sm:py-2.5 rounded-md"
