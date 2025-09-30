@@ -31,7 +31,7 @@ const Networks = () => {
       
       axios.get(`${BACKEND_HOST}/api/people`, {
         params: {
-          'filters[Role][$contains]': JSON.stringify({ roles: [path] }),
+          'filters[Role][$containsi]': path,
           'filters[PersonPage]': true,
           populate: 'Image',
           sort: "Order:desc"
@@ -191,7 +191,7 @@ const Networks = () => {
   return (
     <Container className="py-4">
         {/* Header Section */}
-      <div className='text-center mb-20'>
+      <div className='text-center mb-8'>
         <div className='inline-block'>
           <h1 className='text-5xl md:text-6xl font-bold bg-gradient-to-r from-gray-800 via-gray-700 to-blue-600 bg-clip-text text-transparent mb-4'>
              网红
@@ -200,6 +200,9 @@ const Networks = () => {
         </div>
         <p className='text-gray-600 text-lg mt-6 max-w-2xl mx-auto'>
           每个人都是自己的超级IP
+        </p>
+        <p className='text-gray-600 text-lg max-w-2xl mx-auto'>
+          期待您的加入
         </p>
       </div>
       {/* 搜索框 */}
