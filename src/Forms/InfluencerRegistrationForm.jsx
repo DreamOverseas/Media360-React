@@ -86,6 +86,13 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
     setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "" }));
   };
 
+  const handleCheckbox = (value) => {
+    setFormData({
+      ...formData,
+      training: value,
+    });
+  };
+
   // 处理作品文件上传
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
@@ -292,8 +299,6 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
                 type="number"
                 name="age"
                 placeholder="年龄"
-                min="13"
-                max="100"
                 value={formData.age}
                 onChange={handleChange}
                 isInvalid={!!errors.age}
@@ -595,22 +600,27 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
           <Form.Label>您是否需要付费专业网红培训 *</Form.Label>
           <div className={`border rounded p-3 ${errors.training ? 'border-danger' : ''}`}>
             <Form.Check
-              type="checkbox"
+              type="radio"
+              name="training"
               label="需要"
+              value="need"
               checked={formData.training === 'need'}
-              onChange={() => setFormData({...formData, training: 'need'})}
+              onChange={(e) => handleCheckbox(e.target.value)}
               className="mb-2"
             />
             <Form.Check
-              type="checkbox"
+              type="radio"
+              name="training"
               label="不需要"
+              value="no_need"
               checked={formData.training === 'no_need'}
-              onChange={() => setFormData({...formData, training: 'no_need'})}
+              onChange={(e) => handleCheckbox(e.target.value)}
               className="mb-2"
             />
           </div>
           {errors.training && <div className="text-danger small mt-2">{errors.training}</div>}
         </Form.Group>
+
         
         {/* <Form.Group className="mb-3">
           <Form.Label>愿意宣传的商品/服务类别 * (可多选)</Form.Label>
