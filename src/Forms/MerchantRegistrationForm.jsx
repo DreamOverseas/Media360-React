@@ -444,7 +444,7 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
           <Form.Label>赞助形式 *</Form.Label>
           <Form.Control
             as="textarea"
-            name="campaignGoals"
+            name="sponsorshipFormat"
             rows={3}
             placeholder="填写您意向的赞助方式:商品/服务，法币，数字货币并填写实际估值的价格"
             value={formData.sponsorshipFormat}
@@ -458,7 +458,7 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
           <Form.Label>独家赞助</Form.Label>
           <Form.Control
             as="textarea"
-            name="campaignGoals"
+            name="exclusive"
             rows={3}
             placeholder="如您希望就某个领域独家赞助，请填写实际估值的价格 （选填）"
             value={formData.exclusive}
@@ -470,7 +470,7 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
           <Form.Label>推荐网红</Form.Label>
           <Form.Control
             as="textarea"
-            name="additionalRequirements"
+            name="reference"
             rows={2}
             placeholder="如您希望自己推荐网红，请填写网红的信息以及联系方式（选填）"
             value={formData.reference}

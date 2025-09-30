@@ -27,7 +27,6 @@ const initialInfluencerFormData = {
   additionalRequirements: "",
   agreeToRules: false, // checkbox
   allowContentUsage: false, // checkbox
-  
   from: "360 Influencer Contest influencer registration"
 };
 
@@ -220,9 +219,9 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
     // }
 
     // 大赛相关信息验证
-    if (formData.preferredProductCategories.length === 0) {
-      newErrors.preferredProductCategories = "请至少选择一个愿意宣传的商品/服务类别";
-    }
+    // if (formData.preferredProductCategories.length === 0) {
+    //   newErrors.preferredProductCategories = "请至少选择一个愿意宣传的商品/服务类别";
+    // }
 
     // if (formData.acceptedPromotionFormats.length === 0) {
     //   newErrors.acceptedPromotionFormats = "请至少选择一种接受的推广形式";
@@ -360,7 +359,6 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
       {/* 社交媒体信息 */}
       <div className="mb-4">
         <h4>社交媒体信息</h4>
-        
         <Form.Group className="mb-3">
           <Form.Label>媒体账号 *</Form.Label>
           {formData.socialMedia.map((account, index) => (
@@ -386,7 +384,6 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
                 <option value="X(Twitter)" />
                 <option value="Youtube" />
               </datalist>
-
               <Form.Control
                 type="text"
                 name="PlatformNickname"
@@ -396,7 +393,6 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
                 onChange={(e) => handleSocialMediaChange(index, e)}
                 style={{ flex: 1 }}
               />
-              
               <Form.Control
                 type="number"
                 name="Fans"
@@ -406,9 +402,6 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
                 onChange={(e) => handleSocialMediaChange(index, e)}
                 style={{ flex: 1 }}
               />
-
-              
-              
               <Button
                 variant="danger"
                 size="sm"
@@ -622,7 +615,7 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
         </Form.Group>
 
         
-        {/* <Form.Group className="mb-3">
+         <Form.Group className="mb-3">
           <Form.Label>愿意宣传的商品/服务类别 * (可多选)</Form.Label>
           <div className={`border rounded p-3 ${errors.preferredProductCategories ? 'border-danger' : ''}`}>
             {[
@@ -637,7 +630,8 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
               { value: 'finance', label: '金融服务' },
               { value: 'entertainment', label: '娱乐游戏' },
               { value: 'automotive', label: '汽车用品' },
-              { value: 'mother_baby', label: '母婴用品' }
+              { value: 'mother_baby', label: '母婴用品' },
+              { value: 'othera', label: '其他' }
             ].map((category) => (
               <Form.Check
                 key={category.value}
@@ -651,7 +645,7 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
             ))}
           </div>
           {errors.preferredProductCategories && <div className="text-danger small">{errors.preferredProductCategories}</div>}
-        </Form.Group> */}
+        </Form.Group>
 
         {/* <Form.Group className="mb-3">
           <Form.Label>接受的推广形式 * (可多选)</Form.Label>
