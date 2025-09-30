@@ -157,12 +157,16 @@ const EventDetail = () => {
         Phone: formData.phone,
         Company_Description: formData.companyDescription,
         Company_Website: formData.companyWebsite,
+        Sponsorship_Format: formData.sponsorshipFormat,
+        Exclusive: formData.exclusive,
+        Reference: formData.reference,
+
         // Product_Description: formData.productDescription,
         // Product_Images: productImageData.ids,
         // Target_Audience: formData.targetAudience,
         // Marketing_Budget: formData.marketingBudget,
         // Campaign_Goals: formData.campaignGoals,
-        // Additional_Requirements: formData.additionalRequirements,
+        Additional_Requirements: formData.additionalRequirements,
         From: formData.from
       });
   
@@ -282,7 +286,9 @@ const EventDetail = () => {
         
         Social_Media: formData.socialMedia,
         // Content_Categories: formData.contentCategories,
-        // Past_Collaborations: formData.pastCollaborations,
+        Past_Collaborations: formData.pastCollaborations,
+        Training: formData.training,
+        Additional_Requirements: formData.additionalRequirements,
         // Portfolio_Links: formData.portfolioLinks,
         // Portfolio_Files: portfolioFilesData.ids,
         // Personal_Introduction: formData.personalIntroduction,
