@@ -242,7 +242,9 @@ const Profile = () => {
         let data;
         data = await tryFetch({"filters[AssignedFrom][users_permissions_user][id][$eq]": String(user.id) });
         const first = data?.data || [];
-        const processed_data = first.map(entry=> entry.users_permissions_user.influencer_profile)
+        const processed_data = first
+        .filter(entry => entry.users_permissions_user?.influencer_profile) // 过滤掉为空的
+        .map(entry => entry.users_permissions_user.influencer_profile);
         // console.log("first", first);
         // console.log("processed_data", processed_data);
 
