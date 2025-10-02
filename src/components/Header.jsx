@@ -45,20 +45,20 @@ const Header = () => {
             </NavDropdown> */}
 
             <NavDropdown
-              title='媒体中心'
+              title={t("media_center")}
               id='media-dropdown'
               className='dropdown-container'
             >
-              <NavDropdown.Item href='/news'>新闻</NavDropdown.Item>
-              <NavDropdown.Item href='/events'>活动</NavDropdown.Item>
+              <NavDropdown.Item href='/news'>{t("news")}</NavDropdown.Item>
+              <NavDropdown.Item href='/events'>{t("event")}</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown
-              title={t("资源")}
+              title={t("networks")}
               id='networks-dropdown'
               className='dropdown-container'
             >
-              <NavDropdown.Item href='/influencer'>网红</NavDropdown.Item>
-              <NavDropdown.Item href='/group'>社团</NavDropdown.Item>
+              <NavDropdown.Item href='/influencer'>{t("influencer")}</NavDropdown.Item>
+              <NavDropdown.Item href='/group'>{t("societies")}</NavDropdown.Item>
             </NavDropdown>
             {/* <Nav.Link href='/networks'>{t("资源")}</Nav.Link> */}
             <Nav.Link href='/about-us'>{t("About_us")}</Nav.Link>
@@ -98,7 +98,7 @@ const Header = () => {
               </>
             ) : (
               <Nav.Link onClick={() => setShowLoginModal(true)}>
-                <i className='bi bi-person nav-icon'>登录</i>
+                <i className='bi bi-person nav-icon'> {t("logIn")}</i>
               </Nav.Link>
             )}
           </Nav>
