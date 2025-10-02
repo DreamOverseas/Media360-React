@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Button, Row, Col, Form } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 const initialMerchantFormData = {
   companyName: "",
@@ -29,6 +30,8 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState(initialMerchantFormData);
   const [errors, setErrors] = useState({});
 
+  const { t } = useTranslation();
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -44,7 +47,7 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
     if (invalidFiles.length > 0) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        businessLicense: "部分文件大小超过 10MB，未添加！",
+        businessLicense: t("whds_errors.file_license_too_large"),
       }));
     }
 
@@ -69,7 +72,7 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
     if (invalidFiles.length > 0) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        productImages: "部分文件大小超过 5MB，未添加！",
+        productImages: t("whds_errors.file_product_too_large"),
       }));
     }
 
@@ -111,41 +114,27 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
 
   const validateForm = () => {
     let newErrors = {};
-    
+
     // 基本信息验证
-    if (!formData.companyName.trim()) newErrors.companyName = "商家名称不能为空";
-    if (!formData.companyDescription.trim()) newErrors.companyDescription = "请填写相关公司简介";
-    if (!formData.industryCategory.trim()) newErrors.industryCategory = "请选择行业类别";
-    if (!formData.contactPersonFirstName.trim()) newErrors.contactPersonFirstName = "负责人名字不能为空";
-    if (!formData.contactPersonLastName.trim()) newErrors.contactPersonLastName = "负责人姓不能为空";
-    
+    if (!formData.companyName.trim()) newErrors.companyName = t("whds_errors.company_name_required");
+    if (!formData.companyDescription.trim()) newErrors.companyDescription = t("whds_errors.company_description_required");
+    if (!formData.industryCategory.trim()) newErrors.industryCategory = t("whds_errors.industry_required");
+    if (!formData.contactPersonFirstName.trim()) newErrors.contactPersonFirstName = t("whds_errors.contact_firstname_required");
+    if (!formData.contactPersonLastName.trim()) newErrors.contactPersonLastName = t("whds_errors.contact_lastname_required");
+
     if (!formData.email.trim()) {
-      newErrors.email = "电子邮箱不能为空";
+      newErrors.email = t("whds_errors.email_required");
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "电子邮箱格式不正确";
+      newErrors.email = t("whds_errors.email_invalid");
     }
-    
+
     if (!formData.phone.trim()) {
-      newErrors.phone = "电话不能为空";
+      newErrors.phone = t("whds_errors.phone_required");
     } else if (!/^\d{10,15}$/.test(formData.phone)) {
-      newErrors.phone = "电话格式不正确";
+      newErrors.phone = t("whds_errors.phone_invalid");
     }
 
-    if (!formData.sponsorshipFormat.trim()) newErrors.sponsorshipFormat = "请填写赞助形式";
-
-    // 资格证书验证
-    // if (formData.businessLicense.length === 0) {
-    //   newErrors.businessLicense = "请上传至少一张资格证书";
-    // }
-
-    // 产品信息验证
-    // if (!formData.productDescription.trim()) {
-    //   newErrors.productDescription = "产品/服务描述不能为空";
-    // }
-    
-    // if (formData.productImages.length < 3) {
-    //   newErrors.productImages = "请上传至少三张产品图片";
-    // }
+    if (!formData.sponsorshipFormat.trim()) newErrors.sponsorshipFormat = t("whds_errors.sponsorship_required");
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -161,21 +150,21 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
   return (
     <Form onSubmit={handleSubmit}>
       <div className="mb-4">
-        <h2 className="text-primary">商家/赞助商注册</h2>
-        <p className="text-muted">请填写以下信息完成注册，参与网红推广大赛</p>
+        <h2 className="text-primary">{t("whds_form_mch.title")}</h2>
+        <p className="text-muted">{t("whds_form_mch.subtitle")}</p>
       </div>
 
       {/* 基本商家信息 */}
       <div className="mb-4">
-        <h4>基本信息</h4>
+        <h4>{t("whds_form_mch.basic_info.title")}</h4>
         <Row className="mb-3">
           <Col md={12}>
             <Form.Group>
-              <Form.Label>商家名称 *</Form.Label>
+              <Form.Label>{t("whds_form_mch.basic_info.company_name")}</Form.Label>
               <Form.Control
                 type="text"
                 name="companyName"
-                placeholder="请输入商家/公司名称"
+                placeholder={t("whds_form_mch.basic_info.company_name_ph")}
                 value={formData.companyName}
                 onChange={handleChange}
                 isInvalid={!!errors.companyName}
@@ -188,32 +177,32 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
         <Row className="mb-3">
           <Col md={6}>
             <Form.Group>
-              <Form.Label>行业类别 *</Form.Label>
+              <Form.Label>{t("whds_form_mch.basic_info.industry")}</Form.Label>
               <Form.Select
                 name="industryCategory"
                 value={formData.industryCategory}
                 onChange={handleChange}
                 isInvalid={!!errors.industryCategory}
               >
-                <option value="">请选择行业类别</option>
-                <option value="beauty">美妆护肤</option>
-                <option value="fashion">时尚服饰</option>
-                <option value="food">食品饮料</option>
-                <option value="electronics">数码电子</option>
-                <option value="home">家居用品</option>
-                <option value="health">健康保健</option>
-                <option value="education">教育培训</option>
-                <option value="travel">旅游出行</option>
-                <option value="finance">金融服务</option>
-                <option value="entertainment">娱乐游戏</option>
-                <option value="other">其他</option>
+                <option value="">{t("whds_form_mch.basic_info.industry_select")}</option>
+                <option value="beauty">{t("whds_form_mch.basic_info.industry_beauty")}</option>
+                <option value="fashion">{t("whds_form_mch.basic_info.industry_fashion")}</option>
+                <option value="food">{t("whds_form_mch.basic_info.industry_food")}</option>
+                <option value="electronics">{t("whds_form_mch.basic_info.industry_electronics")}</option>
+                <option value="home">{t("whds_form_mch.basic_info.industry_home")}</option>
+                <option value="health">{t("whds_form_mch.basic_info.industry_health")}</option>
+                <option value="education">{t("whds_form_mch.basic_info.industry_education")}</option>
+                <option value="travel">{t("whds_form_mch.basic_info.industry_travel")}</option>
+                <option value="finance">{t("whds_form_mch.basic_info.industry_finance")}</option>
+                <option value="entertainment">{t("whds_form_mch.basic_info.industry_entertainment")}</option>
+                <option value="other">{t("whds_form_mch.basic_info.industry_other")}</option>
               </Form.Select>
               <Form.Control.Feedback type="invalid">{errors.industryCategory}</Form.Control.Feedback>
             </Form.Group>
           </Col>
           <Col md={6}>
             <Form.Group>
-              <Form.Label>公司网站</Form.Label>
+              <Form.Label>{t("whds_form_mch.basic_info.website")}</Form.Label>
               <Form.Control
                 type="url"
                 name="companyWebsite"
@@ -229,12 +218,12 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
         <Row className="mb-3">
           <Col md={12}>
             <Form.Group>
-              <Form.Label>公司描述 *</Form.Label>
+              <Form.Label>{t("whds_form_mch.basic_info.description")}</Form.Label>
               <Form.Control
                 as="textarea"
                 name="companyDescription"
                 rows={3}
-                placeholder="简要描述您的公司业务、品牌理念和发展历程"
+                placeholder={t("whds_form_mch.basic_info.description_ph")}
                 value={formData.companyDescription}
                 onChange={handleChange}
                 isInvalid={!!errors.companyDescription}
@@ -246,15 +235,15 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
 
       {/* 负责人信息 */}
       <div className="mb-4">
-        <h4>负责人信息</h4>
+        <h4>{t("whds_form_mch.contact.title")}</h4>
         <Row className="mb-3">
           <Col md={6}>
             <Form.Group>
-              <Form.Label>负责人姓 *</Form.Label>
+              <Form.Label>{t("whds_form_mch.contact.lastname")}</Form.Label>
               <Form.Control
                 type="text"
                 name="contactPersonLastName"
-                placeholder="输入姓"
+                placeholder={t("whds_form_mch.contact.lastname_ph")}
                 value={formData.contactPersonLastName}
                 onChange={handleChange}
                 isInvalid={!!errors.contactPersonLastName}
@@ -264,11 +253,11 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
           </Col>
           <Col md={6}>
             <Form.Group>
-              <Form.Label>负责人名 *</Form.Label>
+              <Form.Label>{t("whds_form_mch.contact.firstname")}</Form.Label>
               <Form.Control
                 type="text"
                 name="contactPersonFirstName"
-                placeholder="输入名"
+                placeholder={t("whds_form_mch.contact.firstname_ph")}
                 value={formData.contactPersonFirstName}
                 onChange={handleChange}
                 isInvalid={!!errors.contactPersonFirstName}
@@ -276,17 +265,16 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
               <Form.Control.Feedback type="invalid">{errors.contactPersonFirstName}</Form.Control.Feedback>
             </Form.Group>
           </Col>
-          
         </Row>
 
         <Row className="mb-3">
           <Col md={6}>
             <Form.Group>
-              <Form.Label>电子邮箱 *</Form.Label>
+              <Form.Label>{t("whds_form_mch.contact.email")}</Form.Label>
               <Form.Control
                 type="email"
                 name="email"
-                placeholder="输入电子邮箱"
+                placeholder={t("whds_form_mch.contact.email_ph")}
                 value={formData.email}
                 onChange={handleChange}
                 isInvalid={!!errors.email}
@@ -296,11 +284,11 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
           </Col>
           <Col md={6}>
             <Form.Group>
-              <Form.Label>联系电话 *</Form.Label>
+              <Form.Label>{t("whds_form_mch.contact.phone")}</Form.Label>
               <Form.Control
                 type="text"
                 name="phone"
-                placeholder="输入联系电话"
+                placeholder={t("whds_form_mch.contact.phone_ph")}
                 value={formData.phone}
                 onChange={handleChange}
                 isInvalid={!!errors.phone}
@@ -311,142 +299,17 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
         </Row>
       </div>
 
-      {/* 资格证书 */}
-      {/* <div className="mb-4">
-        <h4>资格证书</h4>
-        <Form.Group className="mb-3">
-          <Form.Label>营业执照/资格证书 *</Form.Label>
-          <Form.Control
-            type="file"
-            multiple
-            name="businessLicense"
-            accept=".jpg,.jpeg,.png,.pdf"
-            onChange={handleLicenseFileChange}
-            ref={fileInputRef_license}
-            isInvalid={!!errors.businessLicense}
-          />
-          <Form.Text className="text-muted">
-            支持 JPG、PNG、PDF 格式，单个文件不超过 10MB
-          </Form.Text>
-          <Form.Control.Feedback type="invalid">{errors.businessLicense}</Form.Control.Feedback>
-
-          {formData.businessLicense.length > 0 && (
-            <div className="mt-2">
-              <strong>已上传文件：</strong>
-              <ul className="list-group mt-2">
-                {formData.businessLicense.map((file, index) => (
-                  <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                    <span className="file-name">
-                      {file.name.length > 30 ? file.name.substring(0, 15) + "..." + file.name.slice(-15) : file.name}
-                    </span>
-                    <span className="file-size ms-auto">（{(file.size / 1024 / 1024).toFixed(2)} MB）</span>
-                    <Button variant="danger" size="sm" onClick={() => handleRemoveLicenseFile(index)} className="ms-2">
-                      删除
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </Form.Group>
-      </div> */}
-
-      {/* 产品/服务信息 */}
-      {/* <div className="mb-4">
-        <h4>推广产品/服务</h4>
-        <Form.Group className="mb-3">
-          <Form.Label>产品/服务描述 *</Form.Label>
-          <Form.Control
-            as="textarea"
-            name="productDescription"
-            rows={4}
-            placeholder="详细描述您希望网红推广的产品或服务，包括特色、优势、目标受众等"
-            value={formData.productDescription}
-            onChange={handleChange}
-            isInvalid={!!errors.productDescription}
-          />
-          <Form.Control.Feedback type="invalid">{errors.productDescription}</Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>产品图片 *</Form.Label>
-          <Form.Control
-            type="file"
-            multiple
-            name="productImages"
-            accept=".jpg,.jpeg,.png"
-            onChange={handleProductFileChange}
-            ref={fileInputRef_product}
-            isInvalid={!!errors.productImages}
-          />
-          <Form.Text className="text-muted">
-            请上传产品高清图片，支持 JPG、PNG 格式，单个文件不超过 5MB，至少上传3张
-          </Form.Text>
-          <Form.Control.Feedback type="invalid">{errors.productImages}</Form.Control.Feedback>
-
-          {formData.productImages.length > 0 && (
-            <div className="mt-2">
-              <strong>已上传图片：</strong>
-              <ul className="list-group mt-2">
-                {formData.productImages.map((file, index) => (
-                  <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                    <span className="file-name">
-                      {file.name.length > 30 ? file.name.substring(0, 15) + "..." + file.name.slice(-15) : file.name}
-                    </span>
-                    <span className="file-size ms-auto">（{(file.size / 1024 / 1024).toFixed(2)} MB）</span>
-                    <Button variant="danger" size="sm" onClick={() => handleRemoveProductFile(index)} className="ms-2">
-                      删除
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </Form.Group>
-      </div> */}
-
-      {/* 代言条款 */}
+      {/* 入驻条款 */}
       <div className="mb-4">
-        <h4>入驻条款</h4>
-        {/* <Row className="mb-3"> */}
-          {/* <Col md={6}>
-            <Form.Group>
-              <Form.Label>目标受众</Form.Label>
-              <Form.Control
-                type="text"
-                name="targetAudience"
-                placeholder="例：18-35岁女性，关注美妆时尚"
-                value={formData.targetAudience}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group>
-              <Form.Label>预期营销预算</Form.Label>
-              <Form.Select
-                name="marketingBudget"
-                value={formData.marketingBudget}
-                onChange={handleChange}
-              >
-                <option value="">请选择预算范围</option>
-                <option value="Under_5k">5000元以下</option>
-                <option value="From_5k_to_20k">5000-20000元</option>
-                <option value="From_20k_to_50k">20000-50000元</option>
-                <option value="From_50k_to_100k">50000-100000元</option>
-                <option value="Over_100k">100000元以上</option>
-              </Form.Select>
-            </Form.Group>
-          </Col> */}
-        {/* </Row> */}
+        <h4>{t("whds_form_mch.terms.title")}</h4>
 
         <Form.Group className="mb-3">
-          <Form.Label>赞助形式 *</Form.Label>
+          <Form.Label>{t("whds_form_mch.terms.sponsorship")}</Form.Label>
           <Form.Control
             as="textarea"
             name="sponsorshipFormat"
             rows={3}
-            placeholder="填写您意向的赞助方式:商品/服务，法币，数字货币并填写实际估值的价格"
+            placeholder={t("whds_form_mch.terms.sponsorship_ph")}
             value={formData.sponsorshipFormat}
             onChange={handleChange}
             isInvalid={!!errors.sponsorshipFormat}
@@ -455,36 +318,36 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>独家赞助</Form.Label>
+          <Form.Label>{t("whds_form_mch.terms.exclusive")}</Form.Label>
           <Form.Control
             as="textarea"
             name="exclusive"
             rows={3}
-            placeholder="如您希望就某个领域独家赞助，请填写实际估值的价格 （选填）"
+            placeholder={t("whds_form_mch.terms.exclusive_ph")}
             value={formData.exclusive}
             onChange={handleChange}
           />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>推荐网红</Form.Label>
+          <Form.Label>{t("whds_form_mch.terms.reference")}</Form.Label>
           <Form.Control
             as="textarea"
             name="reference"
             rows={2}
-            placeholder="如您希望自己推荐网红，请填写网红的信息以及联系方式（选填）"
+            placeholder={t("whds_form_mch.terms.reference_ph")}
             value={formData.reference}
             onChange={handleChange}
           />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>赞助额外条件</Form.Label>
+          <Form.Label>{t("whds_form_mch.terms.additional")}</Form.Label>
           <Form.Control
             as="textarea"
             name="additionalRequirements"
             rows={2}
-            placeholder="如您有特殊的赞助方式请填写详细信息例如分红、形式（选填）"
+            placeholder={t("whds_form_mch.terms.additional_ph")}
             value={formData.additionalRequirements}
             onChange={handleChange}
           />
@@ -493,7 +356,7 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
 
       <div className="d-grid gap-2">
         <Button variant="primary" type="submit" size="lg">
-          提交注册申请
+          {t("whds_form_mch.submit")}
         </Button>
       </div>
     </Form>

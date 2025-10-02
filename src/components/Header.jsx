@@ -1,4 +1,4 @@
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 import React, { useState, useContext } from "react";
 import { Image, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -10,15 +10,17 @@ const Header = () => {
   const { user, logout } = useContext(AuthContext);
   const { t, i18n } = useTranslation();
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [show, setShow] = useState(false);
 
-  // const changeLanguage = lng => {
-  //   i18n.changeLanguage(lng);
-  //   Cookies.set("i18next", lng, { expires: 7 });
-  // };
+  const changeLanguage = lng => {
+    i18n.changeLanguage(lng);
+    Cookies.set("i18next", lng, { expires: 7 });
+    console.log(`Set Lang to ${lng}.`);
+    setShow(false);
+  };
 
   return (
     <div>
-      
       <Navbar expand='lg' className='navbar-custom'>
         <Navbar.Toggle aria-controls='basic-navbar-nav'/>
         <Navbar.Brand href='/' className='navbar-brand-custom'>
@@ -43,29 +45,31 @@ const Header = () => {
             </NavDropdown> */}
 
             <NavDropdown
-              title='媒体中心'
+              title={t("media_center")}
               id='media-dropdown'
               className='dropdown-container'
             >
-              <NavDropdown.Item href='/news'>新闻</NavDropdown.Item>
-              <NavDropdown.Item href='/events'>活动</NavDropdown.Item>
+              <NavDropdown.Item href='/news'>{t("news")}</NavDropdown.Item>
+              <NavDropdown.Item href='/events'>{t("event")}</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown
-              title={t("资源")}
+              title={t("networks")}
               id='networks-dropdown'
               className='dropdown-container'
             >
-              <NavDropdown.Item href='/influencer'>网红</NavDropdown.Item>
-              <NavDropdown.Item href='/group'>社团</NavDropdown.Item>
+              <NavDropdown.Item href='/influencer'>{t("influencer")}</NavDropdown.Item>
+              <NavDropdown.Item href='/group'>{t("societies")}</NavDropdown.Item>
             </NavDropdown>
             {/* <Nav.Link href='/networks'>{t("资源")}</Nav.Link> */}
             <Nav.Link href='/about-us'>{t("About_us")}</Nav.Link>
             {/* <Nav.Link href='/join-us'>{t("joinus")}</Nav.Link> */}
 
-            {/* <NavDropdown
-              title={t("language")}
-              id='language-dropdown'
-              className='dropdown-container'
+            <NavDropdown
+              title={<i className="bi bi-translate"></i>}
+              id="language-dropdown"
+              className="dropdown-container"
+              show={show}
+              onToggle={(nextShow) => setShow(nextShow)}
             >
               <NavDropdown.Item onClick={() => changeLanguage("en")}>
                 English
@@ -73,7 +77,8 @@ const Header = () => {
               <NavDropdown.Item onClick={() => changeLanguage("zh")}>
                 中文
               </NavDropdown.Item>
-            </NavDropdown> */}
+            </NavDropdown>
+
             {user ? (
               <>
                 {/*
@@ -93,7 +98,7 @@ const Header = () => {
               </>
             ) : (
               <Nav.Link onClick={() => setShowLoginModal(true)}>
-                <i className='bi bi-person nav-icon'>登录</i>
+                <i className='bi bi-person nav-icon'> {t("logIn")}</i>
               </Nav.Link>
             )}
           </Nav>

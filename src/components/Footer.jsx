@@ -1,14 +1,12 @@
 import React from "react";
-import { Button, Col, Container, Image, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-import { Link } from "react-router-dom";
 import "../css/Footer.css";
 import DoTermsAndConditions from "./DoTermsAndConditions";
 
 const Footer = () => {
   const onDesktop = useMediaQuery({ query: "(min-width: 768px)" });
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <footer className="bg-gray-800 text-white">
@@ -37,16 +35,16 @@ const Footer = () => {
               <div className="col-span-1">
                 <h3 className="text-base font-semibold text-white mb-3">{t("quick_links")}</h3>
                 <div className="flex align-items-start flex-col gap-2 space-y-2">
-                  <a href="/about-us" className="text-gray-300 text-white text-center text-decoration-none">
+                  <a href="/about-us" className="text-white text-center text-decoration-none">
                     {t("About_us")}
                   </a>
-                  <a href="/networks" className="text-gray-300 text-white text-center text-decoration-none">
+                  <a href="/networks" className="text-white text-center text-decoration-none">
                     {t("networks")}
                   </a>
-                  <a href="/news" className="text-gray-300 text-white text-center text-decoration-none">
+                  <a href="/news" className="text-white text-center text-decoration-none">
                     {t("news")}
                   </a>
-                  <a href="/events" className="text-gray-300 text-white text-center text-decoration-none">
+                  <a href="/events" className="text-white text-center text-decoration-none">
                     {t("event")}
                   </a>
                 </div>
@@ -62,7 +60,7 @@ const Footer = () => {
                       href="https://www.google.com/maps/search/?api=1&query=L2+171+La+Trobe+Street,+Melbourne+VIC+3000"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-gray-300 leading-relaxed text-white"
+                      className="text-sm leading-relaxed text-white"
                     >
                       L2 171 La Trobe Street <br />
                       Melbourne VIC 3000
@@ -70,13 +68,13 @@ const Footer = () => {
                   </div>
                   <div className="flex items-center gap-3">
                     <i className="bi bi-telephone-inbound-fill text-lg text-blue-400 flex-shrink-0"></i>
-                    <a href="tel:+61413168533" className="text-sm text-gray-300 text-white">
+                    <a href="tel:+61413168533" className="text-sm text-white">
                       +61 (0)413 168 533
                     </a>
                   </div>
                   <div className="flex items-center gap-3">
                     <i className="bi bi-mailbox2 text-lg text-blue-400 flex-shrink-0"></i>
-                    <a href="mailto:info@do360.com" className="text-sm text-gray-300 text-white">
+                    <a href="mailto:info@do360.com" className="text-sm text-white">
                       info@do360.com
                     </a>
                   </div>
@@ -140,7 +138,7 @@ const Footer = () => {
                   © 2024 Dream Overseas Group Pty Ltd. All rights reserved.
                 </div>
                 <div className="flex gap-6 text-sm">
-                  <DoTermsAndConditions defaultLang="en" />
+                  <DoTermsAndConditions defaultLang={i18n.language} />
                 </div>
               </div>
             </div>
@@ -155,16 +153,16 @@ const Footer = () => {
                 <div>
                   <h3 className="text-base font-semibold text-white mb-2">{t("quick_links")}</h3>
                   <div className="flex align-items-start flex-col gap-2">
-                    <a href="/about-us" className="text-gray-300 text-xs text-white text-center text-decoration-none">
+                    <a href="/about-us" className="text-xs text-white text-center text-decoration-none">
                       {t("About_us")}
                     </a>
-                    <a href="/networks" className="text-gray-300 text-xs text-white text-center text-decoration-none">
+                    <a href="/networks" className="text-xs text-white text-center text-decoration-none">
                       {t("networks")}
                     </a>
-                    <a href="/news" className="text-gray-300 text-xs text-white text-center text-decoration-none">
+                    <a href="/news" className="text-xs text-white text-center text-decoration-none">
                       {t("news")}
                     </a>
-                    <a href="/events" className="text-gray-300 text-xs text-white text-center text-decoration-none">
+                    <a href="/events" className="text-xs text-white text-center text-decoration-none">
                       {t("event")}
                     </a>
                   </div>
@@ -229,18 +227,18 @@ const Footer = () => {
                       href="https://www.google.com/maps/place/171+La+Trobe+St,+Melbourne+VIC+3000/@-37.8089628,144.9640887,1693m/data=!3m1!1e3!4m6!3m5!1s0x6ad642ceaaa1eafd:0x3639407fc162ca2a!8m2!3d-37.8089628!4d144.966669!16s%2Fg%2F11bzzrlw_s?entry=ttu&g_ep=EgoyMDI1MDYxNy4wIKXMDSoASAFQAw%3D%3D"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-gray-300 leading-tight text-center text-white"
+                      className="text-xs leading-tight text-center text-white"
                     >
                       L2 171 La Trobe Street, Melbourne VIC 3000
                     </a>
                   </div>
                   <div className="flex items-center justify-center gap-3">
-                    <a href="tel:+61413168533" className="text-xs text-gray-300 text-white">
+                    <a href="tel:+61413168533" className="text-xs text-white">
                       +61 (0)413 168 533
                     </a>
                   </div>
                   <div className="flex items-center justify-center gap-3">
-                    <a href="mailto:info@do360.com" className="text-xs text-gray-300 text-white">
+                    <a href="mailto:info@do360.com" className="text-xs text-white">
                       info@do360.com
                     </a>
                   </div>
@@ -265,7 +263,7 @@ const Footer = () => {
                   <p className="mb-0">All rights reserved.</p>
                 </div>
                 <div className="flex justify-center text-xs">
-                  <DoTermsAndConditions defaultLang="en" />
+                  <DoTermsAndConditions defaultLang={i18n.language} />
                 </div>
               </div>
             </div>

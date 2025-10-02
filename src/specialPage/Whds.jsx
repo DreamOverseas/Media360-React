@@ -340,18 +340,17 @@ const EventDetail = () => {
       setLoading(false);
   };
 
-
   const renderSuccessModal = () => (
     <Modal show={showSuccessSubmissionModal} onHide={() => setShowSuccessSubmissionModal(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>提交成功</Modal.Title>
+        <Modal.Title>{t("whds_page.submit_success")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Alert variant="success">您的资料已成功上传！</Alert>
+        <Alert variant="success">{t("whds_page.submit_success_msg")}</Alert>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="success" onClick={() => setShowSuccessSubmissionModal(false)}>
-          关闭
+          {t("whds_page.close")}
         </Button>
       </Modal.Footer>
     </Modal>
@@ -360,17 +359,17 @@ const EventDetail = () => {
   const renderErrorModal = () => (
     <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>提交失败</Modal.Title>
+        <Modal.Title>{t("whds_page.submit_error")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Alert variant="danger">资料提交失败，请检查网络或稍后重试！</Alert>
+        <Alert variant="danger">{t("whds_page.submit_error_msg")}</Alert>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="danger" onClick={() => handleUpload()}>
-          重试
+          {t("whds_page.retry")}
         </Button>
         <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
-          关闭
+          {t("whds_page.close")}
         </Button>
       </Modal.Footer>
     </Modal>
@@ -398,31 +397,31 @@ const EventDetail = () => {
       <div className="container mt-4 mx-auto py-10">
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h2 className="text-xl font-semibold mb-4">活动信息</h2>
+            <h2 className="text-xl font-semibold mb-4">{t("whds_page.event_info")}</h2>
             <ul className="space-y-3 p-0 text-gray-700">
               <li>
                 <FontAwesomeIcon icon={faClock} className="mr-2 text-indigo-600" />
-                <strong>{t("time")}:</strong> {EventTime}
+                <strong>{t("whds_page.time")}:</strong> {EventTime}
               </li>
               <li>
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2 text-indigo-600" />
-                <strong>{t("location")}:</strong> {EventLocation}
+                <strong>{t("whds_page.location")}:</strong> {EventLocation}
               </li>
               <li>
                 <FontAwesomeIcon icon={faUserTie} className="mr-2 text-indigo-600" />
-                <strong>{t("host")}:</strong> {EventHost}
+                <strong>{t("whds_page.host")}:</strong> {EventHost}
               </li>
             </ul>
           </div>
 
           <div>
-            <h2 className="text-xl font-semibold mb-4">活动总览</h2>
+            <h2 className="text-xl font-semibold mb-4">{t("whds_page.overview")}</h2>
             {ShortDescription !== "N/A" ? (
               <div className="prose prose-indigo max-w-none">
                 <ReactMarkdown>{ShortDescription}</ReactMarkdown>
               </div>
             ) : (
-              <p className="text-gray-500">{t("noDescription")}</p>
+              <p className="text-gray-500">{t("whds_page.no_description")}</p>
             )}
           </div>
         </div>
@@ -430,27 +429,26 @@ const EventDetail = () => {
 
       {/* Event Description */}
       <div className="container mt-4 py-12 border-t border-gray-200">
-        <div className=" mx-auto">
-          <h2 className="text-2xl font-bold mb-6">{t("eventDescription")}</h2>
+        <div className="mx-auto">
+          <h2 className="text-2xl font-bold mb-6">{t("whds_page.event_description")}</h2>
           {Description !== "N/A" ? (
             <div className="prose prose-lg prose-indigo max-w-none">
               <div dangerouslySetInnerHTML={{ __html: Description }} />
             </div>
           ) : (
-            <p className="text-gray-500">{t("noDescription")}</p>
+            <p className="text-gray-500">{t("whds_page.no_description")}</p>
           )}
         </div>
       </div>
 
       <div className="container mt-4">
-        <h2 className="text-2xl font-bold mb-6">报名方式</h2>
+        <h2 className="text-2xl font-bold mb-6">{t("whds_page.registration_method")}</h2>
         {targetLink ? (
-          // 如果 targetLink 不为空，显示对应的单个表单
           <div className="border-gray-200 border p-3 rounded">
             {loading ? (
               <div className="text-center py-5">
                 <Spinner animation="border" size="lg" />
-                <p className="mt-3">正在上传，请稍候...</p>
+                <p className="mt-3">{t("whds_page.uploading")}</p>
               </div>
             ) : (
               <>
@@ -463,29 +461,27 @@ const EventDetail = () => {
             )}
           </div>
         ) : (
-          // 如果 targetLink 为空，显示 Tabs
           <Tabs
             id="registration-tabs"
             activeKey={activeTab}
             onSelect={(k) => setActiveTab(k)}
             className="mb-4"
           >
-            <Tab eventKey="merchant" title="商家/赞助商注册">
+            <Tab eventKey="merchant" title={t("whds_page.tab_merchant")}>
               {loading ? (
                 <div className="text-center py-5">
                   <Spinner animation="border" size="lg" />
-                  <p className="mt-3">正在上传，请稍候...</p>
+                  <p className="mt-3">{t("whds_page.uploading")}</p>
                 </div>
               ) : (
                 <MerchantRegistrationForm onSubmit={handleMerchantRegistrationSubmit} />
               )}
             </Tab>
-            
-            <Tab eventKey="influencer" title="网红达人注册">
+            <Tab eventKey="influencer" title={t("whds_page.tab_influencer")}>
               {loading ? (
                 <div className="text-center py-5">
                   <Spinner animation="border" size="lg" />
-                  <p className="mt-3">正在上传，请稍候...</p>
+                  <p className="mt-3">{t("whds_page.uploading")}</p>
                 </div>
               ) : (
                 <InfluencerRegistrationForm onSubmit={handleInfluencerRegistrationSubmit} />
@@ -497,7 +493,7 @@ const EventDetail = () => {
         {renderSuccessModal()}
         {renderErrorModal()}
       </div>
-      <br/>
+      <br />
     </div>
   );
 };
