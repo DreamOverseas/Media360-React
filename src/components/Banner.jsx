@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
-
+import { useTranslation } from "react-i18next";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [banner, setBannerList] = useState([]);
   const [error, setError] = useState(null);
+
+
+  const { i18n } = useTranslation();
 
   // Banner数据
   const bannerData = [
@@ -92,14 +95,14 @@ const Banner = () => {
                 {/* 标题 - 移动端优化字体大小和行高 */}
                 {entry.Title && (
                   <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2 sm:mb-3 md:mb-4 leading-tight drop-shadow-lg">
-                    {entry.Title}
+                    {i18n.language=='zh' ? entry.Title : entry.Title_en}
                   </h1>
                 )}
 
                 {/* 副标题 - 移动端优化 */}
                 {entry.SubTitle && (
                   <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-4 sm:mb-5 md:mb-6 text-gray-100 md:text-gray-200 max-w-xs sm:max-w-sm md:max-w-xl drop-shadow-md">
-                    {entry.SubTitle}
+                    {i18n.language=='zh' ? entry.SubTitle : entry.SubTitle_en}
                   </p>
                 )}
 
@@ -136,7 +139,7 @@ const Banner = () => {
                         onClick={() => window.open(`events/${entry.ButtonLink}`, "_blank")}
                         type="button"
                       >
-                        {entry.ButtonText}
+                        {i18n.language=='zh' ? entry.ButtonText : entry.ButtonText_en}
                       </button>
                     )}
 
@@ -146,7 +149,7 @@ const Banner = () => {
                         onClick={() => window.open(`events/${entry.SecondButtonLink}`, "_blank")}
                         type="button"
                       >
-                        {entry.SecondButtonText}
+                        {i18n.language=='zh' ? entry.SecondButtonText : entry.SecondButtonText_en}
                       </button>
                     )}
                   </div>

@@ -21,7 +21,6 @@ const Header = () => {
 
   return (
     <div>
-      
       <Navbar expand='lg' className='navbar-custom'>
         <Navbar.Toggle aria-controls='basic-navbar-nav'/>
         <Navbar.Brand href='/' className='navbar-brand-custom'>
