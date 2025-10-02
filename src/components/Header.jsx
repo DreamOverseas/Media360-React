@@ -1,4 +1,4 @@
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 import React, { useState, useContext } from "react";
 import { Image, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -10,11 +10,14 @@ const Header = () => {
   const { user, logout } = useContext(AuthContext);
   const { t, i18n } = useTranslation();
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [show, setShow] = useState(false);
 
-  // const changeLanguage = lng => {
-  //   i18n.changeLanguage(lng);
-  //   Cookies.set("i18next", lng, { expires: 7 });
-  // };
+  const changeLanguage = lng => {
+    i18n.changeLanguage(lng);
+    Cookies.set("i18next", lng, { expires: 7 });
+    console.log(`Set Lang to ${lng}.`);
+    setShow(false);
+  };
 
   return (
     <div>
@@ -62,10 +65,12 @@ const Header = () => {
             <Nav.Link href='/about-us'>{t("About_us")}</Nav.Link>
             {/* <Nav.Link href='/join-us'>{t("joinus")}</Nav.Link> */}
 
-            {/* <NavDropdown
-              title={t("language")}
-              id='language-dropdown'
-              className='dropdown-container'
+            <NavDropdown
+              title={<i className="bi bi-translate"></i>}
+              id="language-dropdown"
+              className="dropdown-container"
+              show={show}
+              onToggle={(nextShow) => setShow(nextShow)}
             >
               <NavDropdown.Item onClick={() => changeLanguage("en")}>
                 English
@@ -73,7 +78,8 @@ const Header = () => {
               <NavDropdown.Item onClick={() => changeLanguage("zh")}>
                 中文
               </NavDropdown.Item>
-            </NavDropdown> */}
+            </NavDropdown>
+
             {user ? (
               <>
                 {/*
