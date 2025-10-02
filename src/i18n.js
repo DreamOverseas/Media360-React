@@ -187,7 +187,74 @@ const resources = {
       feature_4:"",
       feature_5:"",
       feature_6:"",
-      publishedAt:"Published At"
+      publishedAt:"Published At",
+      "whds_form_inf": {
+        "title": "Influencer Registration",
+        "subtitle": "Please fill out the form below to complete your registration and join the influencer competition",
+        "basic_info": {
+          "title": "Basic Information",
+          "name": "Name *",
+          "name_ph": "Enter your full name",
+          "gender": "Gender *",
+          "gender_select": "Select",
+          "gender_male": "Male",
+          "gender_female": "Female",
+          "gender_other": "Other",
+          "age": "Age *",
+          "age_ph": "Enter age",
+          "phone": "Phone *",
+          "phone_ph": "Enter phone number",
+          "email": "Email *",
+          "email_ph": "Enter email address",
+          "location": "City/Country *",
+          "location_ph": "e.g., Beijing, China"
+        },
+        "social_media": {
+          "title": "Social Media Information",
+          "account": "Social Media Account *",
+          "platform_ph": "Platform (e.g., TikTok, Instagram)",
+          "nickname_ph": "Platform nickname/ID",
+          "fans_ph": "Number of followers",
+          "add_account": "Add another account"
+        },
+        "experience": {
+          "title": "Content & Experience",
+          "past": "Previous collaborations/brands (optional)",
+          "past_ph": "Briefly describe your brand collaborations or successful cases"
+        },
+        "training": {
+          "title": "Influencer Training",
+          "need_label": "Do you require professional paid influencer training? *",
+          "need": "Yes",
+          "no_need": "No"
+        },
+        "categories": {
+          "title": "Product/Service Categories You Wish to Promote * (multiple choice)",
+          "food_beverage": "Food & Beverages",
+          "cosmetics": "Cosmetics",
+          "travel": "Travel",
+          "fashion": "Fashion",
+          "electronics": "Electronics",
+          "home": "Home Products",
+          "health": "Health & Wellness",
+          "education": "Education & Training",
+          "finance": "Financial Services",
+          "entertainment": "Entertainment & Gaming",
+          "automotive": "Automotive",
+          "mother_baby": "Mother & Baby Products",
+          "other": "Other"
+        },
+        "endorsement": {
+          "title": "Endorsement Terms",
+          "placeholder": "If you accept endorsements from organizers/brands, please provide details such as profit sharing or additional conditions"
+        },
+        "commitment": {
+          "title": "Competition Commitment",
+          "rules": "I agree to comply with the competition rules and requirements *",
+          "usage": "I allow the organizers to use my content for promotion *"
+        },
+        "submit": "Submit Application"
+      }
     },
   },
   zh: {
@@ -416,7 +483,74 @@ const resources = {
       feature_4:"<h5>线下互动与活动支持</h5><p>提供墨尔本CBD讲座/研讨会策划执行与活动场地租赁，增强品牌与客户之间的互动与信任。</p>",
       feature_5:"<h5>综合运营与管理支持</h5><p>提供账号管理、人力招聘与企业合作资源，助力客户轻松进行业务运营与扩展。</p>",
       feature_6:"<h5>战略规划与法律保障</h5><p>从战略设计到法律支持，为品牌提供持续增长路径与合规保障，构建长远发展基础。</p>",
-      publishedAt:"发布时间"
+      publishedAt:"发布时间",
+      "whds_form_inf": {
+        "title": "网红达人注册",
+        "subtitle": "请填写以下信息完成注册，参与网红推广大赛",
+        "basic_info": {
+          "title": "基本信息",
+          "name": "姓名 *",
+          "name_ph": "请输入您的姓名",
+          "gender": "性别 *",
+          "gender_select": "请选择",
+          "gender_male": "男",
+          "gender_female": "女",
+          "gender_other": "其他",
+          "age": "年龄 *",
+          "age_ph": "年龄",
+          "phone": "联系电话 *",
+          "phone_ph": "输入联系电话",
+          "email": "邮箱 *",
+          "email_ph": "输入邮箱地址",
+          "location": "所在城市/国家 *",
+          "location_ph": "例：北京，中国"
+        },
+        "social_media": {
+          "title": "社交媒体信息",
+          "account": "媒体账号 *",
+          "platform_ph": "平台(Platform)",
+          "nickname_ph": "平台昵称/id",
+          "fans_ph": "粉丝数(Fan Number)",
+          "add_account": "添加媒体账号"
+        },
+        "experience": {
+          "title": "内容及经验",
+          "past": "过往合作品牌/案例（可选）",
+          "past_ph": "请简要描述您过往的品牌合作经验和成功案例"
+        },
+        "training": {
+          "title": "网红培训",
+          "need_label": "您是否需要付费专业网红培训 *",
+          "need": "需要",
+          "no_need": "不需要"
+        },
+        "categories": {
+          "title": "愿意宣传的商品/服务类别 * (可多选)",
+          "food_beverage": "食品饮料",
+          "cosmetics": "化妆品",
+          "travel": "旅游产品",
+          "fashion": "时尚服饰",
+          "electronics": "数码电子",
+          "home": "家居用品",
+          "health": "健康保健",
+          "education": "教育培训",
+          "finance": "金融服务",
+          "entertainment": "娱乐游戏",
+          "automotive": "汽车用品",
+          "mother_baby": "母婴用品",
+          "other": "其他"
+        },
+        "endorsement": {
+          "title": "代言条款",
+          "placeholder": "如您接受来自主办方和商家的代言，请具体填写详细信息例如分红、额外条件"
+        },
+        "commitment": {
+          "title": "参赛承诺",
+          "rules": "我同意遵守比赛规则和要求 *",
+          "usage": "我允许主办方使用我的参赛作品进行宣传推广 *"
+        },
+        "submit": "提交注册申请"
+      }
     },
   },
 };
