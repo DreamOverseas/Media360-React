@@ -47,7 +47,7 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
     if (invalidFiles.length > 0) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        businessLicense: "部分文件大小超过 10MB，未添加！",
+        businessLicense: t("whds_errors.file_license_too_large"),
       }));
     }
 
@@ -72,7 +72,7 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
     if (invalidFiles.length > 0) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        productImages: "部分文件大小超过 5MB，未添加！",
+        productImages: t("whds_errors.file_product_too_large"),
       }));
     }
 
@@ -114,27 +114,27 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
 
   const validateForm = () => {
     let newErrors = {};
-    
+
     // 基本信息验证
-    if (!formData.companyName.trim()) newErrors.companyName = "商家名称不能为空";
-    if (!formData.companyDescription.trim()) newErrors.companyDescription = "请填写相关公司简介";
-    if (!formData.industryCategory.trim()) newErrors.industryCategory = "请选择行业类别";
-    if (!formData.contactPersonFirstName.trim()) newErrors.contactPersonFirstName = "负责人名字不能为空";
-    if (!formData.contactPersonLastName.trim()) newErrors.contactPersonLastName = "负责人姓不能为空";
-    
+    if (!formData.companyName.trim()) newErrors.companyName = t("whds_errors.company_name_required");
+    if (!formData.companyDescription.trim()) newErrors.companyDescription = t("whds_errors.company_description_required");
+    if (!formData.industryCategory.trim()) newErrors.industryCategory = t("whds_errors.industry_required");
+    if (!formData.contactPersonFirstName.trim()) newErrors.contactPersonFirstName = t("whds_errors.contact_firstname_required");
+    if (!formData.contactPersonLastName.trim()) newErrors.contactPersonLastName = t("whds_errors.contact_lastname_required");
+
     if (!formData.email.trim()) {
-      newErrors.email = "电子邮箱不能为空";
+      newErrors.email = t("whds_errors.email_required");
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "电子邮箱格式不正确";
-    }
-    
-    if (!formData.phone.trim()) {
-      newErrors.phone = "电话不能为空";
-    } else if (!/^\d{10,15}$/.test(formData.phone)) {
-      newErrors.phone = "电话格式不正确";
+      newErrors.email = t("whds_errors.email_invalid");
     }
 
-    if (!formData.sponsorshipFormat.trim()) newErrors.sponsorshipFormat = "请填写赞助形式";
+    if (!formData.phone.trim()) {
+      newErrors.phone = t("whds_errors.phone_required");
+    } else if (!/^\d{10,15}$/.test(formData.phone)) {
+      newErrors.phone = t("whds_errors.phone_invalid");
+    }
+
+    if (!formData.sponsorshipFormat.trim()) newErrors.sponsorshipFormat = t("whds_errors.sponsorship_required");
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;

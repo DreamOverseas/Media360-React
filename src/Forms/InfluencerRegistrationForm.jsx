@@ -104,7 +104,7 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
     if (invalidFiles.length > 0) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        portfolioFiles: "部分文件大小超过 10MB，未添加！",
+        portfolioFiles: t("whds_errors.file_portfolio_too_large"),
       }));
     }
 
@@ -140,7 +140,7 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
     if (invalidFiles.length > 0) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        personalImages: "部分文件大小超过 10MB，未添加！",
+        personalImages: t("whds_errors.file_personal_too_large"),
       }));
     }
 
@@ -155,7 +155,6 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
       personalImagesRef.current.value = "";
     }
   };
-
 
   const handleRemovePersonalImage = (index) => {
     setFormData((prevData) => ({
@@ -172,29 +171,27 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
     let newErrors = {};
 
     // 基本信息验证
-    if (!formData.name.trim()) newErrors.name = "姓名不能为空";
-
-    if (!formData.gender.trim()) newErrors.gender = "请填写性别";
-
-    if (!formData.age.trim()) newErrors.age = "请填写年龄";
+    if (!formData.name.trim()) newErrors.name = t("whds_errors.name_required");
+    if (!formData.gender.trim()) newErrors.gender = t("whds_errors.gender_required");
+    if (!formData.age.trim()) newErrors.age = t("whds_errors.age_required");
 
     if (!formData.email.trim()) {
-      newErrors.email = "邮箱不能为空";
+      newErrors.email = t("whds_errors.email_required");
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "邮箱格式不正确";
+      newErrors.email = t("whds_errors.email_invalid");
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = "联系电话不能为空";
+      newErrors.phone = t("whds_errors.phone_required");
     } else if (!/^\d{10,15}$/.test(formData.phone)) {
-      newErrors.phone = "电话格式不正确";
+      newErrors.phone = t("whds_errors.phone_invalid");
     }
 
-    if (!formData.location.trim()) newErrors.location = "所在城市/国家不能为空";
+    if (!formData.location.trim()) newErrors.location = t("whds_errors.location_required");
 
     // 社交媒体信息验证
     if (formData.socialMedia.length === 0) {
-      newErrors.socialMedia = "请至少填写一个主力社交平台";
+      newErrors.socialMedia = t("whds_errors.social_media_required");
     } else {
       formData.socialMedia.forEach((account, index) => {
         const { Platform, PlatformNickname, Fans } = account;
@@ -203,22 +200,22 @@ const InfluencerRegistrationForm = ({ onSubmit }) => {
         const allFilled = Platform.trim() && PlatformNickname.trim() && Fans.toString().trim();
 
         if (hasAny && !allFilled) {
-          newErrors.socialMedia = `第 ${index + 1} 个社交媒体账号未完整填写（平台/昵称/粉丝数必须同时填写）`;
+          newErrors.socialMedia = t("whds_errors.social_media_incomplete", { index: index + 1 });
         }
       });
     }
 
-    // // 内容及经验验证
-    if (!formData.training || (formData.training !== 'need' && formData.training !== 'no_need')) {
-      newErrors.training = '请选择是否需要培训服务';
+    // 内容及经验验证
+    if (!formData.training || (formData.training !== "need" && formData.training !== "no_need")) {
+      newErrors.training = t("whds_errors.training_required");
     }
 
     if (!formData.agreeToRules) {
-      newErrors.agreeToRules = "请同意遵守比赛规则";
+      newErrors.agreeToRules = t("whds_errors.rules_agreement_required");
     }
 
     if (!formData.allowContentUsage) {
-      newErrors.allowContentUsage = "请同意主办方使用参赛作品做宣传";
+      newErrors.allowContentUsage = t("whds_errors.usage_agreement_required");
     }
 
     setErrors(newErrors);

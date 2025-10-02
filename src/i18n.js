@@ -302,6 +302,31 @@ const resources = {
           "additional_ph": "If you have special conditions, specify details such as profit sharing, format, etc. (optional)"
         },
         "submit": "Submit Application"
+      },
+      "whds_errors": {
+        "file_license_too_large": "Some license files exceed 10MB and were not added!",
+        "file_product_too_large": "Some product images exceed 5MB and were not added!",
+        "company_name_required": "Company name cannot be empty",
+        "company_description_required": "Please provide a company description",
+        "industry_required": "Please select an industry category",
+        "contact_firstname_required": "Contact person's first name is required",
+        "contact_lastname_required": "Contact person's last name is required",
+        "email_required": "Email cannot be empty",
+        "email_invalid": "Invalid email format",
+        "phone_required": "Phone number cannot be empty",
+        "phone_invalid": "Invalid phone number format",
+        "sponsorship_required": "Please specify sponsorship format",
+        "file_portfolio_too_large": "Some portfolio files exceed 10MB and were not added!",
+        "file_personal_too_large": "Some personal images exceed 10MB and were not added!",
+        "name_required": "Name cannot be empty",
+        "gender_required": "Gender is required",
+        "age_required": "Age is required",
+        "location_required": "City/Country is required",
+        "social_media_required": "Please provide at least one main social media platform",
+        "social_media_incomplete": "Social media account #{{index}} is incomplete (platform, nickname, and fans must all be provided)",
+        "training_required": "Please select whether training is required",
+        "rules_agreement_required": "You must agree to follow the competition rules",
+        "usage_agreement_required": "You must agree to allow the organizer to use your submitted work for promotion"
       }
     },
   },
@@ -646,6 +671,31 @@ const resources = {
           "additional_ph": "如您有特殊的赞助方式请填写详细信息例如分红、形式（选填）"
         },
         "submit": "提交注册申请"
+      },
+      "whds_errors": {
+        "file_license_too_large": "部分文件大小超过 10MB，未添加！",
+        "file_product_too_large": "部分文件大小超过 5MB，未添加！",
+        "company_name_required": "商家名称不能为空",
+        "company_description_required": "请填写相关公司简介",
+        "industry_required": "请选择行业类别",
+        "contact_firstname_required": "负责人名字不能为空",
+        "contact_lastname_required": "负责人姓不能为空",
+        "email_required": "电子邮箱不能为空",
+        "email_invalid": "电子邮箱格式不正确",
+        "phone_required": "电话不能为空",
+        "phone_invalid": "电话格式不正确",
+        "sponsorship_required": "请填写赞助形式",
+        "file_portfolio_too_large": "部分作品文件大小超过 10MB，未添加！",
+        "file_personal_too_large": "部分个人图片大小超过 10MB，未添加！",
+        "name_required": "姓名不能为空",
+        "gender_required": "请填写性别",
+        "age_required": "请填写年龄",
+        "location_required": "所在城市/国家不能为空",
+        "social_media_required": "请至少填写一个主力社交平台",
+        "social_media_incomplete": "第 {{index}} 个社交媒体账号未完整填写（平台/昵称/粉丝数必须同时填写）",
+        "training_required": "请选择是否需要培训服务",
+        "rules_agreement_required": "请同意遵守比赛规则",
+        "usage_agreement_required": "请同意主办方使用参赛作品做宣传"
       }
     },
   },
