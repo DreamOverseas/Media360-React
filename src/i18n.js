@@ -327,6 +327,25 @@ const resources = {
         "training_required": "Please select whether training is required",
         "rules_agreement_required": "You must agree to follow the competition rules",
         "usage_agreement_required": "You must agree to allow the organizer to use your submitted work for promotion"
+      },
+      "whds_page": {
+        "submit_success": "Submission Successful",
+        "submit_success_msg": "Your information has been uploaded successfully!",
+        "submit_error": "Submission Failed",
+        "submit_error_msg": "Submission failed. Please check your network or try again later.",
+        "retry": "Retry",
+        "close": "Close",
+        "event_info": "Event Information",
+        "time": "Time",
+        "location": "Location",
+        "host": "Host",
+        "overview": "Event Overview",
+        "no_description": "No description available",
+        "event_description": "Event Description",
+        "registration_method": "Registration Method",
+        "uploading": "Uploading, please wait...",
+        "tab_merchant": "Merchant/Sponsor Registration",
+        "tab_influencer": "Influencer Registration"
       }
     },
   },
@@ -696,6 +715,25 @@ const resources = {
         "training_required": "请选择是否需要培训服务",
         "rules_agreement_required": "请同意遵守比赛规则",
         "usage_agreement_required": "请同意主办方使用参赛作品做宣传"
+      },
+      "whds_page": {
+        "submit_success": "提交成功",
+        "submit_success_msg": "您的资料已成功上传！",
+        "submit_error": "提交失败",
+        "submit_error_msg": "资料提交失败，请检查网络或稍后重试！",
+        "retry": "重试",
+        "close": "关闭",
+        "event_info": "活动信息",
+        "time": "时间",
+        "location": "地点",
+        "host": "主办方",
+        "overview": "活动总览",
+        "no_description": "暂无描述",
+        "event_description": "活动详情",
+        "registration_method": "报名方式",
+        "uploading": "正在上传，请稍候...",
+        "tab_merchant": "商家/赞助商注册",
+        "tab_influencer": "网红达人注册"
       }
     },
   },
