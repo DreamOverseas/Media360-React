@@ -366,6 +366,8 @@ import { AuthContext } from "../context/AuthContext";
 import QRCode from "qrcode";
 import QRDisplay from '../utils/QRDisplay';
 
+const DEBUG = import.meta.env.DEBUG;
+
 // Helper for QR downloading
 async function downloadQR(hash, filename) {
     const canvas = document.createElement("canvas");
@@ -461,7 +463,7 @@ const SellerCoupon = () => {
                 }
             );
 
-            console.log("CouponSysAccount response:", couponSysAccountResponse.data);
+            if (DEBUG) console.log("CouponSysAccount response:", couponSysAccountResponse.data);
 
             if (couponSysAccountResponse.data.data && couponSysAccountResponse.data.data.length > 0) {
                 const couponSysAccountDocumentId = couponSysAccountResponse.data.data[0].documentId;
@@ -477,13 +479,13 @@ const SellerCoupon = () => {
                     }
                 );
 
-                console.log("Coupons response:", couponsResponse.data);
+                if (DEBUG) console.log("Coupons response:", couponsResponse.data);
 
                 if (couponsResponse.data.data) {
                     setCoupons(couponsResponse.data.data);
                 }
             } else {
-                console.log("No CouponSysAccount found for this user");
+                if (DEBUG) console.log("No CouponSysAccount found for this user");
                 setCoupons([]);
             }
         } catch (error) {

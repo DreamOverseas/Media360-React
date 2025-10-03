@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import "../css/NewsPage.css";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const DEBUG = import.meta.env.DEBUG;
 
 const NewsPage = () => {
   const { t, i18n } = useTranslation();
@@ -37,7 +38,7 @@ const NewsPage = () => {
         },
       });
 
-      console.log("API Response:", response.data); // ✅ Debugging API 数据
+      if (DEBUG) console.log("API Response:", response.data); // ✅ Debugging API 数据
 
       if (response.data?.data) {
         const formattedNews = response.data.data.map(newsItem => ({

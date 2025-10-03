@@ -3,11 +3,12 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const DEBUG = import.meta.env.DEBUG;
+
 const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [banner, setBannerList] = useState([]);
   const [error, setError] = useState(null);
-
 
   const { i18n } = useTranslation();
 
@@ -60,7 +61,7 @@ const Banner = () => {
         const bannerData = response.data?.data || null;
         if (bannerData.length > 0) {
           setBannerList(bannerData);
-          console.log(bannerData);
+          if (DEBUG) console.log(bannerData);
         } else {
           setError("No data found");
         }

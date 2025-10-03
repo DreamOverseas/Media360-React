@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import "../css/AmbassadorPage.css";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const DEBUG = import.meta.env.DEBUG;
+
 const AmbassadorPage = () => {
   const { t, i18n } = useTranslation();
   const [ambassadors, setAmbassadors] = useState([]);
@@ -21,7 +23,7 @@ const AmbassadorPage = () => {
       })
       .then(response => {
         if (response.data && response.data.data) {
-          console.log(response.data.data);
+          if (DEBUG) console.log(response.data.data);
           setAmbassadors(response.data.data);
         } else {
           setError("No data found");

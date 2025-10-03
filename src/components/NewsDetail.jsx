@@ -9,6 +9,7 @@ import rehypeRaw from "rehype-raw";
 import "../css/NewsDetail.css";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const DEBUG = import.meta.env.DEBUG;
 
 const NewsDetail = () => {
   const { id } = useParams(); // ✅ `id` 可能是 `URL` 或 `ID`
@@ -26,7 +27,7 @@ const NewsDetail = () => {
 
     const fetchNewsDetail = async () => {
       try {
-        console.log(`Fetching News for ID/URL: ${id}`);
+        if (DEBUG) console.log(`Fetching News for ID/URL: ${id}`);
 
         // ✅ 先尝试使用 URL 查询新闻
         let response = await axios.get(
@@ -35,7 +36,7 @@ const NewsDetail = () => {
 
         // ✅ 如果 `url` 查询失败，尝试使用 `id` 查询
         if (!response.data?.data.length) {
-          console.log(`URL not found, trying ID: ${id}`);
+          if (DEBUG) console.log(`URL not found, trying ID: ${id}`);
           response = await axios.get(
             `${BACKEND_HOST}/api/news?filters[id][$eq]=${id}&populate=*`
           );
@@ -43,7 +44,7 @@ const NewsDetail = () => {
 
         if (response.data?.data.length > 0) {
           setNews(response.data.data[0]); // ✅ 取第一条数据
-          console.log("Fetched News Data:", response.data.data[0]);
+          if (DEBUG) console.log("Fetched News Data:", response.data.data[0]);
         } else {
           setError("News not found");
         }

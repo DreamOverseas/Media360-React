@@ -7,6 +7,7 @@ import ProductCard from "../components/ProductCard.jsx";
 import "../css/ProductRelatedProduct.css"
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const DEBUG = import.meta.env.DEBUG;
 
 const ProductRelatedProduct = () => {
   const location = useLocation();
@@ -23,7 +24,7 @@ const ProductRelatedProduct = () => {
     axios
       .get(`${BACKEND_HOST}/api/products/?populate=*`)
       .then(res => {
-        console.log("API Response:", res.data);
+        if (DEBUG) console.log("API Response:", res.data);
         const allProducts = res.data.data;
         computeRecommendations(allProducts, Product, productTag);
       })

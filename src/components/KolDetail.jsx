@@ -9,6 +9,7 @@ import "yet-another-react-lightbox/styles.css";
 import "../css/KolDetail.css";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const DEBUG = import.meta.env.DEBUG;
 
 const KolDetail = () => {
   const { id: paramId } = useParams();
@@ -29,14 +30,14 @@ const KolDetail = () => {
 
     const fetchPersonData = async () => {
       try {
-        console.log(`🔍 Fetching Person Data for: ${paramId}`);
+        if (DEBUG) console.log(`🔍 Fetching Person Data for: ${paramId}`);
 
         let response = await axios.get(
           `${BACKEND_HOST}/api/people?filters[internal_url][$eq]=${paramId}&populate=*`
         );
 
         if (!response.data?.data.length) {
-          console.log(`❌ Internal URL failed, trying ID: ${paramId}`);
+          if (DEBUG) console.log(`❌ Internal URL failed, trying ID: ${paramId}`);
           response = await axios.get(
             `${BACKEND_HOST}/api/people?filters[id][$eq]=${paramId}&populate=*`
           );
@@ -45,7 +46,7 @@ const KolDetail = () => {
         if (response.data?.data.length > 0) {
           const personData = response.data.data[0];
           setPerson(personData);
-          console.log("✅ Fetched Person Data:", personData);
+          if (DEBUG) console.log("✅ Fetched Person Data:", personData);
 
           const brandIds = personData.brands?.map(brand => brand.id) || [];
           const productIds =
@@ -66,7 +67,7 @@ const KolDetail = () => {
           setError("Person not found");
         }
       } catch (err) {
-        console.error("❌ Error fetching person details:", err);
+        if (DEBUG) console.error("❌ Error fetching person details:", err);
         setError("Error fetching person details");
       } finally {
         setLoading(false);
@@ -79,7 +80,7 @@ const KolDetail = () => {
   const fetchItems = async (type, ids) => {
     if (!ids.length) return [];
     try {
-      console.log(`🔍 Fetching ${type} for IDs:`, ids);
+      if (DEBUG) console.log(`🔍 Fetching ${type} for IDs:`, ids);
 
       const responses = await Promise.all(
         ids.map(id =>
@@ -90,7 +91,7 @@ const KolDetail = () => {
       );
 
       const data = responses.flatMap(res => res.data.data);
-      console.log(`✅ Fetched ${type}:`, data);
+      if (DEBUG) console.log(`✅ Fetched ${type}:`, data);
       return data;
     } catch (error) {
       console.error(`❌ Error fetching ${type}:`, error);

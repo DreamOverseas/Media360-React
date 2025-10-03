@@ -6,12 +6,14 @@ import moment from 'moment';
 import 'moment-timezone';
 import "../css/ProductRelated.css";
 
+const DEBUG = import.meta.env.DEBUG;
+
 const ProductRelatedEvent = () => {
   const { state } = useLocation();
   const { t } = useTranslation();
 
   const eventItems = state?.event ?? [];
-  console.log(eventItems)
+  if (DEBUG) console.log(eventItems)
 
   const formatDateTime = (datetime) => {
     if (!datetime) return null;

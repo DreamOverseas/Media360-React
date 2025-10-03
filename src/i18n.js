@@ -346,6 +346,46 @@ const resources = {
         "uploading": "Uploading, please wait...",
         "tab_merchant": "Merchant/Sponsor Registration",
         "tab_influencer": "Influencer Registration"
+      },
+      "whds_ranking": {
+        "hero": {
+          "title": "Influencer Competition",
+          "description": "Real-time dynamic ranking of top influencers. Watch the scores change live and see who's leading the competition!",
+          "liveUpdates": "Live Updates"
+        },
+        "podium": {
+          "title": "Top Performers"
+        },
+        "leaderboard": {
+          "title": "Leaderboard"
+        },
+        "stats": {
+          "total": "Total Participants",
+          "highest": "Highest Score",
+          "liveValue": "Live",
+          "liveLabel": "Real-time Updates"
+        },
+        "footer": {
+          "text": "Rankings update every 10 seconds • Live Competition"
+        },
+        "modal": {
+          "defaultTitle": "Influencer Info",
+          "name": "Name:",
+          "gender": "Gender:",
+          "age": "Age:",
+          "location": "Location:",
+          "category": "Category:",
+          "languages": "Languages:",
+          "followers": "Followers:",
+          "email": "Email:",
+          "totalScore": "Total Score:",
+          "merchantScore": "Merchant Scan Score:",
+          "adminScore": "Committee Bonus:",
+          "relatedMerchants": "Related Merchants",
+          "loading": "Loading...",
+          "noMerchants": "No related merchants",
+          "close": "Close"
+        }
       }
     },
   },
@@ -734,6 +774,46 @@ const resources = {
         "uploading": "正在上传，请稍候...",
         "tab_merchant": "商家/赞助商注册",
         "tab_influencer": "网红达人注册"
+      },
+      "whds_ranking": {
+        "hero": {
+          "title": "网红比赛",
+          "description": "实时动态排名，见证网红积分变化，看看谁领先比赛！",
+          "liveUpdates": "实时更新"
+        },
+        "podium": {
+          "title": "前三名"
+        },
+        "leaderboard": {
+          "title": "排行榜"
+        },
+        "stats": {
+          "total": "总参赛人数",
+          "highest": "最高分",
+          "liveValue": "直播",
+          "liveLabel": "实时更新"
+        },
+        "footer": {
+          "text": "排名每10秒更新一次 • 实时竞赛"
+        },
+        "modal": {
+          "defaultTitle": "人物信息",
+          "name": "姓名：",
+          "gender": "性别：",
+          "age": "年龄：",
+          "location": "所在地：",
+          "category": "类别：",
+          "languages": "语言：",
+          "followers": "粉丝：",
+          "email": "邮箱：",
+          "totalScore": "总分：",
+          "merchantScore": "商家扫码分：",
+          "adminScore": "组委会加分：",
+          "relatedMerchants": "关联商家",
+          "loading": "加载中…",
+          "noMerchants": "暂无关联商家",
+          "close": "关闭"
+        }
       }
     },
   },
