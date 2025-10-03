@@ -8,7 +8,9 @@ import Slider from "react-slick"; // ✅ 引入 react-slick
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "../css/BrandDetail.css";
+
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const DEBUG = import.meta.env.DEBUG;
 
 const BrandDetail = () => {
   const { id } = useParams();
@@ -33,7 +35,7 @@ const BrandDetail = () => {
         let response = await axios.get(
           `${BACKEND_HOST}/api/brands?filters[internal_url][$eq]=${id}&populate=*`
         );
-        console.log("🧐 Brand API Response:", response.data); // ✅ 查看完整 API 响应数据
+        if (DEBUG) console.log("🧐 Brand API Response:", response.data); // ✅ 查看完整 API 响应数据
         if (!response.data?.data.length) {
           response = await axios.get(
             `${BACKEND_HOST}/api/brands?filters[id][$eq]=${id}&populate=*`
@@ -132,10 +134,10 @@ const BrandDetail = () => {
       : brand.description_en || "No description available";
   const tagsArray = brand?.tags?.tags ?? [];
   const brandEmail = brand?.Email || null;
-  console.log("🔍 Brand Object:", brand); // ✅ 确保 `brand` 正常
-  console.log("📧 Email Field:", brand?.Email); // ✅ 确保 `email` 存在
+  if (DEBUG) console.log("🔍 Brand Object:", brand); // ✅ 确保 `brand` 正常
+  if (DEBUG) console.log("📧 Email Field:", brand?.Email); // ✅ 确保 `email` 存在
   const galleryImages = brand?.Gallery || [];
-  console.log("🖼 Parsed Gallery Images:", galleryImages);
+  if (DEBUG) console.log("🖼 Parsed Gallery Images:", galleryImages);
   const Website = brand.official_website_url ? (
     <a
       href={brand.official_website_url}

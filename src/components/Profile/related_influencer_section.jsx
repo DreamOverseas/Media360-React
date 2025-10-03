@@ -16,17 +16,13 @@ const RelatedInfluencerSection = ({
     const [showModal, setShowModal] = useState(false);
     const [selected, setSelectedInfluencer] = useState(null);
 
-
   const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const DEBUG = import.meta.env.DEBUG;
 
   // 字段名容错（大小写/不同命名）
   const influencerList = relatedInfluencerList;
 
-
-  console.log("22222",influencerList)
-
-
-
+  if (DEBUG) console.log("22222",influencerList)
 
   // 打开 Modal
     const handleShowModal = async (influencer) => {

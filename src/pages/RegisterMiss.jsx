@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 // Load Backend Host for API calls
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 const API_KEY_MI = "774cd7539026322d69c227b2ffec7810a8457c25b94357a655a6b911ad0f4bcbb42a0487cad1cb5f58483118b65e4ff13e120960a186110ef2a2835c1c8a679922f1b37d8e2baa37fcf80d05b899be4cb07d8940ad2f9044abd0667b935e332c0521104490af9c9497c0e2116be875da51d41621bd354f632e36278e39238be7";
+const DEBUG = import.meta.env.DEBUG;
 
 // Load Backend Host for API calls
 const EMAIL_NOTIFY = import.meta.env.VITE_MISS_NOTIFICATION;
@@ -205,14 +206,14 @@ const RegisterMiss = () => {
       // console.log(JSON.stringify(finalFormData));
 
       const result = await response.json();
-      console.log(result);
+      if (DEBUG) console.log(result);
       if (response.ok) {
         notify_by_email();
         alert(t("miss_reg_success"));
         setFormData(initialFormData); // Clear out on submit
       } else {
         alert(t("miss_reg_fail"));
-        console.log(result);
+        if (DEBUG) console.log("failed", result);
       }
     } catch (error) {
       console.error('Error during form submission:', error);

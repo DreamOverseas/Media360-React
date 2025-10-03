@@ -17,6 +17,7 @@ const MERCHANT_UPLOAD_EMAIL_NOTIFY = import.meta.env.VITE_360_MEDIA_WHDS_BIZ_UPL
 const INF_UPLOAD_EMAIL_NOTIFY = import.meta.env.VITE_360_MEDIA_WHDS_INF_UPLOAD_NOTIFICATION;
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const DEBUG = import.meta.env.DEBUG;
 
 const EventDetail = () => {
   const location = useLocation();
@@ -39,7 +40,7 @@ const EventDetail = () => {
     const clean_path = path.split('/')[0];
     const link_target = path.split('/')[1];
     setTargetLink(link_target);
-    console.log("Link", link_target);
+    if (DEBUG) console.log("Link", link_target);
     axios
       .get(`${BACKEND_HOST}/api/events`, {
         params: {
@@ -181,7 +182,7 @@ const EventDetail = () => {
         });
   
       const result = await response.json();
-      // console.log(result);
+      if (DEBUG) console.log(result);
       if (response.ok) {
         const firstName = finalFormData.Contact_Person_First_Name;
         const lastName = finalFormData.Contact_Person_Last_Name;
@@ -314,7 +315,7 @@ const EventDetail = () => {
         });
 
         const result = await response.json();
-        console.log(result);
+        if (DEBUG) console.log(result);
         
         if (response.ok) {
           const name = finalFormData.Name;

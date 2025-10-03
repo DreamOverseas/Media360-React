@@ -13,6 +13,7 @@ import "../css/MerchantPromotion.css"
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 const API_KEY_MERCHANT_UPLOAD = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD
 const MERCHANT_UPLOAD_EMAIL_NOTIFY = import.meta.env.VITE_360_MEDIA_MERCHANT_UPLOAD_NOTIFICATION;
+const DEBUG = import.meta.env.DEBUG;
 
 const MerchantPromotion = () => {
   const { t } = useTranslation();
@@ -149,7 +150,7 @@ const MerchantPromotion = () => {
       });
 
     const result = await response.json();
-    console.log(result);
+    if (DEBUG) console.log(result);
     if (response.ok) {
       const firstName = finalFormData.First_Name;
       const lastName = finalFormData.Last_Name;

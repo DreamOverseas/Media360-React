@@ -13,6 +13,8 @@ const PARTNER_URL = `${STRAPI_HOST}/api/partner-application-submissions`;
 const API_TOKEN = import.meta.env.VITE_API_KEY_MERCHANT_UPLOAD;
 const MAIL_NOTIFY_API = import.meta.env.VITE_360_MEDIA_CUSTOMER_APPLICATION_NOTIFICATION;
 
+const DEBUG = import.meta.env.DEBUG;
+
 const CustomerApplicationForm = () => {
   const { productName, partnerType } = useParams();
   const { partnerID } = Object.fromEntries(new URLSearchParams(useLocation().search));
@@ -65,7 +67,7 @@ const CustomerApplicationForm = () => {
         headers: { Authorization: `Bearer ${API_TOKEN}` },
       });
 
-      // console.log("📦 partnerRes:", JSON.stringify(partnerRes.data, null, 2)); // 加上这句
+      if (DEBUG) console.log("📦 partnerRes:", JSON.stringify(partnerRes.data, null, 2)); // 加上这句
 
       const partnerEntry = partnerRes.data?.data?.[0];
       if (!partnerEntry) throw new Error("未找到对应合作伙伴");

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import "../css/FounderPage.css"; // ✅ 确保 CSS 文件正确引入
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const DEBUG = import.meta.env.DEBUG;
 
 const FounderPage = () => {
   const { t, i18n } = useTranslation();
@@ -22,7 +23,7 @@ const FounderPage = () => {
       })
       .then(response => {
         if (response.data && response.data.data) {
-          console.log("Fetched Founders:", response.data.data);
+          if (DEBUG) console.log("Fetched Founders:", response.data.data);
           setFounders(response.data.data);
         } else {
           setError("No data found");

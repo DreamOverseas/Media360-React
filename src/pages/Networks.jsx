@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import "../css/InfluenceHub.css"
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const DEBUG = import.meta.env.DEBUG;
 
 const Networks = () => {
   const location = useLocation();
@@ -27,7 +28,7 @@ const Networks = () => {
   useEffect(() => {
     try {
       const path = location.pathname.split("/")[1];
-      console.log("path", path);
+      if (DEBUG) console.log("path", path);
       
       axios.get(`${BACKEND_HOST}/api/people`, {
         params: {
@@ -40,7 +41,7 @@ const Networks = () => {
       })
       .then(response => {
         const Data = response.data?.data || null;
-        console.log(Data);
+        if (DEBUG) console.log(Data);
         if (Data && Data.length > 0) {
           setData(Data);
         } else {
@@ -53,7 +54,7 @@ const Networks = () => {
       });
     } catch {
       setError(t("errorFetchingProductData"));
-      console.log(error);
+      if (DEBUG) console.log(error);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);

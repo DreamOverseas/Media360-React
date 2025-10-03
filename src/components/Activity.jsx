@@ -11,8 +11,9 @@ const API_KEY_UPLOAD = import.meta.env.VITE_API_KEY_REGISTRATION_UPLOAD
 const MERCHANT_UPLOAD_EMAIL_NOTIFY = import.meta.env.VITE_360_MEDIA_WHDS_BIZ_UPLOAD_NOTIFICATION;
 const INF_UPLOAD_EMAIL_NOTIFY = import.meta.env.VITE_360_MEDIA_WHDS_INF_UPLOAD_NOTIFICATION;
 
-const Activity = () => {
+const DEBUG = import.meta.env.DEBUG;
 
+const Activity = () => {
     const [WtcActivities, setWtcActivities] = useState([])
     const [Activities, setActivities] = useState([])
     const [allActivities, setAllActivities] = useState([])
@@ -376,14 +377,14 @@ const Activity = () => {
           } else {
             const emailError = await emailResponse.json();
             console.log("Email API error:", emailError.message);
-            console.log("Full email error response:", emailError);
+            if (DEBUG) console.log("Full email error response:", emailError);
           }
         } else {
           console.log("Coupon system error:", couponData.message);
         }
       } catch (error) {
         console.log("Error sending confirmation email:", error);
-        console.log("Error details:", error.message, error.stack);
+        if (DEBUG) console.log("Error details:", error.message, error.stack);
       }
     };
 
@@ -468,7 +469,7 @@ const Activity = () => {
         });
   
       const result = await response.json();
-      console.log(result);
+      if (DEBUG) console.log(result);
       if (response.ok) {
         const firstName = finalFormData.Contact_Person_First_Name;
         const lastName = finalFormData.Contact_Person_Last_Name;
@@ -599,7 +600,7 @@ const Activity = () => {
         });
 
         const result = await response.json();
-        console.log(result);
+        if (DEBUG) console.log(result);
         
         if (response.ok) {
           const name = finalFormData.Name;

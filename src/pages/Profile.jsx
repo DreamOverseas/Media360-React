@@ -17,6 +17,7 @@ import { useInfluencerProfile, useCoupons, useSellerData } from "../hooks/hooks_
 import { useProfileEdit } from "../hooks/hooks_use_profile_edit.jsx";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const DEBUG = import.meta.env.DEBUG;
 
 // 美化的侧边栏组件
 const ProfileSidebar = ({ user, avatarUrl, activeTab, setActiveTab }) => {
@@ -159,8 +160,8 @@ const Profile = () => {
   // 调试：观察 user/coupon 结构变化
   useEffect(() => {
     console.groupCollapsed("%c[Coupon] user change", "color:#6a5acd");
-    console.log("[Coupon] user.id =", user?.id, "roletype =", user?.roletype);
-    console.log("[Coupon] user.coupon =", user?.coupon);
+    if (DEBUG) console.log("[Coupon] user.id =", user?.id, "roletype =", user?.roletype);
+    if (DEBUG) console.log("[Coupon] user.coupon =", user?.coupon);
     console.groupEnd();
   }, [user]);
 
@@ -245,8 +246,8 @@ const Profile = () => {
         const processed_data = first
         .filter(entry => entry.users_permissions_user?.influencer_profile) // 过滤掉为空的
         .map(entry => entry.users_permissions_user.influencer_profile);
-        // console.log("first", first);
-        // console.log("processed_data", processed_data);
+        if (DEBUG) console.log("first", first);
+        if (DEBUG) console.log("processed_data", processed_data);
 
         setRelatedInfluencer(processed_data ? (processed_data.attributes ?? processed_data) : []);
       } catch (e) {

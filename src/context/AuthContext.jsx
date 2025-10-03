@@ -10,6 +10,7 @@ import {
 
 // Load Backend Host for API calls
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const DEBUG = import.meta.env.DEBUG;
 
 export const AuthContext = createContext();
 
@@ -49,7 +50,7 @@ const AuthProvider = ({ children }) => {
         },
       });
 
-      console.log("[Auth] /users/me data =", response.data);
+      if (DEBUG) console.log("[Auth] /users/me data =", response.data);
       if (response.data) {
         setUser(response.data);
       } else {
@@ -91,7 +92,7 @@ const AuthProvider = ({ children }) => {
           { headers: { "Content-Type": "application/json" } }
         );
 
-        console.log("[Auth] login response:", response.data);
+        if (DEBUG) console.log("[Auth] login response:", response.data);
         const jwt = response?.data?.jwt;
         if (!jwt) throw new Error("No JWT returned from /auth/local");
 
@@ -124,7 +125,7 @@ const AuthProvider = ({ children }) => {
    * 登出：清除 token & 用户状态
    */
   const logout = useCallback(() => {
-    console.log("[Auth] logout user:", user);
+    if (DEBUG) console.log("[Auth] logout user:", user);
     Cookies.remove("token");
     setUser(null);
   }, [user]);

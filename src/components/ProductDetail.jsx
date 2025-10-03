@@ -25,6 +25,7 @@ import { getPartnerTypeLabel } from "../components/PartnerConfig";
 import ProductGallery from "./ProductGallery.jsx";
 
 const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
+const DEBUG = import.meta.env.DEBUG;
 
 const ProductDetail = () => {
   const location = useLocation();
@@ -405,7 +406,7 @@ useEffect(() => {
   // console.log(productTag)
   // console.log("vvvv",videos);
 
-  // console.log("当前产品名称为：", Name);
+  if (DEBUG) console.log("当前产品名称为：", Name);
 
   return (
     <div>
