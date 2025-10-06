@@ -386,6 +386,54 @@ const resources = {
           "noMerchants": "No related merchants",
           "close": "Close"
         }
+      },
+      "profile": {
+        "page": {
+          "sidebar": {
+            "account": "Account Info",
+            "password": "Password Settings",
+            "influencer": "Influencer Info",
+            "sellerCampaigns": "Seller Campaigns",
+            "seller": "Shop Info",
+            "relatedInfluencer": "Endorsing Influencers"
+          },
+          "user": {
+            "defaultName": "User",
+            "defaultRole": "User"
+          },
+          "accountInfo": {
+            "title": "Account Info",
+            "edit": "Edit Profile",
+            "username": "Username",
+            "email": "Email",
+            "phone": "Phone",
+            "location": "Location",
+            "joinDate": "Join Date"
+          },
+          "common": {
+            "notSet": "Not set",
+            "unknown": "Unknown"
+          },
+          "password": {
+            "title": "Password Settings"
+          },
+          "influencer": {
+            "title": "Influencer Info",
+            "couponInfo": "Coupon Information",
+            "profileInfo": "Influencer Profile"
+          },
+          "sellerCampaigns": {
+            "title": "Seller Campaigns",
+            "availableCoupons": "Available Coupons"
+          },
+          "seller": {
+            "title": "Shop Info",
+            "qrInfo": "QR Code Information"
+          },
+          "relatedInfluencer": {
+            "title": "Endorsing Influencers"
+          }
+        }
       }
     },
   },
@@ -813,6 +861,54 @@ const resources = {
           "loading": "加载中…",
           "noMerchants": "暂无关联商家",
           "close": "关闭"
+        }
+      },
+      "profile": {
+        "page": {
+          "sidebar": {
+            "account": "账号信息",
+            "password": "密码设置",
+            "influencer": "网红信息",
+            "sellerCampaigns": "商家优惠",
+            "seller": "店铺信息",
+            "relatedInfluencer": "代言网红"
+          },
+          "user": {
+            "defaultName": "用户",
+            "defaultRole": "用户"
+          },
+          "accountInfo": {
+            "title": "账号信息",
+            "edit": "编辑资料",
+            "username": "用户名",
+            "email": "邮箱地址",
+            "phone": "手机号码",
+            "location": "所在地区",
+            "joinDate": "加入时间"
+          },
+          "common": {
+            "notSet": "未设置",
+            "unknown": "未知"
+          },
+          "password": {
+            "title": "密码设置"
+          },
+          "influencer": {
+            "title": "网红信息",
+            "couponInfo": "优惠券信息",
+            "profileInfo": "网红资料"
+          },
+          "sellerCampaigns": {
+            "title": "商家优惠",
+            "availableCoupons": "可用优惠"
+          },
+          "seller": {
+            "title": "店铺信息",
+            "qrInfo": "二维码信息"
+          },
+          "relatedInfluencer": {
+            "title": "代言网红"
+          }
         }
       }
     },
