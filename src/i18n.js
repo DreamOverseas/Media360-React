@@ -432,7 +432,29 @@ const resources = {
           },
           "relatedInfluencer": {
             "title": "Endorsing Influencers"
+          },
+          "sellerDetail": {
+            "title": "Seller Details",
+            "basicInfo": "Business Information",
+            "companyName": "Company Name",
+            "industry": "Industry",
+            "address": "Address",
+            "abn": "ABN",
+            "email": "Email",
+            "phone": "Phone",
+            "website": "Website",
+            "campaignPrefs": "Campaign Preferences",
+            "noCampaigns": "No campaigns available",
+            "untitledCampaign": "Untitled Campaign",
+            "requirement": "Requirement",
+            "validUntil": "Valid Until",
+            "contactUsBtn": "Contact Us",
+            "contactUsNote": "To modify your shop and campaign info, please contact us via email: info@do360.com"
           }
+        },
+        "error": {
+          "loadFail": "Loading Failed：",
+          "noInfo": "Marchant Detail not provided yet."
         }
       }
     },
@@ -471,7 +493,7 @@ const resources = {
       noProducts: "当前无产品",
       noEvents: "当前无活动",
       noDescription: "当前无详情",
-      loading_more: "加载中。。。",
+      loading_more: "加载中...",
       enterEmail: "输入邮箱",
       noAccount: "未拥有账号？",
       hasAccount: "已拥有账号？",
@@ -908,7 +930,29 @@ const resources = {
           },
           "relatedInfluencer": {
             "title": "代言网红"
+          },
+          "sellerDetail": {
+            "title": "商家详情",
+            "basicInfo": "商家信息",
+            "companyName": "公司名称",
+            "industry": "行业",
+            "address": "地址",
+            "abn": "ABN 编号",
+            "email": "邮箱",
+            "phone": "电话",
+            "website": "网站",
+            "campaignPrefs": "活动偏好",
+            "noCampaigns": "暂无活动",
+            "untitledCampaign": "未命名活动",
+            "requirement": "要求",
+            "validUntil": "有效期至",
+            "contactUsBtn": "联系我们",
+            "contactUsNote": "如需修改店铺或活动信息，请发送邮件至：info@do360.com"
           }
+        },
+        "error": {
+          "loadFail": "加载失败：",
+          "noInfo": "暂无商家资料"
         }
       }
     },
