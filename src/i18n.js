@@ -473,12 +473,26 @@ const resources = {
               "audio": "Audio",
               "generic": "File"
             }
+          },
+          "relatedInfluencer": {
+            "noInfluencers": "No related influencers available",
+            "title": "Influencer Info",
+            "name": "Name:",
+            "gender": "Gender:",
+            "age": "Age:",
+            "location": "Location:",
+            "category": "Category:",
+            "languages": "Languages:",
+            "followers": "Followers:",
+            "email": "Email:",
+            "close": "Close"
           }
         },
         "error": {
           "loadFail": "Loading Failed：",
           "downloadFail": "Download failed:",
-          "noInfo": "Marchant Detail not provided yet."
+          "noMerInfo": "Marchant detail not provided yet.",
+          "noInfInfo": "No related influencer found."
         }
       }
     },
@@ -995,12 +1009,26 @@ const resources = {
               "audio": "音频",
               "generic": "文件"
             }
+          },
+          "relatedInfluencer": {
+            "noInfluencers": "暂无代言网红",
+            "title": "人物信息",
+            "name": "姓名：",
+            "gender": "性别：",
+            "age": "年龄：",
+            "location": "所在地：",
+            "category": "类别：",
+            "languages": "语言：",
+            "followers": "粉丝：",
+            "email": "邮箱：",
+            "close": "关闭"
           }
         },
         "error": {
           "loadFail": "加载失败：",
           "downloadFail": "下载失败:",
-          "noInfo": "暂无商家资料"
+          "noMerInfo": "暂无商家资料",
+          "noInfInfo": "暂无代言网红"
         }
       }
     },

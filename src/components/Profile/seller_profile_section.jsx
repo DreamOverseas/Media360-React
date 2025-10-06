@@ -12,7 +12,7 @@ const SellerProfileSection = ({
     return <div className='text-gray-500'>{t("loading_more")}</div>;
   if (sellerProfileError)
     return <div className='text-red-500'>{t("profile.error.loadFail")}{sellerProfileError}</div>;
-  if (!sellerProfile) return <div className='text-gray-500'>{t("profile.error.noInfo")}</div>;
+  if (!sellerProfile) return <div className='text-gray-500'>{t("profile.error.noMerInfo")}</div>;
 
   // ---- 兼容：后端把 JSON 存成数组的情况 ----
   const normalizeDetails = val => {
