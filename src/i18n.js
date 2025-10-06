@@ -450,10 +450,34 @@ const resources = {
             "validUntil": "Valid Until",
             "contactUsBtn": "Contact Us",
             "contactUsNote": "To modify your shop and campaign info, please contact us via email: info@do360.com"
+          },
+          "sellerCampaignsSection": {
+            "loading": "Loading seller campaigns...",
+            "noSellers": "No sellers available",
+            "unnamedSeller": "Unnamed Seller",
+            "address": "Address:",
+            "website": "Website:",
+            "promotions": "Promotions",
+            "untitledPromotion": "Untitled Promotion",
+            "requirement": "Seller Requirement:",
+            "none": "None",
+            "validUntil": "Valid Until:",
+            "noPromotions": "No promotions available",
+            "media": "Media Materials",
+            "file": "File",
+            "download": "Download",
+            "downloadFailedAlert": "Download failed, please try again later.",
+            "fileType": {
+              "image": "Image",
+              "video": "Video",
+              "audio": "Audio",
+              "generic": "File"
+            }
           }
         },
         "error": {
           "loadFail": "Loading Failed：",
+          "downloadFail": "Download failed:",
           "noInfo": "Marchant Detail not provided yet."
         }
       }
@@ -948,10 +972,34 @@ const resources = {
             "validUntil": "有效期至",
             "contactUsBtn": "联系我们",
             "contactUsNote": "如需修改店铺或活动信息，请发送邮件至：info@do360.com"
+          },
+          "sellerCampaignsSection": {
+            "loading": "正在加载商家优惠...",
+            "noSellers": "暂无商家",
+            "unnamedSeller": "未命名商家",
+            "address": "地址：",
+            "website": "官网：",
+            "promotions": "活动优惠",
+            "untitledPromotion": "未命名优惠",
+            "requirement": "商家要求：",
+            "none": "无",
+            "validUntil": "有效期至：",
+            "noPromotions": "暂无优惠活动",
+            "media": "宣传材料",
+            "file": "文件",
+            "download": "下载",
+            "downloadFailedAlert": "下载失败，请稍后重试。",
+            "fileType": {
+              "image": "图片",
+              "video": "视频",
+              "audio": "音频",
+              "generic": "文件"
+            }
           }
         },
         "error": {
           "loadFail": "加载失败：",
+          "downloadFail": "下载失败:",
           "noInfo": "暂无商家资料"
         }
       }
