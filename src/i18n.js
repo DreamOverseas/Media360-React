@@ -188,6 +188,9 @@ const resources = {
       feature_5: "",
       feature_6: "",
       publishedAt: "Published At",
+      "home_page":{
+        "product_experience":"Product Experience"
+      },
       "whds_form_inf": {
         "title": "Influencer Registration",
         "subtitle": "Please fill out the form below to complete your registration and join the influencer competition",
@@ -616,6 +619,9 @@ const resources = {
       feature_5: "<h5>综合运营与管理支持</h5><p>提供账号管理、人力招聘与企业合作资源，助力客户轻松进行业务运营与扩展。</p>",
       feature_6: "<h5>战略规划与法律保障</h5><p>从战略设计到法律支持，为品牌提供持续增长路径与合规保障，构建长远发展基础。</p>",
       publishedAt: "发布时间",
+      "home_page":{
+        "product_experience":"产品体验"
+      },
       "whds_form_inf": {
         "title": "网红达人注册",
         "subtitle": "请填写以下信息完成注册，参与网红推广大赛",

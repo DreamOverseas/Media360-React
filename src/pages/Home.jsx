@@ -55,8 +55,7 @@ const HomePage = ()=> {
     return (
       <Container>
         <Row className="d-flex text-center" style={{ marginTop: '5%' }}>
-          <h4>Experience the difference</h4>
-          <h4>产品体验</h4>
+          <h4>{t("home_page.product_experience")}</h4>
         </Row>
         <br/>
         <div className="home-product-carousel-wrapper">
@@ -69,6 +68,7 @@ const HomePage = ()=> {
             <Row>
               {products.map((product) => {
                 const Name = language === "zh" ? product.Name_zh : product.Name_en;
+                const Short = language === "zh" ? product.Short_zh : product.Short_en;
                 return (
                   <Col xs={6} sm={6} md={12 / cardsPerRow} key={product.id}>
                     <Link to={`/products/${product.url}`} className="home-product-card-link">
@@ -77,7 +77,7 @@ const HomePage = ()=> {
                         <hr />
                         <Card.Body className="card-body">
                           <Card.Title title={Name}>{Name}</Card.Title>
-                          <Card.Text>{product.Description_zh}</Card.Text>
+                          <Card.Text>{Short}</Card.Text>
                         </Card.Body>
                       </Card>
                     </Link>
