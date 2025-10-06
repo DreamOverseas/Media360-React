@@ -2,8 +2,10 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 const PasswordSection = ({ BACKEND_HOST }) => {
+  const { t } = useTranslation();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -14,15 +16,15 @@ const PasswordSection = ({ BACKEND_HOST }) => {
     setPasswordMsg("");
 
     if (!oldPassword || !newPassword || !confirmPassword) {
-      setPasswordMsg("请填写所有字段");
+      setPasswordMsg(t("profile.page.passwordSection.msg.fillAll"));
       return;
     }
     if (newPassword !== confirmPassword) {
-      setPasswordMsg("两次新密码输入不一致");
+      setPasswordMsg(t("profile.page.passwordSection.msg.mismatch"));
       return;
     }
     if (oldPassword === newPassword) {
-      setPasswordMsg("新密码不能与原密码相同");
+      setPasswordMsg(t("profile.page.passwordSection.msg.sameAsOld"));
       return;
     }
 
@@ -40,42 +42,42 @@ const PasswordSection = ({ BACKEND_HOST }) => {
         }
       );
 
-      setPasswordMsg("密码修改成功");
+      setPasswordMsg(t("profile.page.passwordSection.msg.success"));
       setOldPassword("");
       setNewPassword("");
       setConfirmPassword("");
     } catch (err) {
-      setPasswordMsg("密码修改失败，请检查原密码是否正确");
+      setPasswordMsg(t("profile.page.passwordSection.msg.failure"));
     }
   };
 
   return (
-    <div className='password-section'>
-      <h3>修改密码</h3>
+    <div className="password-section">
+      <h3>{t("profile.page.passwordSection.title")}</h3>
       <hr />
       <Form onSubmit={handlePasswordChange}>
-        <Form.Group className='mb-3' controlId='oldPassword'>
-          <Form.Label>原密码</Form.Label>
+        <Form.Group className="mb-3" controlId="oldPassword">
+          <Form.Label>{t("profile.page.passwordSection.oldPassword")}</Form.Label>
           <Form.Control
-            type='password'
+            type="password"
             value={oldPassword}
             onChange={(e) => setOldPassword(e.target.value)}
           />
         </Form.Group>
 
-        <Form.Group className='mb-3' controlId='newPassword'>
-          <Form.Label>新密码</Form.Label>
+        <Form.Group className="mb-3" controlId="newPassword">
+          <Form.Label>{t("profile.page.passwordSection.newPassword")}</Form.Label>
           <Form.Control
-            type='password'
+            type="password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />
         </Form.Group>
 
-        <Form.Group className='mb-3' controlId='confirmPassword'>
-          <Form.Label>确认新密码</Form.Label>
+        <Form.Group className="mb-3" controlId="confirmPassword">
+          <Form.Label>{t("profile.page.passwordSection.confirmPassword")}</Form.Label>
           <Form.Control
-            type='password'
+            type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
@@ -83,16 +85,16 @@ const PasswordSection = ({ BACKEND_HOST }) => {
 
         {passwordMsg && (
           <Alert
-            variant={
-              passwordMsg.includes("成功") ? "success" : "danger"
-            }
+            variant={passwordMsg.includes(t("profile.page.passwordSection.keywordSuccess"))
+              ? "success"
+              : "danger"}
           >
             {passwordMsg}
           </Alert>
         )}
 
-        <Button variant='primary' type='submit'>
-          保存
+        <Button variant="primary" type="submit">
+          {t("profile.page.passwordSection.save")}
         </Button>
       </Form>
     </div>

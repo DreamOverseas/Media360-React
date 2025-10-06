@@ -501,6 +501,21 @@ const resources = {
             "discardMessage": "You have unsaved changes. Are you sure you want to discard them?",
             "continueEditing": "Continue editing",
             "discardChanges": "Discard changes"
+          },
+          "passwordSection": {
+            "title": "Change Password",
+            "oldPassword": "Current Password",
+            "newPassword": "New Password",
+            "confirmPassword": "Confirm New Password",
+            "save": "Save",
+            "keywordSuccess": "success",
+            "msg": {
+              "fillAll": "Please fill in all fields.",
+              "mismatch": "New passwords do not match.",
+              "sameAsOld": "New password cannot be the same as the current password.",
+              "success": "Password changed successfully.",
+              "failure": "Password change failed. Please check your current password."
+            }
           }
         },
         "error": {
@@ -1052,6 +1067,21 @@ const resources = {
             "discardMessage": "你有未保存的更改，确定要放弃吗？",
             "continueEditing": "继续编辑",
             "discardChanges": "放弃更改"
+          },
+          "passwordSection": {
+            "title": "修改密码",
+            "oldPassword": "原密码",
+            "newPassword": "新密码",
+            "confirmPassword": "确认新密码",
+            "save": "保存",
+            "keywordSuccess": "成功",
+            "msg": {
+              "fillAll": "请填写所有字段",
+              "mismatch": "两次新密码输入不一致",
+              "sameAsOld": "新密码不能与原密码相同",
+              "success": "密码修改成功",
+              "failure": "密码修改失败，请检查原密码是否正确"
+            }
           }
         },
         "error": {
