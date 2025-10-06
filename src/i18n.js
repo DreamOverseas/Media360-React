@@ -181,15 +181,35 @@ const resources = {
       price: "Price",
       related_brands: "Related Brands",
       elite_package: "1. 直播采访\n提供两次直播采访服务，并上传至多个西方及中国社交平台，帮助客户推广品牌与故事。\n\n2. 信息上传\n在360Media平台上传信息，增加品牌曝光，为交易打下基础。\n\n3. 产品代言\n安排有影响力的人士代言客户产品，提供产品代言服务。\n\n4. MCN 网络资源\n连接MCN（多频道网络），帮助客户在社交媒体平台推广。\n\n5. 群发邮件\n提供群发邮件服务，用于活动宣传或新产品发布。\n\n6. 实习招聘\n提供实习招聘服务，支持客户的人力资源需求。\n\n7. 墨尔本CBD现场讲座/研讨会\n安排活动、演讲、讲座或研讨会，提供线下推广与互动的机会。",
-      feature_1: "",
-      feature_2: "",
-      feature_3: "",
-      feature_4: "",
-      feature_5: "",
-      feature_6: "",
+      "about_us_page":{
+        "our_services":"Our service",
+        "about_us_title":"About Us"
+      },
+      feature_1: "<h5>Comprehensive Brand Promotion</h5><p>Maximize brand and product exposure through multi-channel communication strategies such as live interviews, social media publishing, and mass email campaigns.</p>",
+      feature_2: "<h5>Efficient Content and Visual Production</h5><p>Provide professional photography, videography, graphic design, and website development services to ensure a consistent and visually appealing brand image.</p>",
+      feature_3: "<h5>Influencer Marketing and MCN Resource Integration</h5><p>Leverage KOL endorsements and MCN network resources to deliver products precisely to target audiences and boost conversion rates.</p>",
+      feature_4: "<h5>Offline Engagement and Event Support</h5><p>Offer planning and execution of seminars/workshops in Melbourne CBD, along with venue rental services, to enhance interaction and trust between brands and customers.</p>",
+      feature_5: "<h5>Comprehensive Operations and Management Support</h5><p>Provide account management, talent recruitment, and corporate partnership resources to help clients easily manage and expand their businesses.</p>",
+      feature_6: "<h5>Strategic Planning and Legal Assurance</h5><p>From strategic design to legal support, we provide sustainable growth pathways and compliance assurance to establish a solid foundation for long-term brand development.</p>",
       publishedAt: "Published At",
       "home_page":{
         "product_experience":"Product Experience"
+      },
+      "networks_page":{
+        "title":"Influencer",
+        "subtitle":"Everyone is their own super IP",
+        "subtext":"We look forward to your participation",
+        "search_text":"search name, keywords or title",
+        "searchResults": "Find",
+        "people": "people",
+        "page": "Page",
+        "of": "Total",
+        "pages": "pages",
+        "viewDetail":"View More"
+      },
+      "person_page":{
+        "personal_detail":"Personal Detail",
+        "social":"Social Media"
       },
       "whds_form_inf": {
         "title": "Influencer Registration",
@@ -612,6 +632,10 @@ const resources = {
       video_specification: "产品视频\n宽高比 16:9，分辨率不低于 1920 x 1080(全高清)。建议格式为 MP4，时长控制在 5 分钟以内，保证播放流畅。需展示产品功能与亮点。\n人物视频\n宽高比 16:9，分辨率不低于 1920 x 1080(全高清) 格式建议为 MP4，时长控制在 5 分钟以内， 突出人物核心价值，提升品牌形象。\n视频请单独发送至info@do360.com",
       product_specification: "需提供产品长方形尺寸照片\n 宽高比 3: 2 且分辨率不低于 900 x 600 至少 5张\n文字需提供中英文简介，精准表达产品亮点",
       merchant_text: "360传媒 提供三个核心服务套餐：精英套餐、优质套餐，以及企业与战略套餐，旨在满足从初创企业到大型品牌的各种业务需求。 加入我们，打造品牌影响力！ 在这里，您可以上传品牌创始人、产品意见领袖、产品代言人，分享品牌故事，塑造行业影响力。 同时，推荐优质产品、意见领袖以及代言人，拓展合作渠道，助力品牌曝光，让更多目标用户关注并信赖您的品牌。",
+      "about_us_page":{
+        "our_services":"我们的服务",
+        "about_us_title":"关于我们"
+      },
       feature_1: "<h5>全方位品牌推广</h5><p>利用直播采访、社交平台发布、群发邮件等多渠道传播手段，为品牌故事和产品最大化曝光。</p>",
       feature_2: "<h5>高效内容与视觉制作</h5><p>提供专业的摄影摄像、平面设计和网站建设服务，确保品牌形象专业统一、视觉吸引力强。</p>",
       feature_3: "<h5>影响力营销与MCN资源对接</h5><p>借助KOL代言和MCN网络资源，将产品精准传达至目标受众，提升转化率。</p>",
@@ -621,6 +645,23 @@ const resources = {
       publishedAt: "发布时间",
       "home_page":{
         "product_experience":"产品体验"
+      },
+      "networks_page":{
+        "title":"网红",
+        "subtitle":"每个人都是自己的超级IP",
+        "subtext":"期待您的加入",
+        "search_text":"搜索姓名、职位或关键词",
+        "searchResults": "共找到",
+        "people": "位人物",
+        "page": "第",
+        "of": "页，共",
+        "pages": "页",
+        "viewDetail":"查看详情"
+
+      },
+      "person_page":{
+        "personal_detail":"个人简介",
+        "social":"社交媒体"
       },
       "whds_form_inf": {
         "title": "网红达人注册",

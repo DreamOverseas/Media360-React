@@ -85,14 +85,19 @@ const Networks = () => {
   }, [searchTerm]);
 
   // 处理姓名显示
-  const getDisplayName = (person) => {
-    return person.Name_zh || person.Name_en || t("unknownName", "未知姓名");
-  };
+  const getDisplayName = (person, language) =>
+  (language === "zh" ? person?.Name_zh : person?.Name_en) ||
+  person?.Name_zh ||
+  person?.Name_en ||
+  t("unknownName", "");
 
   // 处理职位显示
-  const getDisplayTitle = (person) => {
-    return person.Title_zh || person.Title_en;
-  };
+ const getDisplayTitle = (person, language) =>
+  (language === "zh" ? person?.Title_zh : person?.Title_en) ||
+  person?.Title_zh ||
+  person?.Title_en ||
+  t("unknownName", "");
+
 
   // 处理图片URL
   const getImageUrl = (person) => {
@@ -104,13 +109,18 @@ const Networks = () => {
   };
 
   // 获取简介文本
-  const getBioText = (person) => {
-    const bio = person.Bio_zh || person.Bio_en;
-    if (!bio) return t("noBio", "暂无简介");
-    
-    const plainText = bio.replace(/<[^>]*>/g, '');
-    return plainText.length > 120 ? plainText.substring(0, 120) + '...' : plainText;
-  };
+  const getBioText = (person, language) => {
+  const bio =
+    (language === "zh" ? person?.Bio_zh : person?.Bio_en) ||
+    person?.Bio_zh ||
+    person?.Bio_en;
+
+  if (!bio) return t("noBio", "暂无简介");
+
+  const plainText = bio.replace(/<[^>]*>/g, "");
+  return plainText.length > 120 ? `${plainText.slice(0, 120)}...` : plainText;
+};
+
 
   // 分页组件
   const renderPagination = () => {
@@ -195,15 +205,15 @@ const Networks = () => {
       <div className='text-center mb-8'>
         <div className='inline-block'>
           <h1 className='text-5xl md:text-6xl font-bold bg-gradient-to-r from-gray-800 via-gray-700 to-blue-600 bg-clip-text text-transparent mb-4'>
-             网红
+             {t("networks_page.title")}
           </h1>
           <div className='h-1 w-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto'></div>
         </div>
         <p className='text-gray-600 text-lg mt-6 max-w-2xl mx-auto'>
-          每个人都是自己的超级IP
+          {t("networks_page.subtitle")}
         </p>
         <p className='text-gray-600 text-lg max-w-2xl mx-auto'>
-          期待您的加入
+          {t("networks_page.subtext")}
         </p>
       </div>
       {/* 搜索框 */}
@@ -213,7 +223,7 @@ const Networks = () => {
             <input
               type="text"
               className="form-control ps-5"
-              placeholder={t("searchPlaceholder", "搜索姓名、职位或关键词...")}
+              placeholder={t("networks_page.search_text", "搜索姓名、职位或关键词...")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -226,10 +236,10 @@ const Networks = () => {
       <Row className="mb-3">
         <Col className="text-center">
           <small className="text-muted">
-            {t("searchResults", "共找到")} <span className="fw-bold text-primary">{filteredData.length}</span> {t("people", "位人物")}
+            {t("networks_page.searchResults")} <span className="fw-bold text-primary">{filteredData.length}</span> {t("networks_page.people")}
             {!isMobile && totalPages > 1 && (
               <span className="ms-2">
-                | {t("page", "第")} {currentPage} {t("of", "页，共")} {totalPages} {t("pages", "页")}
+                | {t("networks_page.page")} {currentPage} {t("networks_page.of")} {totalPages} {t("networks_page.pages")}
               </span>
             )}
           </small>
@@ -308,17 +318,17 @@ const Networks = () => {
 
                 <Card.Body className="d-flex flex-column">
                   <Card.Title className="fw-bold text-dark mb-2">
-                    {getDisplayName(person)}
+                    {getDisplayName(person,language)}
                   </Card.Title>
 
                   {getDisplayTitle(person) && (
                     <Card.Subtitle className="mb-2 text-primary fw-medium">
-                      {getDisplayTitle(person)}
+                      {getDisplayTitle(person,language)}
                     </Card.Subtitle>
                   )}
 
                   <Card.Text className="text-muted small flex-grow-1">
-                    {getBioText(person)}
+                    {getBioText(person,language)}
                   </Card.Text>
 
                   {/* 查看详情链接 */}
@@ -326,7 +336,7 @@ const Networks = () => {
                     to={`/person/${person.internal_url || person.id}`}
                     className="btn btn-outline-primary btn-sm mt-auto"
                   >
-                    {t("viewDetails", "查看详情")}
+                    {t("networks_page.viewDetail")}
                   </Link>
                 </Card.Body>
               </Card>

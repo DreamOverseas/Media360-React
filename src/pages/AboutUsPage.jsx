@@ -92,8 +92,7 @@ const AboutUsPage = () => {
     <Container>
         <section>
           <Row className="d-flex text-center">
-            <h4>About Us</h4>
-            <h4>关于我们</h4>
+            <h4>{t("about_us_page.about_us_title")}</h4>
           </Row>
           <br/>
           <Row className="d-flex text-center">
@@ -104,8 +103,8 @@ const AboutUsPage = () => {
         </section>
         <br/>
         <section>
-          <h5>Our Services</h5>
-          <h6>我们的服务</h6>
+          <h5>{t("about_us_page.our_services")}</h5>
+          <br/>
           <Row>
               <Col>
                 <Row>
