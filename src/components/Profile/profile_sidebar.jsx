@@ -1,5 +1,7 @@
 import { Col, Nav } from "react-bootstrap";
 
+/** Seems like this is already abandoned, not translating. */
+
 const ProfileSidebar = ({ user, avatarUrl, activeTab, setActiveTab }) => {
   return (
     <Col md={3} className='dashboard-sidebar'>

@@ -1,4 +1,5 @@
 import { Alert, Button, Form, Modal } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 const ProfileEditModal = ({
   show,
@@ -20,72 +21,72 @@ const ProfileEditModal = ({
   handleBioChange,
   handleFileChange
 }) => {
+  const { t } = useTranslation();
+
   return (
     <>
-      {/* 编辑个人信息弹窗 */}
+      {/* Edit Profile Modal */}
       <Modal show={show} onHide={handleCancel}>
         <Modal.Header closeButton>
-          <Modal.Title>编辑个人信息</Modal.Title>
+          <Modal.Title>{t("profile.page.profileEditModal.title")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
+          {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
           <Form>
-            <Form.Group controlId='formUsername'>
-              <Form.Label>用户名</Form.Label>
+            <Form.Group controlId="formUsername">
+              <Form.Label>{t("profile.page.profileEditModal.username")}</Form.Label>
               <Form.Control
-                type='text'
+                type="text"
                 value={username}
                 onChange={(e) => handleUsernameChange(e.target.value)}
-                placeholder='请输入用户名'
+                placeholder={t("profile.page.profileEditModal.usernamePlaceholder")}
                 maxLength={maxNameLen}
               />
             </Form.Group>
 
-            <Form.Group controlId='formBio' className='mt-3'>
-              <Form.Label>简介</Form.Label>
+            <Form.Group controlId="formBio" className="mt-3">
+              <Form.Label>{t("profile.page.profileEditModal.bio")}</Form.Label>
               <Form.Control
-                as='textarea'
+                as="textarea"
                 rows={3}
                 value={bio}
                 onChange={(e) => handleBioChange(e.target.value)}
-                placeholder='请输入简介'
+                placeholder={t("profile.page.profileEditModal.bioPlaceholder")}
                 maxLength={maxBioLen}
               />
             </Form.Group>
 
-            <Form.Group controlId='formAvatar' className='mt-3'>
-              <Form.Label>头像</Form.Label>
-              <Form.Control
-                type='file'
-                accept='image/*'
-                onChange={handleFileChange}
-              />
-              <Form.Text muted>建议选择方形图片以获得最佳显示效果</Form.Text>
+            <Form.Group controlId="formAvatar" className="mt-3">
+              <Form.Label>{t("profile.page.profileEditModal.avatar")}</Form.Label>
+              <Form.Control type="file" accept="image/*" onChange={handleFileChange} />
+              <Form.Text muted>
+                {t("profile.page.profileEditModal.avatarTip")}
+              </Form.Text>
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant='secondary' onClick={handleCancel}>
-            取消
+          <Button variant="secondary" onClick={handleCancel}>
+            {t("profile.page.profileEditModal.cancel")}
           </Button>
-          <Button variant='primary' onClick={handleSave}>
-            保存
+          <Button variant="primary" onClick={handleSave}>
+            {t("profile.page.profileEditModal.save")}
           </Button>
         </Modal.Footer>
       </Modal>
 
-      {/* 放弃更改警告弹窗 */}
+      {/* Discard Changes Warning Modal */}
       <Modal show={warning} onHide={() => setWarning(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>放弃更改？</Modal.Title>
+          <Modal.Title>{t("profile.page.profileEditModal.discardTitle")}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>你有未保存的更改，确定要放弃吗？</Modal.Body>
+        <Modal.Body>{t("profile.page.profileEditModal.discardMessage")}</Modal.Body>
         <Modal.Footer>
-          <Button variant='secondary' onClick={() => setWarning(false)}>
-            继续编辑
+          <Button variant="secondary" onClick={() => setWarning(false)}>
+            {t("profile.page.profileEditModal.continueEditing")}
           </Button>
-          <Button variant='danger' onClick={handleDiscardChanges}>
-            放弃更改
+          <Button variant="danger" onClick={handleDiscardChanges}>
+            {t("profile.page.profileEditModal.discardChanges")}
           </Button>
         </Modal.Footer>
       </Modal>

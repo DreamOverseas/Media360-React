@@ -486,6 +486,21 @@ const resources = {
             "followers": "Followers:",
             "email": "Email:",
             "close": "Close"
+          },
+          "profileEditModal": {
+            "title": "Edit Profile",
+            "username": "Username",
+            "usernamePlaceholder": "Enter your username",
+            "bio": "Bio",
+            "bioPlaceholder": "Enter a short bio",
+            "avatar": "Avatar",
+            "avatarTip": "For best results, choose a square image.",
+            "cancel": "Cancel",
+            "save": "Save",
+            "discardTitle": "Discard changes?",
+            "discardMessage": "You have unsaved changes. Are you sure you want to discard them?",
+            "continueEditing": "Continue editing",
+            "discardChanges": "Discard changes"
           }
         },
         "error": {
@@ -1022,6 +1037,21 @@ const resources = {
             "followers": "粉丝：",
             "email": "邮箱：",
             "close": "关闭"
+          },
+          "profileEditModal": {
+            "title": "编辑个人信息",
+            "username": "用户名",
+            "usernamePlaceholder": "请输入用户名",
+            "bio": "简介",
+            "bioPlaceholder": "请输入简介",
+            "avatar": "头像",
+            "avatarTip": "建议选择方形图片以获得最佳显示效果",
+            "cancel": "取消",
+            "save": "保存",
+            "discardTitle": "放弃更改？",
+            "discardMessage": "你有未保存的更改，确定要放弃吗？",
+            "continueEditing": "继续编辑",
+            "discardChanges": "放弃更改"
           }
         },
         "error": {
