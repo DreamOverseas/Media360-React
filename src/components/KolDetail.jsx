@@ -220,6 +220,9 @@ const KolDetail = () => {
   const language = i18n.language;
   const displayName =
     language === "zh" ? person.Name_zh || "未知" : person.Name_en || "Unknown";
+
+  const socialMedia =
+    language === "zh" ? person.SocialMedia_zh || "未知" : person.SocialMedia_en || "Unknown";
   const displayTitle =
     language === "zh"
       ? person.Title_zh || "无头衔"
@@ -279,22 +282,24 @@ const KolDetail = () => {
           <h1>{displayName}</h1>
             <h5>{displayTitle}</h5>
             <div className='kol-intro'>
-              <h3 className='kol-intro-title'>{t("人物简介")}</h3>
+              <h3 className='kol-intro-title'>{t("person_page.personal_detail")}</h3>
               <p dangerouslySetInnerHTML={{ __html: displayBio }}></p>
             </div>
 
             {role === "Founder" ? (
               <div className='founder-contact'>
-                {person.SocialMedia_zh && (
+                <div className='ambassador-contact'>
+                {socialMedia && (
                   <div>
-                    <h4>社交媒体</h4>
+                    <h4>{t("person_page.social")}</h4>
                     <span
                       dangerouslySetInnerHTML={{
-                        __html: person.SocialMedia_zh,
+                        __html: socialMedia,
                       }}
                     ></span>
                   </div>
                 )}
+              </div>
               </div>
             ) : (
               <></>
@@ -302,12 +307,12 @@ const KolDetail = () => {
 
             {role === "Kol" ? (
               <div className='kol-contact'>
-                {person.SocialMedia_zh && (
+                {socialMedia && (
                   <div>
-                    <h4>社交媒体</h4>
+                    <h4>{t("person_page.social")}</h4>
                     <span
                       dangerouslySetInnerHTML={{
-                        __html: person.SocialMedia_zh,
+                        __html: socialMedia,
                       }}
                     ></span>
                   </div>
@@ -317,14 +322,14 @@ const KolDetail = () => {
               <></>
             )}
 
-            {role === "Ambassador" ? (
+            {role === "influencer" ? (
               <div className='ambassador-contact'>
-                {person.SocialMedia_zh && (
+                {socialMedia && (
                   <div>
-                    <h4>社交媒体</h4>
+                    <h4>{t("person_page.social")}</h4>
                     <span
                       dangerouslySetInnerHTML={{
-                        __html: person.SocialMedia_zh,
+                        __html: socialMedia,
                       }}
                     ></span>
                   </div>
