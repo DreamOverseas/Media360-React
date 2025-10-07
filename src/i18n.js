@@ -516,6 +516,31 @@ const resources = {
               "success": "Password changed successfully.",
               "failure": "Password change failed. Please check your current password."
             }
+          },
+          "influencerProfileSection": {
+            "title": "Personal Information",
+            "name": "Name: ",
+            "gender": "Gender: ",
+            "age": "Age: ",
+            "city": "City: ",
+            "languages": "Languages: ",
+            "categories": "Content Categories: ",
+            "instagramFollowers": "Instagram Followers",
+            "tiktokFollowers": "TikTok Followers",
+            "youtubeSubscribers": "YouTube Subscribers",
+            "email": "Contact Email: ",
+            "socialPlatforms": "Social Platforms",
+            "noSocialPlatforms": "No social platform information available",
+            "account": "Account: ",
+            "engagementRate": "Engagement Rate: ",
+            "channel": "Channel: ",
+            "subscribers": "Subscribers: ",
+            "viewProfile": "View Profile",
+            "viewChannel": "View Channel",
+            "visit": "Visit",
+            "noData": "No data available",
+            "loading": "Loading influencer profile...",
+            "noProfile": "No influencer profile available. You can add `personal_details` and `social_platforms` fields in the admin panel."
           }
         },
         "error": {
@@ -1082,6 +1107,31 @@ const resources = {
               "success": "密码修改成功",
               "failure": "密码修改失败，请检查原密码是否正确"
             }
+          },
+          "influencerProfileSection": {
+            "title": "个人信息",
+            "name": "姓名：",
+            "gender": "性别：",
+            "age": "年龄：",
+            "city": "所在城市：",
+            "languages": "语言：",
+            "categories": "内容领域：",
+            "instagramFollowers": "Instagram 粉丝",
+            "tiktokFollowers": "TikTok 粉丝",
+            "youtubeSubscribers": "YouTube 订阅",
+            "email": "联系邮箱：",
+            "socialPlatforms": "社交平台",
+            "noSocialPlatforms": "暂无社交平台信息",
+            "account": "账号：",
+            "engagementRate": "互动率：",
+            "channel": "频道：",
+            "subscribers": "订阅数：",
+            "viewProfile": "查看主页",
+            "viewChannel": "查看频道",
+            "visit": "访问",
+            "noData": "暂无数据",
+            "loading": "正在加载网红资料...",
+            "noProfile": "暂无网红资料，你可以在后台（influencer_profile）为该用户填写 personal_details 和 social_platforms 两个 JSON 字段。"
           }
         },
         "error": {
