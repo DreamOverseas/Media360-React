@@ -409,6 +409,214 @@ const resources = {
           "noMerchants": "No related merchants",
           "close": "Close"
         }
+      },
+      "profile": {
+        "page": {
+          "sidebar": {
+            "account": "Account Info",
+            "password": "Password Settings",
+            "influencer": "Influencer Info",
+            "sellerCampaigns": "Seller Campaigns",
+            "seller": "Shop Info",
+            "relatedInfluencer": "Endorsing Influencers"
+          },
+          "user": {
+            "defaultName": "User",
+            "defaultRole": "User"
+          },
+          "accountInfo": {
+            "title": "Account Info",
+            "edit": "Edit Profile",
+            "username": "Username",
+            "email": "Email",
+            "phone": "Phone",
+            "location": "Location",
+            "joinDate": "Join Date"
+          },
+          "common": {
+            "notSet": "Not set",
+            "unknown": "Unknown"
+          },
+          "password": {
+            "title": "Password Settings"
+          },
+          "influencer": {
+            "title": "Influencer Info",
+            "couponInfo": "Coupon Information",
+            "profileInfo": "Influencer Profile"
+          },
+          "sellerCampaigns": {
+            "title": "Seller Campaigns",
+            "availableCoupons": "Available Coupons"
+          },
+          "seller": {
+            "title": "Shop Info",
+            "qrInfo": "QR Code Information"
+          },
+          "relatedInfluencer": {
+            "title": "Endorsing Influencers"
+          },
+          "sellerDetail": {
+            "title": "Seller Details",
+            "basicInfo": "Business Information",
+            "companyName": "Company Name",
+            "industry": "Industry",
+            "address": "Address",
+            "abn": "ABN",
+            "email": "Email",
+            "phone": "Phone",
+            "website": "Website",
+            "campaignPrefs": "Campaign Preferences",
+            "noCampaigns": "No campaigns available",
+            "untitledCampaign": "Untitled Campaign",
+            "requirement": "Requirement",
+            "validUntil": "Valid Until",
+            "contactUsBtn": "Contact Us",
+            "contactUsNote": "To modify your shop and campaign info, please contact us via email: info@do360.com"
+          },
+          "sellerCampaignsSection": {
+            "loading": "Loading seller campaigns...",
+            "noSellers": "No sellers available",
+            "unnamedSeller": "Unnamed Seller",
+            "address": "Address:",
+            "website": "Website:",
+            "promotions": "Promotions",
+            "untitledPromotion": "Untitled Promotion",
+            "requirement": "Seller Requirement:",
+            "none": "None",
+            "validUntil": "Valid Until:",
+            "noPromotions": "No promotions available",
+            "media": "Media Materials",
+            "file": "File",
+            "download": "Download",
+            "downloadFailedAlert": "Download failed, please try again later.",
+            "fileType": {
+              "image": "Image",
+              "video": "Video",
+              "audio": "Audio",
+              "generic": "File"
+            }
+          },
+          "relatedInfluencer": {
+            "noInfluencers": "No related influencers available",
+            "title": "Influencer Info",
+            "name": "Name:",
+            "gender": "Gender:",
+            "age": "Age:",
+            "location": "Location:",
+            "category": "Category:",
+            "languages": "Languages:",
+            "followers": "Followers:",
+            "email": "Email:",
+            "close": "Close"
+          },
+          "profileEditModal": {
+            "title": "Edit Profile",
+            "username": "Username",
+            "usernamePlaceholder": "Enter your username",
+            "bio": "Bio",
+            "bioPlaceholder": "Enter a short bio",
+            "avatar": "Avatar",
+            "avatarTip": "For best results, choose a square image.",
+            "cancel": "Cancel",
+            "save": "Save",
+            "discardTitle": "Discard changes?",
+            "discardMessage": "You have unsaved changes. Are you sure you want to discard them?",
+            "continueEditing": "Continue editing",
+            "discardChanges": "Discard changes"
+          },
+          "passwordSection": {
+            "title": "Change Password",
+            "oldPassword": "Current Password",
+            "newPassword": "New Password",
+            "confirmPassword": "Confirm New Password",
+            "save": "Save",
+            "keywordSuccess": "success",
+            "msg": {
+              "fillAll": "Please fill in all fields.",
+              "mismatch": "New passwords do not match.",
+              "sameAsOld": "New password cannot be the same as the current password.",
+              "success": "Password changed successfully.",
+              "failure": "Password change failed. Please check your current password."
+            }
+          },
+          "influencerProfileSection": {
+            "title": "Personal Information",
+            "name": "Name: ",
+            "gender": "Gender: ",
+            "age": "Age: ",
+            "city": "City: ",
+            "languages": "Languages: ",
+            "categories": "Content Categories: ",
+            "instagramFollowers": "Instagram Followers",
+            "tiktokFollowers": "TikTok Followers",
+            "youtubeSubscribers": "YouTube Subscribers",
+            "email": "Contact Email: ",
+            "socialPlatforms": "Social Platforms",
+            "noSocialPlatforms": "No social platform information available",
+            "account": "Account: ",
+            "engagementRate": "Engagement Rate: ",
+            "channel": "Channel: ",
+            "subscribers": "Subscribers: ",
+            "viewProfile": "View Profile",
+            "viewChannel": "View Channel",
+            "visit": "Visit",
+            "noData": "No data available",
+            "loading": "Loading influencer profile...",
+            "noProfile": "No influencer profile available. You can add `personal_details` and `social_platforms` fields in the admin panel."
+          },
+          "couponDisplay": {
+            "show": "Show",
+            "hide": "Hide",
+            "scanned": "Scanned Count: ",
+            "remaining": "Remaining Uses: ",
+            "status": "Status: ",
+            "active": "Active",
+            "inactive": "Inactive",
+            "expired": "Expired",
+            "expiry": "Expiry Date: ",
+            "downloadQR": "Download QR Code",
+            "searchPlaceholder": "Search coupon title...",
+            "visibleCoupons": "Visible Coupons",
+            "hiddenCoupons": "Hidden Coupons",
+            "view": "View",
+            "noSearchResults": "No coupons found with titles containing \"{{searchTerm}}\"",
+            "noCoupons": "No coupons available"
+          },
+          "userCoupons": {
+            "title": "Your Coupons",
+            "welcomeBack": "Welcome back,",
+            "refresh": "Refresh Coupons",
+            "refreshing": "Refreshing...",
+            "searchPlaceholder": "Search by coupon title, influencer name, username, or hash...",
+            "foundResults": "Found {{total}} coupon(s) matching \"{{term}}\" ({{visible}} visible{{hidden}} hidden)",
+            "loading": "Loading coupons...",
+            "errorTitle": "Error",
+            "noResultsTitle": "No Results Found",
+            "noResultsDesc": "No coupons match your search for \"{{term}}\". Try different keywords.",
+            "clearSearch": "Clear search",
+            "searchVisible": "Search Results - Visible",
+            "activeCoupons": "Active Coupons",
+            "searchHidden": "Search Results - Hidden",
+            "hiddenCoupons": "Hidden Coupons",
+            "couponCount_visible": "{{count}} coupon(s) visible",
+            "couponCount_found": "{{count}} coupon(s) found",
+            "couponCount_hidden": "{{count}} coupon(s) hidden",
+            "allHiddenTitle": "All Coupons Hidden",
+            "allHiddenDesc": "All your coupons are currently hidden. Check the hidden section below to manage them.",
+            "noCouponsTitle": "No Coupons Found",
+            "noCouponsDesc": "No coupons found for your account. Try refreshing or check back later.",
+            "scanned": "Scanned",
+            "linked": "Linked"
+          }
+        },
+        "error": {
+          "loadFail": "Loading Failed：",
+          "downloadFail": "Download failed:",
+          "noMerInfo": "Marchant detail not provided yet.",
+          "noInfInfo": "No related influencer found.",
+          "noCouponInfo": "No special coupon found."
+        }
       }
     },
   },
@@ -446,7 +654,7 @@ const resources = {
       noProducts: "当前无产品",
       noEvents: "当前无活动",
       noDescription: "当前无详情",
-      loading_more: "加载中。。。",
+      loading_more: "加载中...",
       enterEmail: "输入邮箱",
       noAccount: "未拥有账号？",
       hasAccount: "已拥有账号？",
@@ -860,6 +1068,216 @@ const resources = {
           "loading": "加载中…",
           "noMerchants": "暂无关联商家",
           "close": "关闭"
+        }
+      },
+      "profile": {
+        "page": {
+          "sidebar": {
+            "account": "账号信息",
+            "password": "密码设置",
+            "influencer": "网红信息",
+            "sellerCampaigns": "商家优惠",
+            "seller": "店铺信息",
+            "relatedInfluencer": "代言网红"
+          },
+          "user": {
+            "defaultName": "用户",
+            "defaultRole": "用户"
+          },
+          "accountInfo": {
+            "title": "账号信息",
+            "edit": "编辑资料",
+            "username": "用户名",
+            "email": "邮箱地址",
+            "phone": "手机号码",
+            "location": "所在地区",
+            "joinDate": "加入时间"
+          },
+          "common": {
+            "notSet": "未设置",
+            "unknown": "未知"
+          },
+          "password": {
+            "title": "密码设置"
+          },
+          "influencer": {
+            "title": "网红信息",
+            "couponInfo": "优惠券信息",
+            "profileInfo": "网红资料"
+          },
+          "sellerCampaigns": {
+            "title": "商家优惠",
+            "availableCoupons": "可用优惠"
+          },
+          "seller": {
+            "title": "店铺信息",
+            "qrInfo": "二维码信息"
+          },
+          "relatedInfluencer": {
+            "title": "代言网红"
+          },
+          "sellerDetail": {
+            "title": "商家详情",
+            "basicInfo": "商家信息",
+            "companyName": "公司名称",
+            "industry": "行业",
+            "address": "地址",
+            "abn": "ABN 编号",
+            "email": "邮箱",
+            "phone": "电话",
+            "website": "网站",
+            "campaignPrefs": "活动偏好",
+            "noCampaigns": "暂无活动",
+            "untitledCampaign": "未命名活动",
+            "requirement": "要求",
+            "validUntil": "有效期至",
+            "contactUsBtn": "联系我们",
+            "contactUsNote": "如需修改店铺或活动信息，请发送邮件至：info@do360.com"
+          },
+          "sellerCampaignsSection": {
+            "loading": "正在加载商家优惠...",
+            "noSellers": "暂无商家",
+            "unnamedSeller": "未命名商家",
+            "address": "地址：",
+            "website": "官网：",
+            "promotions": "活动优惠",
+            "untitledPromotion": "未命名优惠",
+            "requirement": "商家要求：",
+            "none": "无",
+            "validUntil": "有效期至：",
+            "noPromotions": "暂无优惠活动",
+            "media": "宣传材料",
+            "file": "文件",
+            "download": "下载",
+            "downloadFailedAlert": "下载失败，请稍后重试。",
+            "fileType": {
+              "image": "图片",
+              "video": "视频",
+              "audio": "音频",
+              "generic": "文件"
+            }
+          },
+          "relatedInfluencer": {
+            "noInfluencers": "暂无代言网红",
+            "title": "人物信息",
+            "name": "姓名：",
+            "gender": "性别：",
+            "age": "年龄：",
+            "location": "所在地：",
+            "category": "类别：",
+            "languages": "语言：",
+            "followers": "粉丝：",
+            "email": "邮箱：",
+            "close": "关闭"
+          },
+          "profileEditModal": {
+            "title": "编辑个人信息",
+            "username": "用户名",
+            "usernamePlaceholder": "请输入用户名",
+            "bio": "简介",
+            "bioPlaceholder": "请输入简介",
+            "avatar": "头像",
+            "avatarTip": "建议选择方形图片以获得最佳显示效果",
+            "cancel": "取消",
+            "save": "保存",
+            "discardTitle": "放弃更改？",
+            "discardMessage": "你有未保存的更改，确定要放弃吗？",
+            "continueEditing": "继续编辑",
+            "discardChanges": "放弃更改"
+          },
+          "passwordSection": {
+            "title": "修改密码",
+            "oldPassword": "原密码",
+            "newPassword": "新密码",
+            "confirmPassword": "确认新密码",
+            "save": "保存",
+            "keywordSuccess": "成功",
+            "msg": {
+              "fillAll": "请填写所有字段",
+              "mismatch": "两次新密码输入不一致",
+              "sameAsOld": "新密码不能与原密码相同",
+              "success": "密码修改成功",
+              "failure": "密码修改失败，请检查原密码是否正确"
+            }
+          },
+          "influencerProfileSection": {
+            "title": "个人信息",
+            "name": "姓名：",
+            "gender": "性别：",
+            "age": "年龄：",
+            "city": "所在城市：",
+            "languages": "语言：",
+            "categories": "内容领域：",
+            "instagramFollowers": "Instagram 粉丝",
+            "tiktokFollowers": "TikTok 粉丝",
+            "youtubeSubscribers": "YouTube 订阅",
+            "email": "联系邮箱：",
+            "socialPlatforms": "社交平台",
+            "noSocialPlatforms": "暂无社交平台信息",
+            "account": "账号：",
+            "engagementRate": "互动率：",
+            "channel": "频道：",
+            "subscribers": "订阅数：",
+            "viewProfile": "查看主页",
+            "viewChannel": "查看频道",
+            "visit": "访问",
+            "noData": "暂无数据",
+            "loading": "正在加载网红资料...",
+            "noProfile": "暂无网红资料，你可以在后台（influencer_profile）为该用户填写 personal_details 和 social_platforms 两个 JSON 字段。"
+          },
+          "couponDisplay": {
+            "show": "显示",
+            "hide": "隐藏",
+            "scanned": "被扫次数：",
+            "remaining": "剩余可用次数：",
+            "status": "状态：",
+            "active": "已激活",
+            "inactive": "未激活",
+            "expired": "已过期",
+            "expiry": "到期时间：",
+            "downloadQR": "二维码下载",
+            "searchPlaceholder": "搜索优惠券标题...",
+            "visibleCoupons": "显示的优惠券",
+            "hiddenCoupons": "隐藏的优惠券",
+            "view": "查看",
+            "noSearchResults": "没有找到标题包含“{{searchTerm}}”的优惠券",
+            "noCoupons": "暂无专属优惠券信息",
+            "downloadQR": "二维码下载",
+            "downloadQR": "二维码下载"
+          },
+          "userCoupons": {
+            "title": "您的优惠券",
+            "welcomeBack": "欢迎回来，",
+            "refresh": "刷新优惠券",
+            "refreshing": "正在刷新...",
+            "searchPlaceholder": "按优惠券标题、网红名称、用户名或哈希值搜索...",
+            "foundResults": "找到 {{total}} 张优惠券与“{{term}}”匹配（{{visible}} 张显示{{hidden}} 张隐藏）",
+            "loading": "正在加载优惠券...",
+            "errorTitle": "错误",
+            "noResultsTitle": "未找到结果",
+            "noResultsDesc": "未找到与“{{term}}”匹配的优惠券，请尝试其他关键词。",
+            "clearSearch": "清除搜索",
+            "searchVisible": "搜索结果 - 显示",
+            "activeCoupons": "已激活的优惠券",
+            "searchHidden": "搜索结果 - 隐藏",
+            "hiddenCoupons": "隐藏的优惠券",
+            "couponCount_visible": "共 {{count}} 张显示的优惠券",
+            "couponCount_found": "共找到 {{count}} 张优惠券",
+            "couponCount_hidden": "共 {{count}} 张隐藏的优惠券",
+            "allHiddenTitle": "所有优惠券已隐藏",
+            "allHiddenDesc": "您当前的所有优惠券均为隐藏状态，请在下方的隐藏区中管理。",
+            "noCouponsTitle": "未找到优惠券",
+            "noCouponsDesc": "您的账户暂无优惠券，请尝试刷新或稍后再试。",
+            "scanned": "已扫描次数",
+            "linked": "对接网红"
+          }
+        },
+        "error": {
+          "loadFail": "加载失败：",
+          "downloadFail": "下载失败:",
+          "noMerInfo": "暂无商家资料",
+          "noInfInfo": "暂无代言网红",
+          "noCouponInfo": "暂无专属优惠券信息"
         }
       }
     },

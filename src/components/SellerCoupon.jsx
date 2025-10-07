@@ -66,7 +66,7 @@
 //     const fetchUserCoupons = async () => {
 //         setLoading(true);
 //         setError(null);
-        
+
 //         try {
 //             // First, get the CouponSysAccount related to this user
 //             const couponSysAccountResponse = await axios.get(
@@ -83,7 +83,7 @@
 
 //             if (couponSysAccountResponse.data.data && couponSysAccountResponse.data.data.length > 0) {
 //                 const couponSysAccountDocumentId = couponSysAccountResponse.data.data[0].documentId;
-                
+
 //                 // Then, get all Coupons assigned from this CouponSysAccount
 //                 const couponsResponse = await axios.get(
 //                     `${BACKEND_HOST}/api/coupons?filters[AssignedFrom][documentId][$eq]=${couponSysAccountDocumentId}&populate[users_permissions_user][populate][influencer_profile][populate]":"avatar`,
@@ -365,6 +365,7 @@ import { RefreshCw, Eye, User, Hash, EyeOff, ChevronDown, ChevronRight, Search, 
 import { AuthContext } from "../context/AuthContext";
 import QRCode from "qrcode";
 import QRDisplay from '../utils/QRDisplay';
+import { useTranslation } from "react-i18next";
 
 const DEBUG = import.meta.env.DEBUG;
 
@@ -387,6 +388,7 @@ const SellerCoupon = () => {
     const [hiddenCoupons, setHiddenCoupons] = useState(new Set());
     const [showHiddenSection, setShowHiddenSection] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const { t } = useTranslation();
 
     // Load Backend Host for API calls
     const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
@@ -435,11 +437,11 @@ const SellerCoupon = () => {
             const influencerName = coupon.users_permissions_user?.influencer_profile?.personal_details?.name?.toLowerCase() || '';
             const userName = coupon.users_permissions_user?.username?.toLowerCase() || '';
             const hash = coupon.Hash?.toLowerCase() || '';
-            
-            return title.includes(searchLower) || 
-                   influencerName.includes(searchLower) || 
-                   userName.includes(searchLower) ||
-                   hash.includes(searchLower);
+
+            return title.includes(searchLower) ||
+                influencerName.includes(searchLower) ||
+                userName.includes(searchLower) ||
+                hash.includes(searchLower);
         });
     };
 
@@ -450,7 +452,7 @@ const SellerCoupon = () => {
     const fetchUserCoupons = async () => {
         setLoading(true);
         setError(null);
-        
+
         try {
             // First, get the CouponSysAccount related to this user
             const couponSysAccountResponse = await axios.get(
@@ -467,7 +469,7 @@ const SellerCoupon = () => {
 
             if (couponSysAccountResponse.data.data && couponSysAccountResponse.data.data.length > 0) {
                 const couponSysAccountDocumentId = couponSysAccountResponse.data.data[0].documentId;
-                
+
                 // Then, get all Coupons assigned from this CouponSysAccount
                 const couponsResponse = await axios.get(
                     `${BACKEND_HOST}/api/coupons?filters[AssignedFrom][documentId][$eq]=${couponSysAccountDocumentId}&populate[users_permissions_user][populate][influencer_profile][populate]":"avatar`,
@@ -518,11 +520,10 @@ const SellerCoupon = () => {
             {/* Hide/Show Toggle Button */}
             <button
                 onClick={() => toggleCouponVisibility(coupon.documentId)}
-                className={`absolute top-2 right-2 p-2 rounded-lg transition-colors duration-200 ${
-                    isHidden 
-                        ? 'bg-gray-100 hover:bg-gray-200 text-gray-600' 
+                className={`absolute top-2 right-2 p-2 rounded-lg transition-colors duration-200 ${isHidden
+                        ? 'bg-gray-100 hover:bg-gray-200 text-gray-600'
                         : 'bg-blue-100 hover:bg-blue-200 text-blue-600'
-                }`}
+                    }`}
                 title={isHidden ? "Show coupon" : "Hide coupon"}
             >
                 {isHidden ? (
@@ -547,7 +548,7 @@ const SellerCoupon = () => {
                             className="text-dark bg-blue-200/50 rounded-xl p-2 flex items-center gap-1 cursor-pointer"
                         >
                             <i className="bi bi-box-arrow-in-down text-2xl me-1"></i>
-                            <p className="mb-0 !no-underline">二维码下载</p>
+                            <p className="mb-0 !no-underline">{t("profile.page.couponDisplay.downloadQR")}</p>
                         </a>
                     </div>
                 </div>
@@ -559,7 +560,7 @@ const SellerCoupon = () => {
                         <div className="flex items-center gap-3">
                             <Eye className="w-5 h-5 max-[400px]:w-3 max-[400px]:h-3 text-green-600" />
                             <span className="font-medium text-gray-700 text-sm max-[400px]:text-xs sm:text-base">
-                                Scanned
+                                {t("profile.page.userCoupons.scanned")}
                             </span>
                         </div>
                         <span className="text-xl max-[400px]:text-base sm:text-2xl font-bold text-green-600">
@@ -572,7 +573,7 @@ const SellerCoupon = () => {
                         <div className="flex items-center gap-3">
                             <User className="w-5 h-5 max-[400px]:w-3 max-[400px]:h-3 text-purple-600" />
                             <span className="font-medium text-gray-700 text-sm max-[400px]:text-xs sm:text-base">
-                                Linked
+                                {t("profile.page.userCoupons.linked")}
                             </span>
                         </div>
                         <span className="font-semibold text-purple-600 max-[400px]:text-[0.65rem] sm:text-base">
@@ -603,34 +604,33 @@ const SellerCoupon = () => {
                 {/* Header */}
                 <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        {/* 左侧欢迎信息 */}
+                        {/* Welcome Section */}
                         <div>
                             <h2 className="text-1xl max-[400px]:text-xs sm:text-1xl font-bold text-gray-800 mb-1">
-                                Your Coupons
+                                {t("profile.page.userCoupons.title")}
                             </h2>
                             <p className="text-base max-[400px]:text-sm sm:text-lg text-gray-600">
-                                Welcome back,{" "}
-                                <span className="font-semibold text-indigo-600">
-                                    {user.username}
-                                </span>
-                                !
+                                {t("profile.page.userCoupons.welcomeBack")}{" "}
+                                <span className="font-semibold text-indigo-600">{user.username}</span>!
                             </p>
                         </div>
-                        {/* 右侧刷新按钮 */}
+                        {/* Refresh Button */}
                         <button
                             onClick={fetchUserCoupons}
                             disabled={loading}
                             className="flex items-center justify-center gap-2 
-                                        bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 
-                                        text-white px-4 py-2 sm:px-5 sm:py-2 
-                                        rounded-lg font-medium transition-colors duration-200 
-                                        w-full sm:w-auto max-w-[300px] 
-                                        text-sm max-[400px]:text-xs"                  
+                         bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 
+                         text-white px-4 py-2 sm:px-5 sm:py-2 
+                         rounded-lg font-medium transition-colors duration-200 
+                         w-full sm:w-auto max-w-[300px] 
+                         text-sm max-[400px]:text-xs"
                         >
                             <RefreshCw
                                 className={`w-5 h-5 max-[400px]:w-4 max-[400px]:h-4 ${loading ? "animate-spin" : ""}`}
                             />
-                            {loading ? "Refreshing..." : "Refresh Coupons"}
+                            {loading
+                                ? t("profile.page.userCoupons.refreshing")
+                                : t("profile.page.userCoupons.refresh")}
                         </button>
                     </div>
                 </div>
@@ -641,30 +641,33 @@ const SellerCoupon = () => {
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                         <input
                             type="text"
-                            placeholder="Search by coupon title, influencer name, username, or hash..."
+                            placeholder={t("profile.page.userCoupons.searchPlaceholder")}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg 
-                                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
-                                     text-sm max-[400px]:text-xs sm:text-base
-                                     transition-colors duration-200"
+                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                         text-sm max-[400px]:text-xs sm:text-base transition-colors duration-200"
                         />
                         {searchTerm && (
                             <button
                                 onClick={clearSearch}
                                 className="absolute right-3 top-1/2 transform -translate-y-1/2 
-                                         text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                           text-gray-400 hover:text-gray-600 transition-colors duration-200"
                             >
                                 <X className="w-5 h-5" />
                             </button>
                         )}
                     </div>
-                    
+
                     {/* Search Results Info */}
                     {isSearchActive && (
                         <div className="mt-4 text-sm text-gray-600">
-                            Found {totalVisibleResults + totalHiddenResults} coupon(s) matching "{searchTerm}"
-                            {totalVisibleResults > 0 && ` (${totalVisibleResults} visible${totalHiddenResults > 0 ? `, ${totalHiddenResults} hidden` : ''})`}
+                            {t("profile.page.userCoupons.foundResults", {
+                                total: totalVisibleResults + totalHiddenResults,
+                                term: searchTerm,
+                                visible: totalVisibleResults,
+                                hidden: totalHiddenResults
+                            })}
                         </div>
                     )}
                 </div>
@@ -674,7 +677,7 @@ const SellerCoupon = () => {
                     <div className="bg-white rounded-xl shadow-lg p-12 text-center">
                         <div className="animate-spin w-10 h-10 sm:w-12 sm:h-12 max-[400px]:w-8 max-[400px]:h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full mx-auto mb-4"></div>
                         <p className="text-gray-600 text-base max-[400px]:text-sm sm:text-lg">
-                            Loading coupons...
+                            {t("profile.page.userCoupons.loading")}
                         </p>
                     </div>
                 )}
@@ -688,7 +691,7 @@ const SellerCoupon = () => {
                             </div>
                             <div>
                                 <h3 className="font-semibold text-red-800 text-sm sm:text-base">
-                                    Error
+                                    {t("profile.page.userCoupons.errorTitle")}
                                 </h3>
                                 <p className="text-red-700 text-sm sm:text-base">{error}</p>
                             </div>
@@ -696,7 +699,7 @@ const SellerCoupon = () => {
                     </div>
                 )}
 
-                {/* Coupons Content */}
+                {/* Coupons */}
                 {!loading && !error && (
                     <div className="space-y-6">
                         {coupons.length > 0 ? (
@@ -708,97 +711,116 @@ const SellerCoupon = () => {
                                             <Search className="w-8 h-8 max-[400px]:w-6 max-[400px]:h-6 text-gray-400" />
                                         </div>
                                         <h3 className="text-lg max-[400px]:text-base sm:text-xl font-semibold text-gray-800 mb-2">
-                                            No Results Found
+                                            {t("profile.page.userCoupons.noResultsTitle")}
                                         </h3>
                                         <p className="text-gray-600 text-sm max-[400px]:text-xs sm:text-base mb-4">
-                                            No coupons match your search for "{searchTerm}". Try different keywords.
+                                            {t("profile.page.userCoupons.noResultsDesc", { term: searchTerm })}
                                         </p>
                                         <button
                                             onClick={clearSearch}
                                             className="text-indigo-600 hover:text-indigo-800 font-medium text-sm"
                                         >
-                                            Clear search
+                                            {t("profile.page.userCoupons.clearSearch")}
                                         </button>
                                     </div>
                                 )}
 
-                                {/* Visible Coupons Section */}
+                                {/* Visible Coupons */}
                                 {filteredVisibleCoupons.length > 0 && (
                                     <>
                                         <div className="bg-white rounded-xl shadow-lg p-6">
                                             <h2 className="text-xl max-[400px]:text-lg sm:text-2xl font-bold text-gray-800 mb-1">
-                                                {isSearchActive ? "Search Results - Visible" : "Active Coupons"}
+                                                {isSearchActive
+                                                    ? t("profile.page.userCoupons.searchVisible")
+                                                    : t("profile.page.userCoupons.activeCoupons")}
                                             </h2>
                                             <p className="text-gray-600 text-sm max-[400px]:text-xs sm:text-base mb-4">
-                                                {filteredVisibleCoupons.length} {filteredVisibleCoupons.length === 1 ? "coupon" : "coupons"} 
-                                                {isSearchActive ? " found" : " visible"}
+                                                {t("profile.page.userCoupons.couponCount", {
+                                                    count: filteredVisibleCoupons.length,
+                                                    context: isSearchActive ? "found" : "visible"
+                                                })}
                                             </p>
                                         </div>
 
                                         <div className="grid gap-4">
-                                            {filteredVisibleCoupons.map((coupon, index) => renderCouponCard(coupon, index, false))}
+                                            {filteredVisibleCoupons.map((coupon, index) =>
+                                                renderCouponCard(coupon, index, false)
+                                            )}
                                         </div>
                                     </>
                                 )}
 
-                                {/* Hidden Coupons Section - Only show if there are results or if not searching */}
-                                {(filteredHiddenCoupons.length > 0 || (!isSearchActive && coupons.filter(coupon => hiddenCoupons.has(coupon.documentId)).length > 0)) && (
-                                    <>
-                                        <div className="bg-white rounded-xl shadow-lg p-6">
-                                            <button
-                                                onClick={() => setShowHiddenSection(!showHiddenSection)}
-                                                className="flex items-center gap-2 w-full text-left"
-                                            >
-                                                {showHiddenSection ? (
-                                                    <ChevronDown className="w-5 h-5 text-gray-500" />
-                                                ) : (
-                                                    <ChevronRight className="w-5 h-5 text-gray-500" />
-                                                )}
-                                                <h2 className="text-xl max-[400px]:text-lg sm:text-2xl font-bold text-gray-800 mb-1">
-                                                    {isSearchActive ? "Search Results - Hidden" : "Hidden Coupons"}
-                                                </h2>
-                                            </button>
-                                            <p className="text-gray-600 text-sm max-[400px]:text-xs sm:text-base ml-7">
-                                                {isSearchActive ? filteredHiddenCoupons.length : coupons.filter(coupon => hiddenCoupons.has(coupon.documentId)).length} {" "}
-                                                {(isSearchActive ? filteredHiddenCoupons.length : coupons.filter(coupon => hiddenCoupons.has(coupon.documentId)).length) === 1 ? "coupon" : "coupons"} 
-                                                {isSearchActive ? " found" : " hidden"}
+                                {/* Hidden Coupons */}
+                                {(filteredHiddenCoupons.length > 0 ||
+                                    (!isSearchActive &&
+                                        coupons.filter((c) => hiddenCoupons.has(c.documentId)).length > 0)) && (
+                                        <>
+                                            <div className="bg-white rounded-xl shadow-lg p-6">
+                                                <button
+                                                    onClick={() => setShowHiddenSection(!showHiddenSection)}
+                                                    className="flex items-center gap-2 w-full text-left"
+                                                >
+                                                    {showHiddenSection ? (
+                                                        <ChevronDown className="w-5 h-5 text-gray-500" />
+                                                    ) : (
+                                                        <ChevronRight className="w-5 h-5 text-gray-500" />
+                                                    )}
+                                                    <h2 className="text-xl max-[400px]:text-lg sm:text-2xl font-bold text-gray-800 mb-1">
+                                                        {isSearchActive
+                                                            ? t("profile.page.userCoupons.searchHidden")
+                                                            : t("profile.page.userCoupons.hiddenCoupons")}
+                                                    </h2>
+                                                </button>
+                                                <p className="text-gray-600 text-sm max-[400px]:text-xs sm:text-base ml-7">
+                                                    {t("profile.page.userCoupons.couponCount", {
+                                                        count: isSearchActive
+                                                            ? filteredHiddenCoupons.length
+                                                            : coupons.filter((c) => hiddenCoupons.has(c.documentId)).length,
+                                                        context: isSearchActive ? "found" : "hidden"
+                                                    })}
+                                                </p>
+                                            </div>
+
+                                            {showHiddenSection && (
+                                                <div className="grid gap-4">
+                                                    {(isSearchActive
+                                                        ? filteredHiddenCoupons
+                                                        : coupons.filter((c) => hiddenCoupons.has(c.documentId))
+                                                    ).map((coupon, index) =>
+                                                        renderCouponCard(coupon, index, true)
+                                                    )}
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
+
+                                {/* All Coupons Hidden */}
+                                {!isSearchActive &&
+                                    filteredVisibleCoupons.length === 0 &&
+                                    coupons.filter((c) => hiddenCoupons.has(c.documentId)).length > 0 && (
+                                        <div className="bg-white rounded-xl shadow-lg p-12 text-center">
+                                            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <EyeOff className="w-8 h-8 text-gray-400" />
+                                            </div>
+                                            <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">
+                                                {t("profile.page.userCoupons.allHiddenTitle")}
+                                            </h3>
+                                            <p className="text-gray-600 text-sm sm:text-base">
+                                                {t("profile.page.userCoupons.allHiddenDesc")}
                                             </p>
                                         </div>
-
-                                        {showHiddenSection && (
-                                            <div className="grid gap-4">
-                                                {(isSearchActive ? filteredHiddenCoupons : coupons.filter(coupon => hiddenCoupons.has(coupon.documentId)))
-                                                 .map((coupon, index) => renderCouponCard(coupon, index, true))}
-                                            </div>
-                                        )}
-                                    </>
-                                )}
-
-                                {/* No visible coupons message - only when not searching */}
-                                {!isSearchActive && filteredVisibleCoupons.length === 0 && coupons.filter(coupon => hiddenCoupons.has(coupon.documentId)).length > 0 && (
-                                    <div className="bg-white rounded-xl shadow-lg p-12 text-center">
-                                        <div className="w-16 h-16 max-[400px]:w-12 max-[400px]:h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                            <EyeOff className="w-8 h-8 max-[400px]:w-6 max-[400px]:h-6 text-gray-400" />
-                                        </div>
-                                        <h3 className="text-lg max-[400px]:text-base sm:text-xl font-semibold text-gray-800 mb-2">
-                                            All Coupons Hidden
-                                        </h3>
-                                        <p className="text-gray-600 text-sm max-[400px]:text-xs sm:text-base">
-                                            All your coupons are currently hidden. Check the hidden section below to manage them.
-                                        </p>
-                                    </div>
-                                )}
+                                    )}
                             </>
                         ) : (
                             <div className="bg-white rounded-xl shadow-lg p-12 text-center">
-                                <div className="w-16 h-16 max-[400px]:w-12 max-[400px]:h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <Hash className="w-8 h-8 max-[400px]:w-6 max-[400px]:h-6 text-gray-400" />
+                                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <Hash className="w-8 h-8 text-gray-400" />
                                 </div>
-                                <h3 className="text-lg max-[400px]:text-base sm:text-xl font-semibold text-gray-800 mb-2">
-                                    No Coupons Found
+                                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">
+                                    {t("profile.page.userCoupons.noCouponsTitle")}
                                 </h3>
-                                <p className="text-gray-600 text-sm max-[400px]:text-xs sm:text-base">
-                                    No coupons found for your account. Try refreshing or check back later.
+                                <p className="text-gray-600 text-sm sm:text-base">
+                                    {t("profile.page.userCoupons.noCouponsDesc")}
                                 </p>
                             </div>
                         )}
