@@ -9,7 +9,6 @@ import { useTranslation } from "react-i18next";
 // Helper for QR downloading
 async function downloadQR(hash, filename) {
   const canvas = document.createElement("canvas");
-  const { t } = useTranslation();
 
   await QRCode.toCanvas(canvas, hash, { width: 512, margin: 1 });
 
@@ -23,6 +22,7 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
   const [updating, setUpdating] = useState(new Set());
   const [showHiddenCoupons, setShowHiddenCoupons] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const { t } = useTranslation();
 
   const handleToggleHide = async (coupon, shouldHide) => {
     const documentId = coupon?.documentId;
@@ -69,7 +69,7 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
   if (couponError) return <Alert variant='warning'>{couponError}</Alert>;
 
   if (!Array.isArray(couponList) || couponList.length === 0) {
-    return <Alert variant='info'>{t("profile.page.noCouponInfo")}</Alert>;
+    return <Alert variant='info'>{t("profile.error.noCouponInfo")}</Alert>;
   }
 
   // 分离显示和隐藏的优惠券
