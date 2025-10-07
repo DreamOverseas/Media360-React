@@ -4,10 +4,13 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import QRCode from "qrcode";
+import { useTranslation } from "react-i18next";
 
 // Helper for QR downloading
 async function downloadQR(hash, filename) {
   const canvas = document.createElement("canvas");
+  const { t } = useTranslation();
+
   await QRCode.toCanvas(canvas, hash, { width: 512, margin: 1 });
 
   const link = document.createElement("a");
@@ -52,7 +55,7 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
       }
     } catch (error) {
       console.error("Failed to update coupon:", error);
-      // 这里可以添加错误提示
+      // TODO: 这里可以添加错误提示
     } finally {
       setUpdating(prev => {
         const newSet = new Set(prev);
@@ -66,7 +69,7 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
   if (couponError) return <Alert variant='warning'>{couponError}</Alert>;
 
   if (!Array.isArray(couponList) || couponList.length === 0) {
-    return <Alert variant='info'>暂无专属优惠券信息</Alert>;
+    return <Alert variant='info'>{t("profile.page.noCouponInfo")}</Alert>;
   }
 
   // 分离显示和隐藏的优惠券
@@ -127,12 +130,14 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
     const cardVariant = getCardVariant();
 
     return (
-      <Col md={6} className='mb-3' key={recItem?.documentId ?? idx}>
-        <Card className={`h-100 border-${cardVariant} ${isHidden ? 'opacity-75' : ''}`}>
-          <Card.Header className={`d-flex justify-content-between align-items-center bg-${cardVariant} text-white`}>
+      <Col md={6} className="mb-3" key={recItem?.documentId ?? idx}>
+        <Card className={`h-100 border-${cardVariant} ${isHidden ? "opacity-75" : ""}`}>
+          <Card.Header
+            className={`d-flex justify-content-between align-items-center bg-${cardVariant} text-white`}
+          >
             <span className="fw-bold">{title}</span>
             <Button
-              variant={isHidden ? "light" : "light"}
+              variant="light"
               size="sm"
               onClick={() => handleToggleHide(recItem, !isHidden)}
               disabled={isUpdating}
@@ -143,39 +148,53 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
               ) : isHidden ? (
                 <>
                   <Eye size={16} className="me-1" />
-                  显示
+                  {t("profile.page.couponDisplay.show")}
                 </>
               ) : (
                 <>
                   <EyeOff size={16} className="me-1" />
-                  隐藏
+                  {t("profile.page.couponDisplay.hide")}
                 </>
               )}
             </Button>
           </Card.Header>
+
           <Card.Body>
-            {/* <div><strong>Hash：</strong>{hash}</div> */}
             <Row>
               <Col sm={6} md={8}>
-                <div><strong>被扫次数：</strong>{scanned}</div>
-                <div><strong>剩余可用次数：</strong>{UsesLeft}</div>
-                <div><strong>状态：</strong>
+                <div>
+                  <strong>{t("profile.page.couponDisplay.scanned")}</strong>
+                  {scanned}
+                </div>
+                <div>
+                  <strong>{t("profile.page.couponDisplay.remaining")}</strong>
+                  {UsesLeft}
+                </div>
+                <div>
+                  <strong>{t("profile.page.couponDisplay.status")}</strong>
                   <span className={`fw-bold text-${cardVariant}`}>
-                    {Active ? "已激活" : "未激活"}
-                    {expiry && new Date(expiry) < new Date() && " (已过期)"}
+                    {Active
+                      ? t("profile.page.couponDisplay.active")
+                      : t("profile.page.couponDisplay.inactive")}
+                    {expiry && new Date(expiry) < new Date() && ` (${t("profile.page.couponDisplay.expired")})`}
                   </span>
                 </div>
-                {expiry && <div><strong>到期时间：</strong>{expiry}</div>}
+                {expiry && (
+                  <div>
+                    <strong>{t("profile.page.couponDisplay.expiry")}</strong>
+                    {expiry}
+                  </div>
+                )}
               </Col>
               <Col sm={6} md={4} className="d-flex justify-content-center align-items-start">
                 <Button
                   variant="light"
                   size="sm"
-                  onClick={() => { downloadQR(hash, title) }}
+                  onClick={() => downloadQR(hash, title)}
                   className="text-dark"
                 >
                   <i className="bi bi-box-arrow-in-down text-4xl me-1"></i>
-                  <p className="mb-0">二维码下载</p>
+                  <p className="mb-0">{t("profile.page.couponDisplay.downloadQR")}</p>
                 </Button>
               </Col>
             </Row>
@@ -187,13 +206,13 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
 
   return (
     <div>
-      {/* 搜索框 */}
+      {/* Search box */}
       <div className="mb-4">
         <Form.Group>
           <div className="position-relative">
             <Form.Control
               type="text"
-              placeholder="搜索优惠券标题..."
+              placeholder={t("profile.page.couponDisplay.searchPlaceholder")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pe-5"
@@ -216,26 +235,32 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
         </Form.Group>
       </div>
 
-      {/* 显示的优惠券 */}
+      {/* Visible coupons */}
       {filteredVisibleCoupons.length > 0 && (
         <div className="mb-4">
           <h5 className="mb-3 text-success">
             <Eye size={18} className="me-2" />
-            显示的优惠券 ({filteredVisibleCoupons.length}{searchTerm && `/${visibleCoupons.length}`})
+            {t("profile.page.couponDisplay.visibleCoupons")} (
+            {filteredVisibleCoupons.length}
+            {searchTerm && `/${visibleCoupons.length}`})
           </h5>
           <Row>
-            {filteredVisibleCoupons.map((item, idx) => renderCouponCard(item, idx, false))}
+            {filteredVisibleCoupons.map((item, idx) =>
+              renderCouponCard(item, idx, false)
+            )}
           </Row>
         </div>
       )}
 
-      {/* 隐藏的优惠券 - 可折叠 */}
+      {/* Hidden coupons (collapsible) */}
       {filteredHiddenCoupons.length > 0 && (
         <div>
           <div className="d-flex align-items-center justify-content-between mb-3">
             <h5 className="mb-0 text-muted">
               <EyeOff size={18} className="me-2" />
-              隐藏的优惠券 ({filteredHiddenCoupons.length}{searchTerm && `/${hiddenCoupons.length}`})
+              {t("profile.page.couponDisplay.hiddenCoupons")} (
+              {filteredHiddenCoupons.length}
+              {searchTerm && `/${hiddenCoupons.length}`})
             </h5>
             <Button
               variant="outline-secondary"
@@ -245,12 +270,12 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
               {showHiddenCoupons ? (
                 <>
                   <ChevronUp size={16} className="me-1" />
-                  隐藏
+                  {t("profile.page.couponDisplay.hide")}
                 </>
               ) : (
                 <>
                   <ChevronDown size={16} className="me-1" />
-                  查看
+                  {t("profile.page.couponDisplay.view")}
                 </>
               )}
             </Button>
@@ -258,23 +283,31 @@ const CouponDisplay = ({ couponList, couponLoading, couponError, onCouponUpdate 
 
           {showHiddenCoupons && (
             <Row>
-              {filteredHiddenCoupons.map((item, idx) => renderCouponCard(item, idx, true))}
+              {filteredHiddenCoupons.map((item, idx) =>
+                renderCouponCard(item, idx, true)
+              )}
             </Row>
           )}
         </div>
       )}
 
-      {/* 无搜索结果提示 */}
-      {searchTerm && filteredVisibleCoupons.length === 0 && filteredHiddenCoupons.length === 0 && (
-        <Alert variant='info'>
-          没有找到标题包含 "{searchTerm}" 的优惠券
-        </Alert>
-      )}
+      {/* No search results */}
+      {searchTerm &&
+        filteredVisibleCoupons.length === 0 &&
+        filteredHiddenCoupons.length === 0 && (
+          <Alert variant="info">
+            {t("profile.page.couponDisplay.noSearchResults", { searchTerm })}
+          </Alert>
+        )}
 
-      {/* 无优惠券提示 */}
-      {!searchTerm && visibleCoupons.length === 0 && hiddenCoupons.length === 0 && (
-        <Alert variant='info'>暂无专属优惠券信息</Alert>
-      )}
+      {/* No coupons at all */}
+      {!searchTerm &&
+        visibleCoupons.length === 0 &&
+        hiddenCoupons.length === 0 && (
+          <Alert variant="info">
+            {t("profile.page.couponDisplay.noCoupons")}
+          </Alert>
+        )}
     </div>
   );
 };

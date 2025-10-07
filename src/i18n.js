@@ -541,13 +541,32 @@ const resources = {
             "noData": "No data available",
             "loading": "Loading influencer profile...",
             "noProfile": "No influencer profile available. You can add `personal_details` and `social_platforms` fields in the admin panel."
+          },
+          "couponDisplay": {
+            "show": "Show",
+            "hide": "Hide",
+            "scanned": "Scanned Count: ",
+            "remaining": "Remaining Uses: ",
+            "status": "Status: ",
+            "active": "Active",
+            "inactive": "Inactive",
+            "expired": "Expired",
+            "expiry": "Expiry Date: ",
+            "downloadQR": "Download QR Code",
+            "searchPlaceholder": "Search coupon title...",
+            "visibleCoupons": "Visible Coupons",
+            "hiddenCoupons": "Hidden Coupons",
+            "view": "View",
+            "noSearchResults": "No coupons found with titles containing \"{{searchTerm}}\"",
+            "noCoupons": "No coupons available"
           }
         },
         "error": {
           "loadFail": "Loading Failed：",
           "downloadFail": "Download failed:",
           "noMerInfo": "Marchant detail not provided yet.",
-          "noInfInfo": "No related influencer found."
+          "noInfInfo": "No related influencer found.",
+          "noCouponInfo": "No special coupon found."
         }
       }
     },
@@ -1132,13 +1151,32 @@ const resources = {
             "noData": "暂无数据",
             "loading": "正在加载网红资料...",
             "noProfile": "暂无网红资料，你可以在后台（influencer_profile）为该用户填写 personal_details 和 social_platforms 两个 JSON 字段。"
+          },
+          "couponDisplay": {
+            "show": "显示",
+            "hide": "隐藏",
+            "scanned": "被扫次数：",
+            "remaining": "剩余可用次数：",
+            "status": "状态：",
+            "active": "已激活",
+            "inactive": "未激活",
+            "expired": "已过期",
+            "expiry": "到期时间：",
+            "downloadQR": "二维码下载",
+            "searchPlaceholder": "搜索优惠券标题...",
+            "visibleCoupons": "显示的优惠券",
+            "hiddenCoupons": "隐藏的优惠券",
+            "view": "查看",
+            "noSearchResults": "没有找到标题包含“{{searchTerm}}”的优惠券",
+            "noCoupons": "暂无专属优惠券信息"
           }
         },
         "error": {
           "loadFail": "加载失败：",
           "downloadFail": "下载失败:",
           "noMerInfo": "暂无商家资料",
-          "noInfInfo": "暂无代言网红"
+          "noInfInfo": "暂无代言网红",
+          "noCouponInfo": "暂无专属优惠券信息"
         }
       }
     },
