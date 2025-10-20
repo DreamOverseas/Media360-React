@@ -256,7 +256,7 @@ function App() {
             element={<BrandRelatedProductsPage />}
           />
 
-          <Route path='/dog' element={<ToolLinkPage />} />
+          <Route path='/admin' element={<ToolLinkPage />} />
           {/* ...test... */}
           <Route path='/ranking' element={<InfluencerRanking />} />
         </Routes>
