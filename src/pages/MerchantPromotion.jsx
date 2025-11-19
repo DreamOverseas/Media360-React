@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 // import { Link } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 import MerchantUploadForm from "../components/MerchantUploadForm.jsx";
-import PayPalButton from "../components/PayPalButton.jsx";
+import SquarePaymentButton from "../components/SquarePaymentButton.jsx"; // Changed Import
 import "../css/MerchantPromotion.css"
 
 
@@ -204,12 +204,11 @@ const MerchantPromotion = () => {
                 <p key={index}>{line}</p>
               ))}
             </div>
-            {/* <Link to={`/products/360-media-service-enterprise-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link> */}
             <h5 className="purchase-text">{t("即刻订购")}</h5>
-            <PayPalButton
-              amount="5500"              
-              currency="AUD"
-              description={tabs[0].label}
+            {/* TODO: Replace 'url' with the specific Square Link for $5500 Enterprise Package */}
+            <SquarePaymentButton
+              url="https://square.link/u/7ghUEtOs?src=embed"
+              text={tabs[0].label}
             />
           </div>
         ),
@@ -229,12 +228,11 @@ const MerchantPromotion = () => {
                 <p key={index}>{line}</p>
               ))}
             </div>
-            {/* <Link to={`/products/360-media-service-premium-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link> */}
             <h5 className="purchase-text">{t("即刻订购")}</h5>
-            <PayPalButton
-              amount="3300"              
-              currency="AUD"
-              description={tabs[1].label}
+            {/* TODO: Replace 'url' with the specific Square Link for $3300 Premium Package */}
+            <SquarePaymentButton
+              url="https://square.link/u/7ghUEtOs?src=embed"
+              text={tabs[1].label}
             />
           </div>
         ),
@@ -248,13 +246,11 @@ const MerchantPromotion = () => {
                 <p key={index}>{line}</p>
               ))}
             </div>
-            
-            {/* <Link to={`/products/360-media-service-standard-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link> */}
             <h5 className="purchase-text">{t("即刻订购")}</h5>
-            <PayPalButton
-              amount="990"              
-              currency="AUD"
-              description={tabs[2].label}
+            {/* TODO: Replace 'url' with the specific Square Link for $990 Elite Package */}
+            <SquarePaymentButton
+              url="https://square.link/u/7ghUEtOs?src=embed"
+              text={tabs[2].label}
             />
           </div>
         ),
@@ -377,14 +373,13 @@ const MerchantPromotion = () => {
                             <p key={index}>{line}</p>
                           ))}
                         </div>
-                        {/* <Link to={`/products/360-media-service-enterprise-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link> */}
                       </div>
                       <div>
                       <h5 className="purchase-text">{t("即刻订购")}</h5>
-                        <PayPalButton
-                          amount="5500"              
-                          currency="AUD"
-                          description={tabs[0].label}
+                        {/* TODO: Replace 'url' for $5500 package */}
+                        <SquarePaymentButton
+                          url="https://square.link/u/7ghUEtOs?src=embed"
+                          text={tabs[0].label}
                         />
                       </div>
                     </Col>
@@ -405,14 +400,13 @@ const MerchantPromotion = () => {
                             <p key={index}>{line}</p>
                           ))}
                         </div>
-                        {/* <Link to={`/products/360-media-service-premium-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link> */}
                       </div>
                       <div>
                       <h5 className="purchase-text">{t("即刻订购")}</h5>
-                        <PayPalButton
-                          amount="3300"              
-                          currency="AUD"
-                          description={tabs[1].label}
+                        {/* TODO: Replace 'url' for $3300 package */}
+                        <SquarePaymentButton
+                          url="https://square.link/u/7ghUEtOs?src=embed"
+                          text={tabs[1].label}
                         />
                       </div>
                     </Col>
@@ -427,15 +421,13 @@ const MerchantPromotion = () => {
                             <p key={index}>{line}</p>
                           ))}
                         </div>
-                        {/* <Link to={`/products/360-media-service-standard-package`} className="merchant-product-link" ><Button className="merchant-funtion-btn">{t("即刻订购")}</Button></Link> */}
                       </div>
                       <div>
                         <h5 className="purchase-text">{t("即刻订购")}</h5>
-                        <PayPalButton
-                          //amount="0.01"
-                          amount="3300"              
-                          currency="AUD"
-                          description={tabs[1].label}
+                        {/* TODO: Replace 'url' for $990 package */}
+                        <SquarePaymentButton
+                          url="https://square.link/u/7ghUEtOs?src=embed"
+                          text={tabs[2].label}
                         />
                       </div>
                     </Col>
@@ -483,4 +475,4 @@ const MerchantPromotion = () => {
   );
 };
   
-  export default MerchantPromotion;
+export default MerchantPromotion;
