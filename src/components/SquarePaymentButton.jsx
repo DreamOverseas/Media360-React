@@ -1,7 +1,10 @@
 // src/components/SquarePaymentButton.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const SquarePaymentButton = ({ url, text = "Pay now" }) => {
+
+  const { t } = useTranslation();
   // If no URL is provided, fall back to the one provided in the prompt
   const checkoutUrl = url || "https://square.link/u/7ghUEtOs?src=embed";
 
@@ -82,7 +85,7 @@ const SquarePaymentButton = ({ url, text = "Pay now" }) => {
             cursor: "pointer",
           }}
         >
-          {text}
+          {t("squarePaymentPayNow")}
         </a>
       </div>
     </div>

@@ -43,6 +43,7 @@ export default {
         time: "Time",
         location: "Location",
         host: "Host",
+        squarePaymentPayNow: "Pay Now!",
         "contact.title": "Contact us",
         "contact.firstname": "First name",
         "contact.lastname": "Last name",
