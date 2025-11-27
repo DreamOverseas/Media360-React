@@ -17,7 +17,7 @@ export default function MemberCenterPage() {
   const notLoggedInText = t("member_center_not_logged_in");
   const loginButtonText = t("member_center_login_button");
 
-  // ★ 调试：看看当前语言 & 翻译结果
+  // ★ 调试：看看当前语言 & 翻译结果.
   useEffect(() => {
     console.log(
       "[MemberCenterPage] lang =",
