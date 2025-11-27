@@ -25,6 +25,7 @@ const Breadcrumbs = () => {
     "networks":{zh:"资源",en:"Networks"},
     "influencer":{zh:"网红",en:"Influencer"},
     "group":{zh:"社团",en:"Influencer"},
+    "member-center": { zh: "会员中心", en: "Member Center" },
     "related-news": { zh: "相关新闻", en: "Related News" },
     "related-event": { zh: "相关活动", en: "Related Event" },
     "related-brand": { zh: "相关品牌", en: "Related Brand" },
