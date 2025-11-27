@@ -144,6 +144,13 @@ export default {
         miss_reg_please_fill: "Please fill this",
         miss_reg_please_upload: "We'll need at least one photo of you.",
         home: "Home",
+        // Member Center
+        member_center_title: "Member Center",
+        member_center_not_logged_in:
+            "Please log in with your 1club membership account to view points and redeem rewards.",
+        member_center_login_button: "Member Login",
+        nav_home: "Home",
+        nav_member_center: "Member Center",
         media_center: "Media Center",
         societies: "Societies",
         influencer: "Influencer",

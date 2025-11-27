@@ -59,6 +59,7 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import WeChatBlocker from "./utils/WeChatBlocker.jsx";
 import Whds from "./specialPage/Whds.jsx";
 import Group from "./pages/Group.jsx";
+import MemberCenterPage from "./pages/MemberCenterPage";
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -203,6 +204,8 @@ function App() {
             path='/products/:productName/:partnerType/RecruitmentAgencyForm'
             element={<RecruitmentAgencyForm />}
           />
+
+          <Route path='/member-center' element={<MemberCenterPage />} />
 
           <Route path='/join-us' element={<Recruitment />} />
           {/* <Route path='/networks' element={<Networks />} /> */}
