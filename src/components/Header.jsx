@@ -60,6 +60,15 @@ const Header = () => {
               <NavDropdown.Item href='/influencer'>{t("influencer")}</NavDropdown.Item>
               <NavDropdown.Item href='/group'>{t("societies")}</NavDropdown.Item>
             </NavDropdown>
+
+
+            {/* ✅ 新增：会员中心 Tab，放在“资源 / networks”右边 */}
+            <Nav.Link href="/member-center">
+              {t("member_center_title")}
+            </Nav.Link>
+            {/* 如果以后想做多语言，可以改成：t("member_center")，然后在 i18n 里加 key */}
+
+            
             {/* <Nav.Link href='/networks'>{t("资源")}</Nav.Link> */}
             <Nav.Link href='/about-us'>{t("About_us")}</Nav.Link>
             {/* <Nav.Link href='/join-us'>{t("joinus")}</Nav.Link> */}
