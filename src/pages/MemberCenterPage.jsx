@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import { MemberCenterLayout } from "oneclub-member-shop";
 
 // 从 env 里拿后端地址
-const cmsEndpoint = import.meta.env.VITE_CMS_API_ENDPOINT;
-const cmsApiKey = import.meta.env.VITE_CMS_API_KEY;
-const couponEndpoint = import.meta.env.VITE_COUPON_SYS_ENDPOINT;
-const emailEndpoint = import.meta.env.VITE_EMAIL_API_ENDPOINT;
+// const cmsEndpoint = import.meta.env.VITE_CMS_API_ENDPOINT;
+// const cmsApiKey = import.meta.env.VITE_CMS_API_KEY;
+// const couponEndpoint = import.meta.env.VITE_COUPON_SYS_ENDPOINT;
+// const emailEndpoint = import.meta.env.VITE_EMAIL_API_ENDPOINT;
 
 export default function MemberCenterPage() {
   const { t, i18n } = useTranslation();
