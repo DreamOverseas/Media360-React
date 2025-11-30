@@ -43,7 +43,7 @@ export default {
         time: "Time",
         location: "Location",
         host: "Host",
-        ChinaPaymentPayNow: "Pay Now!",
+        ChinaPaymentPayNow: "ChinaPayment Pay Now!",
         "contact.title": "Contact us",
         "contact.firstname": "First name",
         "contact.lastname": "Last name",
