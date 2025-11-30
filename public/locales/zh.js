@@ -153,6 +153,12 @@ export default {
         societies: "社团",
         influencer: "网红",
         home: "首页",
+        // 会员中心
+        member_center_title: "会员中心",
+        member_center_not_logged_in: "请先登录您的 1club 会员账号，以查看积分并兑换权益。",
+        member_center_login_button: "会员登录",
+        nav_home: "首页",
+        nav_member_center: "会员中心",
         relatedProducts: "相关产品",
         relatedNews: "相关新闻",
         relatedEvents: "相关活动",
