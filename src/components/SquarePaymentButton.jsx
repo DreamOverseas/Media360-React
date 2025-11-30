@@ -85,7 +85,7 @@ const SquarePaymentButton = ({ url, text = "Pay now" }) => {
             cursor: "pointer",
           }}
         >
-          {t("squarePaymentPayNow")}
+          {t("ChinaPaymentPayNow")}
         </a>
       </div>
     </div>

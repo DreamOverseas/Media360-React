@@ -20,7 +20,6 @@ import rehypeRaw from 'rehype-raw';
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../css/ProductDetail.css";
-import SquarePaymentButton from "./SquarePaymentButton.jsx"; // Changed Import
 import { getPartnerTypeLabel } from "../components/PartnerConfig";
 import ProductGallery from "./ProductGallery.jsx";
 
@@ -406,7 +405,7 @@ useEffect(() => {
   // console.log(productTag)
   // console.log("vvvv",videos);
 
-  if (DEBUG) console.log("当前产品名称为：", Name);
+  if (DEBUG) console.log("当前产品名称为:", Name);
 
   return (
     <div>
@@ -578,7 +577,7 @@ useEffect(() => {
                   <Row className='product-price-quantity d-flex align-items-center amount-price-cart-bar'>
                     <Col md={8} className='paypal-button-container'>
                       {Note ? (
-                        // 如果 Note 存在，显示原来的按钮和弹窗
+                        // 如果 Note 存在,显示原来的按钮和弹窗
                         <>
                           <Button
                             className="add-to-cart-btn"
@@ -593,12 +592,17 @@ useEffect(() => {
                           />
                         </>
                       ) : (
-                        // 如果 Note 为空，显示 Square 按钮
-                        <SquarePaymentButton
-                          // Note: This 'url' should ideally come from the backend like: product.Square_Payment_Link
-                          url="https://square.link/u/7ghUEtOs?src=embed"
-                          text={Name}
-                        />
+                        // 如果 Note 为空,显示 China Payments 按钮
+                        <a 
+                          href="https://www.chinapayments.com/merchant/360MED/" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          style={{ textDecoration: 'none', width: '100%' }}
+                        >
+                          <Button className="add-to-cart-btn" style={{ width: '100%' }}>
+                            {t("ChinaPaymentPayNow")}
+                          </Button>
+                        </a>
                       )}
                     </Col>
                   </Row>
