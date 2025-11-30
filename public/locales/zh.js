@@ -41,6 +41,7 @@ export default {
         time: "时间",
         location: "地点",
         host: "主办方",
+        ChinaPaymentPayNow: "ChinaPayment立即支付！",
         "contact.title": "联系我们",
         "contact.firstname": "名",
         "contact.lastname": "姓",
