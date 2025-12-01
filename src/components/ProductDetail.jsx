@@ -27,6 +27,7 @@ const BACKEND_HOST = import.meta.env.VITE_STRAPI_HOST;
 const DEBUG = import.meta.env.DEBUG;
 
 const ProductDetail = () => {
+  const navigate = useNavigate();  
   const location = useLocation();
   const { user } = useContext(AuthContext);
   const [name, setRecentSlug] = useState(null);
@@ -592,17 +593,22 @@ useEffect(() => {
                           />
                         </>
                       ) : (
-                        // 如果 Note 为空,显示 China Payments 按钮
-                        <a 
-                          href="https://www.chinapayments.com/merchant/360MED/" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          style={{ textDecoration: 'none', width: '100%' }}
+                        // 如果 Note 为空,显示“立即支付”按钮，跳转到支付方式页面
+                        <Button
+                          className="add-to-cart-btn"
+                          style={{ width: "100%" }}
+                          onClick={() =>
+                            navigate(`/products/${baseurl}/payment`, {
+                              state: {
+                                productId: product.id,
+                                productName: Name,
+                                price: Price_Display,
+                              },
+                            })
+                          }
                         >
-                          <Button className="add-to-cart-btn" style={{ width: '100%' }}>
-                            {t("ChinaPaymentPayNow")}
-                          </Button>
-                        </a>
+                          立即支付
+                        </Button>
                       )}
                     </Col>
                   </Row>
