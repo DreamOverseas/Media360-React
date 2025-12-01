@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 // import { Link } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 import MerchantUploadForm from "../components/MerchantUploadForm.jsx";
-import SquarePaymentButton from "../components/SquarePaymentButton.jsx"; // Changed Import
 import "../css/MerchantPromotion.css"
 
 
@@ -205,11 +204,14 @@ const MerchantPromotion = () => {
               ))}
             </div>
             <h5 className="purchase-text">{t("即刻订购")}</h5>
-            {/* TODO: Replace 'url' with the specific Square Link for $5500 Enterprise Package */}
-            <SquarePaymentButton
-              url="https://square.link/u/7ghUEtOs?src=embed"
-              text={tabs[0].label}
-            />
+            <Button 
+              variant="primary" 
+              href="https://www.chinapayments.com/merchant/360MED/"
+              target="_blank"
+              className="w-100"
+            >
+              {tabs[0].label}
+            </Button>
           </div>
         ),
         premium_package: (
@@ -229,11 +231,14 @@ const MerchantPromotion = () => {
               ))}
             </div>
             <h5 className="purchase-text">{t("即刻订购")}</h5>
-            {/* TODO: Replace 'url' with the specific Square Link for $3300 Premium Package */}
-            <SquarePaymentButton
-              url="https://square.link/u/7ghUEtOs?src=embed"
-              text={tabs[1].label}
-            />
+            <Button 
+              variant="primary" 
+              href="https://www.chinapayments.com/merchant/360MED/"
+              target="_blank"
+              className="w-100"
+            >
+              {tabs[1].label}
+            </Button>
           </div>
         ),
         elite_package: (
@@ -247,11 +252,14 @@ const MerchantPromotion = () => {
               ))}
             </div>
             <h5 className="purchase-text">{t("即刻订购")}</h5>
-            {/* TODO: Replace 'url' with the specific Square Link for $990 Elite Package */}
-            <SquarePaymentButton
-              url="https://square.link/u/7ghUEtOs?src=embed"
-              text={tabs[2].label}
-            />
+            <Button 
+              variant="primary" 
+              href="https://www.chinapayments.com/merchant/360MED/"
+              target="_blank"
+              className="w-100"
+            >
+              {tabs[2].label}
+            </Button>
           </div>
         ),
       };
@@ -375,12 +383,15 @@ const MerchantPromotion = () => {
                         </div>
                       </div>
                       <div>
-                      <h5 className="purchase-text">{t("即刻订购")}</h5>
-                        {/* TODO: Replace 'url' for $5500 package */}
-                        <SquarePaymentButton
-                          url="https://square.link/u/7ghUEtOs?src=embed"
-                          text={tabs[0].label}
-                        />
+                        <h5 className="purchase-text">{t("即刻订购")}</h5>
+                        <Button 
+                          variant="primary" 
+                          href="https://www.chinapayments.com/merchant/360MED/"
+                          target="_blank"
+                          className="w-100"
+                        >
+                          {tabs[0].label}
+                        </Button>
                       </div>
                     </Col>
 
@@ -402,12 +413,15 @@ const MerchantPromotion = () => {
                         </div>
                       </div>
                       <div>
-                      <h5 className="purchase-text">{t("即刻订购")}</h5>
-                        {/* TODO: Replace 'url' for $3300 package */}
-                        <SquarePaymentButton
-                          url="https://square.link/u/7ghUEtOs?src=embed"
-                          text={tabs[1].label}
-                        />
+                        <h5 className="purchase-text">{t("即刻订购")}</h5>
+                        <Button 
+                          variant="primary" 
+                          href="https://www.chinapayments.com/merchant/360MED/"
+                          target="_blank"
+                          className="w-100"
+                        >
+                          {tabs[1].label}
+                        </Button>
                       </div>
                     </Col>
 
@@ -424,11 +438,14 @@ const MerchantPromotion = () => {
                       </div>
                       <div>
                         <h5 className="purchase-text">{t("即刻订购")}</h5>
-                        {/* TODO: Replace 'url' for $990 package */}
-                        <SquarePaymentButton
-                          url="https://square.link/u/7ghUEtOs?src=embed"
-                          text={tabs[2].label}
-                        />
+                        <Button 
+                          variant="primary" 
+                          href="https://www.chinapayments.com/merchant/360MED/"
+                          target="_blank"
+                          className="w-100"
+                        >
+                          {tabs[2].label}
+                        </Button>
                       </div>
                     </Col>
                   </Row>
