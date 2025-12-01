@@ -60,6 +60,8 @@ import WeChatBlocker from "./utils/WeChatBlocker.jsx";
 import Whds from "./specialPage/Whds.jsx";
 import Group from "./pages/Group.jsx";
 import MemberCenterPage from "./pages/MemberCenterPage";
+import ProductPaymentPage from "./components/ProductPaymentPage.jsx";
+
 
 function App() {
   // Reserved for different needs of costomisation across pages
@@ -99,9 +101,19 @@ function App() {
       <div className='main-content'>
         <Routes>
           <Route path='/' element={<Home />} />
+
           <Route path='/products/:main' element={<ProductRouteGuard />}>
+            {/* /products/:main */}
             <Route index element={<ProductDetail />} />
+
+            {/* /products/:main/:variant */}
             <Route path=':variant' element={<ProductDetail />} />
+
+            {/* /products/:main/payment */}
+            <Route path='payment' element={<ProductPaymentPage />} />
+
+            {/* /products/:main/:variant/payment */}
+            <Route path=':variant/payment' element={<ProductPaymentPage />} />
           </Route>
           {/* <Route exact path='/' element={<ProductPage />} /> */}
           {/* <Route path='/profile' element={<Profile />} />
