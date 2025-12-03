@@ -1,0 +1,8 @@
+/* 统一的小号支付按钮样式：宽度一半，高度接近原来的一半 */
+.payment-btn-half {
+  display: inline-block;
+  width: 50%;              /* 父容器的一半宽度 */
+  padding-top: 0.35rem;    /* 默认 .btn-lg 是 0.5rem，这里缩小一点 */
+  padding-bottom: 0.35rem;
+  font-size: 0.9rem;       /* 字号略小，高度也会跟着变小 */
+}

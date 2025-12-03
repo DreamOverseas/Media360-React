@@ -61,6 +61,7 @@ import Whds from "./specialPage/Whds.jsx";
 import Group from "./pages/Group.jsx";
 import MemberCenterPage from "./pages/MemberCenterPage";
 import ProductPaymentPage from "./components/ProductPaymentPage.jsx";
+import PointPaymentPage from "./pages/PointPaymentPage.jsx";
 
 
 function App() {
@@ -114,7 +115,14 @@ function App() {
 
             {/* /products/:main/:variant/payment */}
             <Route path=':variant/payment' element={<ProductPaymentPage />} />
+
           </Route>
+
+          <Route
+          path='/products/points-payment'
+          element={<PointPaymentPage />}
+          />
+          
           {/* <Route exact path='/' element={<ProductPage />} /> */}
           {/* <Route path='/profile' element={<Profile />} />
           <Route exact path='/products' element={<ProductPage />} /> */}
