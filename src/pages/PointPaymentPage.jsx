@@ -1,7 +1,7 @@
 // src/pages/PointPaymentPage.jsx
 import { useLocation, useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
-import { SingleProductRedeemPanel } from "1club-member-shop";
+import { SingleProductRedeemPanel } from "oneclub-member-shop";
 import BackButton from "../components/BackButton";
 
 const cmsEndpoint   = import.meta.env.VITE_CMS_API_ENDPOINT;
