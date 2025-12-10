@@ -15,7 +15,7 @@ const ProductPaymentPage = () => {
   const navigate = useNavigate();
 
   // 从 ProductDetail 传过来的 state 中拿信息
-  const { productId, productName, price } = location.state || {};
+  const { productId, productName, price, stripePaymentLink } = location.state || {};
 
   // 会员登录状态
   const { member, isLoggedIn } = useMemberAuth();
@@ -63,6 +63,33 @@ const ProductPaymentPage = () => {
                   <span style={{ marginLeft: 8 }}>金额：AU$ {price}</span>
                 ) : null}
               </p>
+            )}
+
+            {/* 支付方式 0：Stripe Payment Link（只有当产品设置了 Payment Link 才显示） */}
+            {stripePaymentLink && (
+              <Card className="mb-3">
+                <Card.Body>
+                  <Card.Title>Stripe 信用卡 / 借记卡支付</Card.Title>
+                  <Card.Text>
+                    使用 Visa / Mastercard 等银行卡，通过 Stripe 安全付款。
+                  </Card.Text>
+
+                  <a
+                    href={stripePaymentLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Button
+                      variant="primary"
+                      size="lg"
+                      className="payment-btn-half"
+                    >
+                      使用 Stripe 支付
+                    </Button>
+                  </a>
+                </Card.Body>
+              </Card>
             )}
 
             {/* 支付方式 1：ChinaPayments */}

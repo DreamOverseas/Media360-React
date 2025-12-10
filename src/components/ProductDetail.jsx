@@ -603,6 +603,8 @@ useEffect(() => {
                                 productId: product.id,
                                 productName: Name,
                                 price: Price_Display,
+                                // ✨ 新增：把 Strapi 里的 payment link 一起传给支付页面
+                                stripePaymentLink: product.stripe_payment_link || null,
                               },
                             })
                           }
