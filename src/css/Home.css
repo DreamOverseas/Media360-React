@@ -30,6 +30,19 @@
     margin-bottom: 50px;
 }
 
+.section-label-blue {
+    display: inline-block;
+    background-color: var(--label-bg-color);
+    color: #0056b3;
+    font-size: 1.8rem;
+    font-weight: 700;
+    padding: 12px 40px;
+    border-radius: 50px; /* Pill shape */
+    box-shadow: 0 4px 15px rgba(0, 86, 179, 0.3); /* Subtle blue glow */
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
 .section-title {
     font-size: 2rem;
     font-weight: 700;
