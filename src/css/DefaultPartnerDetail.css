@@ -60,7 +60,7 @@ h2 {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
-/* ===== Logo 显示区 - INCREASED SIZE (250px) ===== */
+/* ===== Logo 显示区 - INCREASED SIZE (350px) ===== */
 .partner-logo-wrapper {
   width: 350px; /* Increased from 200px */
   height: 350px; /* Increased from 200px */
@@ -174,7 +174,7 @@ h2 {
     padding: 16px;
   }
 
-  /* Logo - INCREASED SIZE (150px) */
+  /* Logo - INCREASED SIZE (350px) */
   .partner-logo-wrapper {
     width: 350px; /* Increased from 100px */
     height: 350px; /* Increased from 100px */
