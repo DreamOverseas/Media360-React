@@ -1,91 +1,73 @@
-/* ==================================== */
-/* 统一现代 UI 样式 */
-/* ==================================== */
-
-:root {
-  --primary-color: #4a90e2; /* 品牌主色调 */
-  --secondary-color: #007bff;
-  --success-color: #28a745;
-  --text-dark: #333;
-  --text-muted: #777;
-  --bg-light: #f8f9fa;
-  --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  --card-hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+/* ===== 页面标题统一风格 ===== */
+h2 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #222;
 }
 
-body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+.text-muted {
+  color: #777;
+  font-size: 15px;
 }
 
-/* ===== 容器和标题 ===== */
+/* ===== 容器布局 ===== */
 .default-partner-container {
-  padding-top: 60px; /* 减小上边距 */
-  padding-bottom: 60px;
-  /* 移除 position: relative; 让返回按钮自由布局 */
+  padding-top: 80px;
+  padding-bottom: 40px;
+  position: relative;
 }
 
-.partner-section-title {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--text-dark);
-  margin-bottom: 25px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid var(--primary-color);
-}
-
-/* ===== 返回按钮样式 (改为左上角常规布局) ===== */
+/* ===== 返回按钮样式 ===== */
 .back-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
   cursor: pointer;
-  font-size: 16px;
-  color: var(--text-muted);
+  font-size: 24px;
+  color: #555;
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 20px;
-  transition: color 0.2s;
-}
-
-.back-button:hover {
-  color: var(--primary-color);
 }
 
 .small-text {
   font-size: 16px;
 }
 
-/* ===== 列表容器 (基于 Bootstrap Grid，保持 flex-direction: column 间距) ===== */
+/* ===== 列表容器 ===== */
 .partner-list-container {
   display: flex;
   flex-direction: column;
-  gap: 24px; /* 保持卡片之间的垂直间距 */
+  gap: 24px;
 }
 
 /* ===== 卡片样式优化 ===== */
 .partner-card {
-  padding: 20px; /* 略微减小内边距 */
-  border-radius: 12px;
+  position: relative;
+  padding: 24px;
+  border-radius: 16px;
   background: #fff;
-  box-shadow: var(--card-shadow);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   overflow: hidden;
-  display: flex; /* Flexbox 用于内部布局 */
+  display: flex;
   align-items: flex-start;
-  border: 1px solid #e9ecef;
+  border: 1px solid #f0f0f0;
 }
 
 .partner-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--card-hover-shadow);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
-/* ===== Logo/头像 显示区 ===== */
+/* ===== Logo 显示区 - INCREASED SIZE (350px) ===== */
 .partner-logo-wrapper {
-  width: 180px;            /* ✅ 变大 */
-  height: 250px;           /* ✅ 长方形比例（3:2） */
-  border-radius: 12px;     /* ✅ 圆角矩形，而不是圆形 */
+  width: 350px; /* Increased from 200px */
+  height: 350px; /* Increased from 200px */
+  border-radius: 10px;
   overflow: hidden;
-  border: 2px solid var(--primary-color);
-  background: var(--bg-light);
+  border: 1px solid #ddd;
+  background: #fff;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -93,48 +75,49 @@ body {
 }
 
 .partner-logo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 /* ===== 信息分区 ===== */
 .partner-main-info {
-  margin-left: 20px;
+  margin-left: 24px;
   display: flex;
   flex-direction: column;
-  flex: 1; /* 占据剩余空间 */
+  gap: 16px;
+  flex: 1;
 }
 
 .partner-field.name-field {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 15px; /* 减小间距 */
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 48px; /* 空3行 */
 }
 
 .info-section {
-  padding: 15px;
-  background-color: #e9f0f9; /* 浅蓝色背景 */
-  border-left: 5px solid var(--primary-color);
+  padding: 16px 20px;
+  background-color: #f9f9f9;
+  border-left: 4px solid #007bff;
   border-radius: 6px;
   font-size: 14px;
 }
 
 .info-section-title {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 15px;
   margin-bottom: 8px;
-  color: var(--text-dark);
+  color: #333;
 }
 
 .partner-field {
-  margin-bottom: 4px;
-  line-height: 1.6;
+  margin-bottom: 6px;
+  line-height: 1.5;
 }
 
 .partner-field a {
-  color: var(--secondary-color);
+  color: #007bff;
   text-decoration: none;
 }
 
@@ -144,56 +127,109 @@ body {
 
 .field-label {
   font-weight: 500;
-  color: var(--text-dark);
-  margin-right: 5px;
+  color: #444;
 }
 
-/* ===== 立即咨询按钮 (改为卡片内底部对齐) ===== */
+/* ===== 立即咨询按钮 ===== */
 .partner-join-button {
-  /* 移除 position: absolute; */
-  align-self: flex-end; /* 在 Flex 容器中对齐到末尾 */
-  margin-top: 10px;
+  position: absolute;
+  top: 24px;
+  right: 24px;
 }
 
 .custom-join-button {
-  /* 统一为 btn-primary 风格 */
-  background: var(--secondary-color);
+  background: linear-gradient(135deg, #007bff, #0056b3);
   color: #fff;
   border: none;
-  border-radius: 25px;
-  padding: 8px 18px;
-  font-size: 15px;
-  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
   display: flex;
   align-items: center;
   transition: all 0.3s ease;
   cursor: pointer;
-  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.25);
 }
 
 .custom-join-button:hover {
-  background: #0056b3;
-  transform: translateY(-1px);
-  box-shadow: 0 5px 10px rgba(0, 123, 255, 0.3);
+  background: linear-gradient(135deg, #0056b3, #003f7f);
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.35);
 }
 
 /* ===== 显示全部按钮 ===== */
 .toggle-button-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
-/* ===== 加入我们按钮美化 (保持并优化) ===== */
+/* ===== 响应式布局 (Mobile View Beautification & Increased Logo Size) ===== */
+@media (max-width: 768px) {
+  /* Card Layout */
+  .partner-card {
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+  }
+
+  /* Logo - INCREASED SIZE (350px) */
+  .partner-logo-wrapper {
+    width: 350px; /* Increased from 100px */
+    height: 350px; /* Increased from 100px */
+    margin-bottom: 16px;
+  }
+
+  /* Main Info Section */
+  .partner-main-info {
+    margin-top: 0;
+    margin-left: 0;
+    width: 100%;
+    align-items: center;
+  }
+  
+  /* Name Field (Advisor Name) */
+  .partner-field.name-field {
+    text-align: center;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+  }
+
+  /* Info Section (Qualifications) */
+  .info-section {
+    width: 100%;
+    padding: 12px;
+    border-left: none;
+    border-top: 4px solid #007bff;
+  }
+
+  /* Consult Button Positioning */
+  .partner-join-button {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .custom-join-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ===== 加入我们按钮美化 ===== */
 .modern-joinus-btn {
   background: linear-gradient(90deg, #4A90E2, #357ABD);
   color: white;
   border: none;
-  padding: 12px 30px; /* 增加大小 */
-  border-radius: 28px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  padding: 10px 24px;
+  border-radius: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   cursor: pointer;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: bold;
   transition: all 0.3s ease;
 }
@@ -201,64 +237,10 @@ body {
 .modern-joinus-btn:hover {
   background: linear-gradient(90deg, #357ABD, #2C6BB2);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-
-/* ==================================== */
-/* 响应式布局优化 (针对手机端) */
-/* ==================================== */
-@media (max-width: 768px) {
-  .default-partner-container {
-    padding: 20px 15px 40px 15px; /* 减小手机端内边距 */
-  }
-
-  .partner-card {
-    /* 垂直堆叠布局 */
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .partner-logo-wrapper {
-  width: 200px;            /* ✅ 手机端撑满卡片宽度 */
-  max-width: 320px;       /* ✅ 防止平板过宽 */
-  height: 250px;          /* ✅ 让头像在手机端更大更清楚 */
-  border-radius: 14px;
-  margin-bottom: 15px;
-}
-  
-  .partner-main-info {
-    margin-left: 0;
-    margin-top: 10px;
-    width: 100%;
-    text-align: center; /* 居中显示文本 */
-  }
-
-  .info-section {
-    text-align: left; /* 保证专业资质文本左对齐 */
-  }
-
-  .partner-field.name-field {
-    text-align: center;
-    margin-bottom: 10px;
-  }
-
-  .partner-join-button {
-    align-self: center; /* 手机端居中显示按钮 */
-    width: 100%;
-    margin-top: 20px;
-  }
-
-  .custom-join-button {
-    width: 100%; /* 按钮占满手机端宽度 */
-    justify-content: center; /* 按钮文字居中 */
-  }
-  
-  .modern-joinus-btn {
-    width: 100%; /* 加入我们按钮占满宽度 */
-  }
-
-  .partner-section-title {
-    font-size: 24px;
-  }
+.modern-joinus-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
