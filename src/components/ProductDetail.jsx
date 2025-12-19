@@ -411,7 +411,7 @@ useEffect(() => {
   return (
     <div>
       <section>
-        <Container>
+        <Container fluid className="pd-fluid-container">
           <Row className='product-detail-section'>
             <Col >
                 <Row>
@@ -421,11 +421,12 @@ useEffect(() => {
 
               {onDesktop ? (
                 <>
+                <div className="related-info-block">
                   <Row>
                     <h4>查看相关信息</h4>
                     <Row>
                         {/* 合作伙伴按钮 */}
-                        {SHOW_PARTNER_BUTTON_PRODUCTS.includes(product.url) &&
+                        {SHOW_PARTNER_BUTTON_PRODUCTS.includes((baseurl || "").split("/")[0]) &&
                           getPartnerLabels().map(({ type, label }, idx) => (
                             <Col xs={4} key={idx}>
                               <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
@@ -495,6 +496,7 @@ useEffect(() => {
                       )}
                     </Row>
                   </Row>
+                </div>
                 </>
               ) : (
                 <></>
@@ -655,7 +657,7 @@ useEffect(() => {
                       <h4>查看相关信息</h4>
                       <Row>
                       {/* 合作伙伴按钮 */}
-                        {SHOW_PARTNER_BUTTON_PRODUCTS.includes(product.url) &&
+                        {SHOW_PARTNER_BUTTON_PRODUCTS.includes((baseurl || "").split("/")[0]) &&
                           getPartnerLabels().map(({ type, label }, idx) => (
                             <Col xs={4} key={idx}>
                               <Link to={`/products/${baseurl.split('/')[0]}/${getPartnerTypeForButton(type)}/PartnerDetail`}>
