@@ -1,732 +1,533 @@
-/* Overall layout for the product detail page */
-.product-detail {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+/* =========================================
+   1. Global Variables & Reset
+   ========================================= */
+/* :root {
+  --primary-color: #1a1a1a;
+  --secondary-color: #666666;
+  --accent-color: #000000;
+  --bg-light: #f9f9f9;
+  --border-color: #e5e5e5;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --radius-pill: 50px;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+} */
+
+/* body {
+  font-family: var(--font-main);
+  color: var(--primary-color);
+  background-color: #ffffff;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s ease;
+} */
+
+/* =========================================
+   2. Layout Containers
+   ========================================= */
+.pd-fluid-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 
 .product-detail-section {
   display: flex;
-  flex-direction: row;
-  min-height: 450px;
-  height: auto;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-bottom: 60px;
 }
 
-/* Button styling */
-.add-to-cart {
-  height: 50px;
-  width: 100%;
-  margin: 0;
-}
-
-/* Image container styling */
+/* =========================================
+   3. Product Gallery (Left Column)
+   ========================================= */
 .product-image-col {
-  flex: 0 0 500px; /* 左侧图片固定宽度 */
-  max-width: 100%; /* 防止图片超出 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  flex: 1;
+  min-width: 300px;
 }
 
-/* Image styling to ensure responsiveness on desktop and mobile */
-.product-img {
-  width: 100%; /* Ensures the image does not exceed container width */
-  height: 100%; /* Height adjusts based on width */
-  object-fit: cover; /* Maintains image aspect ratio */
-}
-
-/* Product detail information container */
-.product-detail-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 20px;
-}
-
-/* Purchase modal background */
-.purchase-modal-background {
-  background-color: black;
-  object-fit: fill;
-}
-
-.quantity-control {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 50px;
-  width: 100%;
-  height: 50px;
-}
-
-.quantity-btn {
-  border: none;
-  background: none;
-  border-radius: 30px;
-  font-size: 15px;
-  color: #555;
-  cursor: pointer;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.quantity-btn:hover {
-  color: black;
-}
-
-.quantity-text {
-  font-size: 16px;
-  font-weight: bold;
-  min-width: 20px;
-  text-align: center;
-}
-
-.add-to-cart-btn {
-  width: 100%;
-  height: 50px;
-  border-radius: 50px;
-  border: 1px solid black;
-  background: white;
-  color: black;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.add-to-cart-btn:hover {
-  background: black;
-  color: white;
-}
-
-.tag-label {
-  width: 100%;
-  border-radius: 50px;
-  border: 1px solid grey;
-  background: white;
-  color: grey;
-  font-size: 10px;
-}
-
-.tag-col {
-  margin-bottom: 10px;
-}
-
-.product-detail-funtion-btn {
-  width: 100%;
-  border-radius: 50px;
-  border: 1px solid black;
-  background: white;
-  color: black;
-  font-size: 10px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.product-detail-funtion-btn:hover {
-  background: black;
-  color: white;
-}
-
-.main-product-detail-funtion-btn {
-  width: 100%;
-  border-radius: 50px;
-  border: 1px solid black;
-  background: white;
-  color: black;
-  font-size: 10px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.main-product-detail-funtion-btn:hover {
-  background: black;
-  color: white;
-}
-
-.detail-container {
-  font-size:11px;
-  max-height: 300px;
-  overflow-y: auto;
-  
-}
-
-.detail-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.detail-container::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-}
-
-.person-related-btn {
-  display: inline-block;
-  padding: 11px 11px;
-  margin-top: 12px;
-  margin-right: 12px;
-  background-color: #000000;
-  color: #ffffff;
-  font-size: 9px;
-  font-weight: 600;
-  text-align: center;
-  text-decoration: none;
-  border-radius: 25px;
-  transition: background-color 0.3s ease;
-}
-
-.person-related-btn:hover {
-  background-color: #d3d3d3;
-  color: #ffffff;
-}
-
-.social-sharing__link {
-  display: flex;
-  align-items: center; /* 让 SVG 图标和文字垂直居中 */
-  text-decoration: none; /* 取消超链接的下划线 */
-  gap: 8px; /* 图标和文字之间的间距 */
-  color: #333; /* 文字颜色 */
-  font-size: 16px; /* 文字大小 */
-  font-weight: bold;
-  padding: 5px 10px;
-  border-radius: 5px;
-  transition: 0.3s;
-}
-
-.social-sharing__link:hover {
-  color: #007bff; /* 鼠标悬停时的颜色 */
-}
-
-/* productGallery */
 .product-gallery {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%; /* Ensure it stays within the column */
-  max-width: 100%; /* Prevent it from overflowing */
+  width: 100%;
 }
 
 .main-image-container {
   position: relative;
-  width: 100%; /* Adjust to fit within the column */
-  height: 500px; /* Set a fixed height to maintain aspect ratio */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  object-fit: cover;
-  overflow: hidden; /* Ensures images do not stretch */
+  width: 100%;
+  height: 550px;
+  background-color: var(--bg-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
 }
 
 .product-img {
   width: 100%;
-  height: 500px; /* Maintain aspect ratio */
+  height: 100%;
   object-fit: contain;
-  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
+/* Gallery Navigation Arrows */
 .prev-button,
 .next-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 24px;
-  padding: 10px;
-  z-index:1;
+  width: 44px;
+  height: 44px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--primary-color);
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  border: 1px solid rgba(0,0,0,0.05);
 }
 
-.prev-button {
-  left: 10px;
+.prev-button:hover,
+.next-button:hover {
+  background-color: #fff;
+  transform: translateY(-50%) scale(1.1);
 }
 
-.next-button {
-  right: 10px;
-}
-
+/* Thumbnails */
 .thumbnail-container {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
-  justify-content: flex-start;
-  width: 100%;
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
 }
 
 .thumb-img {
   width: 80px;
   height: 80px;
-  object-fit: cover;
-  cursor: pointer;
+  border-radius: var(--radius-sm);
   border: 2px solid transparent;
+  transition: all 0.2s;
+  background-color: var(--bg-light);
 }
 
 .thumb-img:hover,
 .active-thumb {
-  border-color: #000;
+  border-color: var(--primary-color);
+  opacity: 1;
 }
 
-.thumb-container {
-  position: relative;
-  cursor: pointer;
-  width: 80px;
-  height: 80px
-}
-
-.placeholder-thumb {
-  background-color: #eee;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.thumb-overlay {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  background: rgba(255, 255, 255, 0.8);
-  padding: 10px 10px;
-  border-radius: 8px;
-}
-
-/* Ensure product image column doesn’t exceed 50% width */
-.product-image-col {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-}
-
-/* Ensure product details column stays in its place */
+/* =========================================
+   4. Product Details (Right Column)
+   ========================================= */
 .product-detail-col {
   flex: 1;
-}
-
-/* 让 Container 作为按钮的相对定位基础 */
-.video-wrapper {
-  position: relative; /* 让按钮可以使用绝对定位 */
+  padding-left: 20px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-/* 左右切换按钮，相对于 .video-wrapper 进行定位 */
-.video-wrapper .video-prev-button,
-.video-wrapper .video-next-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 24px;
-  padding: 10px 15px;
-  background: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
-  color: white;
-  border: none;
-  cursor: pointer;
-  z-index: 10; /* 确保按钮浮在最上层 */
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-/* 鼠标悬停按钮 */
-.video-prev-button:hover,
-.video-next-button:hover {
-  background: rgba(0, 0, 0, 0.8);
-  transform: translateY(-50%) scale(1.1); /* 轻微放大按钮 */
-}
-
-/* 左侧按钮 */
-.video-prev-button {
-  left: 15px;
-}
-
-/* 右侧按钮 */
-.video-next-button {
-  right: 15px;
-}
-
-/* 视频容器，确保 iframe 正确显示 */
-.product-video-container {
-  position: relative; /* 让 iframe 绝对定位填充 */
-  padding-bottom: 56.25%; /* 16:9 视频比例 */
-  height: 0;
-  overflow: hidden;
-  background: #000;
-  width: 100%;
-}
-
-/* 确保 iframe 充满容器 */
-.product-video-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  z-index: 2; /* 确保 iframe 在视频容器内部 */
-}
-
-.amount-price-cart-bar {
-  margin-top: 1%;
-  margin-bottom: 5%;
+  flex-direction: column;
 }
 
 .product-detail h1 {
-  margin-top: 3%;
-  margin-bottom: 2%;
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
 }
 
-.product-detail h4 {
-  margin-top: 15px;
-  margin-bottom: 15px;
-  font-size: 14px;
+.product-detail p {
+  color: var(--secondary-color);
+  line-height: 1.6;
+  font-size: 1rem;
+  margin-bottom: 24px;
 }
 
-.product-detail .price-row h2 {
-  margin-top: 15px;
-  margin-bottom: 15px;
+/* Price */
+.price-row h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin: 10px 0 24px 0;
 }
 
-.update-function-btn {
-  border-radius: 50px;
-  border: 1px solid black;
-  background: white;
-  color: black;
-  font-size: 10px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.update-function-btn:hover {
-  background: black;
-  color: white;
-}
-
-.custom-modal-body {
-  max-height: 300px; /* 固定高度 */
-  overflow-y: auto; /* 允许垂直滚动 */
-}
-
-.slide-section p img {
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 1%;
-}
-
-/* target both the “active” and “shown” states */
-#product-variants-tabs .nav-item.show .nav-link,
-#product-variants-tabs .nav-link.active {
-  background-color: transparent !important;
-  border: none !important;
-  /* if you also want to reset any hover/focus background: */
-  box-shadow: none !important;
-}
-
-/* if you want *all* tab links to have no border, active or not: */
-#product-variants-tabs .nav-link {
-  border: none !important;
-  color: #000000;
-}
-
-/* add a solid bottom line on the active tab */
-#product-variants-tabs .nav-link.active {
-  border-bottom: 3px solid #000000 !important;  /* adjust thickness & color */
-}
-
-#detail-accordion .accordion-collapse {
-  visibility: visible !important;
-  overflow: visible !important;
-}
-
-#spots-accordion .accordion-collapse {
-  visibility: visible !important;
-  overflow: visible !important;
-}
-
+/* =========================================
+   5. Variants & Tabs
+   ========================================= */
 .variants-div {
-  background-color: white;
-  padding: 5%;
-  border-radius: 5%;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 30px;
+  box-shadow: var(--shadow-sm);
 }
 
-
-
-/* Responsive design for mobile devices */
-@media (max-width: 768px) {
-  .amount-price-bar {
-    margin-bottom: 5%;
-  }
-
-  .product-details-variant-btn {
-    font-size:9px
-  }
-
-  .main-image-container {
-    position: relative;
-    width: 100%; /* Adjust to fit within the column */
-    height: 250px; /* Set a fixed height to maintain aspect ratio */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    object-fit: cover;
-    overflow: hidden; /* Ensures images do not stretch */
-  }
-
-  .product-detail h4 {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    font-size: 14px;
-  }
-
-  .product-detail .price-row h2 {
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-
-  /* Adjusts product detail layout to vertical direction */
-  .product-detail-section {
-    flex-direction: column;
-    height: auto; /* Container height adjusts based on content */
-  }
-
-  /* Image container full width, removes left padding */
-  .product-image-col {
-    padding-left: 0;
-    padding-right: 0;
-    width: 100%; /* Full width for mobile devices */
-  }
-
-  /* Ensures the image fits the screen width and maintains aspect ratio */
-  .main-image-container .product-img {
-    width: auto;
-    height: 100%;
-    object-fit: contain; /* Maintains image aspect ratio */
-  }
-
-  /* Product detail container adapts to full width */
-  .product-detail-col {
-    width: 100%; /* Content area takes full width */
-    padding: 0 15px; /* Adds adequate side padding */
-  }
-
-  /* Adjusts button style for mobile display */
-  .add-to-cart {
-    width: 100%; /* Full width button */
-    margin-bottom: 1rem; /* Adds spacing between buttons */
-  }
-
-  /* Adjusts modal background for mobile devices */
-  .purchase-modal-background {
-    padding: 1rem; /* Adjusts modal content padding for mobile */
-  }
-
-  /* Adjusts modal dialog width for mobile screens */
-  .modal-dialog {
-    max-width: 90%; /* Limits modal width to 90% on mobile */
-  }
-
-  /* Ensures description text wraps correctly on mobile */
-  .product-detail p {
-    white-space: normal; /* Forces text to wrap on mobile */
-    font-size: 13px;
-  }
-
-  .product-detail h1 {
-    font-size: 22px;
-  }
-
-  .product-short-description {
-    font-size: 8px;
-  }
-
-  .quantity-control {
-    width: 120px;
-  }
-}
-.responsive-iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+/* Customizing Bootstrap Tabs within variants */
+.product-category-tabs .nav-link {
+  color: var(--secondary-color);
+  font-weight: 500;
+  border: none !important;
+  padding: 8px 16px;
+  background: transparent;
+  transition: color 0.2s;
 }
 
-.responsive-iframe-container {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-  height: 0;
+.product-category-tabs .nav-link:hover {
+  color: var(--primary-color);
 }
 
-/* variant button */
+.product-category-tabs .nav-link.active {
+  color: var(--primary-color) !important;
+  background: transparent !important;
+  border-bottom: 2px solid var(--primary-color) !important;
+}
 
-/* 默认按钮样式 */
+/* Variant Buttons */
 .product-details-variant-btn {
   width: 100%;
-  border-radius: 50px;
-  border: 1px solid black;
-  background: white;
-  color: black;
-  font-size: 10px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  padding: 8px 12px;
+  padding: 10px 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--primary-color);
+  background-color: #fff;
+  border: 1px solid #d1d1d1;
+  border-radius: var(--radius-sm); 
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-details-variant-btn:hover {
+  border-color: var(--primary-color);
+  background-color: var(--bg-light);
+  color: var(--primary-color);
+}
+
+.product-details-variant-btn.active-btn {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* =========================================
+   6. Action Buttons (Add to Cart / Pay)
+   ========================================= */
+.amount-price-cart-bar {
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.add-to-cart-btn {
+  width: 100%;
+  height: 56px;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-pill);
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.add-to-cart-btn:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.main-product-detail-funtion-btn {
+  background: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  padding: 10px 24px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  transition: all 0.2s;
+  display: inline-block;
+  margin-bottom: 24px;
   text-align: center;
 }
 
-/* 悬停效果（Hover，PC端有效） */
-@media (min-width: 769px) {
-  .product-details-variant-btn:hover {
-    background: black;
-    color: white;
-  }
+.main-product-detail-funtion-btn:hover {
+  background: var(--primary-color);
+  color: #fff;
 }
 
-/* 选中（Active）状态匹配当前 URL */
-.product-details-variant-btn.active-btn {
-  background: black !important;
-  color: white !important;
-  border-color: black !important;
+/* =========================================
+   7. Accordions (Details & Spots) - FIXED
+   ========================================= */
+.accordion-item {
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  background: transparent;
 }
 
+.accordion-button {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary-color);
+  padding: 20px 0;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
 
+.accordion-button:not(.collapsed) {
+  color: var(--primary-color);
+}
 
+.accordion-body {
+  padding: 0 0 20px 0;
+  color: var(--secondary-color);
+  font-size: 14px;
+  line-height: 1.7;
+}
 
-/* 我要咨询的styles */
+/* !!! CRITICAL FIX !!! 
+   This forces the content to stay visible when expanded. 
+   The !important overrides any Bootstrap conflict hiding the element. 
+*/
+#detail-accordion .accordion-collapse.show,
+#spots-accordion .accordion-collapse.show,
+.accordion-collapse.show {
+  visibility: visible !important;
+  display: block !important;
+  height: auto !important;
+  opacity: 1 !important;
+}
 
-.consult-card-wrapper {
-  display: flex;
-  justify-content: center;
+/* Restore overflow behavior for these specific IDs to match original functionality */
+#detail-accordion .accordion-collapse,
+#spots-accordion .accordion-collapse {
+  overflow: visible !important;
+}
+
+.detail-container {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* =========================================
+   8. Left Column - Related Info (Desktop)
+   ========================================= */
+.related-info-block {
   margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.related-info-block h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.product-detail-funtion-btn {
+  width: 100%;
+  padding: 12px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: #fff;
+  color: var(--primary-color);
+  border: 1px solid #e0e0e0;
+  border-radius: var(--radius-sm);
+  margin-bottom: 15px;
+  transition: all 0.2s ease;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+}
+
+.product-detail-funtion-btn:hover {
+  border-color: var(--primary-color);
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+/* =========================================
+   9. Bottom Sections (Video, Related, Slides)
+   ========================================= */
+.slide-section, 
+.home-product-carousel-container {
+  margin-top: 60px;
   margin-bottom: 60px;
 }
 
-.consult-card {
-  background-color: #c7e2ff;
-  border-radius: 20px;
-  padding: 20px;
-  width: 100%;
-  height: 200px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+.slide-section h4,
+.home-product-carousel-container h4 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  position: relative;
+  display: inline-block;
 }
 
-.consult-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 36px; /* 两个按钮的间距 */
-  margin-right: 40px;
-  margin-bottom: 40px;
-}
-
-.consult-top-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  gap: 16px;
-}
-
-.consult-card-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.consult-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #fff;
-}
-
-.consult-name-status {
-  text-align: left;
-}
-
-.consult-name {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.consult-status {
-  font-size: 14px;
-  color: #3cb371;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.green-dot {
-  width: 8px;
-  height: 8px;
-  background-color: #3cb371;
-  border-radius: 50%;
-}
-
-.consult-tags {
-  font-size: 14px;
-  line-height: 1.8;
-  margin-bottom: 16px;
-  color: #333;
-}
-
-.consult-button {
-  background-color: #7c5fff;
-  color: white;
+/* Product Cards in Related Section */
+.product-card {
   border: none;
-  padding: 10px 20px;
-  border-radius: 24px;
-  cursor: pointer;
-  font-size: 15px;
-  transition: all 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #f0f0f0;
 }
 
-.consult-button:hover {
-  background-color: #6b50e3;
+.home-product-card-link {
+    text-decoration: none;
+    display: block;
+    height: 100%;
+    margin-bottom: 20px;
 }
 
-.consult-banner {
-  width: 65%; 
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.product-card img {
+  height: 250px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.product-card .card-body {
+  padding: 20px;
+}
+
+.product-card .card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--primary-color);
+}
+
+.product-card .card-text {
+  font-size: 13px;
+  color: var(--secondary-color);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-card hr {
+    display: none;
+}
+
+/* Video Wrapper */
+.product-video {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+/* Markdown Content Images */
+.slide-section p img {
+  max-width: 100%;
   height: auto;
-  object-fit: contain;
-  margin-bottom: 16px;
+  border-radius: var(--radius-sm);
+  display: block;
+  margin: 20px auto;
 }
 
-.pd-fluid-container {
-  padding-left: 48px;
-  padding-right: 48px;
-}
-
+/* =========================================
+   10. Mobile Responsiveness
+   ========================================= */
 @media (max-width: 768px) {
   .pd-fluid-container {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding: 20px 16px;
   }
-}
 
-
-
-@media (min-width: 769px) {
-  .related-info-block {
-    padding-left: 140px; 
+  /* Stack columns */
+  .product-detail-section {
+    flex-direction: column;
+    gap: 24px;
   }
-}
 
+  /* Gallery adjustments */
+  .main-image-container {
+    height: 350px;
+  }
 
-@media (max-width: 768px) {
-  .related-info-block {
+  .product-detail-col {
     padding-left: 0;
   }
+
+  .product-detail h1 {
+    font-size: 1.5rem;
+    margin-top: 0;
+  }
+
+  .price-row h2 {
+    font-size: 1.4rem;
+    margin: 5px 0 15px 0;
+  }
+
+  /* Variants on mobile */
+  .variants-div {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .product-details-variant-btn {
+    font-size: 12px;
+    padding: 8px 4px;
+  }
+
+  /* Mobile Buttons */
+  .add-to-cart-btn {
+    height: 50px;
+    font-size: 14px;
+  }
+
+  .product-detail-col .row > div {
+    margin-bottom: 10px;
+  }
+  
+  .product-detail-funtion-btn {
+    font-size: 11px;
+    padding: 8px;
+  }
+}
+
+/* =========================================
+   11. Modal Styling
+   ========================================= */
+.modal-content {
+  border-radius: var(--radius-md);
+  border: none;
+  box-shadow: var(--shadow-md);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-color);
+  padding: 20px 24px;
+}
+
+.modal-title {
+  font-weight: 700;
+}
+
+.custom-modal-body {
+  padding: 24px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.modal-footer {
+  border-top: none;
+  padding: 16px 24px 24px;
 }

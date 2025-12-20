@@ -103,7 +103,7 @@ const AboutUsPage = () => {
         </section>
         <br/>
         <section>
-          <h5>{t("about_us_page.our_services")}</h5>
+          <h3 className="text-center">{t("about_us_page.our_services")}</h3>
           <br/>
           <Row>
               <Col>
@@ -177,8 +177,8 @@ const AboutUsPage = () => {
         </section>
         <br/>
         <section>
-          <h5>Join Us</h5>
-          <h6>加入我们</h6>
+          <h3 className="text-center">Join Us</h3>
+          <h4 className="text-center">加入我们</h4>
           {onDesktop?(
             <Row>
               <Col>
