@@ -63,9 +63,7 @@ const Header = () => {
 
 
             {/* ✅ 新增：会员中心 Tab，放在“资源 / networks”右边 */}
-            <Nav.Link href="/member-center">
-              {t("member_center_title")}
-            </Nav.Link>
+            
             {/* 如果以后想做多语言，可以改成：t("member_center")，然后在 i18n 里加 key */}
 
             
@@ -88,13 +86,12 @@ const Header = () => {
               </NavDropdown.Item>
             </NavDropdown>
 
-            {user ? (
-              <>
-                {/*
-                <Nav.Link href='/cart'>
-                  <i className='bi bi-cart nav-icon'></i>
-                </Nav.Link>*/}
+            <Nav.Link href="/member-center">
+              {t("member_center_title")}
+            </Nav.Link>
 
+            {/* {user ? (
+              <>
                 <NavDropdown title={user.username} id='basic-nav-dropdown'>
                   <NavDropdown.Item href='/profile'>
                     {t("myProfile")}
@@ -109,15 +106,16 @@ const Header = () => {
               <Nav.Link onClick={() => setShowLoginModal(true)}>
                 <i className='bi bi-person nav-icon'> {t("logIn")}</i>
               </Nav.Link>
-            )}
+            )} */}
+
           </Nav>
         </Navbar.Collapse>
       </Navbar>
       {/* 登录模态框 */}
-      <LoginModal
+      {/* <LoginModal
         show={showLoginModal}
         handleClose={() => setShowLoginModal(false)}
-      />
+      /> */}
     </div>
   );
 };
