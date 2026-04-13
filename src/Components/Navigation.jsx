@@ -124,13 +124,6 @@ const Navigation = () => {
                   {t("Gallery")}
                 </Nav.Link>
 
-                {/* <Nav.Link
-                  className={`NavWord ${ ['/news', '/annual-news', '/permanent-news'].includes(location.pathname) ? "NavActive" : ""}`}
-                  href={whatsMyNews()}
-                >
-                  {t("News")}
-                </Nav.Link> */}
-
                 <NavDropdown
                   className='NavNoHighlightWord'
                   title={t("About")}
@@ -141,11 +134,14 @@ const Navigation = () => {
                   <NavDropdown.Item href='/contact-us'>
                     {t("Contact")}
                   </NavDropdown.Item>
-                  {/* <NavDropdown.Item href='/cooperation'>
-                    {t("Joinus")}
-                  </NavDropdown.Item> */}
                   <NavDropdown.Item href='/policy'>
                     {t("Policy")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/eco-living-assets'>
+                    {t("EcoLivingAssets")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/founder-ip'>
+                    {t("FounderIP")}
                   </NavDropdown.Item>
                 </NavDropdown>
 
@@ -165,6 +161,53 @@ const Navigation = () => {
                   </NavDropdown.Item>
                   <NavDropdown.Item href='/360-culture-events'>
                     {t("360CultureAndEvents")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/creator'>
+                    {t("Creator")}
+                  </NavDropdown.Item>
+                </NavDropdown>
+
+                <NavDropdown
+                  className='NavNoHighlightWord'
+                  title={t("HowItWorks")}
+                  id='how-it-works-dropdown'
+                >
+                  <NavDropdown.Item href='/land-owner-join'>
+                    {t("LandOwnerJoin")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/pre-assessment'>
+                    {t("PreAssessment")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/compliance-application'>
+                    {t("ComplianceApplication")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/renovation-upgrade'>
+                    {t("RenovationUpgrade")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/management-service'>
+                    {t("ManagementService")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/revenue-share'>
+                    {t("RevenueShare")}
+                  </NavDropdown.Item>
+                </NavDropdown>
+
+                <NavDropdown
+                  className='NavNoHighlightWord'
+                  title={t("SmartCardNav")}
+                  id='smart-card-dropdown'
+                >
+                  <NavDropdown.Item href='/smart-card/membership-system'>
+                    {t("MembershipSystem")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/smart-card/points-circulation'>
+                    {t("PointsCirculation")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/smart-card/investment-stay-benefits'>
+                    {t("InvestStayBenefits")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/smart-card/referral-rewards'>
+                    {t("ReferralRewards")}
                   </NavDropdown.Item>
                 </NavDropdown>
 

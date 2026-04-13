@@ -101,6 +101,27 @@ function App() {
           <Route path='/permanent-news' element={<News userType="forPermanent"/>} />
           <Route path='/membership' element={<MemberCenter />} />
           <Route path='/admin' element={<Dog />} />
+
+          {/* About dropdown - new pages */}
+          <Route path='/eco-living-assets' element={<HtmlContent translationKey="eco_living_assets" />} />
+          <Route path='/founder-ip' element={<HtmlContent translationKey="founder_ip" />} />
+
+          {/* Join Us dropdown - new Creator page */}
+          <Route path='/creator' element={<HtmlContent translationKey="creator_page" />} />
+
+          {/* How It Works dropdown */}
+          <Route path='/land-owner-join' element={<HtmlContent translationKey="land_owner_join" />} />
+          <Route path='/pre-assessment' element={<HtmlContent translationKey="pre_assessment" />} />
+          <Route path='/compliance-application' element={<HtmlContent translationKey="compliance_application" />} />
+          <Route path='/renovation-upgrade' element={<HtmlContent translationKey="renovation_upgrade" />} />
+          <Route path='/management-service' element={<HtmlContent translationKey="management_service" />} />
+          <Route path='/revenue-share' element={<HtmlContent translationKey="revenue_share" />} />
+
+          {/* 360 Smart Card dropdown */}
+          <Route path='/smart-card/membership-system' element={<HtmlContent translationKey="membership_system_page" />} />
+          <Route path='/smart-card/points-circulation' element={<HtmlContent translationKey="points_circulation" />} />
+          <Route path='/smart-card/investment-stay-benefits' element={<HtmlContent translationKey="investment_stay_benefits" />} />
+          <Route path='/smart-card/referral-rewards' element={<HtmlContent translationKey="referral_rewards" />} />
         </Routes>
         <Footer />
       </div>
