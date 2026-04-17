@@ -209,15 +209,12 @@ const Navigation = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
 
-                <NavDropdown
-                  className='NavNoHighlightWord'
-                  title={t("EcoLivingLab")}
-                  id='eco-living-lab-dropdown'
+                <Nav.Link
+                  className={`NavWord ${location.pathname === "/360-iip" ? "NavActive" : ""}`}
+                  href='/360-iip'
                 >
-                  <NavDropdown.Item href='/innovation-lab'>
-                    {t("InnovationLab")}
-                  </NavDropdown.Item>
-                </NavDropdown>
+                  {t("360IIP")}
+                </Nav.Link>
 
                 <NavDropdown
                   className='NavNoHighlightWord nav-language'
