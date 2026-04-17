@@ -23,24 +23,21 @@ const Home = () => {
   const features = [
     {
       src: "/Icons/free-parking.png",
-      alt: "Free Parking",
-      textKey: "park_free",
+      alt: "Explore Stay",
+      textKey: "home_feature_explore_stay",
+      route: "/individual-visitors",
     },
     {
       src: "/Icons/dog.png",
-      alt: "Pet Friendly",
-      textKey: "pet_friendly",
+      alt: "Explore Investment",
+      textKey: "home_feature_explore_investment",
+      route: "/investment",
     },
     {
       src: "/Icons/horse.png",
-      alt: "Horse Nearby",
-      textKey: "horse_by_your_side",
-    },
-    {
-      src: "/Icons/ai.png",
-      alt: "Ai-Powered Flexible Stay",
-      textKey: "ai_powered_flexible_stay",
-      route: "/AI-stay",
+      alt: "Become a Partner",
+      textKey: "home_feature_become_partner",
+      route: "/cooperation",
     },
   ];
 
@@ -141,8 +138,8 @@ const Home = () => {
     <main className="home-page">
       <div>
         <section className="home-banner-title">
-          <h1>{t("home_place_name")}</h1>
-          <strong><h3><div dangerouslySetInnerHTML={{ __html: t('home_place_short_description') }}/></h3></strong>
+          <h1>{t("home_hero_title")}</h1>
+          <strong><h1>{t("home_hero_subtitle")}</h1></strong>
         </section>
 
         <section className="home-banner-subtitle">
@@ -150,31 +147,24 @@ const Home = () => {
             <h1>{t("home_cheerup")}</h1>
             <Row >
               {features.map((feature, index) => {
-                const featureContent = (
-                  <div className="d-flex flex-column align-items-center">
-                    <Image
-                      src={feature.src}
-                      alt={feature.alt}
-                      width={90}
-                      height="auto"
-                    />
-                    <p style={{ fontSize: '16px' }}>{t(feature.textKey)}</p>
-                  </div>
-                );
-
                 return (
                   <Col
                     key={index}
-                    xs={6}
-                    md={3}
+                    xs={12}
+                    md={4}
                   >
-                    {feature.route ? (
-                      <Link to={feature.route} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        {featureContent}
-                      </Link>
-                    ) : (
-                      featureContent
-                    )}
+                    <Link to={feature.route} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <Card className="text-center home-clickable-card">
+                        <Card.Body>
+                          <Image
+                            className="our-service-button"
+                            src={feature.src}
+                            alt={feature.alt}
+                          />
+                          <Card.Title>{t(feature.textKey)}</Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </Link>
                   </Col>
                 );
               })}
