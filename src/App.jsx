@@ -56,7 +56,13 @@ function App() {
                 chineseUrl="investment"
               />
           } />
+          <Route path='/invest-in-eco-stays' element={<HtmlContent translationKey="invest_in_eco_stays" />} />
           <Route path='/partnership' element={            
+            <MediaImageDisplay
+              chineseUrl="partnership-chinese"
+              englishUrl="partnership-english"
+            />} />
+          <Route path='/product-service' element={
             <MediaImageDisplay
               chineseUrl="partnership-chinese"
               englishUrl="partnership-english"
@@ -65,7 +71,9 @@ function App() {
             <MediaImageDisplay
               chineseUrl="influencer-chinese"
             />} />
+          <Route path='/strategic' element={<HtmlContent translationKey="strategic_partner" />} />
           <Route path='/360-culture-events' element={<HtmlContent translationKey="events_activities" />} />
+          <Route path='/events-activities' element={<HtmlContent translationKey="events_activities" />} />
           <Route path='/360-iip' element={  <HtmlContent translationKey="innovation_lab" />} />
           <Route path='/smarthouse' element={            
             <MediaImageDisplay 
@@ -92,6 +100,10 @@ function App() {
               englishUrl="eco-and-culture-tours-english"
               chineseUrl="eco-and-culture-tours-chinese"
             />} />
+          <Route path='/how-it-works' element={<HtmlContent translationKey="how_it_works_page" />} />
+          <Route path='/land-owner-partnership' element={<HtmlContent translationKey="land_owner_join" />} />
+          <Route path='/asset-growth-roadmap' element={<HtmlContent translationKey="asset_growth_roadmap" />} />
+          <Route path='/innovation-lab' element={<HtmlContent translationKey="innovation_lab" />} />
           <Route path="/room/:documentId" element={<RoomDetail />} />
           <Route path='/register' element={<RegisterForm />} />
           <Route path='/check-in' element={<CheckIn />} />
@@ -118,6 +130,10 @@ function App() {
           <Route path='/revenue-share' element={<HtmlContent translationKey="revenue_share" />} />
 
           {/* 360 Smart Card dropdown */}
+          <Route path='/smart-card/membership-tiers-benefits' element={<HtmlContent translationKey="membership_tiers_benefits_page" />} />
+          <Route path='/smart-card/points-spending-system' element={<HtmlContent translationKey="points_spending_system" />} />
+          <Route path='/smart-card/ecosystem-benefits' element={<HtmlContent translationKey="ecosystem_benefits_page" />} />
+          <Route path='/smart-card/asset-investment-benefits' element={<HtmlContent translationKey="asset_investment_benefits_page" />} />
           <Route path='/smart-card/membership-system' element={<HtmlContent translationKey="membership_system_page" />} />
           <Route path='/smart-card/points-circulation' element={<HtmlContent translationKey="points_circulation" />} />
           <Route path='/smart-card/investment-stay-benefits' element={<HtmlContent translationKey="investment_stay_benefits" />} />
