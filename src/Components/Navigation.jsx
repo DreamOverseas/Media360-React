@@ -79,7 +79,7 @@ const Navigation = () => {
         <Container fluid>
           {/* Brand logo - will be centered on mobile */}
           <Navbar.Brand className="navbar-brand-custom">
-            <Figure.Image width={"60px"} height={"60px"} src={logoPath} />
+            <Figure.Image width={"200px"} height={"200px"} src={logoPath} />
           </Navbar.Brand>
           
           {/* Toggle button for smaller screens */}
