@@ -194,19 +194,10 @@ const Navigation = () => {
                   id='smart-card-dropdown'
                 >
                   <NavDropdown.Item href='/smart-card/membership-tiers-benefits'>
-                    {t("MembershipSystem")}
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href='/smart-card/points-spending-system'>
-                    {t("PointsCirculation")}
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href='/smart-card/ecosystem-benefits'>
-                    {t("EcosystemBenefits")}
+                    {t("SmartCardNav")}
                   </NavDropdown.Item>
                   <NavDropdown.Item href='/smart-card/asset-investment-benefits'>
                     {t("AssetInvestmentBenefits")}
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href='/smart-card/referral-rewards'>
-                    {t("ReferralRewards")}
                   </NavDropdown.Item>
                 </NavDropdown>
 
