@@ -67,10 +67,7 @@ function App() {
               chineseUrl="partnership-chinese"
               englishUrl="partnership-english"
             />} />
-          <Route path='/influencer' element={            
-            <MediaImageDisplay
-              chineseUrl="influencer-chinese"
-            />} />
+          <Route path='/influencer' element={<HtmlContent translationKey="creator_page" />} />
           <Route path='/strategic' element={<HtmlContent translationKey="strategic_partner" />} />
           <Route path='/360-culture-events' element={<HtmlContent translationKey="events_activities" />} />
           <Route path='/events-activities' element={<HtmlContent translationKey="events_activities" />} />
