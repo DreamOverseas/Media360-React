@@ -11,8 +11,13 @@ i18n
     backend: {
       loadPath: '/locales/{{lng}}.json', // Specify the path to the translation file
     },
-    lng: 'en',
+    detection: {
+      order: ['localStorage', 'cookie'],
+      caches: ['localStorage', 'cookie'],
+    },
+    lng: 'zh',
     fallbackLng: 'zh',
+    supportedLngs: ['zh', 'en'],
     interpolation: {
       escapeValue: false, // Prevent XSS，React has its own protection.
     },

@@ -14,9 +14,10 @@ const Navigation = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const savedLanguage = Cookies.get("i18nextLng") || "en";
+    const savedLanguage = Cookies.get("i18nextLng") || "zh";
     if (i18n && i18n.changeLanguage) {
       i18n.changeLanguage(savedLanguage);
+      setLogoPath(savedLanguage === "zh" ? '/logo192_chinese.png' : '/logo192.png');
     }
   }, [i18n]);
 
@@ -216,7 +217,7 @@ const Navigation = () => {
                   {t("360IIP")}
                 </Nav.Link>
 
-                <NavDropdown
+                {/* <NavDropdown
                   className='NavNoHighlightWord nav-language'
                   title={<Image
                     src={'/home/languages.png'}
@@ -232,7 +233,7 @@ const Navigation = () => {
                   <NavDropdown.Item onClick={() => changeLanguage("en")}>
                     English
                   </NavDropdown.Item>
-                </NavDropdown>
+                </NavDropdown> */}
                 
                 {/* Move login button inside Nav for better mobile layout */}
                 <div className="text-center nav-login-button">
