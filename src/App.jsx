@@ -57,16 +57,8 @@ function App() {
               />
           } />
           <Route path='/invest-in-eco-stays' element={<HtmlContent translationKey="invest_in_eco_stays" />} />
-          <Route path='/partnership' element={            
-            <MediaImageDisplay
-              chineseUrl="partnership-chinese"
-              englishUrl="partnership-english"
-            />} />
-          <Route path='/product-service' element={
-            <MediaImageDisplay
-              chineseUrl="partnership-chinese"
-              englishUrl="partnership-english"
-            />} />
+          <Route path='/partnership' element={<HtmlContent translationKey="product_service_partners_page" />} />
+          <Route path='/product-service' element={<HtmlContent translationKey="product_service_partners_page" />} />
           <Route path='/influencer' element={<HtmlContent translationKey="creator_page" />} />
           <Route path='/strategic' element={<HtmlContent translationKey="strategic_partner" />} />
           <Route path='/360-culture-events' element={<HtmlContent translationKey="events_activities" />} />
