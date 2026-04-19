@@ -100,6 +100,7 @@ function App() {
           <Route path='/how-it-works' element={<HtmlContent translationKey="how_it_works_page" />} />
           <Route path='/land-owner-partnership' element={<HtmlContent translationKey="land_owner_join" />} />
           <Route path='/asset-growth-roadmap' element={<HtmlContent translationKey="asset_growth_roadmap" />} />
+          <Route path='/internships-career-pathways' element={<HtmlContent translationKey="internships_career_pathways_page" />} />
           <Route path='/innovation-lab' element={<HtmlContent translationKey="innovation_lab" />} />
           <Route path="/room/:documentId" element={<RoomDetail />} />
           <Route path='/register' element={<RegisterForm />} />
