@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import PriceList from "../Components/PriceListSection";
 import { Link } from 'react-router-dom';
 
 const Home = () => {
@@ -19,6 +18,37 @@ const Home = () => {
 
   const [rooms, setRooms] = useState([]);
   const [gallery, setGallery] = useState([]);
+
+  const homeSections = [
+    {
+      title: "关于我们",
+      subtitle: "About Us",
+      description: "了解我们如何以自然、社群与可持续理念打造 360 生活方式。",
+      route: "/about-us",
+      image: "/home/background_image.webp",
+    },
+    {
+      title: "资产与投资",
+      subtitle: "Assets & Investment",
+      description: "探索生态资产、运营模式与长期价值增长路径。",
+      route: "/eco-living-assets",
+      image: "/home/home_landscape.webp",
+    },
+    {
+      title: "360 智能卡",
+      subtitle: "360 Smart Card",
+      description: "查看会员权益、积分体系与生态场景下的应用方式。",
+      route: "/book-membership",
+      image: "/360_smart_card.jpg",
+    },
+    {
+      title: "生态实验园",
+      subtitle: "Eco-Living Lab",
+      description: "进入创新实验场，了解未来生态居住与运营实践。",
+      route: "/innovation-lab",
+      image: "/home/home_life.jpg",
+    },
+  ];
 
   const features = [
     {
@@ -227,85 +257,19 @@ const Home = () => {
           </Container>
         </section>
 
-        <Container className="other-service" >
-          <h1>{t("our_service_title")}</h1>
-          <Col className="our-service-button-group">
-            <Link to="/individual-visitors" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <Card className="text-center home-clickable-card">
-                  <Card.Body>
-                      <Image className="our-service-button" src="/Icons/individual_visitor.png" />
-                      <Card.Title>{t("our_service_individual")}</Card.Title>
-                  </Card.Body>
-              </Card>
-            </Link>
-            <Link to="/group-visitors" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <Card className="text-center home-clickable-card">
-                  <Card.Body>
-                      <Image className="our-service-button" src="/Icons/group_visitor.png" />
-                      <Card.Title>{t("our_service_group")}</Card.Title>
-                  </Card.Body>
-              </Card>
-            </Link>
-            <Link to="/investment" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <Card className="text-center home-clickable-card">
-                  <Card.Body>
-                      <Image className="our-service-button" src="/Icons/investment.png" />
-                      <Card.Title>{t("investment")}</Card.Title>
-                  </Card.Body>
-              </Card>
-            </Link>
-            <Link to="/cooperation" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <Card className="text-center home-clickable-card">
-                  <Card.Body>
-                      <Image className="our-service-button" src="/Icons/cooperate.png" />
-                      <Card.Title>{t("cooperation")}</Card.Title>
-                  </Card.Body>
-              </Card>
-            </Link>
-          </Col>
-        </Container>
-
-        <Container className="home-price-list">
-          <h1>{t("home_pricelist")}</h1>
-          <PriceList />
-        </Container>
-
-        <section className="home-attraction activities-section">
+        <section className="home-feature-links">
           <Container>
-            <h1>{t("home_attraction")}</h1>
-            <Row className="food">
-              <Col>
-                <Image className="home-animal" src="/home/home_life.jpg" />
-              </Col>
-              <Col className="food-info">
-                <h3>{t("home_section1_title")}</h3>
-                <p>
-                  {t("home_section1_txt")}
-                </p>
-              </Col>
-            </Row>
-            <Row className="animal">
-              <Col>
-                <Image className="home-food" src="/home/home_animal.webp" />
-              </Col>
-              <Col className="animal-info">
-                <h3>{t("home_section2_title")}</h3>
-                <p>
-                  {t("home_section2_txt")}
-                </p>
-              </Col>
-            </Row>
-            <Row className="landscape">
-              <Col>
-                <Image className="home-landscape" src="/home/home_landscape.webp" />
-              </Col>
-              <Col className="landscape-info">
-                <h3>{t("home_section3_title")}</h3>
-                <p>
-                  {t("home_section3_txt")}
-                </p>
-              </Col>
-            </Row>
+            <Link to={homeSections[0].route} className="home-feature-link-card">
+              <div
+                className="home-feature-link-bg"
+                style={{ backgroundImage: `url(${homeSections[0].image})` }}
+              />
+              <div className="home-feature-link-content">
+                <p>{homeSections[0].subtitle}</p>
+                <h2>{homeSections[0].title}</h2>
+                <span>{homeSections[0].description}</span>
+              </div>
+            </Link>
           </Container>
         </section>
 
@@ -343,58 +307,21 @@ const Home = () => {
           </Container>
         </section>
 
-        <section className="home-contact-us">
+        <section className="home-feature-links">
           <Container>
-            <h1>{t("home_place_name")}</h1>
-            <strong><h4>{t("home_place_description_l1")}</h4></strong>
-            <strong><h4>{t("home_place_description_l2")}</h4></strong>
-            <Row className="home-contact-us-board">
-              <Col>
-                <Row className="contact-info-row">
-                    <div>
-                        <p><b>{t("contact_individual_title")}</b> &#9978;</p>
-                        <p><b>{t("contact_individual_subject")}</b></p>
-                        
-                        <p><i className="bi bi-pin-angle"></i> &nbsp; {t("contact_individual_location")}</p>
-                        {/* <p><i className="bi bi-telephone-inbound"></i> &nbsp; {t("contact_individual_land")}</p>
-                        <p><i className="bi bi-person"></i> &nbsp; {t("contact_individual_name")}</p>
-                        <p><i className="bi bi-telephone-inbound"></i> &nbsp; {t("contact_individual_phone")}</p> */}
-                        <p><i className="bi bi-person"></i> &nbsp; {t("contact_group_name")}</p>
-                        <p><i className="bi bi-telephone-inbound"></i> &nbsp; {t("contact_group_phone")}</p>
-                        <p><i className="bi bi-mailbox"></i> &nbsp; {t("contact_individual_email")}</p>
-                    </div>
-                </Row>
-                <br />
-                <Row className="contact-info-row">
-                    <div>
-                        <p><b>{t("contact_group_title")}</b> &#128188;</p>
-                        <p><b>{t("contact_group_subject")}</b></p>
-                        
-                        <p><i className="bi bi-pin-angle"></i> &nbsp; {t("contact_group_location")}</p>
-                        <p><i className="bi bi-person"></i> &nbsp; {t("contact_group_name")}</p>
-                        <p><i className="bi bi-telephone-inbound"></i> &nbsp; {t("contact_group_phone")}</p>
-                        <p><i className="bi bi-mailbox"></i> &nbsp; {t("contact_group_email")}</p>
-                    </div>
-                </Row>
-              </Col>
-              <Col className="home-map" md={7}>
-                <iframe
-                  title="Roseneath Holiday Park Location Map"
-                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d474013.57073654904!2d150.801209!3d-37.457687!3m2!1i1024!2i768!4f13.5!3m3!1m2!1s0x6b2f12fa55ba106b%3A0x97796bb5b7b2aa37!2sRoseneath%20Holiday%20Park!5e1!3m2!1sen!2sus!4v1730163420007!5m2!1sen!2sus"
-                  width="100%"
-                  height="400px"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  allowfullscreen
+            {homeSections.slice(1).map((section) => (
+              <Link key={section.route} to={section.route} className="home-feature-link-card">
+                <div
+                  className="home-feature-link-bg"
+                  style={{ backgroundImage: `url(${section.image})` }}
                 />
-              </Col>
-            </Row>
-            <Row className="home-contact-us-btn-container">
-              <a href="/contact-us">
-                <Button className="contact-us-btn">{t("Contact")}</Button>
-              </a>
-            </Row>
+                <div className="home-feature-link-content">
+                  <p>{section.subtitle}</p>
+                  <h2>{section.title}</h2>
+                  <span>{section.description}</span>
+                </div>
+              </Link>
+            ))}
           </Container>
         </section>
       </div>

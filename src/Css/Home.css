@@ -111,9 +111,83 @@
 .other-service,
 .home-attraction,
 .home-price-list,
-.home-gallery {
+.home-gallery,
+.home-feature-links {
     margin-bottom: 5rem;
     position: relative;
+}
+
+.home-feature-links .container {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.home-feature-link-card {
+    position: relative;
+    display: block;
+    min-height: 280px;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    text-decoration: none;
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition);
+    isolation: isolate;
+}
+
+.home-feature-link-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-xl);
+}
+
+.home-feature-link-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transform: scale(1);
+    transition: transform 0.5s ease;
+}
+
+.home-feature-link-card:hover .home-feature-link-bg {
+    transform: scale(1.08);
+}
+
+.home-feature-link-content {
+    position: relative;
+    z-index: 1;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2rem;
+    color: var(--white);
+    background: linear-gradient(
+        180deg,
+        rgba(15, 23, 42, 0.1) 0%,
+        rgba(15, 23, 42, 0.7) 55%,
+        rgba(15, 23, 42, 0.86) 100%
+    );
+}
+
+.home-feature-link-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+.home-feature-link-content h2 {
+    margin: 0.4rem 0;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    color: var(--white);
+}
+
+.home-feature-link-content span {
+    max-width: 560px;
+    line-height: 1.6;
+    opacity: 0.95;
 }
 
 .home-banner-subtitle h1 {
