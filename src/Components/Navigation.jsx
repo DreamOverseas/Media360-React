@@ -107,7 +107,7 @@ const Navigation = () => {
                   <NavDropdown.Item href='/book-membership'>
                     {t("BookMembership")}
                   </NavDropdown.Item>
-                  <NavDropdown.Item href='/FAQ'>
+                  {/* <NavDropdown.Item href='/FAQ'>
                     {t("StayAndGuide")}
                   </NavDropdown.Item>
                   <NavDropdown.Item href='/AI-stay'>
@@ -115,7 +115,7 @@ const Navigation = () => {
                   </NavDropdown.Item>
                   <NavDropdown.Item href='/eco-and-culture-tours'>
                     {t("EcoAndCultureTours")}
-                  </NavDropdown.Item>
+                  </NavDropdown.Item> */}
                 </NavDropdown>
 
                 <NavDropdown
