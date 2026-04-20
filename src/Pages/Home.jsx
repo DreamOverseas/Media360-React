@@ -12,7 +12,17 @@ const Home = () => {
   // Read Env from file
   const CMS_endpoint = import.meta.env.VITE_CMS_ENDPOINT;
   const CMS_token = import.meta.env.VITE_CMS_TOKEN;
-  const DBLink_LH = 'https://book-directonline.com/properties/roseneathholidaypark-1'
+  const baseUrl = import.meta.env.BASE_URL;
+  const DBLink_LH = 'https://book-directonline.com/properties/roseneathholidaypark-1';
+  const chateauBookingUrl = 'https://book-directonline.com/properties/waterfrontpropertywallisprivateislandforster-';
+  const bannerImage = `${baseUrl}home/background_image.webp`;
+  const bannerImageChateau = `${baseUrl}chateau.jpeg`;
+  const bannerSlides = [
+    { image: bannerImage, position: 'left center' },
+    { image: bannerImageChateau, position: 'center center' },
+  ];
+  const chateauDescriptionEn = 'Welcome to a palatial mansion on a secluded island off the beautiful New South Wales north coast.';
+  const chateauDescriptionZh = '欢迎来到新南威尔士州北海岸外一座与世隔绝的岛屿上的宏伟府邸。';
 
   const { t, i18n } = useTranslation();
 
@@ -25,14 +35,14 @@ const Home = () => {
       subtitle: "About Us",
       description: "了解我们如何以自然、社群与可持续理念打造 360 生活方式。",
       route: "/about-us",
-      image: "/home/background_image.webp",
+      image: `${baseUrl}home/background_image.webp`,
     },
     {
       title: "资产与投资",
       subtitle: "Assets & Investment",
       description: "探索生态资产、运营模式与长期价值增长路径。",
       route: "/eco-living-assets",
-      image: "/home/home_landscape.webp",
+      image: `${baseUrl}home/home_landscape.webp`,
     },
     {
       title: "360 智能卡",
@@ -46,7 +56,7 @@ const Home = () => {
       subtitle: "Eco-Living Lab",
       description: "进入创新实验场，了解未来生态居住与运营实践。",
       route: "/innovation-lab",
-      image: "/home/home_life.jpg",
+      image: `${baseUrl}home/home_life.jpg`,
     },
   ];
 
@@ -164,12 +174,43 @@ const Home = () => {
     ]
   };
 
+  const bannerSliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    arrows: false,
+    swipe: true,
+    draggable: true,
+    pauseOnHover: false,
+  };
+
   return (
     <main className="home-page">
       <div>
         <section className="home-banner-title">
-          <h1>{t("home_hero_title")}</h1>
-          <strong><h1>{t("home_hero_subtitle")}</h1></strong>
+          <div className="home-banner-background-slider">
+            <Slider {...bannerSliderSettings}>
+              {bannerSlides.map((slide, index) => (
+                <div key={index}>
+                  <div
+                    className="home-banner-bg-slide"
+                    style={{
+                      backgroundImage: `url(${slide.image})`,
+                      backgroundPosition: slide.position,
+                    }}
+                  />
+                </div>
+              ))}
+            </Slider>
+          </div>
+          <div className="home-banner-content">
+            <h1>{t("home_hero_title")}</h1>
+            <strong><h1>{t("home_hero_subtitle")}</h1></strong>
+          </div>
         </section>
 
         <section className="home-banner-subtitle">
@@ -205,50 +246,77 @@ const Home = () => {
         <section className="room-presentation activities-section">
           <Container>
             <h1>{t("Room")}</h1>
-            <Slider {...room_sliderSettings}>
-              {rooms.map((room) => (
-                <div key={room.id} className="room_slider-card">
-                  <Card className="home-room-card">
-                    {room.Cover?.url ? (
-                      <Card.Img
-                        variant="top"
-                        src={`${CMS_endpoint}${room.Cover.url}`}
-                        alt={room.Name_en}
-                        className="slider-card-img"
-                      />
-                    ) : (
-                      <Card.Img
-                        variant="top"
-                        src="https://placehold.co/250x350"
-                        alt="Placeholder"
-                        className="slider-card-img"
-                      />
-                    )}
-                    <Card.Body>
-                      <Card.Title>{i18n.language === "zh"
-                        ? room.Name_zh
-                        : room.Name_en}
-                      </Card.Title>
-                      <p className="home-room-card-subtitle">{i18n.language === "zh"
-                        ? room.Title_zh
-                        : room.Title_en}
-                      </p>
-                      <Card.Text>{i18n.language === "zh"
-                        ? room.Description_zh
-                        : room.Description_en}
-                      </Card.Text>
-                      {room.Availability? 
-                      <a href={`${DBLink_LH}?room_type=${room.RoomTypeID}`} target="_blank" rel="noopener noreferrer">
-                        <Button>{t("book_Now")}</Button>
-                      </a>
-                      :
-                      <Button variant="secondary">{t("book_unavailable")}</Button>
-                      }
-                    </Card.Body>
-                  </Card>
-                </div>
-              ))}
-            </Slider>
+            <div className="home-room-section">
+              <h2 className="home-room-section-title">Roseneath Holiday Park</h2>
+              <Slider {...room_sliderSettings}>
+                {rooms.map((room) => (
+                  <div key={room.id} className="room_slider-card">
+                    <Card className="home-room-card">
+                      {room.Cover?.url ? (
+                        <Card.Img
+                          variant="top"
+                          src={`${CMS_endpoint}${room.Cover.url}`}
+                          alt={room.Name_en}
+                          className="slider-card-img"
+                        />
+                      ) : (
+                        <Card.Img
+                          variant="top"
+                          src="https://placehold.co/250x350"
+                          alt="Placeholder"
+                          className="slider-card-img"
+                        />
+                      )}
+                      <Card.Body>
+                        <Card.Title>{i18n.language === "zh"
+                          ? room.Name_zh
+                          : room.Name_en}
+                        </Card.Title>
+                        <p className="home-room-card-subtitle">{i18n.language === "zh"
+                          ? room.Title_zh
+                          : room.Title_en}
+                        </p>
+                        <Card.Text>{i18n.language === "zh"
+                          ? room.Description_zh
+                          : room.Description_en}
+                        </Card.Text>
+                        {room.Availability ?
+                          <a href={`${DBLink_LH}?room_type=${room.RoomTypeID}`} target="_blank" rel="noopener noreferrer">
+                            <Button>{t("book_Now")}</Button>
+                          </a>
+                          :
+                          <Button variant="secondary">{t("book_unavailable")}</Button>
+                        }
+                      </Card.Body>
+                    </Card>
+                  </div>
+                ))}
+              </Slider>
+            </div>
+
+            <div className="home-room-section">
+              <h2 className="home-room-section-title">Chateau Le Marais</h2>
+              <div className="room_slider-card home-single-room-card">
+                <Card className="home-room-card">
+                  <Card.Img
+                    variant="top"
+                    src="/chateau.jpeg"
+                    alt="Chateau Le Marais"
+                    className="slider-card-img"
+                  />
+                  <Card.Body>
+                    <Card.Title>Wing of the Chateau</Card.Title>
+                    <p className="home-room-card-subtitle">{t("Room_max_guest") + 10}</p>
+                    <Card.Text>{chateauDescriptionEn}</Card.Text>
+                    <Card.Text>{chateauDescriptionZh}</Card.Text>
+                    <a href={chateauBookingUrl} target="_blank" rel="noopener noreferrer">
+                      <Button>{t("book_Now")}</Button>
+                    </a>
+                  </Card.Body>
+                </Card>
+              </div>
+            </div>
+
             <div className="more-btn-container">
               <a href="/roomlist" className="gallery-link">
                 {t("btn_more")}

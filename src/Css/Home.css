@@ -50,16 +50,7 @@
 
 /* Hero Banner Enhancements */
 .home-banner-title {
-    background: linear-gradient(
-        135deg,
-        rgba(0, 0, 0, 0.6) 0%,
-        rgba(0, 0, 0, 0.4) 50%,
-        rgba(0, 0, 0, 0.6) 100%
-    ), url("/home/background_image.webp");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
+    background: none;
     min-height: 60vh;
     display: flex;
     flex-direction: column;
@@ -69,6 +60,59 @@
     position: relative;
     margin-bottom: 3rem;
     overflow: hidden;
+}
+
+.home-banner-background-slider {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.home-banner-background-slider .slick-slider,
+.home-banner-background-slider .slick-list,
+.home-banner-background-slider .slick-track,
+.home-banner-background-slider .slick-slide,
+.home-banner-background-slider .slick-slide > div {
+    min-height: 60vh;
+}
+
+.home-banner-bg-slide {
+    position: relative;
+    min-height: 60vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.home-banner-bg-slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.4) 50%,
+        rgba(0, 0, 0, 0.6) 100%
+    );
+}
+
+.home-banner-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.home-banner-background-slider .slick-dots {
+    bottom: 12px;
+    z-index: 3;
+}
+
+.home-banner-background-slider .slick-dots li button:before {
+    color: var(--white);
+    opacity: 0.75;
+}
+
+.home-banner-background-slider .slick-dots li.slick-active button:before {
+    opacity: 1;
 }
 
 .home-banner-title::before {
@@ -245,6 +289,23 @@
     height: 3px;
     background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
     border-radius: 2px;
+}
+
+.home-room-section {
+    margin-top: 24px;
+}
+
+.home-room-section-title {
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.home-single-room-card {
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 /* Enhanced Room Cards */
@@ -696,6 +757,15 @@
         margin-bottom: 2rem;
         background-attachment: scroll;
     }
+
+    .home-banner-background-slider .slick-slider,
+    .home-banner-background-slider .slick-list,
+    .home-banner-background-slider .slick-track,
+    .home-banner-background-slider .slick-slide,
+    .home-banner-background-slider .slick-slide > div,
+    .home-banner-bg-slide {
+        min-height: 50vh;
+    }
     
     .home-banner-title h1 {
         font-size: 2rem;
@@ -793,6 +863,15 @@
 /* Ultra-wide screen optimizations */
 @media (min-width: 1400px) {
     .home-banner-title {
+        min-height: 70vh;
+    }
+
+    .home-banner-background-slider .slick-slider,
+    .home-banner-background-slider .slick-list,
+    .home-banner-background-slider .slick-track,
+    .home-banner-background-slider .slick-slide,
+    .home-banner-background-slider .slick-slide > div,
+    .home-banner-bg-slide {
         min-height: 70vh;
     }
     
