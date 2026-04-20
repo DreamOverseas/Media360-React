@@ -10,6 +10,15 @@
   justify-content: center;
 }
 
+.room-section {
+  margin-top: 24px;
+}
+
+.room-section-title {
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+
 .room-card {
   background: #f9f9f9;
   border: 1px solid #ddd;
