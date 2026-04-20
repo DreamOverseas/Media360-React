@@ -3,7 +3,6 @@ import {Button, Col, Container, Image, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import "../Css/Footer.css";
-import DoTermsAndConditions from "./DoTermsAndConditions";
 
 const Footer = () => {
 
@@ -57,13 +56,12 @@ const Footer = () => {
             className='footer-aboutus-info text-center text-md-left mb-3 mb-md-0'>
             <Row className="contact-info-row">
               <div>
-                  <p><b>{t("contact_individual_title")}</b> &#9978;</p>
-                  <p><b>{t("contact_individual_subject")}</b></p>
-                  
-                  <p><i className="bi bi-pin-angle"></i> &nbsp; {t("contact_individual_location")}</p>
-                  <p><i className="bi bi-person"></i> &nbsp; {t("contact_group_name")}</p>
-                  <p><i className="bi bi-telephone-inbound"></i> &nbsp; {t("contact_group_phone")}</p>
-                  <p><i className="bi bi-mailbox"></i> &nbsp; {t("contact_individual_email")}</p>
+                  <p><b>{t("contact_melbourne_title")}</b></p>
+                  <p><i className="bi bi-pin-angle"></i> &nbsp; {t("contact_melbourne_address")}</p>
+                  <p><i className="bi bi-globe2"></i> &nbsp; <a href="https://do360.com" target="_blank" rel="noopener noreferrer">{t("contact_melbourne_website")}</a></p>
+                  <p><i className="bi bi-person"></i> &nbsp; {t("contact_melbourne_contact")}</p>
+                  <p><i className="bi bi-telephone-inbound"></i> &nbsp; {t("contact_melbourne_mobile")}</p>
+                  <p><i className="bi bi-mailbox"></i> &nbsp; <a href={`mailto:${t("contact_melbourne_email")}`}>{t("contact_melbourne_email")}</a></p>
               </div>
             </Row>
           </Col>
@@ -72,13 +70,11 @@ const Footer = () => {
             className='footer-aboutus-info text-center text-md-left mb-3 mb-md-0'>
             <Row className="contact-info-row">
               <div>
-                  <p><b>{t("contact_group_title")}</b> &#128188;</p>
-                  <p><b>{t("contact_group_subject")}</b></p>
-                  
-                  <p><i className="bi bi-pin-angle"></i> &nbsp; {t("contact_group_location")}</p>
-                  <p><i className="bi bi-person"></i> &nbsp; {t("contact_group_name")}</p>
-                  <p><i className="bi bi-telephone-inbound"></i> &nbsp; {t("contact_group_phone")}</p>
-                  <p><i className="bi bi-mailbox"></i> &nbsp; {t("contact_group_email")}</p>
+                  <p><b>{t("contact_sydney_title")}</b></p>
+                  <p><i className="bi bi-pin-angle"></i> &nbsp; {t("contact_sydney_address")}</p>
+                  <p><i className="bi bi-person"></i> &nbsp; {t("contact_sydney_contact")}</p>
+                  <p><i className="bi bi-telephone-inbound"></i> &nbsp; {t("contact_sydney_mobile")}</p>
+                  <p><i className="bi bi-mailbox"></i> &nbsp; <a href={`mailto:${t("contact_sydney_email")}`}>{t("contact_sydney_email")}</a></p>
               </div>
             </Row>
           </Col>        
