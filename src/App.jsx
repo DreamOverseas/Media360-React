@@ -33,6 +33,7 @@ import ProductDetail from "./Components/ProductDetail.jsx";
 import ProductRelatedPerson from "./Pages/ProductRelatedPerson.jsx";
 import ProductRelatedNews from "./Pages/ProductRelatedNews.jsx";
 import ProductRelatedEvent from "./Pages/ProductRelatedEvent.jsx";
+import PersonDetail from "./Pages/PersonDetail.jsx";
 
 function App() {
 
@@ -149,6 +150,9 @@ function App() {
           <Route path='/products/:main/:variant/related-news' element={<ProductRelatedNews />} />
           <Route path='/products/:main/related-event' element={<ProductRelatedEvent />} />
           <Route path='/products/:main/:variant/related-event' element={<ProductRelatedEvent />} />
+
+          {/* 人物详情页 */}
+          <Route path='/person/:id' element={<PersonDetail />} />
         </Routes>
         <Footer />
       </div>

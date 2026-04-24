@@ -1,12 +1,13 @@
 import React from "react";
 import { Col, Container, Row, Image } from "react-bootstrap";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
 import "../Css/ProductRelated.css";
 
 const BACKEND_HOST = import.meta.env.VITE_CMS_ENDPOINT;
 
-const PersonCard = ({ person, t, language }) => {
+const PersonCard = ({ person, language }) => {
+  const { t } = useTranslation();
   const displayBio =
     language === "zh" ? person.Bio_zh || "暂无简介" : person.Bio_en || "No biography available";
   const displayTitle =
@@ -38,6 +39,12 @@ const PersonCard = ({ person, t, language }) => {
                 dangerouslySetInnerHTML={{ __html: displayBio }}
               />
             </div>
+            <Link
+              to={`/person/${person.internal_url || person.id}`}
+              className="product-related-more-link"
+            >
+              {t("btn_more")}
+            </Link>
           </Col>
         </Row>
       </div>
@@ -47,7 +54,7 @@ const PersonCard = ({ person, t, language }) => {
 
 const ProductRelatedPerson = () => {
   const location = useLocation();
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const founders = location.state?.founder || [];
   const kols = location.state?.kol || [];
   const ambassadors = location.state?.spokesperson || [];
@@ -56,17 +63,17 @@ const ProductRelatedPerson = () => {
   const isEmpty = founders.length === 0 && kols.length === 0 && ambassadors.length === 0;
 
   return (
-    <Container className="related-page">
-      <h2>{t("relatedPersons")}</h2>
+    <Container className="related-page related-person-page">
+      <h2>相关人物</h2>
       <Row>
         {founders.map((p) => (
-          <PersonCard key={p.id} person={p} t={t} language={language} />
+          <PersonCard key={p.id} person={p} language={language} />
         ))}
         {kols.map((p) => (
-          <PersonCard key={p.id} person={p} t={t} language={language} />
+          <PersonCard key={p.id} person={p} language={language} />
         ))}
         {ambassadors.map((p) => (
-          <PersonCard key={p.id} person={p} t={t} language={language} />
+          <PersonCard key={p.id} person={p} language={language} />
         ))}
         {isEmpty && <p>暂无相关人物</p>}
       </Row>
