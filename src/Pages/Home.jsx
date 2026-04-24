@@ -109,8 +109,7 @@ const Home = () => {
         });
 
         // Check the data structure and safely retrieve the images
-        const firstEntry = response.data.data?.[0];
-        const images = firstEntry?.Image;
+        const images = response.data.data[0].Image;
         if (images) {
           setGallery(images.slice(15, 24));
         } else {
