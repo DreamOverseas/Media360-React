@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../Css/ProductRelated.css";
 
 const BACKEND_HOST = import.meta.env.VITE_CMS_ENDPOINT;
@@ -26,12 +26,14 @@ const calculateTime = (start, end) => {
 
 const ProductRelatedEvent = () => {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const eventItems = state?.event ?? [];
 
   return (
     <div>
       <Container>
+        <button className="product-related-back-btn" onClick={() => navigate(-1)}>← 返回</button>
         <h2 className="prouct-related-event-page-title">{t("relatedEvents")}</h2>
         {eventItems.length > 0 ? (
           <Row>

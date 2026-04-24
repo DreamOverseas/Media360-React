@@ -1,19 +1,21 @@
 import React from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../Css/ProductRelated.css";
 
 const BACKEND_HOST = import.meta.env.VITE_CMS_ENDPOINT;
 
 const ProductRelatedNews = () => {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const newsItems = state?.news ?? [];
 
   return (
     <div className="product-related-news-page">
       <Container>
+        <button className="product-related-back-btn" onClick={() => navigate(-1)}>← 返回</button>
         <h2 className="prouct-page-title">{t("relatedNews")}</h2>
         {newsItems.length > 0 ? (
           <Row className="product-related-container">

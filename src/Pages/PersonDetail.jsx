@@ -3,7 +3,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import React, { useEffect, useState } from "react";
 import { Col, Container, Image, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import "../Css/PersonDetail.css";
@@ -115,6 +115,7 @@ const PersonGallery = ({ person }) => {
 /* 人物详情主页面 */
 const PersonDetail = () => {
   const { id: paramId } = useParams();
+  const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const [person, setPerson] = useState(null);
   const [brands, setBrands] = useState([]);
@@ -205,6 +206,7 @@ const PersonDetail = () => {
   return (
     <div className="person-detail-page">
       <Container>
+        <button className="product-related-back-btn" onClick={() => navigate(-1)}>← 返回</button>
         <Row className="person-detail-section align-items-start">
           {/* 左侧：画廊 + 相关信息按钮 */}
           <Col xs={12} md={6} className="text-center">

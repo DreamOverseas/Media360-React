@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Container, Row, Image } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "../Css/ProductRelated.css";
 
@@ -54,6 +54,7 @@ const PersonCard = ({ person, language }) => {
 
 const ProductRelatedPerson = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { i18n } = useTranslation();
   const founders = location.state?.founder || [];
   const kols = location.state?.kol || [];
@@ -64,6 +65,7 @@ const ProductRelatedPerson = () => {
 
   return (
     <Container className="related-page related-person-page">
+      <button className="product-related-back-btn" onClick={() => navigate(-1)}>← 返回</button>
       <h2>相关人物</h2>
       <Row>
         {founders.map((p) => (
