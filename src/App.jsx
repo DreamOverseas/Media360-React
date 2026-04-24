@@ -28,6 +28,11 @@ import RegisterForm from "./Components/RegisterForm.jsx";
 import CheckIn from "./Pages/CheckIn.jsx";
 import News from "./Components/News.jsx";
 import MemberCenter from "./Pages/MembershipCenter.jsx";
+import ProductRouteGuard from "./Components/ProductRouteGuard.jsx";
+import ProductDetail from "./Components/ProductDetail.jsx";
+import ProductRelatedPerson from "./Pages/ProductRelatedPerson.jsx";
+import ProductRelatedNews from "./Pages/ProductRelatedNews.jsx";
+import ProductRelatedEvent from "./Pages/ProductRelatedEvent.jsx";
 
 function App() {
 
@@ -128,6 +133,22 @@ function App() {
           <Route path='/smart-card/points-circulation' element={<HtmlContent translationKey="points_circulation" />} />
           <Route path='/smart-card/investment-stay-benefits' element={<HtmlContent translationKey="investment_stay_benefits" />} />
           <Route path='/smart-card/referral-rewards' element={<HtmlContent translationKey="referral_rewards" />} />
+
+          {/* Product pages (migrated from Media360) */}
+          <Route path='/products/:main' element={<ProductRouteGuard />}>
+            <Route index element={<ProductDetail />} />
+            <Route path=':variant' element={<ProductDetail />} />
+          </Route>
+          <Route path='/products/:main/related-founder' element={<ProductRelatedPerson />} />
+          <Route path='/products/:main/:variant/related-founder' element={<ProductRelatedPerson />} />
+          <Route path='/products/:main/related-kol' element={<ProductRelatedPerson />} />
+          <Route path='/products/:main/:variant/related-kol' element={<ProductRelatedPerson />} />
+          <Route path='/products/:main/related-ambassador' element={<ProductRelatedPerson />} />
+          <Route path='/products/:main/:variant/related-ambassador' element={<ProductRelatedPerson />} />
+          <Route path='/products/:main/related-news' element={<ProductRelatedNews />} />
+          <Route path='/products/:main/:variant/related-news' element={<ProductRelatedNews />} />
+          <Route path='/products/:main/related-event' element={<ProductRelatedEvent />} />
+          <Route path='/products/:main/:variant/related-event' element={<ProductRelatedEvent />} />
         </Routes>
         <Footer />
       </div>
@@ -137,7 +158,7 @@ function App() {
               backend_url={CHAT_API}
               google_api_key={`${vite_google_api}`}
             />
-            :
+            : vite_openai_api_url ?
             <CuteChatbot
               nickname='Roseneath Holiday Park'
               openai_api_url={`${vite_openai_api_url}`}
@@ -145,6 +166,7 @@ function App() {
               openai_api_key={`${vite_openai_api_key}`}
               google_api_key={`${vite_google_api}`}
             />
+            : null
           }
     </I18nextProvider>
   );

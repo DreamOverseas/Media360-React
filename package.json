@@ -29,13 +29,17 @@
     "react-bootstrap": "^2.10.5",
     "react-dom": "^19.0.0",
     "react-i18next": "^15.1.0",
+    "react-markdown": "^10.1.0",
+    "react-responsive": "^10.0.1",
     "react-router-dom": "^6.27.0",
     "react-slick": "^0.30.3",
+    "rehype-raw": "^7.0.0",
     "roseneath-holiday-park": "file:",
     "schema-utils": "^3.0.0",
     "sitemap": "^8.0.0",
     "slick-carousel": "^1.8.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yet-another-react-lightbox": "^3.31.0"
   },
   "scripts": {
     "dev": "vite",
