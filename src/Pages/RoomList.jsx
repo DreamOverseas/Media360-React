@@ -1,92 +1,119 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useTranslation } from 'react-i18next';
+import { Container, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "../Css/RoomList.css";
+import { useTranslation } from "react-i18next";
+import "../Css/Home.css";
+
+const BACKEND_HOST = import.meta.env.VITE_CMS_ENDPOINT;
+
+const setWithExpiry = (key, value, ttl) => {
+  const item = { value, expiry: Date.now() + ttl };
+  localStorage.setItem(key, JSON.stringify(item));
+};
+
+const getWithExpiry = (key) => {
+  const itemStr = localStorage.getItem(key);
+  if (!itemStr) return null;
+  const item = JSON.parse(itemStr);
+  if (Date.now() > item.expiry) {
+    localStorage.removeItem(key);
+    return null;
+  }
+  return item.value;
+};
 
 const RoomList = () => {
-  const [rooms, setRooms] = useState([]);
   const { t, i18n } = useTranslation();
-  const chateauBookingUrl = "https://book-directonline.com/properties/waterfrontpropertywallisprivateislandforster-";
-  const chateauDescriptionEn = "Welcome to a palatial mansion on a secluded island off the beautiful New South Wales north coast.";
-  const chateauDescriptionZh = "欢迎来到新南威尔士州北海岸外一座与世隔绝的岛屿上的宏伟府邸。";
-
-  const CMS_endpoint = import.meta.env.VITE_CMS_ENDPOINT;
-  const CMS_token = import.meta.env.VITE_CMS_TOKEN;
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const fetchRooms = async () => {
+    const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${CMS_endpoint}/api/room-types?populate=Cover`, {
-          headers: {
-            Authorization: `Bearer ${CMS_token}`,
+        let countryCode = getWithExpiry("user_country_code");
+        if (!countryCode) {
+          const ipRes = await axios.get("https://ipapi.co/json/");
+          countryCode = ipRes.data.country_code;
+          setWithExpiry("user_country_code", countryCode, 24 * 60 * 60 * 1000);
+        }
+
+        const response = await axios.get(`${BACKEND_HOST}/api/products`, {
+          params: {
+            sort: "Order:desc",
+            populate: "*",
+            "filters[$or][0][MainCollectionProduct][$eq]": true,
+            "filters[$or][1][SingleProduct][$eq]": true,
           },
         });
 
-        // Sort rooms by "order" property in ascending order
-        const sortedRooms = response.data.data.sort((a, b) => a.order - b.order);
-
-        setRooms(sortedRooms);
+        let allProducts = response.data.data;
+        if (countryCode === "CN") {
+          allProducts = allProducts.filter((product) => !product.BlockInChina);
+        }
+        setProducts(allProducts);
       } catch (error) {
-        console.error("Error loading:", error);
+        console.error("Error fetching products:", error);
       }
     };
 
-    fetchRooms();
-  }, [CMS_endpoint, CMS_token]);
+    fetchProducts();
+  }, []);
 
   return (
-    <div className='room-list'>
-
-      <h1>{t("roomlist_title")}</h1>
-      <section className='room-section'>
-        <h2 className='room-section-title'>Roseneath Holiday Park</h2>
-        <div className='room-grid'>
-          {rooms.map(room => (
-            <Link 
-              key={room.id} 
-              to={`/room/${room.documentId}`} 
-              className='room-card'
-            >
-              <img 
-                src={`${CMS_endpoint}${room.Cover?.url}`} 
-                alt={room.Name_en} 
-                className='room-image' 
-              />
-              <h2 className='room-name'>
-                {i18n.language === "zh" ? room.Name_zh : room.Name_en}
-              </h2>
-              <p className='room-subtitle'>{t("Room_max_guest") + room.Max_guest}</p>
-              <p className='room-subtitle'>
-                {i18n.language === "zh" ? room.Title_zh : room.Title_en}
-              </p>
-            </Link>
-          ))}
+    <section className="activities-section">
+      <Container>
+        <div className="section-header text-center">
+          <span className="section-label-blue">
+            {t("home_page.product_experience")}
+          </span>
         </div>
-      </section>
 
-      <section className='room-section'>
-        <h2 className='room-section-title'>Chateau Le Marais</h2>
-        <div className='room-grid'>
-          <a
-            href={chateauBookingUrl}
-            target='_blank'
-            rel='noopener noreferrer'
-            className='room-card'
-          >
-            <img
-              src='/chateau.jpeg'
-              alt='Chateau Le Marais'
-              className='room-image'
-            />
-            <h2 className='room-name'>Wing of the Chateau</h2>
-            <p className='room-subtitle'>{t("Room_max_guest") + 10}</p>
-            <p className='room-subtitle'>{chateauDescriptionEn}</p>
-            <p className='room-subtitle'>{chateauDescriptionZh}</p>
-          </a>
+        <div className="product-grid-container">
+          <Row className="g-4 justify-content-center">
+            {products.map((product) => {
+              const Name =
+                i18n.language === "zh" ? product.Name_zh : product.Name_en;
+              const Short =
+                i18n.language === "zh" ? product.Short_zh : product.Short_en;
+              const imageUrl = product.ProductImage?.url
+                ? `${BACKEND_HOST}${product.ProductImage.url}`
+                : "https://placehold.co/400x300?text=No+Image";
+
+              return (
+                <Col xs={12} sm={6} md={4} lg={3} key={product.id}>
+                  <Link
+                    to={`/products/${product.url}`}
+                    className="card-link-wrapper"
+                  >
+                    <Card className="modern-product-card h-100">
+                      <div className="card-img-wrapper">
+                        <Card.Img
+                          variant="top"
+                          src={imageUrl}
+                          alt={Name}
+                          loading="lazy"
+                        />
+                      </div>
+                      <Card.Body className="d-flex flex-column">
+                        <Card.Title className="product-title" title={Name}>
+                          {Name}
+                        </Card.Title>
+                        <Card.Text className="product-desc">{Short}</Card.Text>
+                        <div className="mt-auto pt-3">
+                          <span className="read-more-link">
+                            {t("btn_more") || "View Details"} &rarr;
+                          </span>
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </Link>
+                </Col>
+              );
+            })}
+          </Row>
         </div>
-      </section>
-    </div>
+      </Container>
+    </section>
   );
 };
 

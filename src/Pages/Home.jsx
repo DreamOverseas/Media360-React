@@ -13,6 +13,7 @@ const Home = () => {
   const CMS_endpoint = import.meta.env.VITE_CMS_ENDPOINT;
   const CMS_token = import.meta.env.VITE_CMS_TOKEN;
   const baseUrl = import.meta.env.BASE_URL;
+  const BACKEND_HOST = import.meta.env.VITE_CMS_ENDPOINT;
   const DBLink_LH = 'https://book-directonline.com/properties/roseneathholidaypark-1';
   const chateauBookingUrl = 'https://book-directonline.com/properties/waterfrontpropertywallisprivateislandforster-';
   const bannerImage = `${baseUrl}home/background_image.webp`;
@@ -26,8 +27,25 @@ const Home = () => {
 
   const { t, i18n } = useTranslation();
 
-  const [rooms, setRooms] = useState([]);
   const [gallery, setGallery] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  // --- Local Storage Helpers ---
+  const setWithExpiry = (key, value, ttl) => {
+    const item = { value, expiry: Date.now() + ttl };
+    localStorage.setItem(key, JSON.stringify(item));
+  };
+
+  const getWithExpiry = (key) => {
+    const itemStr = localStorage.getItem(key);
+    if (!itemStr) return null;
+    const item = JSON.parse(itemStr);
+    if (Date.now() > item.expiry) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return item.value;
+  };
 
   const homeSections = [
     {
@@ -82,27 +100,6 @@ const Home = () => {
   ];
 
   useEffect(() => {
-    const fetchRooms = async () => {
-      try {
-        const response = await axios.get(`${CMS_endpoint}/api/room-types?populate=Cover`, {
-          headers: {
-            Authorization: `Bearer ${CMS_token}`,
-          },
-        });
-        const roomData = response.data.data.sort((a, b) => {
-          return a.order - b.order; // Let available room types going to the front
-        });
-        setRooms(roomData);
-      } catch (error) {
-        console.error("Error loading:", error);
-      }
-    };
-
-    fetchRooms();
-  }, [CMS_endpoint, CMS_token]);
-
-
-  useEffect(() => {
     const fetchGalleryPreview = async () => {
       try {
         const response = await axios.get(`${CMS_endpoint}/api/media-images?filters[PageLocation][$eq]=gallery&populate=Image`, {
@@ -126,29 +123,35 @@ const Home = () => {
     fetchGalleryPreview();
   }, [CMS_endpoint, CMS_token]);
 
-  const room_sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 3,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        let countryCode = getWithExpiry('user_country_code');
+        if (!countryCode) {
+          const ipRes = await axios.get('https://ipapi.co/json/');
+          countryCode = ipRes.data.country_code;
+          setWithExpiry('user_country_code', countryCode, 24 * 60 * 60 * 1000);
         }
-      },
-      {
-        breakpoint: 576,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
+
+        const response = await axios.get(`${BACKEND_HOST}/api/products`, {
+          params: {
+            "sort": "Order:desc",
+            "populate": "*",
+            "filters[$or][0][MainCollectionProduct][$eq]": true,
+            "filters[$or][1][SingleProduct][$eq]": true,
+          },
+        });
+        let allProducts = response.data.data;
+        if (countryCode === 'CN') {
+          allProducts = allProducts.filter(product => !product.BlockInChina);
         }
+        setProducts(allProducts);
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
-    ]
-  };
+    };
+    fetchProducts();
+  }, [BACKEND_HOST]);
 
   const gallery_sliderSettings = {
     dots: true,
@@ -243,84 +246,55 @@ const Home = () => {
           </Container>
         </section>
 
-        <section className="room-presentation activities-section">
+        <section className="activities-section">
           <Container>
-            <h1>{t("Room")}</h1>
-            <div className="home-room-section">
-              <h2 className="home-room-section-title">Roseneath Holiday Park</h2>
-              <Slider {...room_sliderSettings}>
-                {rooms.map((room) => (
-                  <div key={room.id} className="room_slider-card">
-                    <Card className="home-room-card">
-                      {room.Cover?.url ? (
-                        <Card.Img
-                          variant="top"
-                          src={`${CMS_endpoint}${room.Cover.url}`}
-                          alt={room.Name_en}
-                          className="slider-card-img"
-                        />
-                      ) : (
-                        <Card.Img
-                          variant="top"
-                          src="https://placehold.co/250x350"
-                          alt="Placeholder"
-                          className="slider-card-img"
-                        />
-                      )}
-                      <Card.Body>
-                        <Card.Title>{i18n.language === "zh"
-                          ? room.Name_zh
-                          : room.Name_en}
-                        </Card.Title>
-                        <p className="home-room-card-subtitle">{i18n.language === "zh"
-                          ? room.Title_zh
-                          : room.Title_en}
-                        </p>
-                        <Card.Text>{i18n.language === "zh"
-                          ? room.Description_zh
-                          : room.Description_en}
-                        </Card.Text>
-                        {room.Availability ?
-                          <a href={`${DBLink_LH}?room_type=${room.RoomTypeID}`} target="_blank" rel="noopener noreferrer">
-                            <Button>{t("book_Now")}</Button>
-                          </a>
-                          :
-                          <Button variant="secondary">{t("book_unavailable")}</Button>
-                        }
-                      </Card.Body>
-                    </Card>
-                  </div>
-                ))}
-              </Slider>
+            {/* Section Header */}
+            <div className="section-header text-center">
+              <span className="section-label-blue">
+                {t("home_page.product_experience")}
+              </span>
             </div>
 
-            <div className="home-room-section">
-              <h2 className="home-room-section-title">Chateau Le Marais</h2>
-              <div className="room_slider-card home-single-room-card">
-                <Card className="home-room-card">
-                  <Card.Img
-                    variant="top"
-                    src="/chateau.jpeg"
-                    alt="Chateau Le Marais"
-                    className="slider-card-img"
-                  />
-                  <Card.Body>
-                    <Card.Title>Wing of the Chateau</Card.Title>
-                    <p className="home-room-card-subtitle">{t("Room_max_guest") + 10}</p>
-                    <Card.Text>{chateauDescriptionEn}</Card.Text>
-                    <Card.Text>{chateauDescriptionZh}</Card.Text>
-                    <a href={chateauBookingUrl} target="_blank" rel="noopener noreferrer">
-                      <Button>{t("book_Now")}</Button>
-                    </a>
-                  </Card.Body>
-                </Card>
-              </div>
-            </div>
+            <div className="product-grid-container">
+              <Row className="g-4 justify-content-center">
+                {products.map((product) => {
+                  const Name = i18n.language === "zh" ? product.Name_zh : product.Name_en;
+                  const Short = i18n.language === "zh" ? product.Short_zh : product.Short_en;
+                  const imageUrl = product.ProductImage?.url
+                    ? `${BACKEND_HOST}${product.ProductImage.url}`
+                    : "https://placehold.co/400x300?text=No+Image";
 
-            <div className="more-btn-container">
-              <a href="/roomlist" className="gallery-link">
-                {t("btn_more")}
-              </a>
+                  return (
+                    <Col xs={12} sm={6} md={4} lg={3} key={product.id}>
+                      <Link to={`/products/${product.url}`} className="card-link-wrapper">
+                        <Card className="modern-product-card h-100">
+                          <div className="card-img-wrapper">
+                            <Card.Img
+                              variant="top"
+                              src={imageUrl}
+                              alt={Name}
+                              loading="lazy"
+                            />
+                          </div>
+                          <Card.Body className="d-flex flex-column">
+                            <Card.Title className="product-title" title={Name}>
+                              {Name}
+                            </Card.Title>
+                            <Card.Text className="product-desc">
+                              {Short}
+                            </Card.Text>
+                            <div className="mt-auto pt-3">
+                              <span className="read-more-link">
+                                {t("btn_more") || "View Details"} &rarr;
+                              </span>
+                            </div>
+                          </Card.Body>
+                        </Card>
+                      </Link>
+                    </Col>
+                  );
+                })}
+              </Row>
             </div>
           </Container>
         </section>
