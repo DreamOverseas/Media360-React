@@ -18,7 +18,7 @@ const Gallery = () => {
     useEffect(() => {
         const fetchGalleryPreview = async () => {
             try {
-                const response = await axios.get(`${CMS_endpoint}/api/media-images?filters[PageLocation][$eq]=gallery&populate=Image`, {
+                const response = await axios.get(`${CMS_endpoint}/api/media-images?filters[PageLocation][$eq]=media-gallery&populate=Image`, {
                     headers: {
                         Authorization: `Bearer ${CMS_token}`,
                     },
