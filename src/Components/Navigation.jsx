@@ -132,9 +132,6 @@ const Navigation = () => {
                   <NavDropdown.Item href='/asset-growth-roadmap'>
                     {t("AssetGrowthRoadmap")}
                   </NavDropdown.Item>
-                  <NavDropdown.Item href='/internships-career-pathways'>
-                    {t("InternshipsCareerPathways")}
-                  </NavDropdown.Item>
                 </NavDropdown>
 
                 <NavDropdown
@@ -153,6 +150,9 @@ const Navigation = () => {
                   </NavDropdown.Item>
                   <NavDropdown.Item href='/strategic'>
                     {t("Strategic")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/internships-career-pathways'>
+                    {t("InternshipsCareerPathways")}
                   </NavDropdown.Item>
                 </NavDropdown>
 
