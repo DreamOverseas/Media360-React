@@ -102,7 +102,7 @@ const Home = () => {
   useEffect(() => {
     const fetchGalleryPreview = async () => {
       try {
-        const response = await axios.get(`${CMS_endpoint}/api/media-images?filters[PageLocation][$eq]=gallery&populate=Image`, {
+        const response = await axios.get(`${CMS_endpoint}/api/media-images?filters[PageLocation][$eq]=media-gallery&populate=Image`, {
           headers: {
             Authorization: `Bearer ${CMS_token}`,
           },
@@ -111,7 +111,7 @@ const Home = () => {
         // Check the data structure and safely retrieve the images
         const images = response.data.data[0].Image;
         if (images) {
-          setGallery(images.slice(15, 24));
+          setGallery(images);
         } else {
           console.warn("No images found in response data.");
         }
