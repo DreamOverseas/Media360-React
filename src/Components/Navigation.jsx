@@ -79,7 +79,7 @@ const Navigation = () => {
       >
         <Container fluid>
           {/* Brand logo - will be centered on mobile */}
-          <Navbar.Brand className="navbar-brand-custom">
+          <Navbar.Brand className="navbar-brand-custom" onClick={() => navigate("/")} style={{ cursor: 'pointer' }}>
             <Figure.Image width={"200px"} height={"200px"} src={logoPath} />
           </Navbar.Brand>
           
@@ -103,9 +103,6 @@ const Navigation = () => {
                 >
                   <NavDropdown.Item href='/roomlist'>
                     {t("Room")}
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href='/book-membership'>
-                    {t("BookMembership")}
                   </NavDropdown.Item>
                   {/* <NavDropdown.Item href='/FAQ'>
                     {t("StayAndGuide")}
@@ -201,6 +198,9 @@ const Navigation = () => {
                   </NavDropdown.Item>
                   <NavDropdown.Item href='/smart-card/asset-investment-benefits'>
                     {t("AssetInvestmentBenefits")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/book-membership'>
+                    {t("BookMembership")}
                   </NavDropdown.Item>
                 </NavDropdown>
 

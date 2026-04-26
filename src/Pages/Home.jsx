@@ -62,7 +62,7 @@ const Home = () => {
       subtitle: "Assets & Investment",
       description: "探索生态资产、运营模式与长期价值增长路径。",
       route: "/eco-living-assets",
-      image: `${baseUrl}home/home_landscape.webp`,
+      image: `${baseUrl}assets-investment.png`,
     },
     {
       title: "360 智能卡",

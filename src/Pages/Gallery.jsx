@@ -136,7 +136,7 @@ const Gallery = () => {
                 </div>
 
                 {/* Video Section */}
-                <div style={{ marginBottom: '3rem' }}>
+                {/* <div style={{ marginBottom: '3rem' }}>
                     <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
                         <div className="p-6">
                             <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
@@ -148,7 +148,7 @@ const Gallery = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Gallery Grid Section */}
                 <div style={{ marginBottom: '3rem' }}>
