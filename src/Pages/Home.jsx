@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import "../Css/Home.css";
 import { Container, Row, Col, Image, Button, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCampground, faChartLine, faHandshake } from '@fortawesome/free-solid-svg-icons';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -80,22 +82,25 @@ const Home = () => {
 
   const features = [
     {
-      src: "/Icons/free-parking.png",
+      icon: faCampground,
       alt: "Explore Stay",
       textKey: "home_feature_explore_stay",
       route: "/individual-visitors",
+      colorTheme: "green",
     },
     {
-      src: "/Icons/dog.png",
+      icon: faChartLine,
       alt: "Explore Investment",
       textKey: "home_feature_explore_investment",
       route: "/investment",
+      colorTheme: "purple",
     },
     {
-      src: "/Icons/horse.png",
+      icon: faHandshake,
       alt: "Become a Partner",
       textKey: "home_feature_become_partner",
       route: "/cooperation",
+      colorTheme: "orange",
     },
   ];
 
@@ -228,12 +233,12 @@ const Home = () => {
                     md={4}
                   >
                     <Link to={feature.route} style={{ textDecoration: 'none', color: 'inherit' }}>
-                      <Card className="text-center home-clickable-card">
+                      <Card className={`text-center home-clickable-card home-clickable-card-${feature.colorTheme}`}>
                         <Card.Body>
-                          <Image
-                            className="our-service-button"
-                            src={feature.src}
-                            alt={feature.alt}
+                          <FontAwesomeIcon
+                            icon={feature.icon}
+                            className={`our-service-button our-service-button-${feature.colorTheme}`}
+                            title={feature.alt}
                           />
                           <Card.Title>{t(feature.textKey)}</Card.Title>
                         </Card.Body>

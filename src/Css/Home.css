@@ -554,6 +554,79 @@
     margin: 0;
 }
 
+/* Feature Card Color Themes */
+/* Green Theme - Eco-Living Stay */
+.home-clickable-card-green {
+    background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+    border: 2px solid #e0f2e9;
+}
+
+.home-clickable-card-green::before {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(52, 211, 153, 0.1) 100%);
+}
+
+.home-clickable-card-green:hover {
+    border-color: #10b981;
+}
+
+.home-clickable-card-green .our-service-button-green {
+    color: #10b981;
+    filter: drop-shadow(0 4px 12px rgba(16, 185, 129, 0.3));
+}
+
+.home-clickable-card-green:hover .our-service-button-green {
+    color: #059669;
+    filter: drop-shadow(0 4px 16px rgba(16, 185, 129, 0.5));
+}
+
+/* Purple Theme - Assets & Investment */
+.home-clickable-card-purple {
+    background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+    border: 2px solid #f3e8ff;
+}
+
+.home-clickable-card-purple::before {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(217, 70, 239, 0.1) 100%);
+}
+
+.home-clickable-card-purple:hover {
+    border-color: #a855f7;
+}
+
+.home-clickable-card-purple .our-service-button-purple {
+    color: #a855f7;
+    filter: drop-shadow(0 4px 12px rgba(168, 85, 247, 0.3));
+}
+
+.home-clickable-card-purple:hover .our-service-button-purple {
+    color: #9333ea;
+    filter: drop-shadow(0 4px 16px rgba(168, 85, 247, 0.5));
+}
+
+/* Orange Theme - Land & Resource Partnership */
+.home-clickable-card-orange {
+    background: linear-gradient(135deg, #ffffff 0%, #fffbf0 100%);
+    border: 2px solid #fed7aa;
+}
+
+.home-clickable-card-orange::before {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(251, 146, 60, 0.1) 100%);
+}
+
+.home-clickable-card-orange:hover {
+    border-color: #f97316;
+}
+
+.home-clickable-card-orange .our-service-button-orange {
+    color: #f97316;
+    filter: drop-shadow(0 4px 12px rgba(249, 115, 22, 0.3));
+}
+
+.home-clickable-card-orange:hover .our-service-button-orange {
+    color: #ea580c;
+    filter: drop-shadow(0 4px 16px rgba(249, 115, 22, 0.5));
+}
+
 /* Attraction Section Enhancement */
 .food, .animal, .landscape {
     margin-bottom: 4rem;
