@@ -162,16 +162,12 @@ const MemberCenter = () => {
             </Card>
 
             <br />
-            {user.is_member ?
-                <MemberPointMarket
-                    cmsEndpoint={import.meta.env.VITE_CMS_ENDPOINT}
-                    cmsApiKey={import.meta.env.VITE_CMS_TOKEN}
-                    couponEndpoint={import.meta.env.VITE_COUPON_SYS_ENDPOINT}
-                    emailEndpoint={import.meta.env.VITE_EMAIL_API_ENDPOINT}
-                />
-                :
-                <MembershipSale />
-            }
+            <MemberPointMarket
+                cmsEndpoint={import.meta.env.VITE_CMS_ENDPOINT}
+                cmsApiKey={import.meta.env.VITE_CMS_TOKEN}
+                couponEndpoint={import.meta.env.VITE_COUPON_SYS_ENDPOINT}
+                emailEndpoint={import.meta.env.VITE_EMAIL_API_ENDPOINT}
+            />
 
         </Container>
     );
