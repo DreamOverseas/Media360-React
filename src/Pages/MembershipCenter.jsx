@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import '../Css/MemberCenter.css';
-import MemberPointMarket from '../Components/MemberPointMarket';
+import { MemberPointMarket } from 'oneclub-member-shop';
 import DetailUpdateBtn from '../Components/DetailUpdateBtn';
 import MembershipSale from '../Components/MemberSale';
 import MemberPointTopupBtn from '../Components/MemberPointTopupBtn';
@@ -203,23 +203,18 @@ const MemberCenter = () => {
                     </Card.Body>
                 }
             </Card>
-            
-            <br />
-            {user.tenantType == "Annual" || "Permanent" ?
-                <AnnualBooking userType={user.tenantType}/>
-                :
-                <></>
-            }
 
             <br />
             {user.is_member ?
-                <MemberPointMarket />
+                <MemberPointMarket
+                    cmsEndpoint={import.meta.env.VITE_CMS_ENDPOINT}
+                    cmsApiKey={import.meta.env.VITE_CMS_TOKEN}
+                    couponEndpoint={import.meta.env.VITE_COUPON_SYS_ENDPOINT}
+                    emailEndpoint={import.meta.env.VITE_EMAIL_API_ENDPOINT}
+                />
                 :
                 <MembershipSale />
             }
-
-            <br />
-            <News userType="forAnnual"/>
 
         </Container>
     );
