@@ -32,7 +32,7 @@ const MemberCenter = () => {
                 return;
             }
 
-            const apiUrl = `${CMSEndpoint}/api/rhp-memberships?filters[Email][$eq]=${JSON.parse(userCookie).email}`;
+            const apiUrl = `https://api.do360.com/api/one-club-memberships?filters[Email][$eq]=${JSON.parse(userCookie).email}`;
 
             try {
                 // Make the API call to fetch the user data
@@ -70,33 +70,26 @@ const MemberCenter = () => {
 
 
     const updateUserCookie = (userdata) => {
-        let userCookie = {
-            name: userdata.UserName,
-            email: userdata.Email,
-            contact: userdata.Contact || 'Not Specified',
-            is_member: userdata.IsMember,
-            tenant_type: userdata.TenantType,
+        const existingCookie = JSON.parse(Cookies.get('user') || '{}');
+        const memberCookie = {
+            ...existingCookie,
+            name: userdata.Name || existingCookie.name,
+            email: userdata.Email || existingCookie.email,
+            number: userdata.MembershipNumber || 'N/A',
             address: userdata.Address || 'Not Specified',
-            fname2: userdata.FirstName2 || 'Not Specified',
-            lname2: userdata.LastName2 || 'Not Specified',
-            email2: userdata.Email2 || 'Not Specified',
-            contact2: userdata.Contact2 || 'Not Specified'
+            phone: userdata.Phone || 'Not Specified',
+            referee: userdata.Referee || 'Not Specified',
+            currentStatus: userdata.CurrentStatus || 'N/A',
+            occupation: userdata.Occupation || 'Not Specified',
+            membershipClass: userdata.MembershipClass || 'N/A',
+            exp: userdata.ExpiryDate || 'N/A',
+            point: userdata.Point ?? 0,
+            discountPoint: userdata.DiscountPoint ?? 0,
+            loyaltyPoint: userdata.LoyaltyPoint ?? 0,
+            legalName: userdata.LegalName || 'Not Specified',
         };
-        // If the user is a member, add additional fields to the cookie.
-        if (userdata.IsMember) {
-            userCookie = {
-                ...userCookie,
-                number: userdata.MembershipNumber || 'N/A',
-                fname: userdata.FirstName || 'Not Specified',
-                lname: userdata.LastName || 'Not Specified',
-                exp: userdata.ExpiryDate || 'N/A',
-                point: userdata.Point || 'N/A',
-                tenantType: userdata.TenantType,
-                discount_p: userdata.DiscountPoint || 'N/A'
-            };
-        }
-        Cookies.set('user', JSON.stringify(userCookie));
-        setUser(userCookie);
+        Cookies.set('user', JSON.stringify(memberCookie));
+        setUser(memberCookie);
     }
 
     if (!user) {
@@ -114,92 +107,56 @@ const MemberCenter = () => {
                     :
                     <Card.Body>
                         <Row className="mb-3">
-                            <Col sm={3} className="text-muted">{t("login_username")}</Col>
-                            <Col sm={3}>{user.name}</Col>
-                            <Col sm={3} className="text-muted">{t("membership")}</Col>
-                            <Col sm={3}>
-                                {user.is_member ?
-                                    `${t("membership_activ")}` : `${t("membership_inactiv")}`}
-                            </Col>
+                            <Col sm={3} className="text-muted">{t("update_detail.name")}</Col>
+                            <Col sm={3}>{user.name || 'N/A'}</Col>
+                            <Col sm={3} className="text-muted">{t("membership_legal_name")}</Col>
+                            <Col sm={3}>{user.legalName || 'N/A'}</Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col sm={3} className="text-muted">{t("membership_num")}</Col>
+                            <Col sm={3}>{user.number === 'N/A' ? t('membership_issuing') : user.number}</Col>
+                            <Col sm={3} className="text-muted">{t("membership_class")}</Col>
+                            <Col sm={3}>{user.membershipClass || 'N/A'}</Col>
                         </Row>
                         <Row className="mb-3">
                             <Col sm={3} className="text-muted">{t("email")}</Col>
-                            <Col sm={3}>{user.email}</Col>
-                            <Col sm={3} className="text-muted">{t("membership_contact")}</Col>
-                            <Col sm={3}>{user.contact || '<Not Specified>'}</Col>
+                            <Col sm={3}>{user.email || 'N/A'}</Col>
+                            <Col sm={3} className="text-muted">{t("membership_phone")}</Col>
+                            <Col sm={3}>{user.phone || 'N/A'}</Col>
                         </Row>
-                        {user.is_member ?
-                            <>
-                                <Row className="mb-3">
-                                    {i18n.language == 'zh' ?
-                                        <>
-                                            <Col sm={3} className="text-muted">{t("lname")}</Col>
-                                            <Col sm={3}>{user.lname || '<Not Specified>'}</Col>
-                                            <Col sm={3} className="text-muted">{t("fname")}</Col>
-                                            <Col sm={3}>{user.fname || '<Not Specified>'}</Col>
-                                        </>
-                                        : // For chinese people, revert first and last name, otherwise in normal
-                                        <>
-                                            <Col sm={3} className="text-muted">{t("fname")}</Col>
-                                            <Col sm={3}>{user.fname || '<Not Specified>'}</Col>
-                                            <Col sm={3} className="text-muted">{t("lname")}</Col>
-                                            <Col sm={3}>{user.lname || '<Not Specified>'}</Col>
-                                        </>
-                                    }
-                                </Row>
-                                <Row className="mb-3">
-                                    <Col sm={3} className="text-muted">{t("membership_address")}</Col>
-                                    <Col sm={9}>{user.address || '<Not Specified>'}</Col>
-                                </Row>
-                                <Row className="mb-3">
-                                    <Col sm={3} className="text-muted">{t("membership_num")}</Col>
-                                    <Col sm={3}>{ user.number=='N/A' ? t("membership_issuing") : user.number }</Col>
-                                    <Col sm={3} className="text-muted">{t("membership_exp")}</Col>
-                                    <Col sm={3}>{user.exp}</Col>
-                                </Row>
-                                <Row className="mb-3">
-                                    <Col sm={3} className="text-muted">{t("membership_point")}</Col>
-                                    <Col sm={3}>{user.point}</Col>
-                                    <Col sm={3} className="text-muted">{t("membership_discount")}</Col>
-                                    <Col sm={3}>{user.discount_p}</Col>
-                                </Row>
-                                <Row className="mb-3">
-                                    <Col sm={3} className="text-muted">{t("membership_total_point")}</Col>
-                                    <Col sm={3}> <b> {user.point + user.discount_p} </b> </Col>
-                                    <Col sm={6} className='flex justify-end'>
-                                        {/* <MemberPointTopupBtn /> */}
-                                        <DetailUpdateBtn />
-                                    </Col>
-                                </Row>
-                                
-                                {/* Second Person Information */}
-                                <hr className="my-4" />
-                                <h5 className="mb-3">{t("membership_second_person_info")}</h5>
-                                <Row className="mb-3">
-                                    {i18n.language == 'zh' ?
-                                        <>
-                                            <Col sm={3} className="text-muted">{t("membership_lname2")}</Col>
-                                            <Col sm={3}>{user.lname2 || '<Not Specified>'}</Col>
-                                            <Col sm={3} className="text-muted">{t("membership_fname2")}</Col>
-                                            <Col sm={3}>{user.fname2 || '<Not Specified>'}</Col>
-                                        </>
-                                        :
-                                        <>
-                                            <Col sm={3} className="text-muted">{t("membership_fname2")}</Col>
-                                            <Col sm={3}>{user.fname2 || '<Not Specified>'}</Col>
-                                            <Col sm={3} className="text-muted">{t("membership_lname2")}</Col>
-                                            <Col sm={3}>{user.lname2 || '<Not Specified>'}</Col>
-                                        </>
-                                    }
-                                </Row>
-                                <Row className="mb-3">
-                                    <Col sm={3} className="text-muted">{t("membership_email2")}</Col>
-                                    <Col sm={3}>{user.email2 || '<Not Specified>'}</Col>
-                                    <Col sm={3} className="text-muted">{t("membership_contact2")}</Col>
-                                    <Col sm={3}>{user.contact2 || '<Not Specified>'}</Col>
-                                </Row>
-                            </>
-                            : <></>}
+                        <Row className="mb-3">
+                            <Col sm={3} className="text-muted">{t("membership_address")}</Col>
+                            <Col sm={9}>{user.address || 'N/A'}</Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col sm={3} className="text-muted">{t("membership_occupation")}</Col>
+                            <Col sm={3}>{user.occupation || 'N/A'}</Col>
+                            <Col sm={3} className="text-muted">{t("membership_referee")}</Col>
+                            <Col sm={3}>{user.referee || 'N/A'}</Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col sm={3} className="text-muted">{t("membership_current_status")}</Col>
+                            <Col sm={3}>{user.currentStatus || 'N/A'}</Col>
+                            <Col sm={3} className="text-muted">{t("membership_exp")}</Col>
+                            <Col sm={3}>{user.exp || 'N/A'}</Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col sm={3} className="text-muted">{t("membership_point")}</Col>
+                            <Col sm={3}>{user.point ?? 0}</Col>
+                            <Col sm={3} className="text-muted">{t("membership_discount")}</Col>
+                            <Col sm={3}>{user.discountPoint ?? 0}</Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col sm={3} className="text-muted">{t("membership_loyalty_point")}</Col>
+                            <Col sm={3}>{user.loyaltyPoint ?? 0}</Col>
+                            <Col sm={3} className="text-muted">{t("membership_total_point")}</Col>
+                            <Col sm={3}><b>{(user.point ?? 0) + (user.discountPoint ?? 0) + (user.loyaltyPoint ?? 0)}</b></Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col sm={12} className='flex justify-end'>
+                                <DetailUpdateBtn />
+                            </Col>
+                        </Row>
                     </Card.Body>
                 }
             </Card>

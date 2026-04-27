@@ -188,13 +188,12 @@ const LoginModal = ({ show, handleClose }) => {
       // Create a new entry in the 'RHPMembership' collection type on Strapi.
       const req_body = JSON.stringify({
         data: {
-          UserName: regUserName,
+          Name: regUserName,
           Email: regEmail,
-          Password: regPassword,
-          IsMember: false
+          Password: regPassword
         }
       });
-      const res = await fetch(`${CMS_endpoint}/api/rhp-memberships`, {
+      const res = await fetch(`https://api.do360.com/api/one-club-memberships`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -208,9 +207,7 @@ const LoginModal = ({ show, handleClose }) => {
         Cookies.set('AuthToken', 'roseneath-holiday-park-website', { expires: 7 });
         const userCookie = {
           name: regUserName,
-          email: regEmail,
-          is_member: false,
-          tenant_type: 'Guest'     // Default after registration
+          email: regEmail
         };
         Cookies.set('user', JSON.stringify(userCookie));
         handleClose();
@@ -244,71 +241,77 @@ const LoginModal = ({ show, handleClose }) => {
     }
 
     try {
-      // Send a POST request with the login credentials.
-      const res = await fetch(`${CMS_endpoint}/api/rhp-memberships/verify-password`, {
+      // Step 1: fetch user record by email
+      const userRes = await fetch(
+        `https://api.do360.com/api/one-club-memberships?filters[Email][$eq]=${encodeURIComponent(loginEmail)}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${CMS_token}`
+          }
+        }
+      );
+
+      if (!userRes.ok) {
+        setLoginError('Failed to retrieve user data.');
+        return;
+      }
+
+      const userData = await userRes.json();
+      if (!userData.data || userData.data.length === 0) {
+        setLoginError('Either email or password is wrong.');
+        return;
+      }
+
+      const userAttributes = userData.data[0];
+      const membershipNumber = userAttributes.MembershipNumber;
+
+      if (!membershipNumber) {
+        setLoginError('Account not found or membership number not assigned.');
+        return;
+      }
+
+      // Step 2: verify password using membershipNumber
+      const res = await fetch(`https://api.do360.com/api/one-club-memberships/verify-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${CMS_token}`
         },
         body: JSON.stringify({
-          email: loginEmail,
+          membershipNumber: membershipNumber,
           password: loginPassword
         })
       });
 
-      // If the response status is 400, alert the user.
-      if (res.status === 400) {
-        window.alert('Something is wrong, please contact us.');
+      if (!res.ok) {
+        setLoginError('Either email or password is wrong.');
         return;
       }
-      // On success, fetch the full user details using the provided email.
-      if (res.ok) {
-        const userRes = await fetch(
-          `${CMS_endpoint}/api/rhp-memberships?filters[Email][$eq]=${loginEmail}`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${CMS_token}`
-            }
-          }
-        );
-        if (userRes.ok) {
-          const userData = await userRes.json();
-          const userAttributes = userData.data[0];
-          // Create a base user cookie.
-          let userCookie = {
-            name: userAttributes.UserName,
-            email: userAttributes.Email,
-            is_member: userAttributes.IsMember,
-            contact: userAttributes.Contact || 'Not Specified',
-            tenant_type: userAttributes.TenantType
+
+      // Step 3: build cookie and navigate
+      const userCookie = {
+            name: userAttributes.Name || '',
+            email: userAttributes.Email || loginEmail,
+            number: userAttributes.MembershipNumber || 'N/A',
+            address: userAttributes.Address || 'Not Specified',
+            phone: userAttributes.Phone || 'Not Specified',
+            referee: userAttributes.Referee || 'Not Specified',
+            currentStatus: userAttributes.CurrentStatus || 'N/A',
+            occupation: userAttributes.Occupation || 'Not Specified',
+            membershipClass: userAttributes.MembershipClass || 'N/A',
+            exp: userAttributes.ExpiryDate || 'N/A',
+            point: userAttributes.Point ?? 0,
+            discountPoint: userAttributes.DiscountPoint ?? 0,
+            loyaltyPoint: userAttributes.LoyaltyPoint ?? 0,
+            legalName: userAttributes.LegalName || 'Not Specified'
           };
-          // If the user is a member, add additional fields to the cookie.
-          if (userAttributes.IsMember) {
-            userCookie = {
-              ...userCookie,
-              number: userAttributes.MembershipNumber || 'N/A',
-              fname: userAttributes.FirstName || 'Not Specified',
-              lname: userAttributes.LastName || 'Not Specified',
-              exp: userAttributes.ExpiryDate || 'N/A',
-              point: userAttributes.Point || 'N/A',
-              discount_p: userAttributes.DiscountPoint || 'N/A'
-            };
-          }
           Cookies.set('user', JSON.stringify(userCookie));
           Cookies.set('AuthToken', 'roseneath-holiday-park-website', { expires: 7 });
-          console.log(`Logged ${userAttributes.TenantType} user ${userAttributes.FirstName} in.`);
           handleClose();
           clearModalData();
           navigate('/membership');
-        } else {
-          setLoginError('Failed to retrieve user data.');
-        }
-      } else {
-        setLoginError('Either email or password is wrong.');
-      }
     } catch (error) {
       console.error(error);
       setLoginError('Error during login.');

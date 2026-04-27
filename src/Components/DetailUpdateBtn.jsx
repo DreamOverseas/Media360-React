@@ -10,7 +10,6 @@ const CMS_token = import.meta.env.VITE_CMS_TOKEN;
 const DetailUpdateBtn = () => {
   const [showModal, setShowModal] = useState(false);
   const [showPwdModal, setShowPwdModal] = useState(false);
-  const [isMember, setIsMember] = useState(false);
   const [documentID, setDocumentID] = useState(null);
 
   const [oldPassword, setOldPassword] = useState("");
@@ -21,16 +20,13 @@ const DetailUpdateBtn = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [pwdUpdating, setPwdUpdating] = useState(false);
 
-  const [userName, setUserName] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [contact, setContact] = useState('');
+  const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
-  const [firstName2, setFirstName2] = useState('');
-  const [lastName2, setLastName2] = useState('');
-  const [email2, setEmail2] = useState('');
-  const [contact2, setContact2] = useState('');
+  const [referee, setReferee] = useState('');
+  const [occupation, setOccupation] = useState('');
+  const [legalName, setLegalName] = useState('');
 
   const { t } = useTranslation();
 
@@ -53,7 +49,7 @@ const DetailUpdateBtn = () => {
 
       // Fetch user record from Strapi by filtering Email
       const res = await fetch(
-        `${CMS_endpoint}/api/rhp-memberships?filters[Email][$eq]=${email}`,
+        `https://api.do360.com/api/one-club-memberships?filters[Email][$eq]=${email}`,
         {
           method: 'GET',
           headers: {
@@ -69,7 +65,6 @@ const DetailUpdateBtn = () => {
       const user_data = await res.json();
       if (user_data.data && user_data.data.length > 0) {
         const record = user_data.data[0];
-        setIsMember(record.IsMember);
         setDocumentID(record.documentId);
         setShowModal(true);
       } else {
@@ -94,7 +89,7 @@ const DetailUpdateBtn = () => {
 
       // Fetch user record from Strapi by filtering Email
       const res = await fetch(
-        `${CMS_endpoint}/api/rhp-memberships?filters[Email][$eq]=${email}`,
+        `https://api.do360.com/api/one-club-memberships?filters[Email][$eq]=${email}`,
         {
           method: 'GET',
           headers: {
@@ -110,7 +105,6 @@ const DetailUpdateBtn = () => {
       const user_data = await res.json();
       if (user_data.data && user_data.data.length > 0) {
         const record = user_data.data[0];
-        setIsMember(record.IsMember);
         setDocumentID(record.documentId);
         setShowPwdModal(true);
         setPwdUpdating(false);
@@ -152,14 +146,38 @@ const DetailUpdateBtn = () => {
         return;
       }
 
-      const verifyRes = await fetch(`${CMS_endpoint}/api/rhp-memberships/verify-password`, {
+      // First fetch the user record to get MembershipNumber
+      const lookupRes = await fetch(
+        `https://api.do360.com/api/one-club-memberships?filters[Email][$eq]=${encodeURIComponent(email)}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${CMS_token}`
+          }
+        }
+      );
+      if (!lookupRes.ok) {
+        setError('Failed to verify password. Please try again.');
+        setPwdUpdating(false);
+        return;
+      }
+      const lookupData = await lookupRes.json();
+      const membershipNumber = lookupData.data?.[0]?.MembershipNumber;
+      if (!membershipNumber) {
+        setError('Membership number not found.');
+        setPwdUpdating(false);
+        return;
+      }
+
+      const verifyRes = await fetch(`https://api.do360.com/api/one-club-memberships/verify-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${CMS_token}`
         },
         body: JSON.stringify({
-          email: email,
+          membershipNumber: membershipNumber,
           password: oldPassword
         })
       });
@@ -170,7 +188,7 @@ const DetailUpdateBtn = () => {
       }
 
       // Submit new password
-      const updateRes = await fetch(`${CMS_endpoint}/api/rhp-memberships/${documentID}`, {
+      const updateRes = await fetch(`https://api.do360.com/api/one-club-memberships/${documentID}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -204,16 +222,13 @@ const DetailUpdateBtn = () => {
   const handleClose = () => {
     setShowModal(false);
     setError('');
-    setUserName('');
-    setFirstName('');
-    setLastName('');
+    setName('');
     setEmail('');
-    setContact('');
+    setPhone('');
     setAddress('');
-    setFirstName2('');
-    setLastName2('');
-    setEmail2('');
-    setContact2('');
+    setReferee('');
+    setOccupation('');
+    setLegalName('');
   };
 
   /**
@@ -223,28 +238,24 @@ const DetailUpdateBtn = () => {
   const handleSubmit = async () => {
     setError('');
     // Ensure at least one field has been changed
-    if (!userName && !firstName && !lastName && !email && !contact && !address && 
-        !firstName2 && !lastName2 && !email2 && !contact2) {
+    if (!name && !email && !phone && !address && !referee && !occupation && !legalName) {
       setError('Please update at least one field.');
       return;
     }
 
     // Build update payload with only changed fields
     const payload = {};
-    if (userName) payload.UserName = userName;
-    if (firstName) payload.FirstName = firstName;
-    if (lastName) payload.LastName = lastName;
+    if (name) payload.Name = name;
     if (email) payload.Email = email;
-    if (contact) payload.Contact = contact;
+    if (phone) payload.Phone = phone;
     if (address) payload.Address = address;
-    if (firstName2) payload.FirstName2 = firstName2;
-    if (lastName2) payload.LastName2 = lastName2;
-    if (email2) payload.Email2 = email2;
-    if (contact2) payload.Contact2 = contact2;
+    if (referee) payload.Referee = referee;
+    if (occupation) payload.Occupation = occupation;
+    if (legalName) payload.LegalName = legalName;
 
     try {
       const res = await fetch(
-        `${CMS_endpoint}/api/rhp-memberships/${documentID}`,
+        `https://api.do360.com/api/one-club-memberships/${documentID}`,
         {
           method: 'PUT',
           headers: {
@@ -260,16 +271,13 @@ const DetailUpdateBtn = () => {
 
         const updatedData = { // Update the updated fields only
           ...userData,
-          ...(userName ? { name: userName } : {}),
-          ...(firstName ? { fname: firstName } : {}),
-          ...(lastName ? { lname: lastName } : {}),
-          ...(email ? { email: email } : {}),
-          ...(contact ? { contact: contact } : {}),
-          ...(address ? { address: address } : {}),
-          ...(firstName2 ? { fname2: firstName2 } : {}),
-          ...(lastName2 ? { lname2: lastName2 } : {}),
-          ...(email2 ? { email2: email2 } : {}),
-          ...(contact2 ? { contact2: contact2 } : {}),
+          ...(name ? { name } : {}),
+          ...(email ? { email } : {}),
+          ...(phone ? { phone } : {}),
+          ...(address ? { address } : {}),
+          ...(referee ? { referee } : {}),
+          ...(occupation ? { occupation } : {}),
+          ...(legalName ? { legalName } : {}),
         };
 
         Cookies.set('user', JSON.stringify(updatedData), { expires: 7, path: '/' });
@@ -314,14 +322,13 @@ const DetailUpdateBtn = () => {
             <div className="px-6 py-4">
               {error && <p className="text-sm text-red-600 mb-4">{error}</p>}
 
-              {/* Always show User Name field */}
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-1">{t("update_detail.userName")}</label>
+                <label className="block text-sm font-medium mb-1">{t("update_detail.name")}</label>
                 <input
                   type="text"
                   placeholder={t("update_detail.placeholder")}
-                  value={userName}
-                  onChange={e => setUserName(e.target.value)}
+                  value={name}
+                  onChange={e => setName(e.target.value)}
                   className="w-full border border-gray-300 rounded px-3 py-2"
                 />
               </div>
@@ -338,101 +345,59 @@ const DetailUpdateBtn = () => {
               </div>
 
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-1">{t("update_detail.contact")}</label>
+                <label className="block text-sm font-medium mb-1">{t("update_detail.phone")}</label>
                 <input
                   type="text"
                   placeholder={t("update_detail.placeholder")}
-                  value={contact}
-                  onChange={e => setContact(e.target.value)}
+                  value={phone}
+                  onChange={e => setPhone(e.target.value)}
                   className="w-full border border-gray-300 rounded px-3 py-2"
                 />
               </div>
 
-              {/* If the user is a member, show additional fields */}
-              {isMember && (
-                <>
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">{t("update_detail.fistName")}</label>
-                    <input
-                      type="text"
-                      placeholder={t("update_detail.placeholder")}
-                      value={firstName}
-                      onChange={e => setFirstName(e.target.value)}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">{t("update_detail.address")}</label>
+                <textarea
+                  placeholder={t("update_detail.placeholder")}
+                  value={address}
+                  onChange={e => setAddress(e.target.value)}
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  rows="3"
+                />
+              </div>
 
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">{t("update_detail.lastName")}</label>
-                    <input
-                      type="text"
-                      placeholder={t("update_detail.placeholder")}
-                      value={lastName}
-                      onChange={e => setLastName(e.target.value)}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">{t("update_detail.legalName")}</label>
+                <input
+                  type="text"
+                  placeholder={t("update_detail.placeholder")}
+                  value={legalName}
+                  onChange={e => setLegalName(e.target.value)}
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
 
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">{t("update_detail.address")}</label>
-                    <textarea
-                      placeholder={t("update_detail.placeholder")}
-                      value={address}
-                      onChange={e => setAddress(e.target.value)}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                      rows="3"
-                    />
-                  </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">{t("update_detail.occupation")}</label>
+                <input
+                  type="text"
+                  placeholder={t("update_detail.placeholder")}
+                  value={occupation}
+                  onChange={e => setOccupation(e.target.value)}
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
 
-                  {/* Second Person Information */}
-                  <hr className="my-4" />
-                  <h5 className="text-md font-semibold mb-3">{t("update_detail.second_person")}</h5>
-
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">{t("update_detail.firstName2")}</label>
-                    <input
-                      type="text"
-                      placeholder={t("update_detail.placeholder")}
-                      value={firstName2}
-                      onChange={e => setFirstName2(e.target.value)}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">{t("update_detail.lastName2")}</label>
-                    <input
-                      type="text"
-                      placeholder={t("update_detail.placeholder")}
-                      value={lastName2}
-                      onChange={e => setLastName2(e.target.value)}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">{t("update_detail.email2")}</label>
-                    <input
-                      type="email"
-                      placeholder={t("update_detail.placeholder")}
-                      value={email2}
-                      onChange={e => setEmail2(e.target.value)}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">{t("update_detail.contact2")}</label>
-                    <input
-                      type="text"
-                      placeholder={t("update_detail.placeholder")}
-                      value={contact2}
-                      onChange={e => setContact2(e.target.value)}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
-                </>
-              )}
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">{t("update_detail.referee")}</label>
+                <input
+                  type="text"
+                  placeholder={t("update_detail.placeholder")}
+                  value={referee}
+                  onChange={e => setReferee(e.target.value)}
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
             </div>
             {/* Footer */}
             <div className="px-6 py-4 border-t flex justify-end gap-2">
