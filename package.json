@@ -24,6 +24,7 @@
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-http-backend": "^3.0.6",
     "js-cookie": "^3.0.5",
+    "oneclub-member-shop": "^0.1.13",
     "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.5",
