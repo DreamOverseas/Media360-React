@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Tabs, Tab, Form, Button, InputGroup } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import Cookies from 'js-cookie';
 import { useSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import DoTermsAndConditions from './DoTermsAndConditions';
+import "../Css/Components.css";
 
 // Environment variable assignments to be used in API calls.
 const CMS_endpoint = import.meta.env.VITE_CMS_ENDPOINT;
@@ -314,144 +315,204 @@ const LoginModal = ({ show, handleClose }) => {
     }
   };
 
+  const inputClass =
+    'w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition text-sm text-gray-800 placeholder-gray-400';
+  const labelClass = 'block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1';
+
   return (
-    <Modal show={show} onHide={handleCloseModal} centered>
-      {/* Modal Header with dynamic title based on active tab */}
-      <Modal.Header closeButton>
-        <Modal.Title><b>{activeTab === 'register' ? `${t("register_button")}` : `${t("login_button")}`}</b></Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {/* Tabs to switch between Register and Login. Default tab is Register */}
-        <Tabs 
-          activeKey={activeTab} 
-          onSelect={(k) => {
-            setActiveTab(k);
-            setSearchParams({ tab: k });
-          }} 
-          style={{ display: 'flex', flexDirection: 'row' }} 
-          fill 
-          justify
-        >
-          <Tab eventKey="register" title={<span dangerouslySetInnerHTML={{__html: t("register")}} />}>
-            <Form className="mt-3">
-              {/* User Name Field */}
-              <Form.Group controlId="regUserName" className="mb-3">
-                <Form.Label>{t("login_username")}</Form.Label>
-                <Form.Control
+    <Modal show={show} onHide={handleCloseModal} centered dialogClassName="login-modal-dialog">
+      <div className="rounded-2xl overflow-hidden shadow-2xl">
+        {/* Gradient header banner */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 pt-6 pb-10 relative">
+          <button
+            onClick={handleCloseModal}
+            className="absolute top-3 right-4 text-white/70 hover:text-white text-xl font-light leading-none"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+          <div className="flex items-center gap-3 mb-1">
+            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+              <span className="text-white text-lg">🏕️</span>
+            </div>
+            <div>
+              <p className="text-white/80 text-xs uppercase tracking-widest">360 Media</p>
+              <h2 className="text-white font-bold text-lg leading-tight">
+                {activeTab === 'register' ? t('register_button') : t('login_button')}
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        {/* Tab switcher — floated up over the gradient */}
+        <div className="px-6 -mt-2 pt-6">
+          <div className="flex bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+            <button
+              onClick={() => { setActiveTab('register'); setSearchParams({ tab: 'register' }); }}
+              className={`flex-1 py-3 text-sm font-semibold transition-all ${
+                activeTab === 'register'
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-inner'
+                  : 'text-gray-500 hover:bg-gray-50'
+              }`}
+            >
+              <div className="leading-tight">
+                <div>{t('register_button')}</div>
+                <div className={`text-xs font-normal mt-0.5 ${activeTab === 'register' ? 'text-blue-100' : 'text-gray-400'}`}>
+                  {i18n.language === 'zh' ? '新用户请点击这里注册' : 'New Users Register Here'}
+                </div>
+              </div>
+            </button>
+            <button
+              onClick={() => { setActiveTab('login'); setSearchParams({ tab: 'login' }); }}
+              className={`flex-1 py-3 text-sm font-semibold transition-all ${
+                activeTab === 'login'
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-inner'
+                  : 'text-gray-500 hover:bg-gray-50'
+              }`}
+            >
+              <div className="leading-tight">
+                <div>{t('login_button')}</div>
+                <div className={`text-xs font-normal mt-0.5 ${activeTab === 'login' ? 'text-blue-100' : 'text-gray-400'}`}>
+                  {i18n.language === 'zh' ? '会员点击此处登录' : 'Members Login Here'}
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Form body */}
+        <div className="px-6 py-5 bg-white">
+          {activeTab === 'register' && (
+            <div className="space-y-4">
+              <div>
+                <label className={labelClass}>{t('login_username')}</label>
+                <input
                   type="text"
+                  className={inputClass}
                   value={regUserName}
                   onChange={(e) => setRegUserName(e.target.value)}
+                  placeholder={t('login_username')}
                 />
-              </Form.Group>
-
-              <Form.Group controlId="regEmail" className="mb-3">
-                <Form.Label>{t("email")}</Form.Label>
-                <Form.Control
+              </div>
+              <div>
+                <label className={labelClass}>{t('email')}</label>
+                <input
                   type="email"
+                  className={inputClass}
                   value={regEmail}
                   onChange={(e) => setRegEmail(e.target.value)}
+                  placeholder="example@email.com"
                 />
-              </Form.Group>
-
-              <Form.Group controlId="regPassword" className="mb-3">
-                <Form.Label>{t("login_pwd")}</Form.Label>
-                <Form.Control
+              </div>
+              <div>
+                <label className={labelClass}>{t('login_pwd')}</label>
+                <input
                   type="password"
+                  className={inputClass}
                   value={regPassword}
                   onChange={(e) => setRegPassword(e.target.value)}
+                  placeholder="••••••••"
                 />
-                <Form.Text muted>{t("login_pwd_info")}</Form.Text>
-              </Form.Group>
-
-              <Form.Group controlId="regConfirmPassword" className="mb-3">
-                <Form.Label>{t("login_comf_pwd")}</Form.Label>
-                <Form.Control
+                <p className="text-xs text-gray-400 mt-1">{t('login_pwd_info')}</p>
+              </div>
+              <div>
+                <label className={labelClass}>{t('login_comf_pwd')}</label>
+                <input
                   type="password"
+                  className={inputClass}
                   value={regConfirmPassword}
                   onChange={(e) => setRegConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
                 />
-              </Form.Group>
-
-              <Form.Group controlId="regVerificationCode" className="mb-3">
-                <Form.Label>{t("login_vrf_code")}</Form.Label>
-                <InputGroup>
-                  <Form.Control
+              </div>
+              <div>
+                <label className={labelClass}>{t('login_vrf_code')}</label>
+                <div className="flex gap-2">
+                  <input
                     type="text"
+                    className={`${inputClass} flex-1`}
                     value={regVerificationCode}
                     onChange={(e) => setRegVerificationCode(e.target.value)}
+                    placeholder="000000"
                   />
-                  <Button
-                    variant="outline-secondary"
+                  <button
                     onClick={handleSendCode}
                     disabled={cooldown > 0}
+                    className="px-3 py-2 rounded-lg text-xs font-semibold border border-gray-300 text-gray-600 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition whitespace-nowrap"
                   >
-                    {cooldown > 0 ? `${t("login_sent")}(${cooldown})` : `${t("login_send_code")}`}
-                  </Button>
-                </InputGroup>
-              </Form.Group>
-
-              {regError && <p className="text-danger">{regError}</p>}
-
-              
-
-              <Form.Group controlId="formAgreement" className="mb-3">
-                <div className="d-flex align-items-center">
-                  <Form.Check
-                    required
-                    type="checkbox"
-                    id="formAgreementCheckbox"
-                    className="me-2 mb-0"
-                    checked={agreed}
-                    onChange={(e) => setAgreed(e.target.checked)}
-                    label="" 
-                    isInvalid={!agreed}
-                  />
-                  <div className='text-sm text-right text-gray-600'>
-                    {t("readTnC")} <DoTermsAndConditions defaultLang={i18n.language ? i18n.language : 'en'}/>
-                  </div>
+                    {cooldown > 0 ? `${t('login_sent')} (${cooldown})` : t('login_send_code')}
+                  </button>
                 </div>
-              </Form.Group>
-
-              <div className="text-end d-grid gap-2">
-                <Button variant="primary" onClick={handleRegister} className="mt-2" >
-                  {t("contactForm_submit")}
-                </Button>
               </div>
-            </Form>
-          </Tab>
 
-          <Tab eventKey="login" title={<span dangerouslySetInnerHTML={{__html: t("login")}} />}>
-            <Form className="mt-3">
-              <Form.Group controlId="loginEmail" className="mb-3">
-                <Form.Label>{t("email")}</Form.Label>
-                <Form.Control
+              {regError && (
+                <div className={`text-xs px-3 py-2 rounded-lg ${regError.includes('success') || regError.includes('成功') ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-500'}`}>
+                  {regError}
+                </div>
+              )}
+
+              <div className="flex items-start gap-2 pt-1">
+                <input
+                  type="checkbox"
+                  id="agreementCheck"
+                  checked={agreed}
+                  onChange={(e) => setAgreed(e.target.checked)}
+                  className="mt-0.5 accent-blue-600 cursor-pointer"
+                />
+                <label htmlFor="agreementCheck" className="text-xs text-gray-500 cursor-pointer">
+                  {t('readTnC')} <DoTermsAndConditions defaultLang={i18n.language ? i18n.language : 'en'} />
+                </label>
+              </div>
+
+              <button
+                onClick={handleRegister}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-sm shadow-md hover:shadow-lg hover:from-blue-700 hover:to-indigo-700 transition-all"
+              >
+                {t('contactForm_submit')}
+              </button>
+            </div>
+          )}
+
+          {activeTab === 'login' && (
+            <div className="space-y-4">
+              <div>
+                <label className={labelClass}>{t('email')}</label>
+                <input
                   type="email"
+                  className={inputClass}
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
+                  placeholder="example@email.com"
                 />
-              </Form.Group>
-
-              <Form.Group controlId="loginPassword" className="mb-3">
-                <Form.Label>{t("login_pwd")}</Form.Label>
-                <Form.Control
+              </div>
+              <div>
+                <label className={labelClass}>{t('login_pwd')}</label>
+                <input
                   type="password"
+                  className={inputClass}
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
+                  placeholder="••••••••"
                 />
-              </Form.Group>
-
-              {loginError && <p className="text-danger">{loginError}</p>}
-
-              <div className="text-end d-grid gap-2">
-                <Button variant="primary" onClick={handleLogin}>
-                  {t("login_button")}
-                </Button>
               </div>
-            </Form>
-          </Tab>
-        </Tabs>
-      </Modal.Body>
-    </Modal >
+
+              {loginError && (
+                <div className="text-xs px-3 py-2 rounded-lg bg-red-50 text-red-500">
+                  {loginError}
+                </div>
+              )}
+
+              <button
+                onClick={handleLogin}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-sm shadow-md hover:shadow-lg hover:from-blue-700 hover:to-indigo-700 transition-all"
+              >
+                {t('login_button')}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </Modal>
   );
 };
 
