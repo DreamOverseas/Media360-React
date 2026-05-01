@@ -49,6 +49,7 @@ function App() {
 
       <div className='App'>
         <Navigation />
+        <div className='App-main'>
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route path='/gallery' element={<Gallery />} />
@@ -158,6 +159,7 @@ function App() {
           {/* 人物详情页 */}
           <Route path='/person/:id' element={<PersonDetail />} />
         </Routes>
+        </div>
         <Footer />
       </div>
       {CHAT_API ?
