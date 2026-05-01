@@ -34,6 +34,7 @@ import ProductRelatedPerson from "./Pages/ProductRelatedPerson.jsx";
 import ProductRelatedNews from "./Pages/ProductRelatedNews.jsx";
 import ProductRelatedEvent from "./Pages/ProductRelatedEvent.jsx";
 import PersonDetail from "./Pages/PersonDetail.jsx";
+import SmartCardVerification from "./Pages/SmartCardVerification.jsx";
 
 function App() {
 
@@ -150,6 +151,9 @@ function App() {
           <Route path='/products/:main/:variant/related-news' element={<ProductRelatedNews />} />
           <Route path='/products/:main/related-event' element={<ProductRelatedEvent />} />
           <Route path='/products/:main/:variant/related-event' element={<ProductRelatedEvent />} />
+
+          {/* 360 Smart Card verification */}
+          <Route path='/360smartcard' element={<SmartCardVerification />} />
 
           {/* 人物详情页 */}
           <Route path='/person/:id' element={<PersonDetail />} />
