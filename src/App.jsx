@@ -89,6 +89,11 @@ function App() {
               englishUrl="cooperation-english"
               chineseUrl="cooperation-chinese"
             />} />
+          <Route path='/eco-live-system' element={
+            <MediaImageDisplay 
+              englishUrl="smartcardclub"
+              chineseUrl="smartcardclub"
+            />} />
           <Route path='/roomlist' element={<RoomList />} />
           <Route path='/book-membership' element={<HtmlContent translationKey="book.membership" imageUrl="/360_smart_card.jpg" imageAlt="smart_card" />} />
           <Route path='/eco-and-culture-tours' element={        
