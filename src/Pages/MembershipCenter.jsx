@@ -6,10 +6,6 @@ import { useTranslation } from "react-i18next";
 import '../Css/MemberCenter.css';
 import { MemberPointMarket } from 'oneclub-member-shop';
 import DetailUpdateBtn from '../Components/DetailUpdateBtn';
-import MembershipSale from '../Components/MemberSale';
-import MemberPointTopupBtn from '../Components/MemberPointTopupBtn';
-import News from '../Components/News.jsx';
-import AnnualBooking from '../Components/AnnualBooking.jsx';
 import MembershipManual from '../Components/MembershipManual.jsx';
 
 const MemberCenter = () => {
