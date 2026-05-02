@@ -371,6 +371,34 @@ const Home = () => {
             ))}
           </Container>
         </section>
+
+        <section className="partner-websites-section">
+          <Container>
+            <div className="section-header text-center">
+              <span className="section-label-blue">{t("home_page.our_platforms") || "Our Platforms"}</span>
+            </div>
+            <div className="partner-logos-grid">
+              {[
+                { url: 'https://1club.world/', logo: `${baseUrl}logo/1club.png`, name: '1Club' },
+                { url: 'https://roseneathholidaypark.au/', logo: `${baseUrl}logo/roseneath.png`, name: 'Roseneath Holiday Park' },
+                { url: 'https://world-cooperation.org/', logo: `${baseUrl}logo/WCO.png`, name: 'World Cooperation' },
+                { url: 'https://meetu.life/', logo: `${baseUrl}logo/meetu.png`, name: 'MeetU' },
+                { url: 'https://chateaulemarais.au/', logo: `${baseUrl}logo/chateau.png`, name: 'Chateau Le Marais' },
+              ].map((partner) => (
+                <a
+                  key={partner.url}
+                  href={partner.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="partner-logo-card"
+                  title={partner.name}
+                >
+                  <img src={partner.logo} alt={partner.name} className="partner-logo-img" />
+                </a>
+              ))}
+            </div>
+          </Container>
+        </section>
       </div>
     </main>
   );

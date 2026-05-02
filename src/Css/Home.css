@@ -1,4 +1,60 @@
 
+/* Partner Websites Section */
+.partner-websites-section {
+  padding: 60px 0;
+  background: #f8fafc;
+}
+
+.partner-logos-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  margin-top: 32px;
+}
+
+.partner-logo-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 28px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  text-decoration: none;
+  min-width: 140px;
+  max-width: 200px;
+}
+
+.partner-logo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+
+.partner-logo-img {
+  width: 100%;
+  max-height: 70px;
+  object-fit: contain;
+  filter: grayscale(20%);
+  transition: filter 0.25s ease;
+}
+
+.partner-logo-card:hover .partner-logo-img {
+  filter: grayscale(0%);
+}
+
+@media (max-width: 576px) {
+  .partner-logos-grid {
+    gap: 20px;
+  }
+  .partner-logo-card {
+    min-width: 110px;
+    padding: 14px 18px;
+  }
+}
+
 .home-page {
 /* Modern CSS Variables for Consistent Theming */
 --primary-color: #2563eb;
