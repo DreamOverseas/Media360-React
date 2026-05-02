@@ -29,7 +29,7 @@ jobs:
           command_timeout: 10m
           script: |
             set -euo pipefail
-            cd /home/ecs-user/roseneath-holiday-park-website
+            cd /home/ecs-user/Media360-React
             echo "[INFO] Current dir: $(pwd)"
             # permission granting
             chmod +x ./deploy.sh
