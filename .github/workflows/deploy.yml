@@ -29,16 +29,23 @@ jobs:
           command_timeout: 10m
           script: |
             set -euo pipefail
+
             cd /home/ecs-user/Media360-React
 
             echo "[INFO] START DEPLOY"
+
             pwd
             ls -la
 
+            echo "[INFO] Reset local changes..."
+            git reset --hard HEAD
+            git clean -fd
+
+            echo "[INFO] Pull latest..."
             git pull origin main
 
             echo "[INFO] Installing..."
-            npm install --legacy-peer-deps
+            npm ci --legacy-peer-deps
 
             echo "[INFO] Building..."
             npm run build
