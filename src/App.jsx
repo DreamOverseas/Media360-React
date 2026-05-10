@@ -94,7 +94,7 @@ function App() {
               englishUrl="smartcardclub"
               chineseUrl="smartcardclub"
             />} />
-          <Route path='/roomlist' element={<RoomList />} />
+          <Route path='/products' element={<RoomList />} />
           <Route path='/book-membership' element={<HtmlContent translationKey="book.membership" imageUrl="/360_smart_card.jpg" imageAlt="smart_card" />} />
           <Route path='/eco-and-culture-tours' element={        
             <MediaImageDisplay 
@@ -129,14 +129,14 @@ function App() {
           <Route path='/revenue-share' element={<HtmlContent translationKey="revenue_share" />} />
 
           {/* 360 Smart Card dropdown */}
-          <Route path='/smart-card/membership-tiers-benefits' element={<HtmlContent translationKey="membership_tiers_benefits_page" />} />
-          <Route path='/smart-card/points-spending-system' element={<HtmlContent translationKey="points_spending_system" />} />
-          <Route path='/smart-card/ecosystem-benefits' element={<HtmlContent translationKey="ecosystem_benefits_page" />} />
-          <Route path='/smart-card/asset-investment-benefits' element={<HtmlContent translationKey="asset_investment_benefits_page" />} />
-          <Route path='/smart-card/membership-system' element={<HtmlContent translationKey="membership_system_page" />} />
-          <Route path='/smart-card/points-circulation' element={<HtmlContent translationKey="points_circulation" />} />
-          <Route path='/smart-card/investment-stay-benefits' element={<HtmlContent translationKey="investment_stay_benefits" />} />
-          <Route path='/smart-card/referral-rewards' element={<HtmlContent translationKey="referral_rewards" />} />
+          <Route path='/360smart-card/membership-tiers-benefits' element={<HtmlContent translationKey="membership_tiers_benefits_page" />} />
+          <Route path='/360smart-card/points-spending-system' element={<HtmlContent translationKey="points_spending_system" />} />
+          <Route path='/360smart-card/ecosystem-benefits' element={<HtmlContent translationKey="ecosystem_benefits_page" />} />
+          <Route path='/360smart-card/blackcard-club' element={<HtmlContent translationKey="asset_investment_benefits_page" />} />
+          <Route path='/360smart-card/membership-system' element={<HtmlContent translationKey="membership_system_page" />} />
+          <Route path='/360smart-card/points-circulation' element={<HtmlContent translationKey="points_circulation" />} />
+          <Route path='/360smart-card/investment-stay-benefits' element={<HtmlContent translationKey="investment_stay_benefits" />} />
+          <Route path='/360smart-card/referral-rewards' element={<HtmlContent translationKey="referral_rewards" />} />
 
           {/* Product pages (migrated from Media360) */}
           <Route path='/products/:main' element={<ProductRouteGuard />}>
@@ -155,7 +155,7 @@ function App() {
           <Route path='/products/:main/:variant/related-event' element={<ProductRelatedEvent />} />
 
           {/* 360 Smart Card verification */}
-          <Route path='/360smartcard' element={<SmartCardVerification />} />
+          <Route path='/360smart-card' element={<SmartCardVerification />} />
 
           {/* 人物详情页 */}
           <Route path='/person/:id' element={<PersonDetail />} />

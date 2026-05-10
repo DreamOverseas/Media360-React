@@ -101,7 +101,7 @@ const Navigation = () => {
                   className='NavNoHighlightWord'
                   title={t("Booking")}
                 >
-                  <NavDropdown.Item href='/roomlist'>
+                  <NavDropdown.Item href='/products'>
                     {t("Room")}
                   </NavDropdown.Item>
                   {/* <NavDropdown.Item href='/FAQ'>
@@ -196,13 +196,13 @@ const Navigation = () => {
                   title={t("SmartCardNav")}
                   id='smart-card-dropdown'
                 >
-                  <NavDropdown.Item href='/smart-card/membership-tiers-benefits'>
+                  <NavDropdown.Item href='/360smart-card/membership-tiers-benefits'>
                     {t("SmartCardNav")}
                   </NavDropdown.Item>
-                  <NavDropdown.Item href='/smart-card/asset-investment-benefits'>
+                  <NavDropdown.Item href='/360smart-card/blackcard-club'>
                     {t("AssetInvestmentBenefits")}
                   </NavDropdown.Item>
-                  <NavDropdown.Item href='/book-membership'>
+                  <NavDropdown.Item href='/360smart-card/book-membership'>
                     {t("BookMembership")}
                   </NavDropdown.Item>
                 </NavDropdown>
