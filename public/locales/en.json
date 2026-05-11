@@ -257,7 +257,7 @@
   "membership_activ": "Active",
   "membership_inactiv": "Inactive",
   "membership_logout": "Log Out",
-  "membership_reglog": "Register / Login",
+  "membership_reglog": "Login",
   "membership_address": "Address",
   "membership_second_person_info": "Second Person Information",
   "membership_fname2": "First Name (Person 2)",

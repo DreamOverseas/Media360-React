@@ -18,26 +18,26 @@ const LoginModal = ({ show, handleClose }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
 
-  // State to manage the active tab. Default is 'register'
+  // State to manage the active tab. Default is 'login' (registration disabled)
   const [activeTab, setActiveTab] = useState(() => {
     const urlTab = searchParams.get('tab');
-    if (urlTab === 'login' || urlTab === 'register') {
-      return urlTab;
-    }
-    return 'register'; // default
+    // if (urlTab === 'login' || urlTab === 'register') {
+    //   return urlTab;
+    // }
+    return 'login'; // default - registration disabled
   });
 
   /* Registration form state variables */
-  const [regUserName, setRegUserName] = useState('');
-  const [regEmail, setRegEmail] = useState('');
-  const [regPassword, setRegPassword] = useState('');
-  const [regConfirmPassword, setRegConfirmPassword] = useState('');
-  const [regVerificationCode, setRegVerificationCode] = useState('');
-  const [agreed, setAgreed] = useState(false);
-  // This state holds the generated verification code after "Send Code" is clicked.
-  const [generatedCode, setGeneratedCode] = useState(null);
-  // Holds error or status messages for registration actions.
-  const [regError, setRegError] = useState('');
+  // const [regUserName, setRegUserName] = useState('');
+  // const [regEmail, setRegEmail] = useState('');
+  // const [regPassword, setRegPassword] = useState('');
+  // const [regConfirmPassword, setRegConfirmPassword] = useState('');
+  // const [regVerificationCode, setRegVerificationCode] = useState('');
+  // const [agreed, setAgreed] = useState(false);
+  // // This state holds the generated verification code after "Send Code" is clicked.
+  // const [generatedCode, setGeneratedCode] = useState(null);
+  // // Holds error or status messages for registration actions.
+  // const [regError, setRegError] = useState('');
 
   /* Login form state variables */
   const [loginEmail, setLoginEmail] = useState('');
@@ -49,10 +49,12 @@ const LoginModal = ({ show, handleClose }) => {
 
   useEffect(() => {
     if (show) {
-      const urlTab = searchParams.get('tab');
-      if (urlTab === 'login' || urlTab === 'register') {
-        setActiveTab(urlTab);
-      }
+      // Registration disabled - keep active tab as 'login'
+      // const urlTab = searchParams.get('tab');
+      // if (urlTab === 'login' || urlTab === 'register') {
+      //   setActiveTab(urlTab);
+      // }
+      setActiveTab('login');
     }
   }, [show, searchParams]);
 
@@ -75,14 +77,14 @@ const LoginModal = ({ show, handleClose }) => {
   /**
  * Helper function to clear all form data in Modal
  */
-  const clearModalData = () => {
-    setRegEmail('');
-    setLoginPassword('');
-    setRegPassword('');
-    setRegConfirmPassword('');
-    setRegVerificationCode('');
-    setRegError('');
-  };
+  // const clearModalData = () => {
+  //   setRegEmail('');
+  //   setLoginPassword('');
+  //   setRegPassword('');
+  //   setRegConfirmPassword('');
+  //   setRegVerificationCode('');
+  //   setRegError('');
+  // };
 
   /**
    * Handle clicking the "Send Code" button in the Registration tab.
@@ -90,137 +92,137 @@ const LoginModal = ({ show, handleClose }) => {
    * the email address appears valid. If valid, generates a random 6-digit code,
    * stores it in state, and sends a POST request to the email service endpoint.
    */
-  const handleSendCode = async () => {
-    if (cooldown > 0) return;
-    // Reset any existing error message.
-    setRegError('');
-
-    setCooldown(60);
-    const timer = setInterval(() => {
-      setCooldown(prev => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    // Check that required fields are populated.
-    if (!regUserName || !regEmail || !regPassword) {
-      setRegError('Please fill out Name, Email, and Password fields before sending the code.');
-      setCooldown(3);
-      return;
-    }
-    // Validate email format.
-    if (!validateEmail(regEmail)) {
-      setRegError('Invalid email address.');
-      setCooldown(3);
-      return;
-    }
-    // Generate a 6-digit code.
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    setGeneratedCode(code);
-
-    try {
-      // Send code to the email service endpoint with the required details.
-      const res = await fetch(`${email_service_endpoint}/do-mail-code-verify`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          verify_code: code,
-          from: 'Roseneath Holiday Park',
-          email: regEmail
-        })
-      });
-      if (!res.ok) {
-        setRegError('Failed to send verification code. Please try again.');
-        setCooldown(0);
-      } else {
-        setRegError('Verification code sent successfully.');
-      }
-    } catch (error) {
-      setRegError('Error sending verification code. Please try again.');
-      setCooldown(0);
-    }
-  };
+  // const handleSendCode = async () => {
+  //   if (cooldown > 0) return;
+  //   // Reset any existing error message.
+  //   setRegError('');
+  //
+  //   setCooldown(60);
+  //   const timer = setInterval(() => {
+  //     setCooldown(prev => {
+  //       if (prev <= 1) {
+  //         clearInterval(timer);
+  //         return 0;
+  //       }
+  //       return prev - 1;
+  //     });
+  //   }, 1000);
+  //
+  //   // Check that required fields are populated.
+  //   if (!regUserName || !regEmail || !regPassword) {
+  //     setRegError('Please fill out Name, Email, and Password fields before sending the code.');
+  //     setCooldown(3);
+  //     return;
+  //   }
+  //   // Validate email format.
+  //   if (!validateEmail(regEmail)) {
+  //     setRegError('Invalid email address.');
+  //     setCooldown(3);
+  //     return;
+  //   }
+  //   // Generate a 6-digit code.
+  //   const code = Math.floor(100000 + Math.random() * 900000).toString();
+  //   setGeneratedCode(code);
+  //
+  //   try {
+  //     // Send code to the email service endpoint with the required details.
+  //     const res = await fetch(`${email_service_endpoint}/do-mail-code-verify`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({
+  //         verify_code: code,
+  //         from: 'Roseneath Holiday Park',
+  //         email: regEmail
+  //       })
+  //     });
+  //     if (!res.ok) {
+  //       setRegError('Failed to send verification code. Please try again.');
+  //       setCooldown(0);
+  //     } else {
+  //       setRegError('Verification code sent successfully.');
+  //     }
+  //   } catch (error) {
+  //     setRegError('Error sending verification code. Please try again.');
+  //     setCooldown(0);
+  //   }
+  // };
 
   /**
    * Handle registration form submission.
    * Validates that all fields are filled, the passwords match,
    * and that the entered verification code matches the one generated.
    */
-  const handleRegister = async () => {
-    // Reset any error message.
-    setRegError('');
-
-    // Validate that all fields are non-empty.
-    if (!regUserName || !regEmail || !regPassword || !regConfirmPassword || !regVerificationCode) {
-      setRegError('Please fill out all registration fields.');
-      return;
-    }
-    // Check that password is at least 8 characters.
-    if (regPassword.length < 8) {
-      setRegError('Password must be over 8 charactors.');
-      setCooldown(3);
-      return;
-    }
-    // Validate that both password fields match.
-    if (regPassword !== regConfirmPassword) {
-      setRegError('Passwords do not match.');
-      setCooldown(3);
-      return;
-    }
-    // Must agree with our user aggreement
-    if (!agreed) {
-      setRegError('Please tick agree with our T&C.');
-      return;
-    }
-    // Validate that the entered verification code matches the generated one.
-    if (regVerificationCode !== generatedCode) {
-      setRegError('Invalid verification code.');
-      return;
-    }
-
-    try {
-      // Create a new entry in the 'RHPMembership' collection type on Strapi.
-      const req_body = JSON.stringify({
-        data: {
-          Name: regUserName,
-          Email: regEmail,
-          Password: regPassword
-        }
-      });
-      const res = await fetch(`https://api.do360.com/api/one-club-memberships`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${CMS_token}`
-        },
-        body: req_body
-      });
-      if (res.ok) {
-        const data = await res.json();
-        // Set cookies for the authentication token and basic user details.
-        Cookies.set('AuthToken', 'roseneath-holiday-park-website', { expires: 7 });
-        const userCookie = {
-          name: regUserName,
-          email: regEmail
-        };
-        Cookies.set('user', JSON.stringify(userCookie));
-        handleClose();
-        clearModalData();
-        navigate('/membership');
-      } else {
-        setRegError('Registration failed. Please try again. Your Email may have linked to an account.');
-      }
-    } catch (error) {
-      console.error(error);
-      setRegError('Error during registration. Please contact us and we are here for help!');
-    }
-  };
+  // const handleRegister = async () => {
+  //   // Reset any error message.
+  //   setRegError('');
+  //
+  //   // Validate that all fields are non-empty.
+  //   if (!regUserName || !regEmail || !regPassword || !regConfirmPassword || !regVerificationCode) {
+  //     setRegError('Please fill out all registration fields.');
+  //     return;
+  //   }
+  //   // Check that password is at least 8 characters.
+  //   if (regPassword.length < 8) {
+  //     setRegError('Password must be over 8 charactors.');
+  //     setCooldown(3);
+  //     return;
+  //   }
+  //   // Validate that both password fields match.
+  //   if (regPassword !== regConfirmPassword) {
+  //     setRegError('Passwords do not match.');
+  //     setCooldown(3);
+  //     return;
+  //   }
+  //   // Must agree with our user aggreement
+  //   if (!agreed) {
+  //     setRegError('Please tick agree with our T&C.');
+  //     return;
+  //   }
+  //   // Validate that the entered verification code matches the generated one.
+  //   if (regVerificationCode !== generatedCode) {
+  //     setRegError('Invalid verification code.');
+  //     return;
+  //   }
+  //
+  //   try {
+  //     // Create a new entry in the 'RHPMembership' collection type on Strapi.
+  //     const req_body = JSON.stringify({
+  //       data: {
+  //         Name: regUserName,
+  //         Email: regEmail,
+  //         Password: regPassword
+  //       }
+  //     });
+  //     const res = await fetch(`https://api.do360.com/api/one-club-memberships`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': `Bearer ${CMS_token}`
+  //       },
+  //       body: req_body
+  //     });
+  //     if (res.ok) {
+  //       const data = await res.json();
+  //       // Set cookies for the authentication token and basic user details.
+  //       Cookies.set('AuthToken', 'roseneath-holiday-park-website', { expires: 7 });
+  //       const userCookie = {
+  //         name: regUserName,
+  //         email: regEmail
+  //       };
+  //       Cookies.set('user', JSON.stringify(userCookie));
+  //       handleClose();
+  //       clearModalData();
+  //       navigate('/membership');
+  //     } else {
+  //       setRegError('Registration failed. Please try again. Your Email may have linked to an account.');
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     setRegError('Error during registration. Please contact us and we are here for help!');
+  //   }
+  // };
 
   /**
    * Handle login form submission.
@@ -310,7 +312,7 @@ const LoginModal = ({ show, handleClose }) => {
           Cookies.set('user', JSON.stringify(userCookie));
           Cookies.set('AuthToken', 'roseneath-holiday-park-website', { expires: 7 });
           handleClose();
-          clearModalData();
+          // clearModalData(); // Registration disabled
           navigate('/membership');
     } catch (error) {
       console.error(error);
@@ -339,16 +341,15 @@ const LoginModal = ({ show, handleClose }) => {
               <span className="text-white text-lg">🏕️</span>
             </div>
             <div>
-              <p className="text-white/80 text-xs uppercase tracking-widest">360 Media</p>
               <h2 className="text-white font-bold text-lg leading-tight">
-                {activeTab === 'register' ? t('register_button') : t('login_button')}
+                {t('login_button')}
               </h2>
             </div>
           </div>
         </div>
 
-        {/* Tab switcher — floated up over the gradient */}
-        <div className="px-6 -mt-2 pt-6">
+        {/* Tab switcher — DISABLED (registration disabled, login only) */}
+        {/* <div className="px-6 -mt-2 pt-6">
           <div className="flex bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
             <button
               onClick={() => { setActiveTab('register'); setSearchParams({ tab: 'register' }); }}
@@ -367,25 +368,21 @@ const LoginModal = ({ show, handleClose }) => {
             </button>
             <button
               onClick={() => { setActiveTab('login'); setSearchParams({ tab: 'login' }); }}
-              className={`flex-1 py-3 text-sm font-semibold transition-all ${
-                activeTab === 'login'
-                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-inner'
-                  : 'text-gray-500 hover:bg-gray-50'
-              }`}
+              className={`flex-1 py-3 text-sm font-semibold transition-all bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-inner`}
             >
               <div className="leading-tight">
                 <div>{t('login_button')}</div>
-                <div className={`text-xs font-normal mt-0.5 ${activeTab === 'login' ? 'text-blue-100' : 'text-gray-400'}`}>
+                <div className={`text-xs font-normal mt-0.5 text-blue-100`}>
                   {i18n.language === 'zh' ? '会员点击此处登录' : 'Members Login Here'}
                 </div>
               </div>
             </button>
           </div>
-        </div>
+        </div> */}
 
         {/* Form body */}
         <div className="px-6 py-5 bg-white">
-          {activeTab === 'register' && (
+          {/* {activeTab === 'register' && (
             <div className="space-y-4">
               <div>
                 <label className={labelClass}>{t('login_username')}</label>
@@ -474,7 +471,7 @@ const LoginModal = ({ show, handleClose }) => {
                 {t('contactForm_submit')}
               </button>
             </div>
-          )}
+          )} */}
 
           {activeTab === 'login' && (
             <div className="space-y-4">
