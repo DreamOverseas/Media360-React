@@ -34,6 +34,7 @@ import ProductRelatedNews from "./Pages/ProductRelatedNews.jsx";
 import ProductRelatedEvent from "./Pages/ProductRelatedEvent.jsx";
 import PersonDetail from "./Pages/PersonDetail.jsx";
 import SmartCardVerification from "./Pages/SmartCardVerification.jsx";
+import JoinApplication from "./Pages/JoinApplication.jsx";
 
 function App() {
 
@@ -156,6 +157,9 @@ function App() {
 
           {/* 360 Smart Card verification */}
           <Route path='/360smart-card' element={<SmartCardVerification />} />
+
+          {/* Join application forms */}
+          <Route path='/join-application' element={<JoinApplication />} />
 
           {/* 人物详情页 */}
           <Route path='/person/:id' element={<PersonDetail />} />

@@ -154,6 +154,10 @@ const Navigation = () => {
                   <NavDropdown.Item href='/internships-career-pathways'>
                     {t("InternshipsCareerPathways")}
                   </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href='/join-application'>
+                    {t("join_nav_apply")}
+                  </NavDropdown.Item>
                 </NavDropdown>
 
                 <Nav.Link
