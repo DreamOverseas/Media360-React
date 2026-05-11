@@ -104,6 +104,12 @@ const Navigation = () => {
                   <NavDropdown.Item href='/products'>
                     {t("Room")}
                   </NavDropdown.Item>
+                  <NavDropdown.Item href='/gallery'>
+                    {t("Gallery")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/join-membership'>
+                    {t("EcoLiveSystem")}
+                  </NavDropdown.Item>
                   {/* <NavDropdown.Item href='/FAQ'>
                     {t("StayAndGuide")}
                   </NavDropdown.Item>
@@ -123,9 +129,6 @@ const Navigation = () => {
                   <NavDropdown.Item href='/invest-in-eco-stays'>
                     {t("InvestInEcoStays")}
                   </NavDropdown.Item>
-                  <NavDropdown.Item href='/land-owner-partnership'>
-                    {t("LandOwnerPartnership")}
-                  </NavDropdown.Item>
                   <NavDropdown.Item href='/asset-growth-roadmap'>
                     {t("AssetGrowthRoadmap")}
                   </NavDropdown.Item>
@@ -136,23 +139,26 @@ const Navigation = () => {
                   title={t("JoinUs")}
                   id='joinus-dropdown'
                 >
-                  <NavDropdown.Item href='/influencer'>
+                  {/* <NavDropdown.Item href='/influencer'>
                     {t("Influencer")}
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href='/events-activities'>
-                    {t("360CultureAndEvents")}
+                  </NavDropdown.Item> */}
+                  <NavDropdown.Item href='/partnership-plan'>
+                    {t("PartnershipPlan")}
                   </NavDropdown.Item>
                   <NavDropdown.Item href='/product-service'>
                     {t("Partnership")}
                   </NavDropdown.Item>
+                  <NavDropdown.Item href='/events-activities'>
+                    {t("360CultureAndEvents")}
+                  </NavDropdown.Item>
                   <NavDropdown.Item href='/strategic'>
                     {t("Strategic")}
                   </NavDropdown.Item>
-                  <NavDropdown.Item href='/eco-live-system'>
-                    {t("EcoLiveSystem")}
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href='/internships-career-pathways'>
+                  {/* <NavDropdown.Item href='/internships-career-pathways'>
                     {t("InternshipsCareerPathways")}
+                  </NavDropdown.Item> */}
+                  <NavDropdown.Item href='/how-it-works'>
+                    {t("HowItWorks")}
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item href='/join-application'>
@@ -161,17 +167,17 @@ const Navigation = () => {
                 </NavDropdown>
 
                 <Nav.Link
-                  className={`NavWord ${location.pathname === "/how-it-works" ? "NavActive" : ""}`}
-                  href='/how-it-works'
+                  className={`NavWord ${location.pathname === "/land-owner-partnership" ? "NavActive" : ""}`}
+                  href='/land-owner-partnership'
                 >
-                  {t("HowItWorks")}
+                  {t("LandOwnerPartnership")}
                 </Nav.Link>
 
                 <Nav.Link
-                  className={`NavWord ${location.pathname === "/gallery" ? "NavActive" : ""}`}
-                  href='/gallery'
+                  className={`NavWord ${location.pathname === "/360-iip" ? "NavActive" : ""}`}
+                  href='/360-iip'
                 >
-                  {t("Gallery")}
+                  {t("360IIP")}
                 </Nav.Link>
 
                 <NavDropdown
@@ -195,7 +201,7 @@ const Navigation = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
 
-                <NavDropdown
+                {/* <NavDropdown
                   className='NavNoHighlightWord'
                   title={t("SmartCardNav")}
                   id='smart-card-dropdown'
@@ -209,14 +215,7 @@ const Navigation = () => {
                   <NavDropdown.Item href='/360smart-card/book-membership'>
                     {t("BookMembership")}
                   </NavDropdown.Item>
-                </NavDropdown>
-
-                <Nav.Link
-                  className={`NavWord ${location.pathname === "/360-iip" ? "NavActive" : ""}`}
-                  href='/360-iip'
-                >
-                  {t("360IIP")}
-                </Nav.Link>
+                </NavDropdown> */}
 
                 {/* <NavDropdown
                   className='NavNoHighlightWord nav-language'

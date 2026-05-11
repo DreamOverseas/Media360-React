@@ -90,7 +90,12 @@ function App() {
               englishUrl="cooperation-english"
               chineseUrl="cooperation-chinese"
             />} />
-          <Route path='/eco-live-system' element={
+          <Route path='/partnership-plan' element={
+            <MediaImageDisplay 
+              englishUrl="partnership-plan"
+              chineseUrl="partnership-plan"
+            />} />
+          <Route path='/join-membership' element={
             <MediaImageDisplay 
               englishUrl="smartcardclub"
               chineseUrl="smartcardclub"
