@@ -126,11 +126,21 @@ const Navigation = () => {
                   title={t("InvestOwn")}
                   id='invest-own-dropdown'
                 >
+                  <NavDropdown.Item href='/influencer'>
+                    {t("Influencer")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/partnership-plan'>
+                    {t("PartnershipPlan")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/policy'>
+                    {t("Policy")}
+                  </NavDropdown.Item>
                   <NavDropdown.Item href='/invest-in-eco-stays'>
                     {t("InvestInEcoStays")}
                   </NavDropdown.Item>
-                  <NavDropdown.Item href='/asset-growth-roadmap'>
-                    {t("AssetGrowthRoadmap")}
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href='/join-application'>
+                    {t("join_nav_apply")}
                   </NavDropdown.Item>
                 </NavDropdown>
 
@@ -139,12 +149,6 @@ const Navigation = () => {
                   title={t("JoinUs")}
                   id='joinus-dropdown'
                 >
-                  {/* <NavDropdown.Item href='/influencer'>
-                    {t("Influencer")}
-                  </NavDropdown.Item> */}
-                  <NavDropdown.Item href='/partnership-plan'>
-                    {t("PartnershipPlan")}
-                  </NavDropdown.Item>
                   <NavDropdown.Item href='/product-service'>
                     {t("Partnership")}
                   </NavDropdown.Item>
@@ -157,21 +161,27 @@ const Navigation = () => {
                   {/* <NavDropdown.Item href='/internships-career-pathways'>
                     {t("InternshipsCareerPathways")}
                   </NavDropdown.Item> */}
-                  <NavDropdown.Item href='/how-it-works'>
-                    {t("HowItWorks")}
-                  </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item href='/join-application'>
                     {t("join_nav_apply")}
                   </NavDropdown.Item>
                 </NavDropdown>
 
-                <Nav.Link
-                  className={`NavWord ${location.pathname === "/land-owner-partnership" ? "NavActive" : ""}`}
-                  href='/land-owner-partnership'
+                <NavDropdown
+                  className='NavNoHighlightWord'
+                  title={t("LandOwnerJoin")}
+                  id='land-owner-join-dropdown'
                 >
-                  {t("LandOwnerPartnership")}
-                </Nav.Link>
+                  <NavDropdown.Item href='/land-owner-partnership'>
+                    {t("LandOwnerPartnership")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/how-it-works'>
+                    {t("HowItWorks")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/asset-growth-roadmap'>
+                    {t("AssetGrowthRoadmap")}
+                  </NavDropdown.Item>
+                </NavDropdown>
 
                 <Nav.Link
                   className={`NavWord ${location.pathname === "/360-iip" ? "NavActive" : ""}`}
@@ -192,9 +202,6 @@ const Navigation = () => {
                   </NavDropdown.Item> */}
                   <NavDropdown.Item href='/founder-ip'>
                     {t("FounderIP")}
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href='/policy'>
-                    {t("Policy")}
                   </NavDropdown.Item>
                   <NavDropdown.Item href='/contact-us'>
                     {t("Contact")}
