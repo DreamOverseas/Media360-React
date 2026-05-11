@@ -83,12 +83,9 @@ const Footer = () => {
             md={3}
             className='footer-aboutus-info text-center text-md-left mb-3 mb-md-0'
           >
-            <h5 className='footer-aboutus-title'>Roseneath Holiday Park Management Pty Ltd</h5>
-            <p>ACN: 679 085 477 </p>
-            <p>ABN: 52 679 085 477 </p>
-            <p>Bank name: CBA </p>
-            <p>BSB: 063 182 </p>
-            <p>Account Number: 1177 8453 </p>
+            <h5 className='footer-aboutus-title'>{t("footer_company_name")}</h5>
+            <p>{t("footer_abn")} </p>
+            <p>{t("footer_account")} </p>
           </Col>
         </Row>
       </Container>
