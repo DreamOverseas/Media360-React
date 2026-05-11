@@ -372,7 +372,7 @@ const Home = () => {
           </Container>
         </section>
 
-        <section className="partner-websites-section">
+        {/* <section className="partner-websites-section">
           <Container>
             <div className="section-header text-center">
               <span className="section-label-blue">{t("home_page.our_platforms") || "Our Platforms"}</span>
@@ -398,7 +398,7 @@ const Home = () => {
               ))}
             </div>
           </Container>
-        </section>
+        </section> */}
       </div>
     </main>
   );
