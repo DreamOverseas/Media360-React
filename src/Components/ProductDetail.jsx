@@ -275,7 +275,7 @@ const ProductDetail = () => {
   const DetailHeading =
     brand?.MainProduct_url === (baseurl || "").split("/")[0]
       ? "品牌简介"
-      : "产品简介";
+      : "简介";
   const SpotsHeading = language === "zh" ? "附近的景点" : "Nearby Spots";
 
   /* Related info buttons — shared between desktop and mobile */
