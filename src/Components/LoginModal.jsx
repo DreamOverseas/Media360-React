@@ -18,13 +18,13 @@ const LoginModal = ({ show, handleClose }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
 
-  // State to manage the active tab. Default is 'login' (registration disabled)
+  // State to manage the active tab.
   const [activeTab, setActiveTab] = useState(() => {
     const urlTab = searchParams.get('tab');
-    // if (urlTab === 'login' || urlTab === 'register') {
-    //   return urlTab;
-    // }
-    return 'login'; // default - registration disabled
+    if (urlTab === 'login' || urlTab === 'register') {
+      return urlTab;
+    }
+    return 'login';
   });
 
   /* Registration form state variables */
@@ -49,12 +49,12 @@ const LoginModal = ({ show, handleClose }) => {
 
   useEffect(() => {
     if (show) {
-      // Registration disabled - keep active tab as 'login'
-      // const urlTab = searchParams.get('tab');
-      // if (urlTab === 'login' || urlTab === 'register') {
-      //   setActiveTab(urlTab);
-      // }
-      setActiveTab('login');
+      const urlTab = searchParams.get('tab');
+      if (urlTab === 'login' || urlTab === 'register') {
+        setActiveTab(urlTab);
+      } else {
+        setActiveTab('login');
+      }
     }
   }, [show, searchParams]);
 
@@ -348,11 +348,14 @@ const LoginModal = ({ show, handleClose }) => {
           </div>
         </div>
 
-        {/* Tab switcher — DISABLED (registration disabled, login only) */}
-        {/* <div className="px-6 -mt-2 pt-6">
+        {/* Tab switcher */}
+        <div className="px-6 -mt-2 pt-6">
           <div className="flex bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
             <button
-              onClick={() => { setActiveTab('register'); setSearchParams({ tab: 'register' }); }}
+              onClick={() => {
+                handleClose();
+                navigate('/join-application');
+              }}
               className={`flex-1 py-3 text-sm font-semibold transition-all ${
                 activeTab === 'register'
                   ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-inner'
@@ -368,17 +371,21 @@ const LoginModal = ({ show, handleClose }) => {
             </button>
             <button
               onClick={() => { setActiveTab('login'); setSearchParams({ tab: 'login' }); }}
-              className={`flex-1 py-3 text-sm font-semibold transition-all bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-inner`}
+              className={`flex-1 py-3 text-sm font-semibold transition-all ${
+                activeTab === 'login'
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-inner'
+                  : 'text-gray-500 hover:bg-gray-50'
+              }`}
             >
               <div className="leading-tight">
                 <div>{t('login_button')}</div>
-                <div className={`text-xs font-normal mt-0.5 text-blue-100`}>
+                <div className={`text-xs font-normal mt-0.5 ${activeTab === 'login' ? 'text-blue-100' : 'text-gray-400'}`}>
                   {i18n.language === 'zh' ? '会员点击此处登录' : 'Members Login Here'}
                 </div>
               </div>
             </button>
           </div>
-        </div> */}
+        </div>
 
         {/* Form body */}
         <div className="px-6 py-5 bg-white">

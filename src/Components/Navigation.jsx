@@ -107,6 +107,9 @@ const Navigation = () => {
                   <NavDropdown.Item href='/gallery'>
                     {t("Gallery")}
                   </NavDropdown.Item>
+                  <NavDropdown.Item href='/eco-guide'>
+                    {t("Policy")}
+                  </NavDropdown.Item>
                   <NavDropdown.Item href='/join-membership'>
                     {t("EcoLiveSystem")}
                   </NavDropdown.Item>
@@ -131,9 +134,6 @@ const Navigation = () => {
                   </NavDropdown.Item>
                   <NavDropdown.Item href='/partnership-plan'>
                     {t("PartnershipPlan")}
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href='/policy'>
-                    {t("Policy")}
                   </NavDropdown.Item>
                   <NavDropdown.Item href='/invest-in-eco-stays'>
                     {t("InvestInEcoStays")}

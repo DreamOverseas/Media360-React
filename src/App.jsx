@@ -55,7 +55,7 @@ function App() {
           <Route path='/gallery' element={<Gallery />} />
           <Route path='/about-us' element={<About />} />
           <Route path='/contact-us' element={<Contact />} />
-          <Route path='/policy' element={<HtmlContent translationKey="guest_policy" />} />
+          <Route path='/eco-guide' element={<HtmlContent translationKey="guest_policy" />} />
           <Route path='/FAQ' element={<HtmlContent translationKey="stay_and_guide_content" />} />
           <Route path='/individual-visitors' element={<IndividualVisitors />} />
           <Route path='/group-visitors' element={<GroupVisitors />} />
