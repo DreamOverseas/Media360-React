@@ -277,6 +277,49 @@ const ProductDetail = () => {
       ? "品牌简介"
       : "简介";
   const SpotsHeading = language === "zh" ? "附近的景点" : "Nearby Spots";
+  const isChateauLeMarais = product?.url === "Chateau-Le-Marais";
+
+  const signatureOrchardContent = `Signature Orchard｜生态果园与自然生活体系
+
+Signature Orchard（生态签名果园）是 Chateau Le Marais 最具代表性的生态资产之一。
+
+该果园位于 Wallis Island 原生态自然环境之中，融合热带、亚热带与温带植物系统，形成一个集生态、健康、农业、文旅与自然生活于一体的综合生态环境。
+
+整个 Orchard 拥有40多种果树、特色植物、香料及 wellness 导向植物系统，包括：
+
+- 夏威夷果（Macadamia）
+- 嘉宝果（Jaboticaba）
+- 澳洲指橙（Finger Lime）
+- 热带柑橘类
+- 多种珍稀水果
+- 原生可食植物
+- 香草与调味植物
+- 芳香与 wellness 植物系统
+
+Signature Orchard 不仅仅是传统农业，更是：
+
+- 生态文旅体验
+- 有机生活方式
+- Wellness retreat
+- 自然疗愈
+- Farm-to-table 餐饮概念
+- 可持续生态教育
+- 高端生态生活方式
+
+整个 Orchard 系统也是 DO360 Eco Living 体系的重要组成部分，结合：
+
+- 自然
+- 健康
+- 可持续发展
+- 生态文旅
+- 智能生态生活
+- 土地与生态资产运营
+
+未来将进一步发展为：
+
+“生态生活 + 高端文旅 + Wellness + 自然疗愈”
+
+相结合的 Signature Botanical Collection。`;
 
   /* Related info buttons — shared between desktop and mobile */
   const RelatedButtons = () => (
@@ -503,6 +546,34 @@ const ProductDetail = () => {
                   detail={Detail}
                   defaultOpen={false}
                 />
+
+                {isChateauLeMarais && (
+                  <div className="variants-div">
+                    <Tabs
+                      defaultActiveKey="eco-feast"
+                      id="chateau-le-marais-submenu-tabs"
+                      className="product-category-tabs"
+                    >
+                      <Tab eventKey="private-meeting" title="私享会晤">
+                        <div className="mt-3 detail-container">内容即将上线</div>
+                      </Tab>
+                      <Tab eventKey="island-wedding" title="岛屿婚礼">
+                        <div className="mt-3 detail-container">内容即将上线</div>
+                      </Tab>
+                      <Tab eventKey="global-launch" title="全球发布会">
+                        <div className="mt-3 detail-container">内容即将上线</div>
+                      </Tab>
+                      <Tab eventKey="black-club" title="黑卡俱乐部">
+                        <div className="mt-3 detail-container">内容即将上线</div>
+                      </Tab>
+                      <Tab eventKey="eco-feast" title="顶级生态盛宴">
+                        <div className="mt-3 detail-container">
+                          <ReactMarkdown>{signatureOrchardContent}</ReactMarkdown>
+                        </div>
+                      </Tab>
+                    </Tabs>
+                  </div>
+                )}
 
                 {spots !== "N/A" && (
                   <AccordionItem
