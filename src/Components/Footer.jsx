@@ -15,15 +15,15 @@ const Footer = () => {
 
   return (
     <div className='footer-body'>
-      <Container>
-        <Row className='footer-content'>
+      <Container fluid>
+        <Row className='footer-content justify-content-center'>
           <Col
             xs={12}
-            md={3}
+            md={2}
             className='footer-logo-section d-flex flex-column align-items-center mb-3 mb-md-0'
           >
             <Row>
-              <Image src='logo192.png' className='footer-logo'/>
+              <Image src='/logo192.png' className='footer-logo'/>
             </Row>
             <Row>
               <div className="flex justify-center items-center gap-2 mb-3">
@@ -52,7 +52,7 @@ const Footer = () => {
             </Row>
           </Col>
           <Col xs={12}
-            md={3}
+            md={2}
             className='footer-aboutus-info text-center text-md-left mb-3 mb-md-0'>
             <Row className="contact-info-row">
               <div>
@@ -66,7 +66,13 @@ const Footer = () => {
             </Row>
           </Col>
           <Col xs={12}
-            md={3}
+            md={2}
+            className='footer-aboutus-info text-center text-md-left mb-3 mb-md-0'>
+            <p><b>微信 WeChat</b></p>
+            <Image src='/extended.svg' alt='微信 WeChat' style={{ maxWidth: "160px", width: "100%", height: "auto" }} />
+          </Col>
+          <Col xs={12}
+            md={2}
             className='footer-aboutus-info text-center text-md-left mb-3 mb-md-0'>
             <Row className="contact-info-row">
               <div>
@@ -80,7 +86,7 @@ const Footer = () => {
           </Col>        
           <Col
             xs={12}
-            md={3}
+            md={2}
             className='footer-aboutus-info text-center text-md-left mb-3 mb-md-0'
           >
             <h5 className='footer-aboutus-title'>{t("footer_company_name")}</h5>
