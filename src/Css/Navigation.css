@@ -241,7 +241,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  overflow-x: auto;
+  overflow: visible;
 }
 
 .nav-login-button {
