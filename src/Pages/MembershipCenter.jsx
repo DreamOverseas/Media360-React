@@ -158,6 +158,38 @@ const MemberCenter = () => {
             </Card>
 
             <br />
+            <Card className="shadow">
+                <Card.Body>
+                    <Row className="mb-3">
+                        <Col sm={12}>
+                            <h5 className="mb-4">充值信息</h5>
+                        </Col>
+                    </Row>
+                    <Row className="mb-3">
+                        <Col sm={3} className="text-muted">银行账户</Col>
+                        <Col sm={9}>Dream Overseas Group Pty Ltd</Col>
+                    </Row>
+                    <Row className="mb-3">
+                        <Col sm={3} className="text-muted">ABN</Col>
+                        <Col sm={9}>531 191 108 60</Col>
+                    </Row>
+                    <Row className="mb-3">
+                        <Col sm={3} className="text-muted">账号</Col>
+                        <Col sm={9}>083004-791627191</Col>
+                    </Row>
+                    <Row className="mb-3">
+                        <Col sm={12}>
+                            <div style={{backgroundColor: '#f8f9fa', padding: '12px', borderRadius: '4px', borderLeft: '4px solid #007bff'}}>
+                                <p className="mb-0" style={{fontSize: '14px', color: '#666'}}>
+                                    <strong>重要提示：</strong>请在转账备注中写明您的会员号（{user.number}），我们将在后台核实后给您增加"现金"。
+                                </p>
+                            </div>
+                        </Col>
+                    </Row>
+                </Card.Body>
+            </Card>
+
+            <br />
             <MemberPointMarket
                 cmsEndpoint={import.meta.env.VITE_CMS_ENDPOINT}
                 cmsApiKey={import.meta.env.VITE_CMS_TOKEN}
