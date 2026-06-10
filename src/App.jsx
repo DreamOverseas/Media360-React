@@ -60,7 +60,7 @@ function App() {
         <div className='App-main'>
         <Routes>
           <Route exact path='/' element={<Home />} />
-          <Route path='/old' element={<ExternalRedirect to="https://media360-react.vercel.app/" />} />
+          <Route path='/old' element={<ExternalRedirect to="https://old360-media.vercel.app/" />} />
           <Route path='/gallery' element={<Gallery />} />
           <Route path='/about-us' element={<About />} />
           <Route path='/contact-us' element={<Contact />} />
