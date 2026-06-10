@@ -1,5 +1,5 @@
 // Utils Imports
-import React from "react";
+import React, { useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { Route, Routes } from "react-router-dom";
 import i18n from "./i18n.js"; // Ensure you have i18n setup correctly
@@ -36,6 +36,14 @@ import PersonDetail from "./Pages/PersonDetail.jsx";
 import SmartCardVerification from "./Pages/SmartCardVerification.jsx";
 import JoinApplication from "./Pages/JoinApplication.jsx";
 
+// External Redirect Component
+const ExternalRedirect = ({ to }) => {
+  useEffect(() => {
+    window.location.href = to;
+  }, [to]);
+  return null;
+};
+
 function App() {
 
   const vite_openai_api_url = import.meta.env.VITE_OPENAI_API_URL;
@@ -52,6 +60,7 @@ function App() {
         <div className='App-main'>
         <Routes>
           <Route exact path='/' element={<Home />} />
+          <Route path='/old' element={<ExternalRedirect to="https://media360-react.vercel.app/" />} />
           <Route path='/gallery' element={<Gallery />} />
           <Route path='/about-us' element={<About />} />
           <Route path='/contact-us' element={<Contact />} />
