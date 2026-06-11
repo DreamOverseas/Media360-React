@@ -35,6 +35,7 @@ import ProductRelatedEvent from "./Pages/ProductRelatedEvent.jsx";
 import PersonDetail from "./Pages/PersonDetail.jsx";
 import SmartCardVerification from "./Pages/SmartCardVerification.jsx";
 import JoinApplication from "./Pages/JoinApplication.jsx";
+import Application from "./Pages/Application.jsx";
 
 // External Redirect Component
 const ExternalRedirect = ({ to }) => {
@@ -174,6 +175,7 @@ function App() {
 
           {/* Join application forms */}
           <Route path='/join-application' element={<JoinApplication />} />
+          <Route path='/application' element={<Application />} />
 
           {/* 人物详情页 */}
           <Route path='/person/:id' element={<PersonDetail />} />

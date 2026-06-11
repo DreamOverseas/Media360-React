@@ -524,5 +524,78 @@
   "join_submit_success": "您的申请已成功提交！我们将尽快与您联系。",
   "join_submit_error": "提交时发生错误，请检查填写内容后重试。",
   "join_submitting": "提交中...",
-  "join_submit_another": "再次提交"
+  "join_submit_another": "再次提交",
+  "whds_form_mch": {
+    "title": "商家/赞助商注册",
+    "subtitle": "请填写以下信息完成注册，参与网红推广大赛",
+    "basic_info": {
+      "title": "基本信息",
+      "company_name": "商家名称 *",
+      "company_name_ph": "请输入商家/公司名称",
+      "industry": "行业类别 *",
+      "industry_select": "请选择行业类别",
+      "industry_beauty": "美妆护肤",
+      "industry_fashion": "时尚服饰",
+      "industry_food": "食品饮料",
+      "industry_electronics": "数码电子",
+      "industry_home": "家居用品",
+      "industry_health": "健康保健",
+      "industry_education": "教育培训",
+      "industry_travel": "旅游出行",
+      "industry_finance": "金融服务",
+      "industry_entertainment": "娱乐游戏",
+      "industry_other": "其他",
+      "website": "公司网站",
+      "description": "公司描述 *",
+      "description_ph": "简要描述您的公司业务、品牌理念和发展历程"
+    },
+    "contact": {
+      "title": "负责人信息",
+      "lastname": "负责人姓 *",
+      "lastname_ph": "输入姓",
+      "firstname": "负责人名 *",
+      "firstname_ph": "输入名",
+      "email": "电子邮箱 *",
+      "email_ph": "输入电子邮箱",
+      "phone": "联系电话 *",
+      "phone_ph": "输入联系电话"
+    },
+    "terms": {
+      "title": "入驻条款",
+      "sponsorship": "赞助形式 *",
+      "sponsorship_ph": "填写您意向的赞助方式: 商品/服务，法币，数字货币并填写实际估值的价格",
+      "exclusive": "独家赞助",
+      "exclusive_ph": "如您希望就某个领域独家赞助，请填写实际估值的价格 （选填）",
+      "reference": "推荐网红",
+      "reference_ph": "如您希望自己推荐网红，请填写网红的信息以及联系方式（选填）",
+      "additional": "赞助额外条件",
+      "additional_ph": "如您有特殊的赞助方式请填写详细信息例如分红、形式（选填）"
+    },
+    "submit": "提交注册申请"
+  },
+  "whds_errors": {
+    "file_license_too_large": "部分文件大小超过 10MB，未添加！",
+    "file_product_too_large": "部分文件大小超过 5MB，未添加！",
+    "company_name_required": "商家名称不能为空",
+    "company_description_required": "请填写相关公司简介",
+    "industry_required": "请选择行业类别",
+    "contact_firstname_required": "负责人名字不能为空",
+    "contact_lastname_required": "负责人姓不能为空",
+    "email_required": "电子邮箱不能为空",
+    "email_invalid": "电子邮箱格式不正确",
+    "phone_required": "电话不能为空",
+    "phone_invalid": "电话格式不正确",
+    "sponsorship_required": "请填写赞助形式"
+  },
+  "whds_page": {
+    "submit_success": "提交成功",
+    "submit_success_msg": "您的信息已成功上传！",
+    "submit_error": "提交失败",
+    "submit_error_msg": "提交失败，请检查网络后重试。",
+    "retry": "重试",
+    "close": "关闭",
+    "registration_method": "报名方式",
+    "uploading": "正在上传，请稍候...",
+    "tab_merchant": "商家/赞助商注册"
+  }
 }

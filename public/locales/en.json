@@ -524,5 +524,78 @@
   "join_submit_success": "Your application has been submitted successfully! We will be in touch shortly.",
   "join_submit_error": "An error occurred. Please check your inputs and try again.",
   "join_submitting": "Submitting...",
-  "join_submit_another": "Submit Another Application"
+  "join_submit_another": "Submit Another Application",
+  "whds_form_mch": {
+    "title": "Merchant/Sponsor Registration",
+    "subtitle": "Please fill out the following information to complete registration and join the influencer competition",
+    "basic_info": {
+      "title": "Basic Information",
+      "company_name": "Company Name *",
+      "company_name_ph": "Enter merchant/company name",
+      "industry": "Industry Category *",
+      "industry_select": "Select industry",
+      "industry_beauty": "Beauty & Skincare",
+      "industry_fashion": "Fashion",
+      "industry_food": "Food & Beverages",
+      "industry_electronics": "Electronics",
+      "industry_home": "Home Products",
+      "industry_health": "Health & Wellness",
+      "industry_education": "Education & Training",
+      "industry_travel": "Travel",
+      "industry_finance": "Finance",
+      "industry_entertainment": "Entertainment & Gaming",
+      "industry_other": "Other",
+      "website": "Company Website",
+      "description": "Company Description *",
+      "description_ph": "Briefly describe your business, brand philosophy, and history"
+    },
+    "contact": {
+      "title": "Contact Person",
+      "lastname": "Last Name *",
+      "lastname_ph": "Enter last name",
+      "firstname": "First Name *",
+      "firstname_ph": "Enter first name",
+      "email": "Email *",
+      "email_ph": "Enter email address",
+      "phone": "Phone *",
+      "phone_ph": "Enter phone number"
+    },
+    "terms": {
+      "title": "Sponsorship Terms",
+      "sponsorship": "Sponsorship Format *",
+      "sponsorship_ph": "Enter your sponsorship intention: goods/services, fiat, crypto, and estimated value",
+      "exclusive": "Exclusive Sponsorship",
+      "exclusive_ph": "If you wish to apply for exclusive sponsorship in a field, specify the estimated value (optional)",
+      "reference": "Recommended Influencers",
+      "reference_ph": "If you wish to recommend influencers, please provide their information and contact (optional)",
+      "additional": "Additional Sponsorship Conditions",
+      "additional_ph": "If you have special conditions, specify details such as profit sharing, format, etc. (optional)"
+    },
+    "submit": "Submit Application"
+  },
+  "whds_errors": {
+    "file_license_too_large": "Some license files exceed 10MB and were not added!",
+    "file_product_too_large": "Some product images exceed 5MB and were not added!",
+    "company_name_required": "Company name cannot be empty",
+    "company_description_required": "Please provide a company description",
+    "industry_required": "Please select an industry category",
+    "contact_firstname_required": "Contact person's first name is required",
+    "contact_lastname_required": "Contact person's last name is required",
+    "email_required": "Email cannot be empty",
+    "email_invalid": "Invalid email format",
+    "phone_required": "Phone number cannot be empty",
+    "phone_invalid": "Invalid phone number format",
+    "sponsorship_required": "Please specify sponsorship format"
+  },
+  "whds_page": {
+    "submit_success": "Submission Successful",
+    "submit_success_msg": "Your information has been uploaded successfully!",
+    "submit_error": "Submission Failed",
+    "submit_error_msg": "Submission failed. Please check your network or try again later.",
+    "retry": "Retry",
+    "close": "Close",
+    "registration_method": "Registration Method",
+    "uploading": "Uploading, please wait...",
+    "tab_merchant": "Merchant/Sponsor Registration"
+  }
 }
