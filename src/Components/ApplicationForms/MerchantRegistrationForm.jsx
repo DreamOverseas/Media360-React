@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import ClubMembershipTermsAgreement from "../ClubMembershipTermsAgreement.jsx";
 
 const initialMerchantFormData = {
   companyName: "",
@@ -21,6 +22,8 @@ const initialMerchantFormData = {
 const MerchantRegistrationForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState(initialMerchantFormData);
   const [errors, setErrors] = useState({});
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsError, setTermsError] = useState("");
   const { t } = useTranslation();
 
   const handleChange = (event) => {
@@ -58,6 +61,12 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!acceptedTerms) {
+      setTermsError("Please read and agree to 360 CLUB MEMBERSHIP TERMS & CONDITIONS first. / 请先阅读并同意《360俱乐部会员条款与条件》。");
+      return;
+    }
+
+    setTermsError("");
     if (validateForm()) {
       onSubmit(formData);
     }
@@ -265,6 +274,16 @@ const MerchantRegistrationForm = ({ onSubmit }) => {
             onChange={handleChange}
           />
         </Form.Group>
+
+        <ClubMembershipTermsAgreement
+          checked={acceptedTerms}
+          onChange={(checked) => {
+            setAcceptedTerms(checked);
+            if (checked) setTermsError("");
+          }}
+          error={termsError}
+          checkboxId="merchant-registration-terms"
+        />
       </div>
 
       <div className="d-grid gap-2">

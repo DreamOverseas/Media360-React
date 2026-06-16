@@ -7,10 +7,13 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
 import PageTitle from '../Components/PageTitle.jsx';
+import ClubMembershipTermsAgreement from '../Components/ClubMembershipTermsAgreement.jsx';
 
 const API_BASE = 'https://api.do360.com';
 const APP_API = `${API_BASE}/api/applications`;
 const UPLOAD_API = `${API_BASE}/api/upload`;
+const TERMS_REQUIRED_MSG =
+  'Please read and agree to 360 CLUB MEMBERSHIP TERMS & CONDITIONS first. / 请先阅读并同意《360俱乐部会员条款与条件》。';
 
 // ─────────────────────────────────────────────────────
 // Shared helpers
@@ -76,6 +79,8 @@ const InfluencerForm = () => {
     { platform: 'douyin', url: '', followers: '' },
   ]);
   const [categories, setCategories] = useState([]);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsError, setTermsError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
@@ -94,6 +99,12 @@ const InfluencerForm = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    if (!acceptedTerms) {
+      setTermsError(TERMS_REQUIRED_MSG);
+      return;
+    }
+
+    setTermsError('');
     setSubmitting(true);
     setError(null);
     try {
@@ -272,6 +283,16 @@ const InfluencerForm = () => {
         />
       </Form.Group>
 
+      <ClubMembershipTermsAgreement
+        checked={acceptedTerms}
+        onChange={checked => {
+          setAcceptedTerms(checked);
+          if (checked) setTermsError('');
+        }}
+        error={termsError}
+        checkboxId="join-influencer-terms"
+      />
+
       {error && <Alert variant="danger">{error}</Alert>}
       <Button type="submit" variant="primary" disabled={submitting}>
         {submitting ? t('join_submitting') : t('join_submit_influencer')}
@@ -297,6 +318,8 @@ const LandOwnerForm = () => {
   const [cooperationIntent, setCooperationIntent] = useState([]);
   const [landPhotos, setLandPhotos] = useState([]);
   const [landDocs, setLandDocs] = useState([]);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsError, setTermsError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
@@ -318,6 +341,12 @@ const LandOwnerForm = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    if (!acceptedTerms) {
+      setTermsError(TERMS_REQUIRED_MSG);
+      return;
+    }
+
+    setTermsError('');
     setSubmitting(true);
     setError(null);
     try {
@@ -535,6 +564,16 @@ const LandOwnerForm = () => {
         )}
       </Form.Group>
 
+      <ClubMembershipTermsAgreement
+        checked={acceptedTerms}
+        onChange={checked => {
+          setAcceptedTerms(checked);
+          if (checked) setTermsError('');
+        }}
+        error={termsError}
+        checkboxId="join-land-owner-terms"
+      />
+
       {error && <Alert variant="danger">{error}</Alert>}
       <Button type="submit" variant="success" disabled={submitting}>
         {submitting ? t('join_submitting') : t('join_submit_land_owner')}
@@ -556,6 +595,8 @@ const PartnerForm = () => {
     partnerCases: '', notes: '',
   });
   const [partnershipTypes, setPartnershipTypes] = useState([]);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsError, setTermsError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
@@ -565,6 +606,12 @@ const PartnerForm = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    if (!acceptedTerms) {
+      setTermsError(TERMS_REQUIRED_MSG);
+      return;
+    }
+
+    setTermsError('');
     setSubmitting(true);
     setError(null);
     try {
@@ -706,6 +753,16 @@ const PartnerForm = () => {
         />
       </Form.Group>
 
+      <ClubMembershipTermsAgreement
+        checked={acceptedTerms}
+        onChange={checked => {
+          setAcceptedTerms(checked);
+          if (checked) setTermsError('');
+        }}
+        error={termsError}
+        checkboxId="join-partner-terms"
+      />
+
       {error && <Alert variant="danger">{error}</Alert>}
       <Button type="submit" variant="warning" className="text-white" disabled={submitting}>
         {submitting ? t('join_submitting') : t('join_submit_partner')}
@@ -727,6 +784,8 @@ const InvestorForm = () => {
     investmentPreference: '', notes: '',
   });
   const [investmentSectors, setInvestmentSectors] = useState([]);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsError, setTermsError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
@@ -736,6 +795,12 @@ const InvestorForm = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    if (!acceptedTerms) {
+      setTermsError(TERMS_REQUIRED_MSG);
+      return;
+    }
+
+    setTermsError('');
     setSubmitting(true);
     setError(null);
     try {
@@ -879,6 +944,16 @@ const InvestorForm = () => {
           onChange={handleField}
         />
       </Form.Group>
+
+      <ClubMembershipTermsAgreement
+        checked={acceptedTerms}
+        onChange={checked => {
+          setAcceptedTerms(checked);
+          if (checked) setTermsError('');
+        }}
+        error={termsError}
+        checkboxId="join-investor-terms"
+      />
 
       {error && <Alert variant="danger">{error}</Alert>}
       <Button type="submit" variant="dark" disabled={submitting}>
