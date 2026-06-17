@@ -23,7 +23,7 @@ const ClubMembershipTermsAgreement = ({
           size="sm"
           onClick={() => setShowTerms(prev => !prev)}
         >
-          {showTerms ? 'Hide Terms / 收起条款' : 'View Terms / 查看条款'}
+          {showTerms ? 'Hide Terms / 收起条款' : 'View Terms & Conditions / 查看条款与条件'}
         </Button>
       </div>
 
@@ -41,7 +41,7 @@ const ClubMembershipTermsAgreement = ({
         type="checkbox"
         checked={checked}
         onChange={e => onChange(e.target.checked)}
-        label="I have read and agree to the 360 CLUB MEMBERSHIP TERMS & CONDITIONS / 我已阅读并同意《360俱乐部会员条款与条件》"
+        label="I have read and agreed to the 360 CLUB MEMBERSHIP TERMS & CONDITIONS / 我已阅读并同意《360俱乐部会员条款与条件》"
       />
 
       {error && (
