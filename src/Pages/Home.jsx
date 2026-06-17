@@ -114,14 +114,18 @@ const Home = () => {
         });
 
         // Check the data structure and safely retrieve the images
-        const images = response.data.data[0].Image;
-        if (images) {
-          setGallery(images);
-        } else {
-          console.warn("No images found in response data.");
-        }
+        // Safely retrieve the images
+      const images = response?.data?.data?.[0]?.Image;
+
+      if (Array.isArray(images)) {
+        setGallery(images);
+      } else {
+        console.warn("No images found in response data.");
+        setGallery([]);
+      }
       } catch (error) {
         console.error("Error loading:", error);
+        setGallery([]);
       }
     };
 
@@ -146,13 +150,21 @@ const Home = () => {
             "filters[$or][1][SingleProduct][$eq]": true,
           },
         });
-        let allProducts = response.data.data;
+        let allProducts = response?.data?.data;
+
+        if (!Array.isArray(allProducts)) {
+          console.warn("No products found or invalid products response:", response.data);
+          allProducts = [];
+        }
+
         if (countryCode === 'CN') {
           allProducts = allProducts.filter(product => !product.BlockInChina);
         }
+
         setProducts(allProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
+        setProducts([]);
       }
     };
     fetchProducts();

@@ -159,6 +159,8 @@ const Navigation = () => {
                   </NavDropdown.Item> */}
                 </NavDropdown>
 
+                <span className="nav-line-break" aria-hidden="true" />
+
                 <NavDropdown
                   className='NavNoHighlightWord'
                   title={t("LandOwnerJoin")}

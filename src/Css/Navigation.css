@@ -582,3 +582,55 @@ html {
     transform: translateX(-50%) !important;
   }
 }
+
+/* 防止 logo 被压缩 */
+.navbar-brand-custom {
+  flex-shrink: 0 !important;
+  min-width: 120px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* 控制 Navbar.Brand 里面的 logo 图片 */
+.navbar-brand-custom .figure-img,
+.navbar-brand-custom img {
+  width: 110px !important;
+  height: auto !important;
+  min-width: 110px !important;
+  max-width: none !important;
+  object-fit: contain !important;
+  margin: 0 !important;
+}
+
+/* 默认大屏幕不强制换行 */
+.nav-line-break {
+  display: none;
+}
+
+/* 允许导航菜单在需要时换行 */
+.NavContainer {
+  flex-wrap: wrap !important;
+  row-gap: 10px !important;
+  column-gap: 10px !important;
+  overflow: visible !important;
+}
+
+/* 在桌面宽度变窄时，让指定位置后的导航项去第二行 */
+@media (max-width: 1500px) and (min-width: 992px) {
+  .NavigationBar .navbar-collapse {
+    min-width: 0 !important;
+  }
+
+  .NavContainer {
+    justify-content: center !important;
+  }
+
+  .nav-line-break {
+    display: block !important;
+    flex-basis: 100% !important;
+    width: 100% !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
