@@ -1,9 +1,10 @@
 // Utils Imports
 import React, { useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import i18n from "./i18n.js"; // Ensure you have i18n setup correctly
 import CuteChatbot from "@dreamoverseas/cute-chatbot";
+import Cookies from "js-cookie";
 
 // Style Imports
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -43,6 +44,16 @@ const ExternalRedirect = ({ to }) => {
     window.location.href = to;
   }, [to]);
   return null;
+};
+
+const MembershipRouteGuard = () => {
+  const userCookie = Cookies.get("user");
+
+  if (!userCookie) {
+    return <Navigate to='/?tab=login' replace />;
+  }
+
+  return <MemberCenter />;
 };
 
 function App() {
@@ -126,7 +137,8 @@ function App() {
           <Route path='/register' element={<RegisterForm />} />
           <Route path='/check-in' element={<CheckIn />} />
           <Route path='/check-out' element={<HtmlContent translationKey="checkOut" />} />
-          <Route path='/membership' element={<MemberCenter />} />
+          <Route path='/membership' element={<MembershipRouteGuard />} />
+          <Route path='/member-center' element={<MembershipRouteGuard />} />
           <Route path='/admin' element={<Dog />} />
 
           {/* About dropdown - new pages */}

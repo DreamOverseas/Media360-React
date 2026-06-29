@@ -40,8 +40,10 @@ const Navigation = () => {
   const userCookie = Cookies.get("user");
 
   const handleAuthButtonClick = () => {
+    const isMembershipPage = location.pathname === "/membership" || location.pathname === "/member-center";
+
     if (userCookie) {
-      if (location.pathname === "/membership") {
+      if (isMembershipPage) {
         Cookies.remove("user");
         Cookies.remove("AuthToken");
         navigate("/");
@@ -240,9 +242,9 @@ const Navigation = () => {
                 <div className="text-center nav-login-button">
                   <Button
                     onClick={handleAuthButtonClick}
-                    variant={userCookie ? (location.pathname === "/membership" ? "danger" : "primary") : "primary"}
+                    variant={userCookie ? ((location.pathname === "/membership" || location.pathname === "/member-center") ? "danger" : "primary") : "primary"}
                   >
-                    {userCookie ? (location.pathname === "/membership" ? `${t("membership_logout")}` : `${t("membership_center")}`) : `${t("membership_reglog")}`}
+                    {userCookie ? ((location.pathname === "/membership" || location.pathname === "/member-center") ? `${t("membership_logout")}` : `${t("membership_center")}`) : `${t("membership_reglog")}`}
                   </Button>
                 </div>
               </Nav>

@@ -24,7 +24,7 @@ const MemberCenter = () => {
             if (userCookie) {
                 setUser(JSON.parse(userCookie));
             } else {
-                navigate('/');
+                navigate('/?tab=login');
                 return;
             }
 
@@ -48,7 +48,7 @@ const MemberCenter = () => {
                     // If response is not successful, clean up cookies and navigate to the home page
                     Cookies.remove("user");
                     Cookies.remove("AuthToken");
-                    navigate("/");
+                    navigate('/?tab=login');
                 }
             } catch (error) {
                 console.error('Error fetching user data:', error);
