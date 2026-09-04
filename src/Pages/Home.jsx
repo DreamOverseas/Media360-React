@@ -22,7 +22,6 @@ const Home = () => {
   const bannerImageChateau = `${baseUrl}chateau.jpeg`;
   const bannerSlides = [
     { image: bannerImage, position: 'left center' },
-    { image: bannerImageChateau, position: 'center center' },
   ];
   const chateauDescriptionEn = 'Welcome to a palatial mansion on a secluded island off the beautiful New South Wales north coast.';
   const chateauDescriptionZh = '欢迎来到新南威尔士州北海岸外一座与世隔绝的岛屿上的宏伟府邸。';
@@ -226,10 +225,6 @@ const Home = () => {
                 </div>
               ))}
             </Slider>
-          </div>
-          <div className="home-banner-content">
-            <h1>{t("home_hero_title")}</h1>
-            <strong><h1>{t("home_hero_subtitle")}</h1></strong>
           </div>
         </section>
 
