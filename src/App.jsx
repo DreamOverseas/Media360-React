@@ -92,8 +92,11 @@ function App() {
           <Route path='/strategic' element={<HtmlContent translationKey="strategic_partner" />} />
           <Route path='/360-culture-events' element={<HtmlContent translationKey="events_activities" />} />
           <Route path='/events-activities' element={<HtmlContent translationKey="events_activities" />} />
-          <Route path='/360iip' element={<HtmlContent translationKey="innovation_iip_page" />} />
-          <Route path='/360-iip' element={  <HtmlContent translationKey="innovation_lab" />} />
+          <Route path='/360iip' element={<Navigate to='/360-iip' replace />} />
+          <Route path='/360-iip' element={<>
+            <HtmlContent translationKey="innovation_iip_page" />
+            <HtmlContent translationKey="innovation_lab" />
+          </>} />
           <Route path='/smarthouse' element={            
             <MediaImageDisplay 
               chineseUrl="investment"
