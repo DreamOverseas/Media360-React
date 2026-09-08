@@ -12,8 +12,6 @@ import ClubMembershipTermsAgreement from '../Components/ClubMembershipTermsAgree
 const API_BASE = 'https://api.do360.com';
 const APP_API = `${API_BASE}/api/applications`;
 const UPLOAD_API = `${API_BASE}/api/upload`;
-const TERMS_REQUIRED_MSG =
-  'Please read and agree to 360 CLUB MEMBERSHIP TERMS & CONDITIONS first. / 请先阅读并同意《360俱乐部会员条款与条件》。';
 
 // ─────────────────────────────────────────────────────
 // Shared helpers
@@ -64,11 +62,11 @@ const InfluencerForm = () => {
   const { t } = useTranslation();
 
   const PLATFORM_OPTIONS = [
-    { value: 'douyin', label: '抖音 / Douyin' },
-    { value: 'xiaohongshu', label: '小红书 / Xiaohongshu' },
-    { value: 'tiktok', label: 'TikTok' },
-    { value: 'instagram', label: 'Instagram' },
-    { value: 'youtube', label: 'YouTube' },
+    { value: 'douyin', label: t('join_platform_douyin') },
+    { value: 'xiaohongshu', label: t('join_platform_xiaohongshu') },
+    { value: 'tiktok', label: t('join_platform_tiktok') },
+    { value: 'instagram', label: t('join_platform_instagram') },
+    { value: 'youtube', label: t('join_platform_youtube') },
   ];
 
   const [fields, setFields] = useState({
@@ -100,7 +98,7 @@ const InfluencerForm = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     if (!acceptedTerms) {
-      setTermsError(TERMS_REQUIRED_MSG);
+      setTermsError(t('join_terms_required'));
       return;
     }
 
@@ -342,7 +340,7 @@ const LandOwnerForm = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     if (!acceptedTerms) {
-      setTermsError(TERMS_REQUIRED_MSG);
+      setTermsError(t('join_terms_required'));
       return;
     }
 
@@ -607,7 +605,7 @@ const PartnerForm = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     if (!acceptedTerms) {
-      setTermsError(TERMS_REQUIRED_MSG);
+      setTermsError(t('join_terms_required'));
       return;
     }
 
@@ -796,7 +794,7 @@ const InvestorForm = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     if (!acceptedTerms) {
-      setTermsError(TERMS_REQUIRED_MSG);
+      setTermsError(t('join_terms_required'));
       return;
     }
 
@@ -964,27 +962,213 @@ const InvestorForm = () => {
 };
 
 // ─────────────────────────────────────────────────────
+// 5. Others Form
+// ─────────────────────────────────────────────────────
+const OthersForm = () => {
+  const { t } = useTranslation();
+
+  const [fields, setFields] = useState({
+    fullName: '', companyName: '', phoneNumber: '',
+    email: '', city: '',
+    cooperationDirection: '', availableResources: '', notes: '',
+  });
+  const [applicationFocus, setApplicationFocus] = useState([]);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsError, setTermsError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleField = e =>
+    setFields(prev => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    if (!acceptedTerms) {
+      setTermsError(t('join_terms_required'));
+      return;
+    }
+
+    setTermsError('');
+    setSubmitting(true);
+    setError(null);
+    try {
+      await axios.post(APP_API, {
+        data: {
+          applicationType: 'others',
+          fullName: fields.fullName,
+          companyName: fields.companyName || null,
+          phoneNumber: fields.phoneNumber,
+          email: fields.email,
+          city: fields.city || null,
+          cooperationDirection: fields.cooperationDirection || null,
+          availableResources: fields.availableResources || null,
+          notes: fields.notes || null,
+          partnershipTypes: applicationFocus,
+        },
+      });
+      setSuccess(true);
+    } catch {
+      setError(t('join_submit_error'));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (success)
+    return (
+      <SuccessPanel
+        message={t('join_submit_success')}
+        onReset={() => setSuccess(false)}
+        t={t}
+      />
+    );
+
+  const focusOptions = [
+    { value: 'internship_career', label: t('join_other_focus_internship') },
+    { value: 'events_activity', label: t('join_other_focus_events') },
+    { value: 'product_service', label: t('join_other_focus_product_service') },
+    { value: 'tech_engineering', label: t('join_other_focus_tech_engineering') },
+    { value: 'membership_referral', label: t('join_other_focus_membership_referral') },
+    { value: 'other_custom', label: t('join_other_focus_custom') },
+  ];
+
+  return (
+    <Form onSubmit={handleSubmit} className="py-3">
+      <SectionTitle>{t('join_section_basic_info')}</SectionTitle>
+      <Row>
+        <Col md={6}>
+          <Form.Group className="mb-3">
+            <Form.Label>{t('join_field_full_name')} *</Form.Label>
+            <Form.Control name="fullName" value={fields.fullName} onChange={handleField} required />
+          </Form.Group>
+        </Col>
+        <Col md={6}>
+          <Form.Group className="mb-3">
+            <Form.Label>{t('join_field_company')}</Form.Label>
+            <Form.Control name="companyName" value={fields.companyName} onChange={handleField} />
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={6}>
+          <Form.Group className="mb-3">
+            <Form.Label>{t('join_field_phone')} *</Form.Label>
+            <Form.Control name="phoneNumber" value={fields.phoneNumber} onChange={handleField} required />
+          </Form.Group>
+        </Col>
+        <Col md={6}>
+          <Form.Group className="mb-3">
+            <Form.Label>{t('join_field_email')} *</Form.Label>
+            <Form.Control type="email" name="email" value={fields.email} onChange={handleField} required />
+          </Form.Group>
+        </Col>
+      </Row>
+      <Form.Group className="mb-3">
+        <Form.Label>{t('join_field_country_city')}</Form.Label>
+        <Form.Control name="city" value={fields.city} onChange={handleField} />
+      </Form.Group>
+
+      <SectionTitle>{t('join_section_cooperation')}</SectionTitle>
+      <Form.Group className="mb-3">
+        <Form.Label>{t('join_field_application_focus')}</Form.Label>
+        <MultiCheck
+          options={focusOptions}
+          selected={applicationFocus}
+          onChange={v => setApplicationFocus(prev => toggle(prev, v))}
+        />
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>{t('join_field_coop_direction')}</Form.Label>
+        <Form.Control
+          as="textarea"
+          rows={3}
+          name="cooperationDirection"
+          value={fields.cooperationDirection}
+          onChange={handleField}
+        />
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>{t('join_field_available_resources')}</Form.Label>
+        <Form.Control
+          as="textarea"
+          rows={3}
+          name="availableResources"
+          value={fields.availableResources}
+          onChange={handleField}
+        />
+      </Form.Group>
+      <Form.Group className="mb-4">
+        <Form.Label>{t('join_field_notes')}</Form.Label>
+        <Form.Control
+          as="textarea"
+          rows={3}
+          name="notes"
+          value={fields.notes}
+          onChange={handleField}
+        />
+      </Form.Group>
+
+      <ClubMembershipTermsAgreement
+        checked={acceptedTerms}
+        onChange={checked => {
+          setAcceptedTerms(checked);
+          if (checked) setTermsError('');
+        }}
+        error={termsError}
+        checkboxId="join-others-terms"
+      />
+
+      {error && <Alert variant="danger">{error}</Alert>}
+      <Button type="submit" variant="secondary" disabled={submitting}>
+        {submitting ? t('join_submitting') : t('join_submit_others')}
+      </Button>
+    </Form>
+  );
+};
+
+// ─────────────────────────────────────────────────────
 // Main Page
 // ─────────────────────────────────────────────────────
 const JoinApplication = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [searchParams] = useSearchParams();
+  const allowedTypes = ['investor', 'land_owner', 'partner', 'influencer', 'others'];
+  const initialType = searchParams.get('type');
   const [activeKey, setActiveKey] = useState(
-    searchParams.get('type') || 'influencer'
+    allowedTypes.includes(initialType) ? initialType : 'investor'
   );
+  const isZh = i18n.language?.startsWith('zh');
 
   return (
     <>
       <PageTitle pageTitle={t('join_page_title')} />
       <Container className="my-5" style={{ maxWidth: '900px' }}>
+        <div className="d-flex justify-content-end mb-3">
+          <Button
+            variant={isZh ? 'dark' : 'outline-dark'}
+            size="sm"
+            className="me-2"
+            onClick={() => i18n.changeLanguage('zh')}
+          >
+            中文
+          </Button>
+          <Button
+            variant={!isZh ? 'dark' : 'outline-dark'}
+            size="sm"
+            onClick={() => i18n.changeLanguage('en')}
+          >
+            EN
+          </Button>
+        </div>
         <Tabs
           activeKey={activeKey}
           onSelect={k => setActiveKey(k)}
           className="mb-2"
           justify
         >
-          <Tab eventKey="influencer" title={t('join_type_influencer')}>
-            <InfluencerForm key={`influencer-${activeKey}`} />
+          <Tab eventKey="investor" title={t('join_type_investor')}>
+            <InvestorForm key={`investor-${activeKey}`} />
           </Tab>
           <Tab eventKey="land_owner" title={t('join_type_land_owner')}>
             <LandOwnerForm key={`land_owner-${activeKey}`} />
@@ -992,8 +1176,11 @@ const JoinApplication = () => {
           <Tab eventKey="partner" title={t('join_type_partner')}>
             <PartnerForm key={`partner-${activeKey}`} />
           </Tab>
-          <Tab eventKey="investor" title={t('join_type_investor')}>
-            <InvestorForm key={`investor-${activeKey}`} />
+          <Tab eventKey="influencer" title={t('join_type_influencer')}>
+            <InfluencerForm key={`influencer-${activeKey}`} />
+          </Tab>
+          <Tab eventKey="others" title={t('join_type_others')}>
+            <OthersForm key={`others-${activeKey}`} />
           </Tab>
         </Tabs>
       </Container>
